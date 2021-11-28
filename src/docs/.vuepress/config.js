@@ -94,6 +94,14 @@ module.exports = {
               ]
             },
             {
+              title: 'Rust',
+              children: [
+                'rust/overview',
+                'rust/cargo',
+                'rust/basics'
+              ]
+            },
+            {
               title: 'CSS',
               children: [
                 'css/layouts'
