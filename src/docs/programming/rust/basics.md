@@ -21,7 +21,28 @@ let b = 10i32;
 let c = 10_i32; // Underscore has no meaning, it can be used as a delimiter
 ```
 
-### Arrays
+Variables may be *shadowed*, which means that a variable may be defined twice
+with the same name. This way, we don'y have to artificially define things like
+`data_string` and `data`. FIrst we could define `data` as `String`, and then
+define `data` as `i32` with a value coming from parsed `data`.
+
+### Strings
+
+There is a `String` type, which is stored on a heap. There is also a string
+literal, which is actually a [string slice](./ownership.md#string-slices).
+
+If a functions expects a string parameter, it's a good practice to use
+string slice instead of a `String`, because:
+
+- a string literal can be passed as is;
+- a string slice can be easily taken out of a `String` with `&some_streing`
+
+### Collections
+
+#### Arrays
+
+Arrays are placed on the stack, since their size is static and
+always needs to be predefined.
 
 ```rust
 let countries = ["Poland", "Brazil"];
@@ -38,148 +59,18 @@ for country in countries.iter() {
 }
 ```
 
+Array is typed like this: `[u32, 5]` - 5 elements of type `u32`.
+Each array with different type and size is like a separate type in Rust.
+
+#### Vectors
+
+Another collection type. It's dynamic, so it's placed on the heap.
+`Vec<T>`. It is like a `List<T>` in C#. They are more expensive than arrays.
+
 ### Scope
 
 Variables that go out of scope are automatically removed by Rust. We don't need
 to `free` memory explicitly. There is no runtime overhead for that.
-
-### Ownership
-
-At one point in time, only one variable may _own_ a piece of data.
-If a given variable holds data on a stack, the data is just copied:
-
-```rust
-let a = 4;
-let b = a;
-// there will be two "4" on the stack
-```
-
-In case of heap data, only the pointer is copied:
-
-```rust
-let a = String::from("abc");
-let b = a;
-
-// a is no longer a valid variable! b is the owner now!
-```
-
-
-
-Unique to Rust, the `a` variable becomes invalid when the code above gets
-executed. If we try to access it, it will result in a panic. Thanks to it,
-during Runtime Rust will not try to `drop` (`free`) this memory space twice,
-which would be wrong.
-It is called a **move**. `a` gets _moved_ to `b`.
-
-Passing a value to a function also causes a _move_!
-
-```rust
-fn main() {
-  let s = String::from("abc");
-  some_func(s);
-  // s is no longer valid. The ownership was moved!
-}
-
-fn some_func(data: String) {
-  // At the end, `data` goes out of scope and `drop` is called
-}
-```
-
-A fucntion may also move ownership by returning a value. Then, the calling
-function's scope owns the variable.
-
-#### References
-
-Sometimes we want to pass a value to a function, but also to continue to use it
-in the calling function. We could make the called function return the passed-in
-value, but that would be a weird workaround, especially if that function is
-supposed to return some other data as well. **References** come to the rescue.
-
-```rust
-fn main() {
-  let s1 = String::from("hello");
-
-  // pass as a reference
-  let len = calculate_length(&s1);
-
-  println!("The length of '{}' is {}.", s1, len);
-  // we can still use `s1`
-}
-
-fn calculate_length(s: &String) -> usize {
-  s.len()
-  // s has no ownership. When it goes out of scope, nothing happens
-}
-```
-
-![](https://doc.rust-lang.org/book/img/trpl04-05.svg)
-
-Creating a reference is called **borrowing**.
-References are *immutable* by default. We can change that:
-
-```rust
-fn main() {
-  let mut s = String::from("hello");
-
-  change(&mut s);
-}
-
-fn change(some_string: &mut String) {
-  some_string.push_str(", world");
-}
-```
-
-Both the `s` variable and the `some_string` reference need to use the `mut`
-keyword to allow mutations of the value.
-
-::: fail
-At any given time, you can have either one mutable reference or any number of
-immutable references. This will fail:
-
-```rust
-let mut s = String::from("hello");
-
-let r1 = &mut s;
-let r2 = &mut s; // Wrong!
-println!("{}, {}", r1, r2);
-```
-
-Also, if there is an immulable reference, another one that is immutable cannot
-be created:
-
-```rust
-let mut s = String::from("hello");
-
-let r1 = &s; // no problem
-let r2 = &s; // no problem
-let r3 = &mut s; // BIG PROBLEM
-println!("{}, {}, and {}", r1, r2, r3);
-```
-
-That's because if one function would get an immutable reference, it will expect
-that the value should not change suddenly.
-:::
-
-::: tip
-A reference’s scope starts from where it is introduced and continues through the
-last time that reference is used.
-This is OK:
-
-```rust
-let mut s = String::from("hello");
-
-let r1 = &mut s;
-let r2 = &mut s; // It's OK!
-println!("{}", r2);
-```
-
-`r1` gets created, but it is never used afterwards. `r2` may be created.
-:::
-
-With Rust, it's impossible to have dangling pointers. Rust will complain of such
-issues at compile time.
-
-
 
 ### Deep Copying
 

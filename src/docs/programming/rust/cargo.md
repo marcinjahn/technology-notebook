@@ -1,7 +1,7 @@
 # Cargo
 
 It's a **build system** (turns Rust code into executable binaries) and a
-**package maanger** (downloads and compiles project's dependencies).
+**package manager** (downloads and compiles project's dependencies).
 
 `cargo new` creates a new project from a standard template. There's a
 `Cargo.toml` file and the `src/` directory.

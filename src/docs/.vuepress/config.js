@@ -98,7 +98,10 @@ module.exports = {
               children: [
                 'rust/overview',
                 'rust/cargo',
-                'rust/basics'
+                'rust/basics',
+                'rust/ownership',
+                'rust/structs',
+                'rust/traits'
               ]
             },
             {
