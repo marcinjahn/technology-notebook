@@ -1,6 +1,6 @@
 # Dev Environment
 
-- Minikube - a singl VM with K8s components. It can also run directly on Linux
+- Minikube - a single VM with K8s components. It can also run directly on Linux
 - kind - K8s in containers - each container is a single node. It uses CRI-O as
   the container runtime in each of the nodes.
 

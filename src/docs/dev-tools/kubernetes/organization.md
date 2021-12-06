@@ -37,7 +37,7 @@ environments. It's better to use separate clusters.
 ## Labels
 
 Labels are key-value pairs that can be added to any object to decorate it with
-some meta data. Lables are placed in `metadata.labels` section of YAML.
+some meta data. Labels are placed in `metadata.labels` section of YAML.
 
 K8s uses labels on its own. For example Node objects have `kubernetes/io.arch`
 labels idicating CPU architecture of a node. K8s does not usually add labels to

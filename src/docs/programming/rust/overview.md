@@ -46,8 +46,10 @@ they're accessed. There are some sensible defaults as well.
 
 ## Downsides
 
-Rust is not good with cyclic data structures. Implementing doubly-linked list might not be easy for a beginner in Rust.
+Rust is not good with cyclic data structures. Implementing doubly-linked list
+might not be easy for a beginner in Rust.
 
 Compilation is slower than in peer languages.
 
-Rust has steep learning curve due to it being "large". Lots of functionalities, keywords, etc.
+Rust has steep learning curve due to it being "large". Lots of functionalities,
+keywords, etc.
