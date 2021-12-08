@@ -42,8 +42,8 @@ module.exports = {
         link: '/dev-tools/'
       },
       {
-        text: 'Networking',
-        link: '/networking/'
+        text: 'Computers',
+        link: '/computers/'
       }
     ],
     sidebar: {
@@ -160,15 +160,21 @@ module.exports = {
           ]
         }
       ],
-      '/networking/': [
+      '/computers/': [
         './',
         {
           title: 'Web Protocols',
           children: [
-            'osi-model',
-            'tcp',
-            'udp',
-            'http'
+            'networking/osi-model',
+            'networking/tcp',
+            'networking/udp',
+            'networking/http'
+          ]
+        },
+        {
+          title: 'TPM',
+          children: [
+            'tpm/overview'
           ]
         }
       ]
