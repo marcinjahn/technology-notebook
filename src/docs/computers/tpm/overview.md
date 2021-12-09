@@ -10,7 +10,9 @@ It enables:
 - Secure generation of keys
 - Secure storage of keys - TPM can encrypt keys with its public key. Such encyrpted blobs might be stored on a disk (since TPM has limited storage capacity)
 - Random number generation
-- NVRAM storage - even if disk is wiped, data stays in TPM (certificate store)
+- NVRAM storage - even if disk is wiped, data stays in TPM (certificate store). It stores:
+  - root public keys for certificate chains - read-only
+  - EKs
 - Device health attestation
 
 ## History
