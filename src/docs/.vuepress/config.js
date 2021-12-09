@@ -174,7 +174,9 @@ module.exports = {
         {
           title: 'TPM',
           children: [
-            'tpm/overview'
+            'tpm/overview',
+            'tpm/basic-terms',
+            'tpm/tpm-entities'
           ]
         }
       ]

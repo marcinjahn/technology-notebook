@@ -2,15 +2,19 @@
 
 ## What is TPM?
 
-TPM is a cryptographic coprocessor. It's present in personal PCs and servers.
-It enables:
+TPM is a cryptographic coprocessor. It's present in personal PCs and servers. It
+enables:
 
-- Identification of devices - a private key embedded in a PC identifies it. Use-cases:
+- Identification of devices - a private key embedded in a PC identifies it.
+  Use-cases:
   - VPN only allowing client machines that are trusted
 - Secure generation of keys
-- Secure storage of keys - TPM can encrypt keys with its public key. Such encyrpted blobs might be stored on a disk (since TPM has limited storage capacity)
+- Secure storage of keys - TPM can encrypt keys with its public key. Such
+  encyrpted blobs might be stored on a disk (since TPM has limited storage
+  capacity)
 - Random number generation
-- NVRAM storage - even if disk is wiped, data stays in TPM (certificate store). It stores:
+- NVRAM storage - even if disk is wiped, data stays in TPM (certificate store).
+  It stores:
   - root public keys for certificate chains - read-only
   - EKs
 - Device health attestation
@@ -26,7 +30,7 @@ Functionalities:
 - secure authorization
 - device-health attestation
 
-It was not standardized too well, different vendors rquired different drivers.
+It was not standardized too well, different vendors required different drivers.
 Additionally dictionary attacks were possible.
 
 ### TPM 1.2
@@ -48,13 +52,44 @@ driver.
 ### TPM 2.0
 
 Redesigned from scratch. It doesn't use SHA-1 hashing algorithm due to its
-weakness. The specification is *algorithm agile* - approved alghoritms may be
+weakness. The specification is _algorithm agile_ - approved alghoritms may be
 added/removed in the future. All the authentication techniques were unified with
-a technique called *enhanced authorization*.
-TPM 2.0 can do anything that TPM 1.2 can do.
+a technique called _enhanced authorization_. That allows to establish various
+rules regarding when secrets can be read (e.g. you have to identify yourself
+with an HMAC key nd you need to use fingerprint reader). TPM 2.0 can do anything
+that TPM 1.2 can do.
 
-## Terms
+## PCR
 
-### PCR
+A TPM register holding a hash value. It is used during PC boot to store hashes
+of measurements of various boot stages. We can create keys in TPM and specify
+that they can only be read if PCR is in a given state (_sealing_), or in a state
+approved by some authority (new in 2.0). For example, an organization could
+issue an update of BIOS to company's PCs. New version of BIOs will change values
+in PCRs. However, the organization knows which values these will be and it can
+provide new signatures.
 
-A TPM register holding a hash value.
+## SDKs
+
+There are many ways to access TPM. Some are specific to 1.2 or 2.0, some are
+specific to the platform (Windows, Linux). Main types:
+
+- proprietary apps that talk with TPM directly
+- PKCS #11 standard - only basic TPM services
+- MS CAPI (Windows-only) - only basic TPM services
+- TSS (e.g. TrouSerS) - TPM 1.2 only
+- TBS (Windows-only) - low-level
+- CNG (Windows-only)
+- TSS.NET - cross-platform implementation for TPM 2.0
+
+## TPM-supported Operations
+
+TPM is able to run the following cryptographic operations:
+
+- random number generation
+- hashing
+- HMACing
+- RSA
+- symmetric keys
+
+Some of these operations expect a handle to a key used during an operation (e.g. HMAC needs a handle to a secret key).
