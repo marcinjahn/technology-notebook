@@ -59,16 +59,6 @@ rules regarding when secrets can be read (e.g. you have to identify yourself
 with an HMAC key nd you need to use fingerprint reader). TPM 2.0 can do anything
 that TPM 1.2 can do.
 
-## PCR
-
-A TPM register holding a hash value. It is used during PC boot to store hashes
-of measurements of various boot stages. We can create keys in TPM and specify
-that they can only be read if PCR is in a given state (_sealing_), or in a state
-approved by some authority (new in 2.0). For example, an organization could
-issue an update of BIOS to company's PCs. New version of BIOs will change values
-in PCRs. However, the organization knows which values these will be and it can
-provide new signatures.
-
 ## SDKs
 
 There are many ways to access TPM. Some are specific to 1.2 or 2.0, some are
@@ -93,3 +83,8 @@ TPM is able to run the following cryptographic operations:
 - symmetric keys
 
 Some of these operations expect a handle to a key used during an operation (e.g. HMAC needs a handle to a secret key).
+
+## Resources
+
+- https://google.github.io/tpm-js/index.html
+- https://tpm2-software.github.io/external/

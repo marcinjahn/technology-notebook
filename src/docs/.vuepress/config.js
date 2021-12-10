@@ -176,7 +176,8 @@ module.exports = {
           children: [
             'tpm/overview',
             'tpm/basic-terms',
-            'tpm/tpm-entities'
+            'tpm/tpm-entities',
+            'tpm/tpm-operations'
           ]
         }
       ]

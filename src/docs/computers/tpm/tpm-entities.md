@@ -31,10 +31,43 @@ after some password entry failures (for example for 24h). Admin can reset it.
 
 ### PCRs
 
-Platform Configuration Registers. There are a few of them (24 minumum on a PC).
-They're accessed by their index. They have authentication valuee and policy
-(generally `NULL`). Reading value from a PCR does not require authentication.
-Only one bank (a set of PCRs with the same hash algorithm) is mandatory.
+Fixed-size **Platform Configuration Registers**. There are a few of them (24
+minumum on a PC). They're accessed by their index. They have authentication
+value and policy (generally `NULL`). Reading value from a PCR does not require
+authentication. Only one bank (a set of PCRs with the same hash algorithm) is
+mandatory.
+
+We can create keys in TPM and specify that they can only be read if PCR is in a
+given state (_sealing_), or in a state approved by some authority (new in 2.0).
+For example, an organization could issue an update of BIOS to company's PCs. New
+version of BIOS will change values in PCRs. However, the organization knows
+which values these will be and it can provide new signatures.
+
+They support only **Read** and **Extend** operations. They store system state.
+
+PCRs are extended as follows:
+
+1. PCR <- 0
+2. PCR <- Hash(PCR || M)
+3. ...
+
+PCR starts with value 0. Then it gets extended by a hash of current PCR
+concatenated with a [digest](./basic-terms.md#hash) M. It's called a
+**folding-hash**.
+
+Since the result is deterministic if we always supply the same "M" (measurement)
+values in the same sequence, it can be used to verify if the sequence is as
+expected.
+
+::: warning Reading PCRs
+The result of `TPM2_CC_PCR_Read` cannot be trusted. It returns PCR values, but
+with no security guarantees. An attacker can MITM your communication with the
+TPM, and forge arbitrary `TPM2_CC_PCR_Read` responses.
+
+The correct way to read PCR values is through quotes. A quote is a signed
+statement from the TPM, attesting to its internal state. Use `TPM2_CC_Quote` to
+read fresh PCR values. We can use AIK to sign the PCR quote.
+:::
 
 ### Reserved Handles
 
@@ -62,18 +95,17 @@ cleared, the NVRAM indexes associated with that hierarchy are deleted.
 ## Objects
 
 It's either a **key** or **data**. It has a public part and perhaps (?) a
-private part (asymmetric private key, as symmetric key or encrypted data).
+private part (asymmetric private key, a symmetric key or encrypted data).
 
 Like NVRAM indexes all objects belong to one of four hierarchies: platform,
-storage, endorsementm or NULL. When a hierarchy is cleared all objects in it are
+storage, endorsement or NULL. When a hierarchy is cleared all objects in it are
 cleared. They have authorization data and policy. A policy can't be changed
-after it gets created (like with MV indexes). 
+after it gets created (like with NV indexes). 
 
-Object commands
-can be administrative or user commands. At creation the user decides which of
-these commands can be performed with the authorization data and which can be
-exclusively done with a policy. Some commands can only be done with a policy no
-matter how we set the attributes during creation. 
+**Object commands** can be administrative or user commands. At creation the user
+decides which of these commands can be performed with the authorization data and
+which can be exclusively done with a policy. Some commands can only be done with
+a policy no matter how we set the attributes during creation. 
 
 Most objects are keys. Using keys or other objects requires using a
 non-persistent TPM entity - a session.
@@ -109,19 +141,39 @@ reboot). Each hierarchy is targeted at specific use cases: for the platform
 manufacturer, for the user, for privacy-sensitive applications, and for
 ephemeral requirements.
 
-TPM 1.2 has one hierarchy. TPM 2.0 has three.
+TPM 1.2 has one hierarchy. TPM 2.0 has four.
+
+## Endorsement Hierarchy
+
+It's reserved for objects created and certified by the TPM manufacturer. The
+endorsement seed (`eseed`) is randomly generated at manufacturing time and never
+changes during the lifetime of the device. The primary endorsement key is
+certified by the TPM manufacturer, and because its seed never changes, it can be
+used to identify the device. Since there's only one TPM device per machine, the
+primary endorsement key can also be used as the machine's identity. It's
+privacy-sensitive. 
 
 ## Platform Hierarchy
 
-It's used under the control of the platform manufacturer.
+The platform hierarchy is reserved for objects created and certified by the OEM
+that builds the host platform. The platform seed (pseed) is randomly generated
+at manufacturing time, but can be changed by the OEM by calling
+`TPM2_CC_ChangePPS`.
 
 ## Storage Hierarchy
 
-It's used by the platform owner (IT department or the end user). It has owner policy and an authorization value, both persist through reboots. They are rarely changed.
+It's used by the platform owner (IT department or the end user). It has owner
+policy and an authorization value, both persist through reboots. They are rarely
+changed. When a user takes ownership, for example, when the IT department
+provisions a new host on the network, the owner hierarchy is reset. This is done
+by calling `TPM2_CC_Clear`. In this critical setup step, two user keys should be
+provisioned and certified by the owner: these form the root of trust for all the
+keys generated on the owner hierarchy.
 
 It's intended fo non-privacy-sensitive operations.
 It can be turned off.
 
-## Endorsement Hierarchy
+## Null Hierarchy
 
-It's privacy-sensitive.
+The null hierarchy is reserved for ephemeral keys. The null seed is re-generated
+each time the host reboots.

@@ -14,8 +14,8 @@ algorithm itself secret.
 
 ## Hash
 
-Hash function turns some data into an irreversible hash. It's used mostly to
-check if data is correct, it it matches a known hash (data integrity).
+Hash function turns some data into an irreversible **digest**. It's used mostly
+to check if data is correct, it it matches a known hash/digest (data integrity).
 
 ## MAC
 
@@ -38,13 +38,6 @@ text and then HMAC it to get a MAC of the encrypted data. A receiver can check
 if the encrypted string is correct and then they can decrypt it. Then the
 receiver would need to know two secrets - HMAC secret and the encryption key.
 Or, a seed might be used.
-
-## Seed
-
-A secret that is used to generate other secrets from it. TPM has limited storage
-space, but it might be required to have many secrets for different purposes. Key
-Derivation Function (KDF) is used to generate those keys based on a seed. HMAC
-might be used as a KDF. The seed is used as the HMAC key.
 
 ## Nonce
 
@@ -106,3 +99,31 @@ There are some certification processes within TPM:
 - the EKs (and their certs) may be used to certify other keys (if EKs are
   signing). TPM can create certificates (but not in X.509 format, it's too
   complex for TPMs).
+
+## Seed
+
+A secret that is used to generate other secrets from it. TPM has limited storage
+space, but it might be required to have many secrets for different purposes. Key
+Derivation Function (KDF) is used to generate those keys based on a seed. HMAC
+might be used as a KDF. The seed is used as the HMAC key.
+
+Each hierarchy (three of them) have their own seed (the endorsement primary
+seed, the platform primary seed, and the storage primary seed).
+
+## Primary Key
+
+Root keys in the hierarchy. They have no parent. TPM 1.2 has one key analogical
+to TPM 2.0's Primary key - **Storage Root Key (SRK)**, it is stored persistently
+in TPM. TPM 2.0 permits unlimited number of Primary Keys (and they don't need to
+be persistent).
+
+TPM 1.2 could work with just one SRK, because:
+
+- there was just one algorithm and key size (RSA-2048). TPM 2.0 may use many.
+- there was just one key hierarchy (storage hierarchy). TPM 2.0 has three, each
+  with at least one root.
+
+TPM has limited storage. If we need more primary keys than storage allows, the
+primary keys can be recreated when needed. If we supply the same template of the
+key (some info about it like algorithm and some unique information) and use the
+same seed (there's one per hierarchy) we will get the same key.
