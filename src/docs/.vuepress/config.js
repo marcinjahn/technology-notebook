@@ -172,12 +172,17 @@ module.exports = {
           ]
         },
         {
-          title: 'TPM',
+          title: 'Security',
           children: [
-            'tpm/overview',
-            'tpm/basic-terms',
-            'tpm/tpm-entities',
-            'tpm/tpm-operations'
+            'security/basic-terms',
+            {
+              title: 'TPM',
+              children: [
+                'security/tpm/overview',
+                'security/tpm/tpm-entities',
+                'security/tpm/tpm-operations'
+              ]
+            }
           ]
         }
       ]

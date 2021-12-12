@@ -2,7 +2,7 @@
 
 ## Attacks
 
-There are two way to break cryptography system:
+There are two ways to break cryptography system:
 
 - brute force - protection against it is to have so many password possibilities
   that it'd be infeasible to try to break it. Another way is to limit amount of
@@ -100,30 +100,6 @@ There are some certification processes within TPM:
   signing). TPM can create certificates (but not in X.509 format, it's too
   complex for TPMs).
 
-## Seed
+## Resources
 
-A secret that is used to generate other secrets from it. TPM has limited storage
-space, but it might be required to have many secrets for different purposes. Key
-Derivation Function (KDF) is used to generate those keys based on a seed. HMAC
-might be used as a KDF. The seed is used as the HMAC key.
-
-Each hierarchy (three of them) have their own seed (the endorsement primary
-seed, the platform primary seed, and the storage primary seed).
-
-## Primary Key
-
-Root keys in the hierarchy. They have no parent. TPM 1.2 has one key analogical
-to TPM 2.0's Primary key - **Storage Root Key (SRK)**, it is stored persistently
-in TPM. TPM 2.0 permits unlimited number of Primary Keys (and they don't need to
-be persistent).
-
-TPM 1.2 could work with just one SRK, because:
-
-- there was just one algorithm and key size (RSA-2048). TPM 2.0 may use many.
-- there was just one key hierarchy (storage hierarchy). TPM 2.0 has three, each
-  with at least one root.
-
-TPM has limited storage. If we need more primary keys than storage allows, the
-primary keys can be recreated when needed. If we supply the same template of the
-key (some info about it like algorithm and some unique information) and use the
-same seed (there's one per hierarchy) we will get the same key.
+http://jrruethe.github.io/blog/2014/10/25/cryptography-primer/
