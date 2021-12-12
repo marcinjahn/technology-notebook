@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "mjaks-8708"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "mjaks-8708"
+  template:
+    metadata:
+      labels:
+        app: "mjaks-8708"
+    spec:
+      containers:
+        - name: "mjaks-8708"
+          image: "mjimages.azurecr.io/mjaks"
+          ports:
+          - containerPort: 80
