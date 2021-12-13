@@ -116,5 +116,5 @@ Some of these operations expect a handle to a key used during an operation (e.g.
 
 ## Resources
 
-- https://google.github.io/tpm-js/index.html
-- https://tpm2-software.github.io/external/
+- [https://google.github.io/tpm-js/index.html](https://google.github.io/tpm-js/index.html)
+- [https://tpm2-software.github.io/external/](https://tpm2-software.github.io/external/)

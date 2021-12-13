@@ -52,7 +52,7 @@ PCRs are extended as follows:
 3. ...
 
 PCR starts with value 0. Then it gets extended by a hash of current PCR
-concatenated with a [digest](./basic-terms.md#hash) M. It's called a
+concatenated with a [digest](../basic-terms.md#hash) M. It's called a
 **folding-hash**.
 
 Since the result is deterministic if we always supply the same "M" (measurement)
