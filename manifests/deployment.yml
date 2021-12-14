@@ -1,19 +1,21 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "mjaks-8708"
+  name: "marcinjahn-website"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "mjaks-8708"
+      app: "marcinjahn-website"
   template:
     metadata:
       labels:
-        app: "mjaks-8708"
+        app: "marcinjahn-website"
     spec:
       containers:
-        - name: "mjaks-8708"
-          image: "mjimages.azurecr.io/mjaks"
+        - name: "marcinjahn-vuepress"
+          image: "mjimages.azurecr.io/marcinjahn-vuepress"
           ports:
-          - containerPort: 80
+            - name: http
+              containerPort: 80
+              protocol: TCP

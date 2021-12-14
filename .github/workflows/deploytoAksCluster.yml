@@ -27,8 +27,8 @@ jobs:
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/src" -f  "src/Dockerfile" -t mjimages.azurecr.io/mjaks:${{ github.sha }} --label dockerfile-path=src/Dockerfile
-        docker push mjimages.azurecr.io/mjaks:${{ github.sha }}
+        docker build "$GITHUB_WORKSPACE/src" -f  "src/Dockerfile" -t mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }} --label dockerfile-path=src/Dockerfile
+        docker push mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }}
     
     - uses: azure/k8s-set-context@v1
       id: login
@@ -57,7 +57,8 @@ jobs:
         manifests: |
           manifests/deployment.yml
           manifests/service.yml
+          manifests/ingress.yml
         images: |
-          mjimages.azurecr.io/mjaks:${{ github.sha }}
+          mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }}
         imagepullsecrets: |
           mjaksdockerauth   
