@@ -1,4 +1,5 @@
-# Overview
+---
+isIntro: true
+---
 
-Things closer to hardware and fundamental protocols, like those building the
-TCP/IP networking stack.
+General computer hardware and software topics, like **networking**, **security**, etc.

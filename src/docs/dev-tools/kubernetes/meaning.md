@@ -15,7 +15,7 @@ Kubernetes handles **daily management of apps**. If an app fails, K8s will
 automatically restart it. If hardware node fails, K8s will move the apps to
 different nodes.
 
-DIfferent cloud providers offer Kubernetes making it **a standard way of
+Different cloud providers offer Kubernetes making it **a standard way of
 deployment**.
 
 Kubernetes is like **an operating system for a cluster**. Kubernetes provides

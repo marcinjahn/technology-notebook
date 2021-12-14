@@ -27,11 +27,13 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
   themeConfig: {
-    repo: '',
-    editLinks: false,
-    docsDir: '',
-    editLinkText: '',
-    lastUpdated: false,
+    search: false,
+    repo: 'marcinjahn/knowledge-website',
+    docsBranch: 'main',
+    docsDir: 'src/docs',
+    editLinks: true,
+    editLinkText: 'Feel free to contribute to this article!',
+    lastUpdated: 'Last Updated',
     nav: [
       {
         text: 'Programming',
@@ -50,66 +52,61 @@ module.exports = {
       '/programming/': [
         './',
         {
-          title: 'Programming',
+          title: '.NET',
           children: [
+            'dotnet/http-client',
+            'dotnet/async',
+            'dotnet/equality',
+            'dotnet/comparisons',
+            'dotnet/generic-host',
+            'dotnet/logging',
+            'dotnet/configuration',
+            'dotnet/asp-net',
+            'dotnet/entity-framework.md',
+            'dotnet/asp-net-validation'
+          ]
+        },
+        {
+          title: 'JavaScript',
+          children: [
+            'javascript/oop',
+            'javascript/weird-js',
+            'javascript/functions',
+            'javascript/es-modules',
+            'javascript/advanced-vuejs',
+            'javascript/nodejs',
+            'javascript/axios',
             {
-              title: '.NET',
+              title: 'TypeScript',
               children: [
-                'dotnet/http-client',
-                'dotnet/async',
-                'dotnet/equality',
-                'dotnet/comparisons',
-                'dotnet/generic-host',
-                'dotnet/logging',
-                'dotnet/configuration',
-                'dotnet/asp-net',
-                'dotnet/entity-framework.md',
-                'dotnet/asp-net-validation'
+                'javascript/typescript/env-setup',
+                'javascript/typescript/tips'
               ]
             },
             {
-              title: 'JavaScript',
+              title: 'React',
               children: [
-                'javascript/oop',
-                'javascript/weird-js',
-                'javascript/functions',
-                'javascript/es-modules',
-                'javascript/advanced-vuejs',
-                'javascript/nodejs',
-                'javascript/axios',
-                {
-                  title: 'TypeScript',
-                  children: [
-                    'javascript/typescript/env-setup',
-                    'javascript/typescript/tips'
-                  ]
-                },
-                {
-                  title: 'React',
-                  children: [
-                    'javascript/react/routing',
-                    'javascript/react/mobx'
-                  ]
-                }
-              ]
-            },
-            {
-              title: 'Rust',
-              children: [
-                'rust/overview',
-                'rust/cargo',
-                'rust/basics',
-                'rust/ownership',
-                'rust/structs',
-                'rust/traits'
-              ]
-            },
-            {
-              title: 'CSS',
-              children: [
-                'css/layouts'
+                'javascript/react/routing',
+                'javascript/react/mobx'
               ]
             }
+          ]
+        },
+        {
+          title: 'Rust',
+          children: [
+            'rust/overview',
+            'rust/cargo',
+            'rust/basics',
+            'rust/ownership',
+            'rust/structs',
+            'rust/traits'
+          ]
+        },
+        {
+          title: 'CSS',
+          children: [
+            'css/layouts'
           ]
         }
       ],
