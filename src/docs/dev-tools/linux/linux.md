@@ -2,9 +2,10 @@
 
 ## SSH
 
-`ssh-keygen` - generates SSH keys `ssh-copy-id marcin@rpi.local` - copy client
-SSH public key to server for SSH authentication (`.ssh/authorized_keys` on the
-server).
+`ssh-keygen` - generates SSH keys 
+
+`ssh-copy-id marcin@rpi.local` - copy client SSH public key to server for SSH
+authentication (`.ssh/authorized_keys` on the server).
 
 `~/.ssh/known_hosts` - contains public keys of servers that we SSH-ed into.
 
@@ -12,8 +13,13 @@ Access to SSH with root should be disabled (`/etc/ssh/sshd_config`).
 
 ## Useful Commands
 
-`tty` - current terminal `who` - logged in users `uptime` - shows server's
-uptime `free` - shows free memory
+`tty` - current terminal 
+
+`who` - logged in users 
+
+`uptime` - shows server's uptime 
+
+`free` - shows free memory
 
 `pwd -P` - shows the actual directory (mostly useful for dirs being symbolic
 links)
@@ -40,10 +46,10 @@ runlevel
 
 `sleep 100` - waits for 100 seconds
 
-- `whereis` - finds commands in more places than `which`
+`whereis` - finds commands in more places than `which`
 
-- `locate` - locates filenames using precompiled index. The DB is updated with
-  `updatedb` (it runs using `cron`, so it's not always recent).
+`locate` - locates filenames using precompiled index. The DB is updated with
+`updatedb` (it runs using `cron`, so it's not always recent).
 
 
 ## Working with files

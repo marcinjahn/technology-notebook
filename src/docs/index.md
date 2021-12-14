@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: /img/me.png
-tagline: My personal knowledge base for all the IT-related topics
+tagline: My personal space for the knowledge on various IT stuff
 # actionText: Quick Start →
 # actionLink: /guide/
 # features:
@@ -14,11 +14,11 @@ tagline: My personal knowledge base for all the IT-related topics
 # footer: Made by Marcin Jahn with VuePress
 ---
 
-My name is Marcin Jahn. I am a technology evangelist. I work at ABB with the ABB
-Ability Platform. I mostly deal with the Industrial Internet of Things (IIoT)
+My name is Marcin Jahn, I am a technology evangelist. I work at ABB with the ABB
+Ability Platform where I mostly deal with the Industrial Internet of Things (IIoT)
 related topics.
 
-This page is supposed to be a place for all the IT knowledge that I felt the
+This page is supposed to be a place for various IT topics that I felt the
 need to write down. Some of the topics might be described in a great detail,
 while some others might contain just a few lines of information, depending on my
 interest in a given topic or personal need to actually write it down. I treat it

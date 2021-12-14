@@ -4,7 +4,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'Marcin Jahn - Personal Knowledge Base',
+  title: 'Marcin Jahn | Technology Notebook',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
