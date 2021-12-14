@@ -19,6 +19,9 @@
       />
     </div>
 
+    <!-- services -->
+    <ExternalServices />
+
     <!-- repo link -->
     <a
       v-if="repoLink"
@@ -37,13 +40,15 @@
 import DropdownLink from '@theme/components/DropdownLink.vue'
 import { resolveNavLinkItem } from '../util'
 import NavLink from '@theme/components/NavLink.vue'
+import ExternalServices from './ExternalServices.vue';
 
 export default {
   name: 'NavLinks',
 
   components: {
     NavLink,
-    DropdownLink
+    DropdownLink,
+    ExternalServices
   },
 
   computed: {
