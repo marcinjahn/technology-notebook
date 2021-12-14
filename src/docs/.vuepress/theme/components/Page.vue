@@ -2,10 +2,12 @@
   <main class="page">
     <slot name="top" />
 
-    <Content class="theme-default-content" />
+    <div class="theme-default-content">
+    <Content />
     <PageEdit />
 
     <PageNav v-bind="{ sidebarItems }" />
+    </div>
 
     <slot name="bottom" />
   </main>

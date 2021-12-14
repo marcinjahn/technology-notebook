@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: /img/me.png
-tagline: My personal space for the knowledge on various IT stuff
+tagline: My personal space for notes on IT topics
 # actionText: Quick Start →
 # actionLink: /guide/
 # features:

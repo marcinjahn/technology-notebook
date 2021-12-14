@@ -1,6 +1,6 @@
 <template>
   <main class="page">
-    <Content class="theme-default-content myclass" />
+    <Content class="theme-default-content intro disable-paper" />
   </main>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   padding-bottom 2rem
   display block
   
-.myclass
+.intro
   margin-top: 10rem !important
   font-size 32px
 </style>

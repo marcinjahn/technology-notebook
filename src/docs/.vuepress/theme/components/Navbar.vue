@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar">
+  <header class="navbar boxshadow">
     <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')" />
 
     <RouterLink

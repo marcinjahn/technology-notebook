@@ -8,7 +8,7 @@
 html, body
   padding 0
   margin 0
-  background-color #fff
+  background-color rgb(245, 245, 245)
 
 body
   font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
@@ -42,7 +42,7 @@ body
 
 .sidebar
   font-size 16px
-  background-color #fff
+  // background-color #fff
   width $sidebarWidth
   position fixed
   z-index 10
@@ -51,16 +51,16 @@ body
   left 0
   bottom 0
   box-sizing border-box
-  border-right 1px solid $borderColor
+  // border-right 1px solid $borderColor
   overflow-y auto
 
 {$contentClass}:not(.custom)
   @extend $wrapper
   > *:first-child
-    margin-top $navbarHeight
+    // margin-top $navbarHeight
 
   a:hover
-    text-decoration underline
+    text-shadow: 0px 0px 1px $accentColor;
 
   p.demo
     padding 1rem 1.5rem
@@ -200,3 +200,11 @@ th, td
       padding-left 0
 
 @require 'mobile.styl'
+
+.boxshadow
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+
+{$contentClass}:not(.disable-paper)
+  margin-top: $navbarHeight + 1.4rem
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  background: #fff;
