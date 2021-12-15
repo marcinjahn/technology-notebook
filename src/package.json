@@ -10,6 +10,7 @@
   "repository": "/marcin-jahn-com-knowledge",
   "scripts": {
     "dev": "vuepress dev docs",
+    "start": "vuepress dev docs",
     "build": "vuepress build docs"
   },
   "license": "MIT",

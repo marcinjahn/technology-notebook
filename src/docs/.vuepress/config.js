@@ -57,6 +57,10 @@ module.exports = {
       {
         text: 'Computers',
         link: '/computers/'
+      },
+      {
+        text: 'Meta',
+        link: '/meta/'
       }
     ],
     sidebar: {
@@ -193,6 +197,12 @@ module.exports = {
             }
           ]
         }
+      ],
+      '/meta/': [
+        './',
+        'who-am-i',
+        'cv',
+        'this-website'
       ]
     }
   },
