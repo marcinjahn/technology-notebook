@@ -4,11 +4,13 @@ metadata:
   name: marcinjahn-website
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - "marcinjahn.com"
+        - "www.marcinjahn.com"
       secretName: marcinjahn-website-cert
   rules:
   - host: marcinjahn.com
