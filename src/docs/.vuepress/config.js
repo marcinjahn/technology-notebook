@@ -1,10 +1,10 @@
-const { description } = require('../../package')
+const { description } = require("../../package");
 
 module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'Marcin Jahn | Technology Notebook',
+  title: "Marcin Jahn | Technology Notebook",
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
@@ -17,8 +17,25 @@ module.exports = {
    */
   head: [
     // ['meta', { name: 'theme-color', content: '#3eaf7c' }],
-    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
+    ["meta", { name: "apple-mobile-web-app-capable", content: "yes" }],
+    [
+      "meta",
+      { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    ],
+    [
+      "script",
+      {
+        async: true,
+        src: "https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P",
+      },
+    ],
+    [
+      "script",
+      {},
+      [
+        "(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-ZSM2N36X8P'); })();",
+      ],
+    ],
   ],
 
   /**
@@ -28,190 +45,171 @@ module.exports = {
    */
   themeConfig: {
     search: false,
-    repo: 'marcinjahn/knowledge-website',
-    repoLabel: 'Code on GitHub',
-    docsBranch: 'main',
-    docsDir: 'src/docs',
+    repo: "marcinjahn/knowledge-website",
+    repoLabel: "Code on GitHub",
+    docsBranch: "main",
+    docsDir: "src/docs",
     editLinks: true,
-    editLinkText: 'Feel free to contribute to this article!',
-    lastUpdated: 'Last Updated',
+    editLinkText: "Feel free to contribute to this article!",
+    lastUpdated: "Last Updated",
     externalServices: [
       {
-        img: '/img/linkedin.png',
-        url: 'https://www.linkedin.com/in/marcin-jahn-63a9b915b'
+        img: "/img/linkedin.png",
+        url: "https://www.linkedin.com/in/marcin-jahn-63a9b915b",
       },
       {
-        img: '/img/github.png',
-        url: 'https://github.com/marcinjahn'
-      }
+        img: "/img/github.png",
+        url: "https://github.com/marcinjahn",
+      },
     ],
     nav: [
       {
-        text: 'Programming',
-        link: '/programming/',
+        text: "Programming",
+        link: "/programming/",
       },
       {
-        text: 'Dev Tools',
-        link: '/dev-tools/'
+        text: "Dev Tools",
+        link: "/dev-tools/",
       },
       {
-        text: 'Computers',
-        link: '/computers/'
+        text: "Computers",
+        link: "/computers/",
       },
       {
-        text: 'Meta',
-        link: '/meta/'
-      }
+        text: "Meta",
+        link: "/meta/",
+      },
     ],
     sidebar: {
-      '/programming/': [
-        './',
+      "/programming/": [
+        "./",
         {
-          title: '.NET',
+          title: ".NET",
           children: [
-            'dotnet/http-client',
-            'dotnet/async',
-            'dotnet/equality',
-            'dotnet/comparisons',
-            'dotnet/generic-host',
-            'dotnet/logging',
-            'dotnet/configuration',
-            'dotnet/asp-net',
-            'dotnet/entity-framework.md',
-            'dotnet/asp-net-validation'
-          ]
+            "dotnet/http-client",
+            "dotnet/async",
+            "dotnet/equality",
+            "dotnet/comparisons",
+            "dotnet/generic-host",
+            "dotnet/logging",
+            "dotnet/configuration",
+            "dotnet/asp-net",
+            "dotnet/entity-framework.md",
+            "dotnet/asp-net-validation",
+          ],
         },
         {
-          title: 'JavaScript',
+          title: "JavaScript",
           children: [
-            'javascript/oop',
-            'javascript/weird-js',
-            'javascript/functions',
-            'javascript/es-modules',
-            'javascript/advanced-vuejs',
-            'javascript/nodejs',
-            'javascript/axios',
+            "javascript/oop",
+            "javascript/weird-js",
+            "javascript/functions",
+            "javascript/es-modules",
+            "javascript/advanced-vuejs",
+            "javascript/nodejs",
+            "javascript/axios",
             {
-              title: 'TypeScript',
+              title: "TypeScript",
               children: [
-                'javascript/typescript/env-setup',
-                'javascript/typescript/tips'
-              ]
+                "javascript/typescript/env-setup",
+                "javascript/typescript/tips",
+              ],
             },
             {
-              title: 'React',
-              children: [
-                'javascript/react/routing',
-                'javascript/react/mobx'
-              ]
-            }
-          ]
+              title: "React",
+              children: ["javascript/react/routing", "javascript/react/mobx"],
+            },
+          ],
         },
         {
-          title: 'Rust',
+          title: "Rust",
           children: [
-            'rust/overview',
-            'rust/cargo',
-            'rust/basics',
-            'rust/ownership',
-            'rust/structs',
-            'rust/traits'
-          ]
+            "rust/overview",
+            "rust/cargo",
+            "rust/basics",
+            "rust/ownership",
+            "rust/structs",
+            "rust/traits",
+          ],
         },
         {
-          title: 'CSS',
-          children: [
-            'css/layouts'
-          ]
-        }
+          title: "CSS",
+          children: ["css/layouts"],
+        },
       ],
-      '/dev-tools/': [
-        './',
+      "/dev-tools/": [
+        "./",
         {
-          title: 'Linux',
+          title: "Linux",
           children: [
-            'linux/linux',
-            'linux/containers',
-            'linux/bash-scripting',
-            'linux/lfs'
-          ]
+            "linux/linux",
+            "linux/containers",
+            "linux/bash-scripting",
+            "linux/lfs",
+          ],
         },
         {
-          title: 'Kubernetes',
+          title: "Kubernetes",
           children: [
-            'kubernetes/meaning',
-            'kubernetes/cluster',
-            'kubernetes/dev-env',
-            'kubernetes/api',
-            'kubernetes/objects',
-            'kubernetes/pods',
-            'kubernetes/deployments',
-            'kubernetes/services',
-            'kubernetes/events',
-            'kubernetes/storage',
-            'kubernetes/configuration',
-            'kubernetes/organization'
-          ]
+            "kubernetes/meaning",
+            "kubernetes/cluster",
+            "kubernetes/dev-env",
+            "kubernetes/api",
+            "kubernetes/objects",
+            "kubernetes/pods",
+            "kubernetes/deployments",
+            "kubernetes/services",
+            "kubernetes/events",
+            "kubernetes/storage",
+            "kubernetes/configuration",
+            "kubernetes/organization",
+          ],
         },
         {
-          title: 'Git',
-          children: [
-            'git/overview'
-          ]
+          title: "Git",
+          children: ["git/overview"],
         },
         {
-          title: 'Ansible',
-          children: [
-            'ansible/ansible'
-          ]
+          title: "Ansible",
+          children: ["ansible/ansible"],
         },
         {
-          title: 'Azure',
-          children: [
-            'azure/azure-table-storage'
-          ]
-        }
+          title: "Azure",
+          children: ["azure/azure-table-storage"],
+        },
       ],
-      '/computers/': [
-        './',
+      "/computers/": [
+        "./",
         {
-          title: 'Web Protocols',
+          title: "Web Protocols",
           children: [
-            'networking/osi-model',
-            'networking/tcp',
-            'networking/udp',
-            'networking/http'
-          ]
+            "networking/osi-model",
+            "networking/tcp",
+            "networking/udp",
+            "networking/http",
+          ],
         },
         {
-          title: 'Security',
+          title: "Security",
           children: [
-            'security/basic-terms',
+            "security/basic-terms",
             {
-              title: 'TPM',
+              title: "TPM",
               children: [
-                'security/tpm/overview',
-                'security/tpm/tpm-entities',
-                'security/tpm/tpm-operations'
-              ]
-            }
-          ]
-        }
+                "security/tpm/overview",
+                "security/tpm/tpm-entities",
+                "security/tpm/tpm-operations",
+              ],
+            },
+          ],
+        },
       ],
-      '/meta/': [
-        './',
-        'who-am-i',
-        'cv',
-        'this-website'
-      ]
-    }
+      "/meta/": ["./", "who-am-i", "cv", "this-website"],
+    },
   },
 
   /**
    * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
    */
-  plugins: [
-    '@vuepress/plugin-back-to-top',
-    '@vuepress/plugin-medium-zoom',
-  ]
-}
+  plugins: ["@vuepress/plugin-back-to-top", "@vuepress/plugin-medium-zoom"],
+};
