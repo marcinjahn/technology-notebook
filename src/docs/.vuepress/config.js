@@ -54,11 +54,11 @@ module.exports = {
     lastUpdated: "Last Updated",
     externalServices: [
       {
-        img: "/img/linkedin.png",
+        img: "/img/linkedin.webp",
         url: "https://www.linkedin.com/in/marcin-jahn-63a9b915b",
       },
       {
-        img: "/img/github.png",
+        img: "/img/github.webp",
         url: "https://github.com/marcinjahn",
       },
     ],

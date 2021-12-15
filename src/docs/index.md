@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /img/me.png
+heroImage: /img/me.webp
 tagline: My personal space for notes on IT topics
 # actionText: Quick Start →
 # actionLink: /guide/
