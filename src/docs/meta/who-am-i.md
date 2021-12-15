@@ -1,3 +1,9 @@
+---
+title: Who Am I?
+description: A little bit about me and my interests.
+lang: en-US
+---
+
 # Who Am I?
 
 My name is Marcin Jahn. I am a technology evangelist/developer/tech enthusiast

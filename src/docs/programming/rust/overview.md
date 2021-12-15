@@ -1,3 +1,9 @@
+---
+title: Rust
+description: Some theory about Rust
+lang: en-US
+---
+
 # Rust
 
 ## Why Rust?

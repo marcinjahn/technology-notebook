@@ -1,3 +1,9 @@
+---
+title: Traits
+description: Traits in Rust
+lang: en-US
+---
+
 # Traits
 
 A **trait** is analogous to an interface or portocol from other languages. It enables types to advertise that tey use some common behaviour.

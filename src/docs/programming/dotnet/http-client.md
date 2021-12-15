@@ -1,5 +1,8 @@
 ---
+title: HTTPClient
+description: How HTTpClient should be used in .NET
 tags: .net, asp.net
+lang: en-US
 ---
 
 # HttpClient

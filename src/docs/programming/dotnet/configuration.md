@@ -1,5 +1,8 @@
 ---
+title: Configuration
+description: How configuration works in .NET
 tags: .net 
+lang: en-US
 ---
 
 # .NET Configuration

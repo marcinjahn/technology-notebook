@@ -1,3 +1,9 @@
+---
+title: Deployments
+description: Deployment object in Kubernetes
+lang: en-US
+---
+
 # Deployments
 
 Creating a simple deployment: `kubectl create deployment kiada

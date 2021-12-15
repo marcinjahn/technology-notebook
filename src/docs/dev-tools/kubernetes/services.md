@@ -1,3 +1,9 @@
+---
+title: Services
+description: Service object in Kubernetes
+lang: en-US
+---
+
 # Services
 
 Pods can communicate with each other using private IP address space. They can be

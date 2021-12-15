@@ -1,3 +1,9 @@
+---
+title: Objects
+description: Various entity types (objects) in Kubernetes
+lang: en-US
+---
+
 ## Objects
 
 `k api-resources` lists all resources types of a cluster.

@@ -1,3 +1,9 @@
+---
+title: Dev Environment
+description: Setting up dev environment for Kubernetes
+lang: en-US
+---
+
 # Dev Environment
 
 - Minikube - a single VM with K8s components. It can also run directly on Linux

@@ -1,5 +1,8 @@
 ---
+title: .NET Generic Host
+description: How to use Generic Host in console apps
 tags: .net
+lang: en-US
 ---
 
 # .NET Generic Host

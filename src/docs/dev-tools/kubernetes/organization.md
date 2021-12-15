@@ -1,3 +1,9 @@
+---
+title: Organizing Objects
+description: Ways to add some meta data to objects in Kubernetes
+lang: en-US
+---
+
 # Organizing Objects
 
 K8s has `Namespaces` and `Labels` for organizing objects.

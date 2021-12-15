@@ -1,4 +1,10 @@
-# Administration Handbook Tips
+---
+title: Gist of Linux Tooling
+description: Lots of commands and tools that are fundamental to Linux administration
+lang: en-US
+---
+
+# Gist of Linux Tooling
 
 ## SSH
 

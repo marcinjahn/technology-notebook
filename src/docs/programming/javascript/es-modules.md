@@ -1,5 +1,8 @@
 ---
+title: ES Modules
+description: How ES Modules work and how to use them
 tags: javascript, typescript
+lang: en-US
 ---
 
 # ES Modules

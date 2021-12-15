@@ -1,3 +1,10 @@
+---
+title: TPM Entities
+description: Information about various entities that TPM specification defines
+lang: en-US
+---
+
+
 # TPM Entities
 
 ## Permanent Entities

@@ -1,5 +1,8 @@
 ---
+title: TypeScript Environment Setup
+description: How to set up Node.js project to use TypeScript
 tags: environment, typescript
+lang: en-US
 ---
 
 # TypeScript Environment Setup

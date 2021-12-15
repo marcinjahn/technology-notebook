@@ -1,8 +1,11 @@
 ---
+title: Node.js
+description: Some information about Node.js
 tags: javascript, node
+lang: en-US
 ---
 
-# NodeJS
+# Node.js
 
 ## Facts
 

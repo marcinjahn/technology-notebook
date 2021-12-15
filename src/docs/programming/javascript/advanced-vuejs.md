@@ -1,8 +1,11 @@
 ---
+title: Advanced Vue.js Features
+description: Use of advanced features of Vue.js
 tags: javascript, vue
+lang: en-US
 ---
 
-# Advanced Vue.JS Features
+# Advanced Vue.js Features
 
 ## Provide-Inject
 

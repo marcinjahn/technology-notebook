@@ -1,5 +1,8 @@
 ---
+title: Comparisons
+description: How comparisons work in .NET
 tags: .net
+lang: en-US
 ---
 
 # Comparisons

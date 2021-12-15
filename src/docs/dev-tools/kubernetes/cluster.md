@@ -1,3 +1,9 @@
+---
+title: Cluster
+description: Kubernetes clusters and their building components
+lang: en-US
+---
+
 ## Cluster
 
 Machines are split into two groups:

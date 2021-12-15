@@ -1,5 +1,8 @@
 ---
+title: Git
+description: Key information about git version control
 tags: git, vcs
+lang: en-US
 ---
 
 # Git

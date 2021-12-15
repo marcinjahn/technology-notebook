@@ -1,3 +1,9 @@
+---
+title: Events
+description: Event object in Kubernetes
+lang: en-US
+---
+
 # Events
 
 Controllers generate events as they work on bringing objects' state as

@@ -1,3 +1,9 @@
+---
+title: Curriculum Vitae
+description: My CV
+lang: en-US
+---
+
 # Curriculum Vitae
 
 ## Work Experience

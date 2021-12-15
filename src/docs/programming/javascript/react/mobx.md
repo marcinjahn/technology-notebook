@@ -1,8 +1,11 @@
 ---
+title: MobX
+description: Some information about MobX in React
 tags: react, mobx
+lang: en-US
 ---
 
-# MobX Tips
+# MobX
 
 MobX allows mutating state, in opposition to Redux.
 

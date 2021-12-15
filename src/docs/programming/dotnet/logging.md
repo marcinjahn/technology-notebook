@@ -1,5 +1,8 @@
 ---
+title: Logging
+description: Using Serilog in .NET
 tags: .net, asp.net
+lang: en-US
 ---
 
 # .NET Logging

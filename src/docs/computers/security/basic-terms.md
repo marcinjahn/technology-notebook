@@ -1,3 +1,9 @@
+---
+title: Cryptography Basics
+description: Basic terms used in cryptography
+lang: en-US
+---
+
 # Cryptography Basics
 
 ## Attacks

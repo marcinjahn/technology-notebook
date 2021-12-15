@@ -1,5 +1,8 @@
 ---
+title: JavaScript - The Weird Parts
+description: A summary of Udemy JS course
 tags: javascript
+lang: en-US
 ---
 
 # JavaScript - The Weird Parts

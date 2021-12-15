@@ -1,3 +1,9 @@
+---
+title: Structures
+description: How to create complex data types in Rust
+lang: en-US
+---
+
 # Structures
 
 Structs are like structs/classes in other languages. Structs have fields.

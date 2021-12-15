@@ -1,3 +1,9 @@
+---
+title: Configuration
+description: Various ways to store configuration data in Kubernetes
+lang: en-US
+---
+
 # Configuration
 
 Applications in pods might be configured in a few ways.

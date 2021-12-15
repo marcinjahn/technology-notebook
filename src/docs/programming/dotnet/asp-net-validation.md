@@ -1,5 +1,8 @@
 ---
+title: ASP.NET Core Validation
+description: Validation in ASP.NET Core
 tags: .net, asp.net
+lang: en-US
 ---
 
 # ASP.NET Core Validation

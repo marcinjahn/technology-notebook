@@ -1,5 +1,8 @@
 ---
+title: Table Storage
+description: Some good practices to be used with Azure Table Storage
 tags: azure
+lang: en-US
 ---
 
 # Table Storage

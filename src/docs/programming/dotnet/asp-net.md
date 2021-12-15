@@ -1,5 +1,8 @@
 ---
+title: ASP.NET Tips
+description: Various useful information about ASP.NET
 tags: .net, asp.net
+lang: en-US
 ---
 
 # ASP.NET Tips

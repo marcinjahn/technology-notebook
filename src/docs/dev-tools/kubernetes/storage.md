@@ -1,3 +1,9 @@
+---
+title: Storage
+description: Various ways to persist data in Kubernetes
+lang: en-US
+---
+
 # Storage
 
 ## Volumes

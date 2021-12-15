@@ -1,5 +1,8 @@
 ---
+title: Axios Tips
+description: How to use Axios in JS projects
 tags: javascript, axios
+lang: en-US
 ---
 
 # Axios Tips

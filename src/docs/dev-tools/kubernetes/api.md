@@ -1,3 +1,10 @@
+---
+title: Kubernetes API
+description: Kubernetes JTTP API
+lang: en-US
+---
+
+
 # Kubernetes API
 
 The API exposes operations on the clusters via resources. Often a resource has

@@ -1,3 +1,9 @@
+---
+title: Cargo
+description: Cargo package manager in Rust
+lang: en-US
+---
+
 # Cargo
 
 It's a **build system** (turns Rust code into executable binaries) and a

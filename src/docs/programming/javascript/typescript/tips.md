@@ -1,5 +1,8 @@
 ---
+title: TypeScript Tips
+description: Some tips about TypeScript
 tags: typescript
+lang: en-US
 ---
 
 # TypeScript Tips

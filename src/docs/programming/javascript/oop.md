@@ -1,5 +1,8 @@
 ---
+title: OOP
+description: How object-oriented programming works in JavaScript
 tags: javascript
+lang: en-US
 ---
 
 # OOP

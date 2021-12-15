@@ -1,4 +1,10 @@
-# This Website
+---
+title: About This Website
+description: How this website was built and what its purpose is.
+lang: en-US
+---
+
+# About This Website
 
 I have created [marcinjahn.com](https://marcinjahn.com) because I needed a place
 to store various notes that I create while learning/working. I use many sources

@@ -1,5 +1,8 @@
 ---
+title: Ansible
+description: Information about RedHat Ansible
 tags: ansible
+lang: en-US
 ---
 
 # Ansible

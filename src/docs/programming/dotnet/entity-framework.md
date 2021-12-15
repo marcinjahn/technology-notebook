@@ -1,8 +1,11 @@
 ---
+title: Entity Framework
+description: A bit of information about Entity Framework
 tags: .net, entity framework
+lang: en-US
 ---
 
-# Entity Framework Tips
+# Entity Framework
 
 A class inheriting `DbContext` is needed.
 

@@ -1,3 +1,9 @@
+---
+title: Ownership
+description: Ownership concept in Rust
+lang: en-US
+---
+
 # Ownership
 
 At one point in time, only one variable may _own_ a piece of data.

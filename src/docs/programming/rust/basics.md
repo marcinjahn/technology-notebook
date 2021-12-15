@@ -1,3 +1,9 @@
+---
+title: Basics
+description: Basics of Rust programming language
+lang: en-US
+---
+
 # Basics
 
 ## Variables

@@ -1,5 +1,8 @@
 ---
+title: Containerization
+description: Information about containers in linux, how they work
 tags: linux, containers
+lang: en-US
 ---
 
 # Containerization

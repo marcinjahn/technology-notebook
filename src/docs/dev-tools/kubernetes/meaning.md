@@ -1,3 +1,9 @@
+---
+title: Meaning and Purpose
+description: Meaning and purpose of Kubernetes and high level view of it
+lang: en-US
+---
+
 # Meaning and Purpose
 
 Kubernetes is Greek for "**pilot/helmsman**" who steers the ship with the helm.

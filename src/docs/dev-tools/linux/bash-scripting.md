@@ -1,5 +1,8 @@
 ---
+title: Bash Scripting
+description: Basics about Bash scripting
 tags: linux, bash, scripting
+lang: en-US
 ---
 
 # Bash Scripting

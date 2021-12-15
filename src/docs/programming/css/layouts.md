@@ -1,5 +1,8 @@
 ---
+title: CSS Tricks
+description: Some info on CSS
 tags: css, html, web
+lang: en-US
 ---
 
 # CSS tricks

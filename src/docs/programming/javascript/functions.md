@@ -1,5 +1,8 @@
 ---
+title: JS Functions
+description: How JS Functions work
 tags: javascript, typescript
+lang: en-US
 ---
 
 # JS Functions

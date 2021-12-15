@@ -1,3 +1,9 @@
+---
+title: Pods
+description: Details about pods in Kubernetes
+lang: en-US
+---
+
 # Pods
 
 Each pod has its own IP, hostname, processes, network interfaces and other

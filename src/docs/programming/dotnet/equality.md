@@ -1,5 +1,8 @@
 ---
+title: Equality
+description: How equality works in .NET
 tags: .net
+lang: en-US
 ---
 
 # Equality

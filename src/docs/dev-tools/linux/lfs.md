@@ -1,5 +1,8 @@
 ---
+title: Linux From Scratch
+description: Summary of Linux From Scratch (LFS) progress
 tags: linux
+lang: en-US
 ---
 
 # Linux From Scratch

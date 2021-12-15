@@ -1,5 +1,8 @@
 ---
+title: React Routing
+description: How routing works in React
 tags: react
+lang: en-US
 ---
 
 # React Routing

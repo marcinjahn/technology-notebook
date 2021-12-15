@@ -1,3 +1,9 @@
+---
+title: TPM Operations
+description: Information about some fundamental operations that TPM is capable of doing
+lang: en-US
+---
+
 # TPM Operations
 
 ## Generating Random Numbers
