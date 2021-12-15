@@ -15,15 +15,16 @@ tagline: My personal space for notes on IT topics
 ---
 
 My name is Marcin Jahn, I am a technology evangelist. I work at ABB with the ABB
-Ability Platform where I mostly deal with the Industrial Internet of Things (IIoT)
-related topics.
+Ability Platform where I mostly deal with the Industrial Internet of Things
+(IIoT) related topics. You can find out more about me [here](/meta/who-am-i.md).
 
-This page is supposed to be a place for various IT topics that I felt the
-need to write down. Some of the topics might be described in a great detail,
-while some others might contain just a few lines of information, depending on my
+This page is supposed to be a place for various IT topics that I felt the need
+to write down. Some of the topics might be described in a great detail, while
+some others might contain just a few lines of information, depending on my
 interest in a given topic or personal need to actually write it down. I treat it
 as my personal notepad, thus the content might not be very useful for anyone
-else than me. However, if you do find it worth a read, that's great!
+else than me. However, if you do find it worth a read, that's great! You can
+find out more about this website [here](/meta/this-website.md).
 
 Feel free to contact me with any queries via <a
 href="mailto:jahnmarcin@outlook.com">e-mail</a>. You can also find me at <a
