@@ -28,7 +28,7 @@ let c = 10_i32; // Underscore has no meaning, it can be used as a delimiter
 ```
 
 Variables may be *shadowed*, which means that a variable may be defined twice
-with the same name. This way, we don'y have to artificially define things like
+with the same name. This way, we don't have to artificially define things like
 `data_string` and `data`. FIrst we could define `data` as `String`, and then
 define `data` as `i32` with a value coming from parsed `data`.
 
@@ -55,9 +55,6 @@ let countries = ["Poland", "Brazil"];
 ```
 
 Iterator is returned with `countries.iter();`.
-
-Functions return the last expressions' result by default, so `return` is not
-required.
 
 ```rust
 for country in countries.iter() {
@@ -105,6 +102,9 @@ fn add(a: i32, b: i32) -> i32 {
 The `i + j` has no semicolon. With semicolon, the return type would be `()`
 instead of `i32`.
 
+Functions return the last expressions' result by default, so `return` is not
+required.
+
 ## Macros
 
 Macro example:
@@ -117,7 +117,7 @@ Macros are similar to functions, but instead of returning data, they return
 code. They are often used to simplify common patterns.
 
 In case of printing, there are many ways of doing that depending on the provided
-data type. The `println!` mactro takes care of figuring out the exact method to
+data type. The `println!` macro takes care of figuring out the exact method to
 call.
 
 ## Closures
@@ -146,8 +146,8 @@ for item in collection {
 }
 ```
 
-After such an interation, accessing `container` is invalid! Rust assumes the
-`container` is no longer needed, its lifetime is finished.
+After such an interation, accessing `collection` is invalid! Rust assumes the
+`collection` is no longer needed, its lifetime is finished.
 
 To circumvent it, include the `&` symbol to use a reference:
 
@@ -222,23 +222,25 @@ Loops can be labeled, and nested loops can be exited using the outer loop label.
 
 ## Conditions
 
-There is no concept of "truthy|"/"falsey" values. Conditions relay on `true` and
+There is no concept of truthy/falsey values. Conditions relay on `true` and
 `false` - that's it.
 
-There is `match`, which is analogous to `switch` in other languages. rustc warns
-if `match` did not cover some relevant alternative.
+There is `match`, which is analogous to `switch` in other languages. Compilation
+fails if `match` did not cover some relevant alternative.
 
 ```rust
 match item {
   0 => {},
   10..=20 => {},
   40 | 80 => {},
-  _ => {},
+  _ => {}, // matches all others
 }
 ```
 
 `match` does not fall through through other cases. As soon as a case is matched,
 it's executed and `match` is exited.
+
+`match` is very useful with [enums](./enums.md).
 
 ## Expressions
 
@@ -269,7 +271,7 @@ let n = loop {
 The following are not expressions, thus do not return values:
 
 - expressions delimited by `;`
-- binding a name to a vlue with `=` (? isn't that already covered by the first
+- binding a name to a value with `=` (isn't that already covered by the first
   rule anyway?)
 - type declarations (`fn`, `struct`, `enum` keywords)
 

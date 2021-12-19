@@ -7,7 +7,7 @@ lang: en-US
 # Structures
 
 Structs are like structs/classes in other languages. Structs have fields.
-We can instantaite structs.
+We can instantiate structs.
 
 ```rust
 struct User {
@@ -62,7 +62,7 @@ let user3 = User {
 };
 ```
 
-::: warn Move
+::: warning Move
 `user2` was **moved** in the example above. Since `username` is a `String`, it
 was moved to `user3`. If the only values that were copied from `user2` were
 `active` and `age`, there would be no move. They'd be just copied.
@@ -93,3 +93,41 @@ let subject = AlwaysEqual;
 ```
 
 It's useful with traits.
+
+## Methods
+
+Methods are defined outside of struct definition:
+
+```rust
+struct Rectangle {
+  width: u32,
+  height: u32,
+}
+
+impl Rectangle {
+  fn area(&self) -> u32 {
+    self.width * self.height
+  }
+
+  fn can_hold(&self, other: &Rectangle) -> bool {
+    self.width > other.width && self.height > other.height
+  }
+}
+```
+
+The first paramtere of a method is `&self`. It's a sugar syntax for `self:
+&Self`. We could also not use reference, or add `mut`. The first case is rare
+because it would take ownership. It could be useful if a method is supposed to
+transform an object info something else end the original object would not be
+needed anymore.
+
+::: tip Impl blocks
+There may be more than one `impl` blocks per type.
+:::
+
+### Static methods
+
+Methods may be defined as *nonassociated* if they do not require an actual
+instance of a type. In such a case, there is no need for the first parameter to
+be `Self`. Example of such a function is `String::from()`. It's also useful for
+constuctors.

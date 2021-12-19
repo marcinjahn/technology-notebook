@@ -26,7 +26,7 @@ let b = a;
 
 Unique to Rust, the `a` variable becomes invalid when the code above gets
 executed. If we try to access it, it will result in a panic. Thanks to it,
-during Runtime Rust will not try to `drop` (`free`) this memory space twice,
+during runtime Rust will not try to `drop` (`free`) this memory space twice,
 which would be wrong.
 It is called a **move**. `a` gets _moved_ to `b`.
 
@@ -44,7 +44,7 @@ fn some_func(data: String) {
 }
 ```
 
-A fucntion may also move ownership by returning a value. Then, the calling
+A function may also move ownership by returning a value. Then, the calling
 function's scope owns the variable.
 
 ## References
