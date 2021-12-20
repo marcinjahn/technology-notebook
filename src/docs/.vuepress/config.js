@@ -131,6 +131,7 @@ module.exports = {
             "rust/structs",
             "rust/enums",
             "rust/organization",
+            "rust/collections",
             "rust/traits",
           ],
         },
