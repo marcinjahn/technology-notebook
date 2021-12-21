@@ -1,5 +1,5 @@
 <template>
-  <a target="_blank" :href="url"><img :src="logoImg" /></a>
+  <a target="_blank" :href="url"><img :src="$withBase(logoImg)" /></a>
 </template>
 
 <script>
