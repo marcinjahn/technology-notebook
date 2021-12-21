@@ -1,10 +1,5 @@
-# marcinjahn.com - Knowledge Base
+# GitHub Pages Deployment
 
-This is a source code for my personal notepad - marcinjahn.com
-
-The page was developer in VuePress.
-
-## Running 
-
-You can start the dev server with: `npm run dev`.
-You can build the app with: `npm run build`
+This branch contains static files that were built automatically based on the
+latest state of the **main** branch. These files are used to serve 
+[marcinjahn.github.io](marcinjahn.github.io).
