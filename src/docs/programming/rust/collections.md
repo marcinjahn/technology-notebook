@@ -54,3 +54,18 @@ match v.get(2) {
 
 The second way of reading will not panic if we try to access element out of
 index. It will return `Option.None` instead.
+
+## HashMaps
+
+```rust
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");
+let score = scores.get(&team_name); // returns Option<&T>
+scores.entry(String::from("Yellow")).or_insert(60); // inserts only if Yellow key is not there yet
+```
