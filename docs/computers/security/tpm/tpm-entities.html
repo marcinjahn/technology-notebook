@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TPM Entities | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="Information about various entities that TPM specification defines">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.2d0603d3.css" as="style"><link rel="preload" href="/assets/js/app.87cbde57.js" as="script"><link rel="preload" href="/assets/js/2.f59378ff.js" as="script"><link rel="preload" href="/assets/js/20.b1296514.js" as="script"><link rel="prefetch" href="/assets/js/10.404a5336.js"><link rel="prefetch" href="/assets/js/11.26ad847d.js"><link rel="prefetch" href="/assets/js/12.f99024fc.js"><link rel="prefetch" href="/assets/js/13.7595fe03.js"><link rel="prefetch" href="/assets/js/14.19f0a33c.js"><link rel="prefetch" href="/assets/js/15.edd580e7.js"><link rel="prefetch" href="/assets/js/16.709a76fa.js"><link rel="prefetch" href="/assets/js/17.d31682fa.js"><link rel="prefetch" href="/assets/js/18.d418f3ca.js"><link rel="prefetch" href="/assets/js/19.5b6bae1a.js"><link rel="prefetch" href="/assets/js/21.d9a411b5.js"><link rel="prefetch" href="/assets/js/22.a73f3628.js"><link rel="prefetch" href="/assets/js/23.e152ce40.js"><link rel="prefetch" href="/assets/js/24.f859344d.js"><link rel="prefetch" href="/assets/js/25.be380422.js"><link rel="prefetch" href="/assets/js/26.e729f0e8.js"><link rel="prefetch" href="/assets/js/27.6ebfc58b.js"><link rel="prefetch" href="/assets/js/28.10c80a6b.js"><link rel="prefetch" href="/assets/js/29.80ac4173.js"><link rel="prefetch" href="/assets/js/3.17bc78ba.js"><link rel="prefetch" href="/assets/js/30.62e3c796.js"><link rel="prefetch" href="/assets/js/31.2901ad07.js"><link rel="prefetch" href="/assets/js/32.9cfa42d9.js"><link rel="prefetch" href="/assets/js/33.e2569108.js"><link rel="prefetch" href="/assets/js/34.8eefdba7.js"><link rel="prefetch" href="/assets/js/35.641ef4db.js"><link rel="prefetch" href="/assets/js/36.59cd48b1.js"><link rel="prefetch" href="/assets/js/37.b140d4b6.js"><link rel="prefetch" href="/assets/js/38.338e0e7f.js"><link rel="prefetch" href="/assets/js/39.23590df6.js"><link rel="prefetch" href="/assets/js/4.e66cdc67.js"><link rel="prefetch" href="/assets/js/40.d466dbc4.js"><link rel="prefetch" href="/assets/js/41.5b7d690d.js"><link rel="prefetch" href="/assets/js/42.c5526cf9.js"><link rel="prefetch" href="/assets/js/43.2d43a97b.js"><link rel="prefetch" href="/assets/js/44.55a58cf6.js"><link rel="prefetch" href="/assets/js/45.e90670ee.js"><link rel="prefetch" href="/assets/js/46.dbd4de3e.js"><link rel="prefetch" href="/assets/js/47.a6b24d05.js"><link rel="prefetch" href="/assets/js/48.547dd4f8.js"><link rel="prefetch" href="/assets/js/49.b38e8d7e.js"><link rel="prefetch" href="/assets/js/5.8fb6c804.js"><link rel="prefetch" href="/assets/js/50.85d4adbd.js"><link rel="prefetch" href="/assets/js/51.70928b4e.js"><link rel="prefetch" href="/assets/js/52.6cf81f03.js"><link rel="prefetch" href="/assets/js/53.43cdd428.js"><link rel="prefetch" href="/assets/js/54.c4ec2f87.js"><link rel="prefetch" href="/assets/js/55.d67fba02.js"><link rel="prefetch" href="/assets/js/56.beac5e77.js"><link rel="prefetch" href="/assets/js/57.4de3d728.js"><link rel="prefetch" href="/assets/js/58.cecb3823.js"><link rel="prefetch" href="/assets/js/59.2ec1381f.js"><link rel="prefetch" href="/assets/js/6.b38701ec.js"><link rel="prefetch" href="/assets/js/60.fed14f90.js"><link rel="prefetch" href="/assets/js/61.fed6147c.js"><link rel="prefetch" href="/assets/js/62.0583a533.js"><link rel="prefetch" href="/assets/js/63.da61b917.js"><link rel="prefetch" href="/assets/js/64.ae259b46.js"><link rel="prefetch" href="/assets/js/65.7de73bc1.js"><link rel="prefetch" href="/assets/js/66.bad1db68.js"><link rel="prefetch" href="/assets/js/67.d092e753.js"><link rel="prefetch" href="/assets/js/68.4f358bb8.js"><link rel="prefetch" href="/assets/js/69.087f8831.js"><link rel="prefetch" href="/assets/js/7.b6d31f4a.js"><link rel="prefetch" href="/assets/js/70.b49f2502.js"><link rel="prefetch" href="/assets/js/71.f15d3809.js"><link rel="prefetch" href="/assets/js/72.ebf1c946.js"><link rel="prefetch" href="/assets/js/73.205df904.js"><link rel="prefetch" href="/assets/js/74.76d73623.js"><link rel="prefetch" href="/assets/js/75.81c76e90.js"><link rel="prefetch" href="/assets/js/76.ec39a638.js"><link rel="prefetch" href="/assets/js/8.f2bdf25f.js"><link rel="prefetch" href="/assets/js/9.ef330b20.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.2d0603d3.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/computers/" class="nav-link router-link-active">
+  Computers
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-dca26bee data-v-6c2342f8><img src="/img/linkedin.webp" data-v-dca26bee></a><a target="_blank" href="https://github.com/marcinjahn" data-v-dca26bee data-v-6c2342f8><img src="/img/github.webp" data-v-dca26bee></a></span> <a href="https://github.com/marcinjahn/knowledge-website" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/computers/" class="nav-link router-link-active">
+  Computers
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-dca26bee data-v-6c2342f8><img src="/img/linkedin.webp" data-v-dca26bee></a><a target="_blank" href="https://github.com/marcinjahn" data-v-dca26bee data-v-6c2342f8><img src="/img/github.webp" data-v-dca26bee></a></span> <a href="https://github.com/marcinjahn/knowledge-website" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/computers/" aria-current="page" class="sidebar-link">/computers/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Web Protocols</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Security</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/computers/security/basic-terms.html" class="sidebar-link">Cryptography Basics</a></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading open"><span>TPM</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/computers/security/tpm/overview.html" class="sidebar-link">Overiew</a></li><li><a href="/computers/security/tpm/tpm-entities.html" aria-current="page" class="active sidebar-link">TPM Entities</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#permanent-entities" class="sidebar-link">Permanent Entities</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#nonvolatile-indexes" class="sidebar-link">Nonvolatile Indexes</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#objects" class="sidebar-link">Objects</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#nonpersistent-entities" class="sidebar-link">Nonpersistent Entities</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#persistent-entities" class="sidebar-link">Persistent Entities</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#endorsement-hierarchy" class="sidebar-link">Endorsement Hierarchy</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#platform-hierarchy" class="sidebar-link">Platform Hierarchy</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#storage-hierarchy" class="sidebar-link">Storage Hierarchy</a></li><li class="sidebar-sub-header"><a href="/computers/security/tpm/tpm-entities.html#null-hierarchy" class="sidebar-link">Null Hierarchy</a></li></ul></li><li><a href="/computers/security/tpm/tpm-operations.html" class="sidebar-link">TPM Operations</a></li></ul></section></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="tpm-entities"><a href="#tpm-entities" class="header-anchor">#</a> TPM Entities</h1> <h2 id="permanent-entities"><a href="#permanent-entities" class="header-anchor">#</a> Permanent Entities</h2> <p>Defined by the TPM specification, can't be created or deleted.</p> <h3 id="persistent-hierarchies"><a href="#persistent-hierarchies" class="header-anchor">#</a> Persistent Hierarchies</h3> <p>TPM 2.0 has three of them:</p> <ul><li>platform</li> <li>storage</li> <li>endorsement</li></ul> <p>Each one has a permanent handle. Each has authorizarion value and policy. They
+can both change. They may be disabled by the admin of the platform of the admin
+of the hierarchy.
+They may have associated chains of keys and data.</p> <h3 id="ephemeral-hierarchy"><a href="#ephemeral-hierarchy" class="header-anchor">#</a> Ephemeral Hierarchy</h3> <p>There is a <code>NULL</code> hierarchy. It's utilized when the TPM is used as a
+cryptographic coprocessor. Authorizarion and policy are always NULL. It's
+automatically cleared when TPM goes throught a power cycle.</p> <h3 id="dictionary-attack-lockout-reset"><a href="#dictionary-attack-lockout-reset" class="header-anchor">#</a> Dictionary Attack Lockout Reset</h3> <p>It has both authorizarion and policy. It can be changed by the admin of this
+hierarchy. It has no key nor object hierarchy. It may stop users from operating
+after some password entry failures (for example for 24h). Admin can reset it.</p> <h3 id="pcrs"><a href="#pcrs" class="header-anchor">#</a> PCRs</h3> <p>Fixed-size <strong>Platform Configuration Registers</strong>. There are a few of them (24
+minumum on a PC). They're accessed by their index. They have authentication
+value and policy (generally <code>NULL</code>). Reading value from a PCR does not require
+authentication. Only one bank (a set of PCRs with the same hash algorithm) is
+mandatory.</p> <p>We can create keys in TPM and specify that they can only be read if PCR is in a
+given state (<em>sealing</em>), or in a state approved by some authority (new in 2.0).
+For example, an organization could issue an update of BIOS to company's PCs. New
+version of BIOS will change values in PCRs. However, the organization knows
+which values these will be and it can provide new signatures.</p> <p>They support only <strong>Read</strong> and <strong>Extend</strong> operations. They store system state.</p> <p>PCRs are extended as follows:</p> <ol><li>PCR &lt;- 0</li> <li>PCR &lt;- Hash(PCR || M)</li> <li>...</li></ol> <p>PCR starts with value 0. Then it gets extended by a hash of current PCR
+concatenated with a <a href="/computers/security/basic-terms.html#hash">digest</a> M. It's called a
+<strong>folding-hash</strong>.</p> <p>Since the result is deterministic if we always supply the same &quot;M&quot; (measurement)
+values in the same sequence, it can be used to verify if the sequence is as
+expected.</p> <div class="custom-block warning"><p class="custom-block-title">Reading PCRs</p> <p>The result of <code>TPM2_CC_PCR_Read</code> cannot be trusted. It returns PCR values, but
+with no security guarantees. An attacker can MITM your communication with the
+TPM, and forge arbitrary <code>TPM2_CC_PCR_Read</code> responses.</p> <p>The correct way to read PCR values is through quotes. A quote is a signed
+statement from the TPM, attesting to its internal state. Use <code>TPM2_CC_Quote</code> to
+read fresh PCR values. We can use AIK to sign the PCR quote.</p></div> <h3 id="reserved-handles"><a href="#reserved-handles" class="header-anchor">#</a> Reserved Handles</h3> <p>May be there or not, depends from the platform specification.</p> <h3 id="password-authorization-session"><a href="#password-authorization-session" class="header-anchor">#</a> Password Authorization Session</h3> <p>Used for plaintext password authorization.</p> <h3 id="platform-nv-enable"><a href="#platform-nv-enable" class="header-anchor">#</a> Platform NV Enable</h3> <p>When its handle is clear, access to any NV index in the platform hierarchy is
+denied.</p> <h2 id="nonvolatile-indexes"><a href="#nonvolatile-indexes" class="header-anchor">#</a> Nonvolatile Indexes</h2> <p>NVRAM Index. There is some nonvolatile storage in TPM. It can be configured by
+the user for storage. They aren't considered <em>Objects</em> due to having more
+attributes than standard object. Reading and writing can be individually
+controlled. They can be made into &quot;write once&quot; entities. They have authorization
+value and policy. Authorization value can be changed by the owner of the index,
+but policy cannot - it's set during creation of the index. When the hierarchy is
+cleared, the NVRAM indexes associated with that hierarchy are deleted.</p> <h2 id="objects"><a href="#objects" class="header-anchor">#</a> Objects</h2> <p>It's either a <strong>key</strong> or <strong>data</strong>. It has a public part and perhaps (?) a
+private part (asymmetric private key, a symmetric key or encrypted data).</p> <p>Like NVRAM indexes all objects belong to one of four hierarchies: platform,
+storage, endorsement or NULL. When a hierarchy is cleared all objects in it are
+cleared. They have authorization data and policy. A policy can't be changed
+after it gets created (like with NV indexes).</p> <p><strong>Object commands</strong> can be administrative or user commands. At creation the user
+decides which of these commands can be performed with the authorization data and
+which can be exclusively done with a policy. Some commands can only be done with
+a policy no matter how we set the attributes during creation.</p> <p>Most objects are keys. Using keys or other objects requires using a
+non-persistent TPM entity - a session.</p> <h2 id="nonpersistent-entities"><a href="#nonpersistent-entities" class="header-anchor">#</a> Nonpersistent Entities</h2> <p>They don't persist through power cycles. Although they can be saved
+(<code>TOM2_ContextSave</code>) TPM disallows loading saved content after a power cycle.</p> <p>There are several classes of them.</p> <h2 id="persistent-entities"><a href="#persistent-entities" class="header-anchor">#</a> Persistent Entities</h2> <p>They persist power cycles. It's an object that an owner of a hierarchy has asked
+to remain resident in the TPM through power cycles. The owner of the hierarchy
+where it belongs can evict it. TPM has limited amount of persistent memory.</p> <h1 id="hierarchies"><a href="#hierarchies" class="header-anchor">#</a> Hierarchies</h1> <p>It's a collection of entities that are related and managed as a group. Those
+entities include permanent objects (the hierarchy handles), primary objects at
+the root of a tree, and other objects such as keys in the tree. NV indexes
+belong to a hierarchy but aren’t in a tree. Entities, other than permanent
+entities, can be erased as a group.</p> <p>The cryptographic root of each hierarchy is a seed: a large random number that
+the TPM generates and never exposes outside its secure boundary. The TPM uses
+the seed to create primary objects such as storage root keys. Those keys form
+the parent at the top of a hierarchy and are used to encrypt its children.</p> <p>A hierarchy can be persistent (retained through a reboot) or volatile (erased at
+reboot). Each hierarchy is targeted at specific use cases: for the platform
+manufacturer, for the user, for privacy-sensitive applications, and for
+ephemeral requirements.</p> <p>TPM 1.2 has one hierarchy. TPM 2.0 has four.</p> <h2 id="endorsement-hierarchy"><a href="#endorsement-hierarchy" class="header-anchor">#</a> Endorsement Hierarchy</h2> <p>It's reserved for objects created and certified by the TPM manufacturer. The
+endorsement seed (<code>eseed</code>) is randomly generated at manufacturing time and never
+changes during the lifetime of the device. The primary endorsement key is
+certified by the TPM manufacturer, and because its seed never changes, it can be
+used to identify the device. Since there's only one TPM device per machine, the
+primary endorsement key can also be used as the machine's identity. It's
+privacy-sensitive.</p> <h2 id="platform-hierarchy"><a href="#platform-hierarchy" class="header-anchor">#</a> Platform Hierarchy</h2> <p>The platform hierarchy is reserved for objects created and certified by the OEM
+that builds the host platform. The platform seed (pseed) is randomly generated
+at manufacturing time, but can be changed by the OEM by calling
+<code>TPM2_CC_ChangePPS</code>.</p> <h2 id="storage-hierarchy"><a href="#storage-hierarchy" class="header-anchor">#</a> Storage Hierarchy</h2> <p>It's used by the platform owner (IT department or the end user). It has owner
+policy and an authorization value, both persist through reboots. They are rarely
+changed. When a user takes ownership, for example, when the IT department
+provisions a new host on the network, the owner hierarchy is reset. This is done
+by calling <code>TPM2_CC_Clear</code>. In this critical setup step, two user keys should be
+provisioned and certified by the owner: these form the root of trust for all the
+keys generated on the owner hierarchy.</p> <p>It's intended fo non-privacy-sensitive operations.
+It can be turned off.</p> <h2 id="null-hierarchy"><a href="#null-hierarchy" class="header-anchor">#</a> Null Hierarchy</h2> <p>The null hierarchy is reserved for ephemeral keys. The null seed is re-generated
+each time the host reboots.</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/marcinjahn/knowledge-website/edit/main/src/docs/computers/security/tpm/tpm-entities.md" target="_blank" rel="noopener noreferrer">Feel free to contribute to this article!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">12/21/2021, 10:30:33 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/computers/security/tpm/overview.html" class="prev">
+        Overiew
+      </a></span> <span class="next"><a href="/computers/security/tpm/tpm-operations.html">
+        TPM Operations
+      </a>
+      →
+    </span></p></div></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.87cbde57.js" defer></script><script src="/assets/js/2.f59378ff.js" defer></script><script src="/assets/js/20.b1296514.js" defer></script>
+  </body>
+</html>

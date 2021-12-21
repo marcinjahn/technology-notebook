@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Organization | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="Modules, packages in Rust">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.2d0603d3.css" as="style"><link rel="preload" href="/assets/js/app.87cbde57.js" as="script"><link rel="preload" href="/assets/js/2.f59378ff.js" as="script"><link rel="preload" href="/assets/js/72.ebf1c946.js" as="script"><link rel="prefetch" href="/assets/js/10.404a5336.js"><link rel="prefetch" href="/assets/js/11.26ad847d.js"><link rel="prefetch" href="/assets/js/12.f99024fc.js"><link rel="prefetch" href="/assets/js/13.7595fe03.js"><link rel="prefetch" href="/assets/js/14.19f0a33c.js"><link rel="prefetch" href="/assets/js/15.edd580e7.js"><link rel="prefetch" href="/assets/js/16.709a76fa.js"><link rel="prefetch" href="/assets/js/17.d31682fa.js"><link rel="prefetch" href="/assets/js/18.d418f3ca.js"><link rel="prefetch" href="/assets/js/19.5b6bae1a.js"><link rel="prefetch" href="/assets/js/20.b1296514.js"><link rel="prefetch" href="/assets/js/21.d9a411b5.js"><link rel="prefetch" href="/assets/js/22.a73f3628.js"><link rel="prefetch" href="/assets/js/23.e152ce40.js"><link rel="prefetch" href="/assets/js/24.f859344d.js"><link rel="prefetch" href="/assets/js/25.be380422.js"><link rel="prefetch" href="/assets/js/26.e729f0e8.js"><link rel="prefetch" href="/assets/js/27.6ebfc58b.js"><link rel="prefetch" href="/assets/js/28.10c80a6b.js"><link rel="prefetch" href="/assets/js/29.80ac4173.js"><link rel="prefetch" href="/assets/js/3.17bc78ba.js"><link rel="prefetch" href="/assets/js/30.62e3c796.js"><link rel="prefetch" href="/assets/js/31.2901ad07.js"><link rel="prefetch" href="/assets/js/32.9cfa42d9.js"><link rel="prefetch" href="/assets/js/33.e2569108.js"><link rel="prefetch" href="/assets/js/34.8eefdba7.js"><link rel="prefetch" href="/assets/js/35.641ef4db.js"><link rel="prefetch" href="/assets/js/36.59cd48b1.js"><link rel="prefetch" href="/assets/js/37.b140d4b6.js"><link rel="prefetch" href="/assets/js/38.338e0e7f.js"><link rel="prefetch" href="/assets/js/39.23590df6.js"><link rel="prefetch" href="/assets/js/4.e66cdc67.js"><link rel="prefetch" href="/assets/js/40.d466dbc4.js"><link rel="prefetch" href="/assets/js/41.5b7d690d.js"><link rel="prefetch" href="/assets/js/42.c5526cf9.js"><link rel="prefetch" href="/assets/js/43.2d43a97b.js"><link rel="prefetch" href="/assets/js/44.55a58cf6.js"><link rel="prefetch" href="/assets/js/45.e90670ee.js"><link rel="prefetch" href="/assets/js/46.dbd4de3e.js"><link rel="prefetch" href="/assets/js/47.a6b24d05.js"><link rel="prefetch" href="/assets/js/48.547dd4f8.js"><link rel="prefetch" href="/assets/js/49.b38e8d7e.js"><link rel="prefetch" href="/assets/js/5.8fb6c804.js"><link rel="prefetch" href="/assets/js/50.85d4adbd.js"><link rel="prefetch" href="/assets/js/51.70928b4e.js"><link rel="prefetch" href="/assets/js/52.6cf81f03.js"><link rel="prefetch" href="/assets/js/53.43cdd428.js"><link rel="prefetch" href="/assets/js/54.c4ec2f87.js"><link rel="prefetch" href="/assets/js/55.d67fba02.js"><link rel="prefetch" href="/assets/js/56.beac5e77.js"><link rel="prefetch" href="/assets/js/57.4de3d728.js"><link rel="prefetch" href="/assets/js/58.cecb3823.js"><link rel="prefetch" href="/assets/js/59.2ec1381f.js"><link rel="prefetch" href="/assets/js/6.b38701ec.js"><link rel="prefetch" href="/assets/js/60.fed14f90.js"><link rel="prefetch" href="/assets/js/61.fed6147c.js"><link rel="prefetch" href="/assets/js/62.0583a533.js"><link rel="prefetch" href="/assets/js/63.da61b917.js"><link rel="prefetch" href="/assets/js/64.ae259b46.js"><link rel="prefetch" href="/assets/js/65.7de73bc1.js"><link rel="prefetch" href="/assets/js/66.bad1db68.js"><link rel="prefetch" href="/assets/js/67.d092e753.js"><link rel="prefetch" href="/assets/js/68.4f358bb8.js"><link rel="prefetch" href="/assets/js/69.087f8831.js"><link rel="prefetch" href="/assets/js/7.b6d31f4a.js"><link rel="prefetch" href="/assets/js/70.b49f2502.js"><link rel="prefetch" href="/assets/js/71.f15d3809.js"><link rel="prefetch" href="/assets/js/73.205df904.js"><link rel="prefetch" href="/assets/js/74.76d73623.js"><link rel="prefetch" href="/assets/js/75.81c76e90.js"><link rel="prefetch" href="/assets/js/76.ec39a638.js"><link rel="prefetch" href="/assets/js/8.f2bdf25f.js"><link rel="prefetch" href="/assets/js/9.ef330b20.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.2d0603d3.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link router-link-active">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/computers/" class="nav-link">
+  Computers
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-dca26bee data-v-6c2342f8><img src="/img/linkedin.webp" data-v-dca26bee></a><a target="_blank" href="https://github.com/marcinjahn" data-v-dca26bee data-v-6c2342f8><img src="/img/github.webp" data-v-dca26bee></a></span> <a href="https://github.com/marcinjahn/knowledge-website" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link router-link-active">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/computers/" class="nav-link">
+  Computers
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-dca26bee data-v-6c2342f8><img src="/img/linkedin.webp" data-v-dca26bee></a><a target="_blank" href="https://github.com/marcinjahn" data-v-dca26bee data-v-6c2342f8><img src="/img/github.webp" data-v-dca26bee></a></span> <a href="https://github.com/marcinjahn/knowledge-website" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/programming/" aria-current="page" class="sidebar-link">/programming/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>.NET</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>JavaScript</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Rust</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/programming/rust/overview.html" class="sidebar-link">Rust</a></li><li><a href="/programming/rust/cargo.html" class="sidebar-link">Cargo</a></li><li><a href="/programming/rust/basics.html" class="sidebar-link">Basics</a></li><li><a href="/programming/rust/ownership.html" class="sidebar-link">Ownership</a></li><li><a href="/programming/rust/structs.html" class="sidebar-link">Structures</a></li><li><a href="/programming/rust/enums.html" class="sidebar-link">Enums</a></li><li><a href="/programming/rust/organization.html" aria-current="page" class="active sidebar-link">Organization</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/programming/rust/organization.html#packages" class="sidebar-link">Packages</a></li><li class="sidebar-sub-header"><a href="/programming/rust/organization.html#modules" class="sidebar-link">Modules</a></li><li class="sidebar-sub-header"><a href="/programming/rust/organization.html#paths" class="sidebar-link">Paths</a></li><li class="sidebar-sub-header"><a href="/programming/rust/organization.html#encapsulation" class="sidebar-link">Encapsulation</a></li><li class="sidebar-sub-header"><a href="/programming/rust/organization.html#importing" class="sidebar-link">Importing</a></li></ul></li><li><a href="/programming/rust/collections.html" class="sidebar-link">Collections</a></li><li><a href="/programming/rust/traits.html" class="sidebar-link">Traits</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>CSS</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="organization"><a href="#organization" class="header-anchor">#</a> Organization</h1> <p>Rust has a number of features that allow to manage code’s organization,
+including which details are exposed, which details are private, and what names
+are in each scope in programs. These features, sometimes collectively referred
+to as the module system, include:</p> <ul><li><strong>Crates</strong>: a binary or library</li> <li><strong>Packages</strong>: one or more crates that provide a set of functionality. A
+package contains a <code>Cargo.toml</code> file</li> <li><strong>Modules</strong>: let us organize code within a crate into groups for readability
+and easy reuse</li> <li><strong>Paths</strong>: A way of naming an item, such as a struct, function, or module</li></ul> <h2 id="packages"><a href="#packages" class="header-anchor">#</a> Packages</h2> <p>A package contains crates. It can be as many binary crates as needed and just
+one library crate.
+We create packages with <code>cargo new my-project-name</code>.</p> <h2 id="modules"><a href="#modules" class="header-anchor">#</a> Modules</h2> <p>Modules control encapsulation. Some items might be <em>public</em>, others can be
+<em>private</em>. Modules may be nested.</p> <p>Example:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">mod</span> <span class="token module-declaration namespace">front_of_house</span> <span class="token punctuation">{</span>
+  <span class="token keyword">mod</span> <span class="token module-declaration namespace">hosting</span> <span class="token punctuation">{</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">seat_at_table</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">mod</span> <span class="token module-declaration namespace">serving</span> <span class="token punctuation">{</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">take_order</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">serve_order</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">take_payment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Modules may contain definitions of anything (modules, functions, structs, enums,
+etc.).</p> <p>The root of every module is <code>crate</code>. It is either <code>src/main.rs</code> or <code>src/lib.rs</code>.
+There is a module tree similar to filesystem:</p> <div class="language- extra-class"><pre class="language-text"><code>crate
+ └── front_of_house
+     ├── hosting
+     │   ├── add_to_waitlist
+     │   └── seat_at_table
+     └── serving
+         ├── take_order
+         ├── serve_order
+         └── take_payment
+</code></pre></div><h2 id="paths"><a href="#paths" class="header-anchor">#</a> Paths</h2> <p>To refer to an entity we can use <em>absolute</em> or <em>relative</em> paths.
+We separate identifiers by <code>::</code>.</p> <p>Example:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">mod</span> <span class="token module-declaration namespace">front_of_house</span> <span class="token punctuation">{</span>
+  <span class="token keyword">pub</span> <span class="token keyword">mod</span> <span class="token module-declaration namespace">hosting</span> <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">eat_at_restaurant</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Absolute path</span>
+  <span class="token keyword">crate</span><span class="token module-declaration namespace"><span class="token punctuation">::</span>front_of_house<span class="token punctuation">::</span>hosting<span class="token punctuation">::</span></span><span class="token function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Relative path</span>
+  <span class="token namespace">front_of_house<span class="token punctuation">::</span>hosting<span class="token punctuation">::</span></span><span class="token function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><code>super</code> acts like <code>..</code> in Unix filesystems. We can use it to go up a module.</p> <h2 id="encapsulation"><a href="#encapsulation" class="header-anchor">#</a> Encapsulation</h2> <ul><li><p>All entities are private by default.</p></li> <li><p>The privacy rules apply to <em>structs</em>, <em>enums</em>, <em>functions</em>, <em>methods</em>, and
+<em>modules</em>.</p></li> <li><p>Items in a parent module cannot use the privte items inside child modules.</p></li> <li><p>items in child modules can use items in their ancestor modules.</p></li> <li><p>sibling items can access each other.</p></li> <li><p>items can be made public with the <code>pub</code> keyword.</p></li> <li><p>struct can be made public, but its fields will stay private unless they are
+individually made public:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">Breakfast</span> <span class="token punctuation">{</span>
+  <span class="token keyword">pub</span> toast<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">,</span>
+  seasonal_fruit<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div></li> <li><p>all enum's options are public if enum itself is public.</p></li></ul> <h2 id="importing"><a href="#importing" class="header-anchor">#</a> Importing</h2> <p>The <code>use</code> keyword brings a path into the local scope so we don't have to repeat
+paths all the time.</p> <p>Example:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">mod</span> <span class="token module-declaration namespace">front_of_house</span> <span class="token punctuation">{</span>
+  <span class="token keyword">pub</span> <span class="token keyword">mod</span> <span class="token module-declaration namespace">hosting</span> <span class="token punctuation">{</span>
+    <span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">use</span> <span class="token keyword">crate</span><span class="token module-declaration namespace"><span class="token punctuation">::</span>front_of_house<span class="token punctuation">::</span></span>hosting<span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">eat_at_restaurant</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token namespace">hosting<span class="token punctuation">::</span></span><span class="token function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token namespace">hosting<span class="token punctuation">::</span></span><span class="token function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token namespace">hosting<span class="token punctuation">::</span></span><span class="token function">add_to_waitlist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><code>use</code> is like a symbolic link in a filesystem.</p> <p>Relative paths can be used with <code>use</code> as well.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>There's a &quot;best practice&quot; to bring functions via their containing
+module, and not the function name directly. That makes it more clear that the
+function is not local when we call it. Other items should be brought in
+directly, like the <code>HashMap</code>:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">use</span> <span class="token namespace">std<span class="token punctuation">::</span>collections<span class="token punctuation">::</span></span><span class="token class-name">HashMap</span><span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> map <span class="token operator">=</span> <span class="token class-name">HashMap</span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    map<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <p>The imported entities may be re-exported with the use of <code>pub use</code>:</p> <div class="language- extra-class"><pre class="language-text"><code>pub use crate::front_of_house::hosting;
+</code></pre></div><h3 id="changing-names"><a href="#changing-names" class="header-anchor">#</a> Changing names</h3> <p>If there are entities with the same names (e.g. two structs) we can't import
+them both directly. Instead, we should impoer their containing modules.</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">use</span> <span class="token namespace">std<span class="token punctuation">::</span></span>io<span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token namespace">fmt<span class="token punctuation">::</span></span><span class="token class-name">Result</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token namespace">io<span class="token punctuation">::</span></span><span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><p>We could also change name of an imported entity using the <code>as</code> keyword:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">use</span> <span class="token namespace">std<span class="token punctuation">::</span>fmt<span class="token punctuation">::</span></span><span class="token class-name">Result</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token namespace">std<span class="token punctuation">::</span>io<span class="token punctuation">::</span></span><span class="token class-name">Result</span> <span class="token keyword">as</span> <span class="token class-name">IoResult</span><span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">Result</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">IoResult</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><h3 id="importing-all"><a href="#importing-all" class="header-anchor">#</a> Importing all</h3> <p>The <code>*</code> (glob) operator allows us to bring in all items from some module:</p> <div class="language-rust extra-class"><pre class="language-rust"><code><span class="token keyword">use</span> <span class="token namespace">std<span class="token punctuation">::</span>collections<span class="token punctuation">::</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/marcinjahn/knowledge-website/edit/main/src/docs/programming/rust/organization.md" target="_blank" rel="noopener noreferrer">Feel free to contribute to this article!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">12/21/2021, 10:30:33 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/programming/rust/enums.html" class="prev">
+        Enums
+      </a></span> <span class="next"><a href="/programming/rust/collections.html">
+        Collections
+      </a>
+      →
+    </span></p></div></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.87cbde57.js" defer></script><script src="/assets/js/2.f59378ff.js" defer></script><script src="/assets/js/72.ebf1c946.js" defer></script>
+  </body>
+</html>
