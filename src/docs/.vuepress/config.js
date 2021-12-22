@@ -135,6 +135,13 @@ module.exports = {
           ],
         },
         {
+          title: "C",
+          children: [
+            "c/pointers",
+            "c/strings"
+          ]
+        },
+        {
           title: "CSS",
           children: ["css/layouts"],
         },

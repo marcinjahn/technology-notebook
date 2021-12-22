@@ -1,0 +1,64 @@
+---
+title: Strings
+description: Strings in the C programming language
+lang: en-US
+---
+
+# Strings
+
+Strings are arrays of `char`. Their size is amount of characters + 1 (the *NULL*
+(`\0`) character).
+
+Code example:
+
+```c
+char c[6]; // 6 is the minimum size for "HELLO"
+
+c[0] = 'H';
+c[1] = 'E';
+c[2] = 'L';
+c[3] = 'L';
+c[4] = 'O';
+c[5] = '\0'; // NULL
+
+printf("%s", c); // uses NULL charater to know when to stop printing the array
+// without NULL it would print memory contents past the end of the string
+```
+
+or
+
+```
+char c[6] = { 'H', 'E', 'L', 'L', 'O', '/0' }; // includes NULL
+```
+
+or
+
+```c
+char c[6] = "HELLO"; // adds NULL implicitly
+c = "SOMETHING" // ERROR! Arrays cannot me modified lke this. strcpy should be used
+```
+
+or 
+
+```c
+char c[] = "HELLO"; // array will have a size of 6 implicitly
+```
+
+::: tip
+`string.h` contains some string helper functions (like `strlen`, which uses the
+NULL character to find the end of a string).
+:::
+
+## Memory
+
+Arrays and pointers are different:
+
+```c
+char c[20] = "Hello"; // stored on the STACK segment
+c[0] = 'A'; // OK
+
+char *d = "Hello"; // stored in STATIC memory segment
+d[0] = 'A'; // ERROR
+```
+
+
