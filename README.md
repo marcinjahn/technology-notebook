@@ -1,8 +1,8 @@
-# marcinjahn.com - Knowledge Base
+# Technology Notebook Website
 
-This is a source code for my personal notepad - marcinjahn.com
+This is a source code for my personal notepad - [marcinjahn.com](https://marcinjahn.com)
 
-The page was developer in VuePress.
+The project uses VuePress.
 
 ## Running 
 
