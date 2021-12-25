@@ -135,10 +135,11 @@ module.exports = {
           ],
         },
         {
-          title: "C",
+          title: "C/C++",
           children: [
             "c/pointers",
-            "c/strings"
+            "c/strings",
+            "c/dynamic-memory"
           ]
         },
         {
