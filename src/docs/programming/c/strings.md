@@ -6,8 +6,8 @@ lang: en-US
 
 # Strings
 
-Strings are arrays of `char`. Their size is amount of characters + 1 (the *NULL*
-(`\0`) character).
+Strings are arrays of `char`. Their size is the amount of characters + 1 (the
+*NULL* (`\0`) character).
 
 Code example:
 
@@ -27,7 +27,7 @@ printf("%s", c); // uses NULL charater to know when to stop printing the array
 
 or
 
-```
+```c
 char c[6] = { 'H', 'E', 'L', 'L', 'O', '/0' }; // includes NULL
 ```
 
@@ -35,7 +35,7 @@ or
 
 ```c
 char c[6] = "HELLO"; // adds NULL implicitly
-c = "SOMETHING" // ERROR! Arrays cannot me modified lke this. strcpy should be used
+c = "SOMETHING" // ERROR! Arrays cannot me modified like this. strcpy should be used
 ```
 
 or 
@@ -57,8 +57,9 @@ Arrays and pointers are different:
 char c[20] = "Hello"; // stored on the STACK segment
 c[0] = 'A'; // OK
 
-char *d = "Hello"; // stored in STATIC memory segment
+char *d = "Hello"; // stored in the STATIC memory segment
 d[0] = 'A'; // ERROR
 ```
 
-
+If a function expects `char *a` as an argument, how can it know if it'll
+be a pointer or an array?

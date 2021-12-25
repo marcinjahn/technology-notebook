@@ -17,8 +17,8 @@ float *my_pointer
 The pointer is defined with the type of the value that it points to. This is
 helpful, because:
 
-- we can do various arithmetic operations on pointers (e.g. `++`) will result in
-  the correct amount of bytes being added.
+- we can do various arithmetic operations on pointers (e.g. `++` will result in
+  the correct amount of bytes being added).
 - we can dereference pointers - the runtime needs to know how many bytes a given
   pointer points to and how to interpret them (e.g. `int` and `float` both take
   4 bytes, but the same contents mean different values)
@@ -80,7 +80,7 @@ int number_copy = *pointer; // returns value stored under the address that the p
 
 ## Arrays
 
-Array can be treated as a pointer to the first element that it contains.
+Array can be treated as a pointer to **the first element** that it contains.
 
 ```c
 int array[] = {1, 2, 3};
@@ -111,22 +111,43 @@ array = pointer; //wrong!
 Therefore array variable is not the same as pointer.
 :::
 
-### Arrays as arguments
+### Multi-dimensional Arrays
 
-When a function accepts an array as an argument, a pointer to an array is
-passed:
+```c
+int B[2][3];
 
-![](./assets/array-in-argument.png)
+int *p = B; // ERROR! B is a pointer to an array, not to an int
+int (*p)[3] = B; // OK; 3 is needed, because pointer arithmetics needs to "know"
+                 // how many bytes to add in operations like p++
+```
 
-This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
-`SumOfElements()` (4 bytes - just the size of a pointer to integer!).
+![](./assets/multi-dimensional-arrays.png)
 
-::: tip 
-`Function(int[] A)` is treated the same as `Function(int *A)`. That's
-why the typical C `main` function has both `argv` and `argc` as arguments.
+Pointer arithmetic examples:
+
+- Printing `B` (or `&B[0]`) would return `400` (the address of the first
+  sub-array)
+- Printing `*B` (or `B[0]` or `&B[0][0]`) would return `400` (the address of the
+  first element in the first sub-array)
+- Printing `B+1` (or `&B[1]`) would return `412` (the address of the second
+  sub-array)
+- Printing `*(B+1)` (or `B[1]` or `&B[1][0]`) would return `412` (the address of
+  the first element in the second sub-array)
+- Printing `*(*B+1)` (or `B[0][1]`) would return `3`.
+- `p++` would move from `400` to `412`
+
+::: tip
+`B` is an address of the first sub-array.
+`*B` is an address of the first element of the first sub-array.
+`**B` is the value of the first sub-array.
 :::
 
-## Pointer to a Pointer
+::: tip 
+In general, `array + i` moves us to the next element within the array. That way,
+`B` being an array of arrays, `B + i` moves us to the next sub-array.
+:::
+
+### Pointer to Pointer
 
 ```c
 int x = 4;
@@ -134,7 +155,7 @@ int *p =  &a;
 int **q = &p;
 ```
 
-A `pointer` points to `a`. `pointer2` points to `pointer`.
+A `p` points to `x`. `q` points to `p`.
 
 ![](./assets/pointer-to-pointer.png)
 
@@ -155,6 +176,37 @@ In general, replacing `*` with `[]` is a helpful mental technique in
 understanding pointers.
 
 `int (*p)[];` - it is analogical to `int **p;`
+:::
+
+### Arrays as arguments
+
+When a function accepts an array as an argument, a pointer to an array is
+passed:
+
+![](./assets/array-in-argument.png)
+
+This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
+`SumOfElements()` (4 bytes - just the size of a pointer to integer!).
+
+::: tip 
+`Function(int[] A)` is treated the same as `Function(int *A)`. A typical C
+`main` function has both `char *argv` and `int argc` as arguments - a pointer to
+arguments and a count of arguments.
+:::
+
+::: tip Multi-dimensional Arrays
+A function that accepts a multi-dimensional array has to specify the count of
+elements in sub-arrays.
+
+Examples:
+
+```c
+void func(int *a) // size of int is known
+
+void func2(int *a[2]) // an array of arrays that contain 2 elements
+
+void func3(int *a[3][2]) // an array where each item is 3 arrays of 2 items each
+```
 :::
 
 ## References
