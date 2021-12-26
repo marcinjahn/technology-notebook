@@ -21,16 +21,18 @@ concepts if I don't use them in a week or more.
 I have gone through other solutions that took me to a conclusion that I actually
 need a website. In the past I had used the following approaches:
 
-- pen and paper - initially, I noted all stuff on paper. It would be perfect if
-  only it was easy to add information flexibly. I could use a tablet for it, but
-  somehow I find writing or reading using a tablet to be a rather bad
-  experience. Unfortunately I am too lazy to transfer that knowledge to a
-  digital form so lots of my notes will forever be in my drawer
-- [OneNote](https://www.microsoft.com/en-us/microsoft-365/onenote/digital-note-taking-app) - good for notes in general, but not great for programmer notes.
+- pen and paper - initially, I noted all stuff in a paper notebook. It would be
+  perfect if only it was easy to add information in between of what I had
+  already noted. I could use a tablet for it, but somehow I find writing or
+  reading using a tablet to be a rather bad experience. When I really am out of
+  ideas of what to do, I transfer these notes to a digital form (and they land
+  on this website)
+- [OneNote](https://www.microsoft.com/en-us/microsoft-365/onenote/digital-note-taking-app)
+  - good for notes in general, but not great for programmer notes.
 - [Boost Note](https://boostnote.io/) - I used it briefly, at the time the Free
   tier had some limitations regarding tagging that were a pain to live with.
 - [HackMD](https://hackmd.io/) - cool markdown notebook, but the organization of
-  pages was not ideal. I couldn't organize notes in a way that I wanted.
+  pages was not ideal. I couldn't organize notes in a way that I wsanted.
 
 Since none of the above worked for me, I have decided to build something myself.
 Instead of creating an actual note-taking app I realized that a simple website
@@ -63,6 +65,8 @@ one provided in the package.
 
 ### Backend
 
+#### Kubernetes
+
 I use [Kubernetes](https://kubernetes.io/), or more specifically [Azure
 Kubernetes Service
 (AKS)](https://azure.microsoft.com/en-us/services/kubernetes-service/), to host
@@ -91,3 +95,20 @@ The website has a CI/CD workflow defined using [GitHub
 Actions](https://docs.github.com/en/actions). In order to make any change, all I
 have to do is push a commit to the _main_ branch of my
 [repository](https://github.com/marcinjahn/knowledge-website).
+
+#### GitHub Pages
+
+Due to the fact that my K8s cluster is used for various experiments, it might
+stop working sometimes (also, I might run out of Azure credit in a given month
+:|). Since a notebook that is accessible a bit randomly is not what I wanted, I
+decided to host the website somewhere else as a backup. Since the page's source
+code is already on GitHub I decided to go with [GitHub
+Pages](https://pages.github.com/) for this purpose. I have a separate GitHub
+Actions workflow defined that automatically builds the artifacts from the *main*
+branch and places them on a [separate
+branch](https://github.com/marcinjahn/technology-notebook/tree/gh-pages) that is
+configured to be a source of data for the GitHub Pages hosting.
+
+Both the AKS and the GitHub Pages IPs are configured for my domain, so when
+visiting [https://marcinjahn.com](marcinjahn.com) you might get the bits from
+either one of these randomly.
