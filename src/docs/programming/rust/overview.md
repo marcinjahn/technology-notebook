@@ -59,3 +59,8 @@ Compilation is slower than in peer languages.
 
 Rust has steep learning curve due to it being "large". Lots of functionalities,
 keywords, etc.
+
+## References
+
+[The Rust Programming Language Book](https://doc.rust-lang.org/book/)
+[https://fasterthanli.me/articles/working-with-strings-in-rust](https://fasterthanli.me/articles/working-with-strings-in-rust)
