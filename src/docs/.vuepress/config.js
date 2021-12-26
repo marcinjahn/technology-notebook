@@ -163,7 +163,7 @@ module.exports = {
         },
         {
           title: "C/C++",
-          children: ["c/pointers", "c/strings", "c/dynamic-memory"],
+          children: ["c/pointers", "c/strings", "c/dynamic-memory", "c/argc-argv-visualized"],
         },
         {
           title: "CSS",
