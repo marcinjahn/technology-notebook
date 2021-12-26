@@ -36,6 +36,7 @@ int*pointer3;
 Pointers are useful for:
 
 - passing data to functions by reference (e.g. `void increment(int *number)`)
+- allocating memory on the heap and keeping reference to it
 
 ## Memory
 
@@ -64,7 +65,7 @@ printf("%d", *pointer); // 0 or some other trash value
 
 ```
 
-## Operations
+## Usage
 
 ```c
 int number = 10;
@@ -78,7 +79,7 @@ int number_copy = *pointer; // returns value stored under the address that the p
 *pointer = 20; //updates the value of the `number` variable
 ```
 
-## Arrays
+### Arrays
 
 Array can be treated as a pointer to **the first element** that it contains.
 
@@ -111,7 +112,7 @@ array = pointer; //wrong!
 Therefore array variable is not the same as pointer.
 :::
 
-### Multi-dimensional Arrays
+#### Multi-dimensional Arrays
 
 ```c
 int B[2][3];
@@ -147,7 +148,7 @@ In general, `array + i` moves us to the next element within the array. That way,
 `B` being an array of arrays, `B + i` moves us to the next sub-array.
 :::
 
-### Pointer to Pointer
+#### Pointer to Pointer
 
 ```c
 int x = 4;
@@ -178,7 +179,7 @@ understanding pointers.
 `int (*p)[];` - it is analogical to `int **p;`
 :::
 
-### Arrays as arguments
+#### Arrays as arguments
 
 When a function accepts an array as an argument, a pointer to an array is
 passed:
@@ -207,6 +208,54 @@ void func2(int *a[2]) // an array of arrays that contain 2 elements
 
 void func3(int *a[3][2]) // an array where each item is 3 arrays of 2 items each
 ```
+:::
+
+### Returning a pointer
+
+It's wrong to return a pointer to a variable on a stack:
+
+```c
+int *Add(int a, int b)
+{
+  int c = a + b;
+  return &c;
+}
+
+int main()
+{
+  int a = 1;
+  int b = 2;
+  int *p = Add(a, b); // we got a pointer to a sum
+  SomeOtherFunction(); // the value that p points to could be overwritten by the new stack frame!
+}
+```
+
+Instead, we should allocate the result on the [heap](./dynamic-memory.md) and
+return a pointer to it.
+
+## Function Pointers
+
+```c
+int Add(int a, int b)
+{
+  return a + b;
+}
+
+int main()
+{
+  int (*p)(int, int) = Add; // pointer definition contains return type and a list of parameters
+  int c  = p(2, 3); // executes Add via a pointer - adds 2 and 3
+}
+```
+
+A pointer `p` points to a function `Add`.
+
+::: tip Ampersand and Start
+Address of a function can be retrieved just by function's name (e.g. `Add`) or
+with `&` (e.g. `&Add`).
+
+We can invoke a function via a pointer just by using the pointer as if it was a
+function (e.g. `p(2,3)`) or with a `*` (e.g. `(*p)(2, 3)`).
 :::
 
 ## References

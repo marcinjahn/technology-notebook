@@ -14,13 +14,14 @@ used. It is "unlimited" (unlike the **stack**.
 
 The following functions are used for heap management:
 
-- `malloc` - allocates memory, returns a `void` pointer
+- `malloc` - allocates memory
 - `calloc` - similar to `malloc`, but a bit more appropriate for arrays
-- `realloc` - resizes memory block
-- `free` - deallocated memory
+- `realloc` - resizes allocated memory block; it can be used as a substitute of
+  `malloc` or `free` with the right arguments passed in
+- `free` - deallocates memory
 
 ::: tip C++
-C++ additionally uses `new` (can be used instead of `malloc`) and `delete` (can
+C++ additionally uses `new` (can be used instead  of `malloc`) and `delete` (can
 be used instead of `free`) operators for heap management.
 :::
 
@@ -37,7 +38,7 @@ int *p = (int*)malloc(sizeof(int));
 *p = 10; // storing data on the HEAP
 
 // clear heap allocation
-free(p);
+free(p); // the compiler stores somewhere info how many bytes were allocated
 
 // array on the HEAP
 int *p = (int*)malloc(20 * sizeof(int));
@@ -56,14 +57,16 @@ It accepts two arguments:
 - number of elements
 
 Additionally, `calloc` initializes the memory with zeros automatically.
+
+`malloc(n * sizeof(int))` ~= `calloc(n, sizeof(int))`
 :::
 
 ::: tip Void pointer
 `void*` is a generic pointer type that needs to be casted to a proper pointer
-type. It's there because `malloc` is a "universal" method that can allocate
-memory for any type. Without `void*` we'd need separate `mallocs` for all
-the different types. Additionally we'd need some way to deal with custom
-types defined by the programmer.
+type. It's there because `malloc`/`calloc`/`realloc` are "universal" methods
+that can allocate memory for any type. Without `void*` we'd need separate sets
+of these functions for all the different types. Additionally we'd need some way
+to deal with custom types defined by the programmer.
 :::
 
 ::: warning Not enough memory
