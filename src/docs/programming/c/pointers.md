@@ -31,6 +31,17 @@ int* pointer2;
 int*pointer3;
 ```
 
+::: tip Smart Pointers in C++
+C++ additionally has **Smart Pointers**, which are like pointers with added
+reference counting. When the data pointed to by the pointer goes out of scope,
+the value gets deleted automatically. Depending who you ask you might hear that
+this is a form of garbage collection.
+
+Smart pointers might be *shared* or *unique* - the latter one is a bit similar
+to the concept of [Ownership in Rust](/programming/rust/ownership.md) (it even
+has a *move* operation!).
+:::
+
 ## Use-cases
 
 Pointers are useful for:

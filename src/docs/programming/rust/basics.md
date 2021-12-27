@@ -6,9 +6,9 @@ lang: en-US
 
 # Basics
 
-## Variables
+## Bindings
 
-Assignment, or more propery, variable binding:
+Variables, or more propery, **bindings**:
 
 ```rust
 let a = "abc";
@@ -17,9 +17,11 @@ let a = "abc";
 An assignment like `a = 10` produces a blank type `()` called _unit_. Whenever
 there is no other meaningful response type, `()` is returned.
 
-Varaibles are **immutable** by default.
+::: tip Immutability
+Bindings are **immutable** by default.
+:::
 
-We can explicitly specify type of a variable:
+We can explicitly specify type of a binding:
 
 ```rust
 let a: i32 = 10;
@@ -27,9 +29,9 @@ let b = 10i32;
 let c = 10_i32; // Underscore has no meaning, it can be used as a delimiter
 ```
 
-Variables may be *shadowed*, which means that a variable may be defined twice
+Bindings may be *shadowed*, which means that a binding may be defined twice
 with the same name. This way, we don't have to artificially define things like
-`data_string` and `data`. FIrst we could define `data` as `String`, and then
+`data_string` and `data`. First we could define `data` as `String`, and then
 define `data` as `i32` with a value coming from parsed `data`.
 
 ### Strings

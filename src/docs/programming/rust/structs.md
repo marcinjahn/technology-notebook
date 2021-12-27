@@ -125,9 +125,16 @@ needed anymore.
 There may be more than one `impl` blocks per type.
 :::
 
+We can invoke methods like this:
+
+```rust
+let r = Rectangle();
+let area = r.area(); // or Rectangle::area(&r); 
+```
+
 ### Static methods
 
-Methods may be defined as *nonassociated* if they do not require an actual
+Methods may be defined as *non-associated* if they do not require an actual
 instance of a type. In such a case, there is no need for the first parameter to
 be `Self`. Example of such a function is `String::from()`. It's also useful for
-constuctors.
+constuctors.ą

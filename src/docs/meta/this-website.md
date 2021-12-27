@@ -73,7 +73,7 @@ Kubernetes Service
 and manage various components that the project is composed of. The nodes are
 automatically scaled keeping the cost as low as possible.
 
-I used [NGINX Ingrss Controller](https://kubernetes.github.io/ingress-nginx/) to
+I used [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/) to
 expose the website publicly.
 
 For TLS needs, I installed [cert-manager](https://cert-manager.io/) (using
