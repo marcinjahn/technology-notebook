@@ -27,12 +27,12 @@ need a website. In the past I had used the following approaches:
   reading using a tablet to be a rather bad experience. When I really am out of
   ideas of what to do, I transfer these notes to a digital form (and they land
   on this website)
-- [OneNote](https://www.microsoft.com/en-us/microsoft-365/onenote/digital-note-taking-app)
-  - good for notes in general, but not great for programmer notes.
+- [OneNote](https://www.microsoft.com/en-us/microsoft-365/onenote/digital-note-taking-app) - 
+  good for notes in general, but not great for programmer notes.
 - [Boost Note](https://boostnote.io/) - I used it briefly, at the time the Free
   tier had some limitations regarding tagging that were a pain to live with.
 - [HackMD](https://hackmd.io/) - cool markdown notebook, but the organization of
-  pages was not ideal. I couldn't organize notes in a way that I wsanted.
+  pages was not ideal. I couldn't organize notes in a way that I wanted.
 
 Since none of the above worked for me, I have decided to build something myself.
 Instead of creating an actual note-taking app I realized that a simple website
@@ -58,12 +58,12 @@ This site is open-source. You can find the source code and K8s manifests on
 ### Frontend
 
 The website is built using [VuePress](https://vuepress.vuejs.org/). It's a great
-static site generator that turns markdown into HTML, CSS, and JS that in the end
-loads up in your web browser. It's really easy to use and powerful when needed.
-For the needs of this website I've developed my own theme based on the default
-one provided in the package.
+static site generator that turns markdown into HTML, CSS, and JS files that in
+the end load up in your web browser. It's really easy to use and powerful when
+needed. For the needs of this website I've developed my own theme based on the
+default one provided in the package.
 
-### Backend
+### Infrastructure
 
 #### Kubernetes
 

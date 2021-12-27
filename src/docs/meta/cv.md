@@ -31,7 +31,7 @@ of concept solutions, customers  support,  preparing documentation.
 
 ## Education
 
-### Msc in Automation Control and Robotics at Politechnika Łódzka
+### MSc in Automation Control and Robotics at Politechnika Łódzka
 
 **Location**: Łódź, Poland
 
@@ -47,7 +47,7 @@ In February of 2017 I graduated with a BSc degree in automation and robotics at
 Technical University in Łódz receiving the highest grade. 
 
 During my studies I have taken part in the multinational
-[Eurobot](https://www.eurobot.org/) competition in France in a group of
+[Eurobot](https://www.eurobot.org/) competition in France with a group of
 students. It required designing, building, and programming of an automotive
 robot. Good teamwork was also necessary to join all those activities
 efficiently.
@@ -55,4 +55,4 @@ efficiently.
 During my second and fourth years of studies I was a recipient of Chancellor's
 Scholarship thanks to my results and achievements.
 
-By the end of my BSc studies, I started working in ABB as an intern.
+By the end of my BSc studies, I started working at ABB as an intern.
