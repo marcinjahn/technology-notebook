@@ -118,6 +118,29 @@ let six = plus_one(five);
 let none = plus_one(None);
 ```
 
+An example of [handling errors](./handling-errors.md):
+
+```rust
+let f = File::open("hello.txt");
+
+let f = match f {
+  Ok(file) => file,
+  Err(error) => match error.kind() {
+    ErrorKind::NotFound => match File::create("hello.txt") {
+      Ok(fc) => fc,
+      Err(e) => panic!("Problem creating the file: {:?}", e),
+    },
+    other_error => {
+      panic!("Problem opening the file: {:?}", other_error)
+    }
+  },
+};
+```
+
+::: tip
+Alternatively, we could use `unwrap_or_else()` method on `Result`.
+:::
+
 ## If let
 
 `if let` is a syntax sugar for `match`. It is useful when we're interested only

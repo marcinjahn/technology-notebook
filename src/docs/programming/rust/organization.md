@@ -158,14 +158,14 @@ fn main() {
 
 The imported entities may be re-exported with the use of `pub use`:
 
-```
+```rust
 pub use crate::front_of_house::hosting;
 ```
 
 ### Changing names
 
 If there are entities with the same names (e.g. two structs) we can't import
-them both directly. Instead, we should impoer their containing modules.
+them both directly. Instead, we should import their containing modules.
 
 ```rust
 use std::io;

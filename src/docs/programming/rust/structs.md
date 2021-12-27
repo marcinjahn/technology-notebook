@@ -137,4 +137,4 @@ let area = r.area(); // or Rectangle::area(&r);
 Methods may be defined as *non-associated* if they do not require an actual
 instance of a type. In such a case, there is no need for the first parameter to
 be `Self`. Example of such a function is `String::from()`. It's also useful for
-constuctors.ą
+constuctors.

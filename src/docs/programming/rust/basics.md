@@ -39,11 +39,11 @@ define `data` as `i32` with a value coming from parsed `data`.
 There is a `String` type, which is stored on a heap. There is also a string
 literal, which is actually a [string slice](./ownership.md#string-slices).
 
-If a functions expects a string parameter, it's a good practice to use
+If a function expects a string parameter, it's a good practice to use
 string slice instead of a `String`, because:
 
 - a string literal can be passed as is;
-- a string slice can be easily taken out of a `String` with `&some_streing`
+- a string slice can be easily taken out of a `String` with `&some_string`
 
 ### Scope
 
@@ -77,7 +77,7 @@ fn add(a: i32, b: i32) -> i32 {
 The `i + j` has no semicolon. With semicolon, the return type would be `()`
 instead of `i32`.
 
-Functions return the last expressions' result by default, so `return` is not
+Functions return the last expression's result by default, so `return` is not
 required.
 
 ## Macros
@@ -108,9 +108,9 @@ thread::spawn(|| { let data = 500; });
 There is a large choice of number types.
 Conversions between types are always explicit. We use `as` for that.
 
-Rust does not have constructors. Every time has a literal form (e.g. 
+Rust does not have constructors. Every type has a literal form (e.g. 
 `let a = Complex { re: 2.1, im: -1.4 };`). Many types also have a 
-`new` method though (it's not a Rust keyword though, these are just 
+`new` method (it's not a Rust keyword though, these are just 
 normal methods).
 
 ## Loops
@@ -140,10 +140,10 @@ for item in &mut collection {
 }
 ```
 
-All three loops shown above are a syntactic sugar for diferent method calls:
+All three loops shown above are a syntactic sugar for different method calls:
 
 - `for item in collection` = `for item in itoIterator::into_iter(collection)`
-- `for item in&collection` = `for item in collection.iter()`
+- `for item in &collection` = `for item in collection.iter()`
 - `for item in &mut collection` = `for item in collecion.iter_mut()`
 
 ### Index variable

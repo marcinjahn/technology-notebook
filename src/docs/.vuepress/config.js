@@ -158,6 +158,8 @@ module.exports = {
             "rust/enums",
             "rust/organization",
             "rust/collections",
+            "rust/error-handling",
+            "rust/generics",
             "rust/traits",
           ],
         },
