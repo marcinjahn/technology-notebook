@@ -3,24 +3,26 @@
     <slot name="top" />
 
     <div class="theme-default-content">
-    <Content />
-    <PageEdit />
-
-    <PageNav v-bind="{ sidebarItems }" />
+      <Content />
+ 
+      <PageNav v-bind="{ sidebarItems }" />
     </div>
+
+
+    <PageEdit />
 
     <slot name="bottom" />
   </main>
 </template>
 
 <script>
-import PageEdit from '@theme/components/PageEdit.vue'
-import PageNav from '@theme/components/PageNav.vue'
+import PageEdit from "@theme/components/PageEdit.vue";
+import PageNav from "@theme/components/PageNav.vue";
 
 export default {
   components: { PageEdit, PageNav },
-  props: ['sidebarItems']
-}
+  props: ["sidebarItems"],
+};
 </script>
 
 <style lang="stylus">
@@ -28,6 +30,6 @@ export default {
 
 .page
   padding-bottom 2rem
-  display block
+  display block 
 
 </style>
