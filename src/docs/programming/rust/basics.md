@@ -45,6 +45,12 @@ string slice instead of a `String`, because:
 - a string literal can be passed as is;
 - a string slice can be easily taken out of a `String` with `&some_string`
 
+A `format!` macro is useful for creating strings composed of other values:
+
+```rust
+let greeting = format!("My name is {} {}", first_name, last_name);
+```
+
 ### Scope
 
 Variables that go out of scope are automatically removed by Rust. We don't need

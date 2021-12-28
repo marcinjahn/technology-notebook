@@ -25,7 +25,7 @@ code and creates types for all the ways that we use them. It's called
 Function example:
 
 ```rust
-fn largest<T>(list: &[T]) -> T {
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
   let mut largest = list[0];
 
   for &item in list {
@@ -38,6 +38,12 @@ fn largest<T>(list: &[T]) -> T {
 ```
 
 The function `largest` is generic over some type `T`.
+
+::: tip Traits
+The function `largest` works only with types `T` that implement the `PartialOrd`
+[trait](./traits.md) (it provides comparing functionality (`>` operator)) and
+the `Copy` trait (to support only the types stored on the stack?).
+:::
 
 We can call this function like this:
 
@@ -106,3 +112,16 @@ impl Point<f32> {
 In the code above, there is no type after `impl`, since this method is
 not generic! Only `Point<f32>` instances will have this method.
 :::
+
+Or, we could specify a method only for `T`s that implement some traits:
+
+```rust
+impl<T: Display + PartialOrd> Point<T> {
+  fn cmp_display(&self) {
+    if self.x >= self.y {
+      println!("The largest member is x = {}", self.x);
+    } else P
+    println!("The largest member is y = {}", self.y);
+  }
+}
+```

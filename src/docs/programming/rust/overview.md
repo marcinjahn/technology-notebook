@@ -1,10 +1,10 @@
 ---
-title: Rust
-description: Some theory about Rust
+title: Overview
+description: Some overview of Rust
 lang: en-US
 ---
 
-# Rust
+# Overview
 
 ## Why Rust?
 
@@ -62,5 +62,5 @@ keywords, etc.
 
 ## References
 
-[The Rust Programming Language Book](https://doc.rust-lang.org/book/)
-[https://fasterthanli.me/articles/working-with-strings-in-rust](https://fasterthanli.me/articles/working-with-strings-in-rust)
+- [The Rust Programming Language Book](https://doc.rust-lang.org/book/)
+- [https://fasterthanli.me/articles/working-with-strings-in-rust](https://fasterthanli.me/articles/working-with-strings-in-rust)
