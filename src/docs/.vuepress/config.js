@@ -161,7 +161,9 @@ module.exports = {
             "rust/error-handling",
             "rust/generics",
             "rust/traits",
-            "rust/lifetimes"
+            "rust/lifetimes",
+            "rust/testing",
+            "rust/tips"
           ],
         },
         {

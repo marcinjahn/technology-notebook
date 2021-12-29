@@ -150,9 +150,51 @@ A function defined as the one above can return only **one type**. It
 cannot return either one implementation or another.
 :::
 
-## Debug
+## Derivable Traits
 
-`#[derive(Debug)]` before struct's definition makes that struct printable in
-debug mode (`print!("{}", instance)`).
+Some traits (in the standard library and third party) have sensible default
+implementations and they can be implemented on a type just by adding an
+annotation `#[derive(SomeTrait)]`.
+
+Here are the ones from the standard library:
+
+### Debug
+
+Writing `#[derive(Debug)]` before struct's definition makes that struct
+printable in debug mode (`print!("{}", instance)`).
 
 Another way to debug print is with the use of `dbg!(&instance)`.
+
+### PartialEq and Eq
+
+`PartialEq` allows checking equality with the `==` and `!=` operators.
+Underneath there's just the `eq` method. The default implementation checks all
+fields of a struct if they're equal.
+
+The `Eq` trait has no methods. ?
+
+### PartialOrd and Ord
+
+Allows comparisons with the `>`, `<`, `>=`, `<=` operators. It can only be
+applied to types that implement `PartialEq` as well.
+
+In structs, all fields are checked.
+
+### Clone
+
+Allows creation of deep copy of a value. Default implementation calls `clone()`
+on each field of the type. Cloning might involve copying heap data.
+
+### Copy
+
+Allows to copy a value on a stack. All types that implement `Copy` must also
+implement `Clone`.
+
+### Hash
+
+Allows to create some hash of an instance. The default implementation combines
+resuts of `hash()` of all the fields of a struct.
+
+### Default
+
+Allows to create a default value for a type. It provides a `default()` function.

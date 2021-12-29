@@ -69,3 +69,12 @@ let team_name = String::from("Blue");
 let score = scores.get(&team_name); // returns Option<&T>
 scores.entry(String::from("Yellow")).or_insert(60); // inserts only if Yellow key is not there yet
 ```
+
+## Collect function
+
+The `collect` function turns iterator into an actual collection
+of values.
+
+```rust
+let args: Vec<String> = env::args().collect();
+```

@@ -1,0 +1,102 @@
+---
+title: Testing
+description: Automated Tests in Rust
+lang: en-US
+---
+
+# Testing
+
+Rust has built-in capabilities to write tests.
+
+::: tip
+Library projects have test module added by default.
+:::
+
+::: tip Documentation code
+Rust can also test code that is a part of our API documentation.
+These tests are run as part of `cargo test`.
+:::
+
+## Test Functions
+
+A function is a test function when `#[test]` attribute is applied to it.
+
+```rust
+#[test]
+fn it_works() {
+  let result = 2 + 2;
+  assert_eq!(result, 4);
+}
+```
+
+A function fails when it panics. Otherwise, it passes.
+Each test is run in a new thread.
+
+::: tip Result alternative
+Test functions might also return `Result<T, E>` instead of panic!ing.
+:::
+
+::: tip Private methods
+Rust allows to run tests on private methods
+:::
+
+### Macros and attributes
+
+Some useful testing macros:
+
+- `#[cfg(test)]` - placed on a module. Thanks to it, the test module is compiled
+  only when `cargo test` is used. It saves time and space when building the
+  code.
+- `#[test]` - required for a function to be runnable with `cargo test`
+- `assert!(should_be_true)`
+- `assert_eq!(expected, actual)`
+- `assert_ne!(something, not_something)`
+- `#[should_panic]` - it accepts an optional string that the panic should
+  be thrown with. This helps to verify that the expected panic was thrown
+- `#[ignore]` - test will not run. We can still force `cargo` to run it using
+  `cargo test -- --ignored`. It'll run only the ignored tests.
+
+::: tip Failure Message
+These macros optionally accept a failure message that will be displayed in case
+of failure. The message will be parsed by the `foramt!` macro, so it can contain
+variables. Such a message might inform what the test was actually testing in more
+detail.
+:::
+
+## Controlling Tests
+
+### cargo test parameters
+
+- `--test-threads=n` - allows to specify how many threads run the tests. We could set
+  it to `1` to disable multithreading.
+- `--show-output` - by default `print!` does not show anything for passing
+  tests. This setting changes that
+- passing single test function name will run just that function
+
+## Organization
+
+### Unit Tests
+
+Unit tests should be placed in the same file as the code they're testing. A
+separate `testing` module (with `#[cfg(test)]`) should be created to include all
+the tests.
+
+### Integration Tests
+
+Integration tests should be separate from the tested code. There should be a 
+`tests` directory next to `src`. Each file in that directory will become a separate
+crate.
+
+::: tip
+We don't need to annotate integration tests with `#[cfg(test)]`. Cargo knows that
+files in the `tests` directory are tests. 
+:::
+
+These tests will be run with `cargo test`.
+
+::: tip Helper Functions
+Integration tests can use some helper functions defined in a separate file. Such
+fuctions should be placed under `tests/{some_subdirectory}` directory. Then,
+`cargo test` will not treat these files as tests and will not try to run them as
+such.
+:::
