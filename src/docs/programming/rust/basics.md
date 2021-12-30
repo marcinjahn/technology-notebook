@@ -34,6 +34,27 @@ with the same name. This way, we don't have to artificially define things like
 `data_string` and `data`. First we could define `data` as `String`, and then
 define `data` as `i32` with a value coming from parsed `data`.
 
+### Type Inference
+
+Rust compiler is pretty smart about type inference. For example, this works:
+
+```rust
+let v: Vec<i32> = Vec::new();
+```
+
+The `new()` method of `Vec` is called without any generic type. Compiler sees
+that on the left side of the assignment we specified the type to be `i32`.
+
+This also works:
+
+```rust
+let mut vec = Vec::new();
+vec.push(2);
+```
+
+The compiler "scans" the code and it sees that the vector insance should be
+created for the `i32` type, because that's what we're adding to it later on.
+
 ### Strings
 
 There is a `String` type, which is stored on a heap. There is also a string
@@ -100,14 +121,6 @@ code. They are often used to simplify common patterns.
 In case of printing, there are many ways of doing that depending on the provided
 data type. The `println!` macro takes care of figuring out the exact method to
 call.
-
-## Closures
-
-`|| {...}` syntax is used for closures/lambdas.
-
-```rust
-thread::spawn(|| { let data = 500; });
-```
 
 ## Types
 

@@ -70,11 +70,48 @@ let score = scores.get(&team_name); // returns Option<&T>
 scores.entry(String::from("Yellow")).or_insert(60); // inserts only if Yellow key is not there yet
 ```
 
-## Collect function
+## Iterators
 
-The `collect` function turns iterator into an actual collection
+Iterators give access to consecutive elements in collections. Iterators
+implement the `Iterator` trait, which exposes `next()` method and `Item`.
+It's easy to define our own iterators.
+Iterators provide *zero-cost abstractions*, they are very performant.
+
+There are three methods on collections that return iterators:
+
+- `iter()` - iterates over immutable references to items in the collection
+- `iter_mut()` - iterates over mutable references to items in the collection
+- `into_iter()` - returns owned values from the collection
+
+### Consuming Adaptors
+
+Some methods defined on the `Iterator` trait take ownership of the iterator
+and return something useful. An example is the `sum()` method.
+
+#### Collect function
+
+The `collect()` function consumes iterator into an actual collection
 of values.
 
 ```rust
 let args: Vec<String> = env::args().collect();
 ```
+
+### Iterator Adaptors
+
+Some other methods can transform an iterator into another kind of iterator.
+These iterators are lazy, so to actually do anything the resulting iterator
+needs to be consumed.
+
+Examples:
+
+- `map()` - takes a [closure](./closures.md) to be executed agains each item and
+  returns closure's result. It's similar to JS's `map` in concept.
+- `filter()` - returns an iterator that filters source collection based on a
+  closure returning bool.
+- `skip()` - skips some items.
+
+::: tip
+`collect()` applied on top of iterator adaptor returns a new collection of
+values.
+:::

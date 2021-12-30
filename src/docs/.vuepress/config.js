@@ -162,6 +162,7 @@ module.exports = {
             "rust/generics",
             "rust/traits",
             "rust/lifetimes",
+            "rust/closures",
             "rust/testing",
             "rust/tips"
           ],
