@@ -111,10 +111,12 @@ fn main() {
 Functions cannot do that. Captures can be done in three ways, depending on the
 `Fn...` trait being used:
 
-- `FnOnce` - takes ownership of the captured variables. It can be called only once,
-  because it can't take ownership of some external value twice.
-- `FnMut` - it mutably borrows external values.
-- `Fn` - it immutably borrows external values.
+- `FnOnce` - Instances of `FnOnce` can be called, but might not be callable
+  multiple times. Because of this, if the only thing known about a type is that
+  it implements `FnOnce`, it can only be called once, because it takes ownership
+  of passed arguments.
+- `FnMut` - it mutably borrows external values. Sutrait of `FnOnce`.
+- `Fn` - it immutably borrows external values. Sutrait of `FnOnce`.
 
 ::: tip Closure traits
 - Closure can implement one, two, or all of these traits.

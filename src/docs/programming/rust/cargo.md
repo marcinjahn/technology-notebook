@@ -32,14 +32,45 @@ Also, a lot of new files are added to the project. They are all managed by
 
 `cargo run --release` compiles a *release* build.
 
+## Release Profiles
+
+Rust apps have two profiles:
+
+- **dev** (used with `cargo build`) - good defaults for development
+- **release** (used with `cargo build --release`) - good defaults for release
+  builds
+
+These profiles can be customized in the `Cargo.toml` file. Example:
+
+```toml
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+```
+
+The `dev` profile has 0 optimizations (because we want it to compile fast even
+though the code runs slower).
+
+
 ## Other commands
 
-- `cargo build` - downloads dependencies and compiles the code. It uses the "rustc" compiler behind the scenes.
-- `cargo doc` -
-builds HTML documentation for every dependency in the current project.
-- `cargo init` - initaites a Rust project with pre-existng files in it. `cargo create` would create a project from scratch.
-- `cargo add` - adds crates. This subcommand needs to be installed first with `cargo install cargo-edit`.
+- `cargo build` - downloads dependencies and compiles the code. It uses the
+  "rustc" compiler behind the scenes.
+- `cargo doc` - builds HTML documentation for every dependency in the current
+  project.
+- `cargo init` - initaites a Rust project with pre-existng files in it. `cargo
+  create` would create a project from scratch.
+- `cargo add` - adds crates. This subcommand needs to be installed first with
+  `cargo install cargo-edit`.
 
 ## Crates
 
-Packages are called *crates*. The open-source ones are shared at https://crates.io.
+Packages are called *crates*. The open-source ones are shared at
+https://crates.io.
+
+### Binary crates
+
+Binary crates might be installed with `cargo install some-crate`. They will be
+installed in `$HOME/.cargo/bin`.

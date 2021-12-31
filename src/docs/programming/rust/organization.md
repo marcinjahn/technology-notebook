@@ -11,18 +11,30 @@ including which details are exposed, which details are private, and what names
 are in each scope in programs. These features, sometimes collectively referred
 to as the module system, include:
 
-- **Crates**: a binary or library
+- **Workspaces**: acts like a *solution* in .NET. It may contain multiple
+  packages.
 - **Packages**: one or more crates that provide a set of functionality. A
-  package contains a `Cargo.toml` file
+  package contains a `Cargo.toml` file. It's like a *project* in .NET.
+- **Crates**: a binary or library.
 - **Modules**: let us organize code within a crate into groups for readability
-  and easy reuse
-- **Paths**: A way of naming an item, such as a struct, function, or module
+  and easy reuse.
+- **Paths**: A way of naming an item, such as a struct, function, or module.
 
 ## Packages
 
 A package contains crates. It can be as many binary crates as needed and just
 one library crate.
 We create packages with `cargo new my-project-name`.
+
+## Workspaces
+
+A workspace may contain multiple packages. We need to define how packages are
+related (which one depends on which one).
+
+We can specify project to run in a workspace with `cargo run -p my-package`.
+
+Pckages in a workspace use the same versions of dependencies. There's just one
+`Cargo.lock` file.
 
 ## Modules
 
@@ -193,3 +205,16 @@ The `*` (glob) operator allows us to bring in all items from some module:
 ```rust
 use std::collections::*;
 ```
+
+## Re-exporting
+
+Sometimes having a deep structure of types is good for the author of the crate,
+but troublesome for the users of the crate. Things can be reexported to change
+the way how they are visible outside.
+
+```rust
+pub use self::some_module::another_module::UsefulType
+```
+
+The `UsefulType` is available from the level of the file where we put that
+declaration. It will be also visible in the documentation of our crate.
