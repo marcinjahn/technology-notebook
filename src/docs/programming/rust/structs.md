@@ -38,6 +38,14 @@ let mut user2 = User {
 user2.active = false;
 ```
 
+::: tip Stack
+By default, Rust stores all data on the stack (like C/C++). Struct instances
+also are stored on the stack. [Smart pointers](./smart-pointers.md) allow
+changing that.
+
+Only types whose size is known at compile time can be stored on the stack.
+:::
+
 ## Shortcuts
 
 A bit like in JS, we can use the shorter way to instantiate objects:

@@ -1,6 +1,6 @@
 ---
-title: Curriculum Vitae
-description: My CV
+title: My CV
+description: My Cirriculum Vitae (CV)
 lang: en-US
 ---
 

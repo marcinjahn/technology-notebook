@@ -15,7 +15,8 @@ to as the module system, include:
   packages.
 - **Packages**: one or more crates that provide a set of functionality. A
   package contains a `Cargo.toml` file. It's like a *project* in .NET.
-- **Crates**: a binary or library.
+- **Crates**: a binary or library. It's a compilation unit for the compiler.
+  Other languages treat a single file as a compilation unit
 - **Modules**: let us organize code within a crate into groups for readability
   and easy reuse.
 - **Paths**: A way of naming an item, such as a struct, function, or module.

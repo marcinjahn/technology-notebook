@@ -107,7 +107,7 @@ let r2 = &mut s; // Wrong!
 println!("{}, {}", r1, r2);
 ```
 
-Also, if there is an immulable reference, another one that is mutable cannot be
+Also, if there is an immutable reference, another one that is mutable cannot be
 created:
 
 ```rust
@@ -141,6 +141,30 @@ println!("{}", r2);
 
 With Rust, it's impossible to have dangling pointers. Rust will complain of such
 issues at compile time.
+
+### Dereferencing
+
+```rust
+let x = 5;
+let y = &y;
+
+assert_eq!(5, x);
+assert_eq!(5, y); // WRONG! i32 and &i32 are different types
+```
+
+Sometimes we might need to obtain an actual value that the reference is pointing
+to. We can do that we the **dereferencing operator**:
+
+```rust
+let x = 5;
+let y = &x;
+
+assert_eq!(5, *y); // OK
+```
+
+::: tip Smart Pointers
+[Smart pointers](./smart-pointers.md) might be dereferenced as well.
+:::
 
 ## Slices
 
@@ -176,6 +200,5 @@ All string literals are slices!
 let s = "abc"; // It's a slice!
 ```
 :::
-
 
 A reference to a string is treated as a string slice.
