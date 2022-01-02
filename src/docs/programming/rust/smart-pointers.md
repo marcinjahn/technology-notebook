@@ -181,6 +181,30 @@ We can check the current reference count of `Rc` with `Rc::strong_count(&a)`,
 where `&a` is a reference to an actual instance of `Rc`.
 :::
 
+### Weak
+
+`Rc` allows to create two types of smart pointers:
+
+- `Rc::clone(&a)` - strong reference (`Rc<T>`)
+- `Rc::downgrade(&a)` - weak reference (`Weak<T>`)
+
+Weak references do not increment the `strong_count`, they increment
+`weak_count`. The `weak_count` does not need to be 0 for the value being
+referred to to be dropped.
+
+Since the value begind `Weak<T>` is uncertain it needs to be retrieved using 
+the `upgrade()` method that returns `Option<T>`.
+
+::: tip Reference Cycles
+`Weak` is useful for protection agains reference cycles. If some node referes to
+another via `Rc`, it's a strong connection. If the other node needs to have a
+reference to the first one as well, it would use `Weak`. That way, the
+`strong_count` stays at 1 and the nodes can be dropped when they go out of
+scope.
+
+`Weak` is useful in graphs as an alternative of `Rc`.
+:::
+
 ## RefCel
 
 Here are the borrowing rules in Rust:
