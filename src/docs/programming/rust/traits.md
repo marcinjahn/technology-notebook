@@ -45,7 +45,7 @@ they don't have default implementations).
 
 A type may implement a trait as follows:
 
-```rust
+"`rust
 // type itself
 pub struct Tweet {
   pub username: String,
@@ -70,7 +70,7 @@ to our crate. We can implement traits on existing third-party types!
 To use a trait that has some default implementation (without overwriting it), we
 can do it as follows:
 
-```rust
+"`rust
 impl Summary for Tweet {}
 ```
 
@@ -87,7 +87,7 @@ to **extensions in C#**.
 
 Rust does it with the `ToString` method, like this:
 
-```rust
+"`rust
 impl<T: Display> ToString for T {
   // ...
 }
@@ -198,3 +198,56 @@ resuts of `hash()` of all the fields of a struct.
 ### Default
 
 Allows to create a default value for a type. It provides a `default()` function.
+
+## Trait Objects
+
+Trait Objects enable **polymorphism**.
+
+Without trait objects:
+
+"`rust
+pub struct Screen<T: Draw> {
+  pub components: Vec<T>,
+}
+```
+
+The `components` vector's items must all be of the same type. If we want to have
+a vector that may contain values of any type (that implements `Draw`), we can
+use trait object:
+
+"`rust
+pub struct Screen {
+  pub components: Vec<Box<dyn Draw>> // Box<dyn Draw> is a trait object
+}
+```
+
+Now, we could apply the following code on top of that to make use of
+polymorphism:
+
+```rust
+impl Screen {
+  pub fn run(&self) {
+    for component in self.components.iter() {
+      component.draw();
+    }
+  }
+}
+```
+
+::: tip Pointer
+Trait objects must use some kind of pointer (reference or smart
+pointer).
+:::
+
+This feature is a bit similar to what we can do in languages like JS (*duck
+typing*), but different in the sense that the existence of required methods is not
+done during runtime, and the code cannot panic due to some value not implementing
+a required trait. It's safer.
+However, Rust still needs to perform dynamic dispatch to find the code of the
+method on values in runtime. This incurs some cost.
+
+Trait objects may be used if in trait's methods:
+
+- The return type isn't `Self`.
+- There are no generic type parameters.
+

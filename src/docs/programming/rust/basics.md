@@ -272,3 +272,16 @@ The following are not expressions, thus do not return values:
 ## References
 
 References are created with `&`. They are dereferenced with `*`.
+
+## OOP
+
+Rust can be considered object-oriented or not, depending on the definition that
+we use. Some facts:
+
+- Rust has structs and enums that can include some data and methods - like
+  objects in OOP
+- Parts of a struct may be public or private - encapsulation
+- There is no inheritance, but traits may have default implementations of
+  methods
+- Some form of polymorphism can be achieved with generics
+- 

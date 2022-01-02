@@ -20,6 +20,15 @@ code and creates types for all the ways that we use them. It's called
 **monomorphization**. E.g. `Option<i32>` becomes `Option_i32`.
 :::
 
+::: danger Limitation of generics
+An instance of a generic type `T` with some trait bounds may only be used with
+one type in place of `T`. For example, a `Vec<T: SomeTrait>` is not able to
+store multiple different types that implement `SomeTrait`. All of the values it
+stores need to be of the same type (any type that implements `SomeTrait`). To
+have more polymorphic behaviour and be able to store values of different types,
+[Trait Objects](./traits.md#trait-objects) should be used.
+:::
+
 ## Functions
 
 Function example:
