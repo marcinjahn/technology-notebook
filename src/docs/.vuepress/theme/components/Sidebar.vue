@@ -27,10 +27,12 @@ export default {
 
 <style lang="stylus">
 .sidebar
-  bottom auto
+  bottom 0
+  overflow: auto;
+  // max-height: 80%;
   // background-color grey;
   top 5 rem
-  left 1.4 rem
+  // left 6 rem
   border-radius 5px;
   // border 1px solid grey;
 
