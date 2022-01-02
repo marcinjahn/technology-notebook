@@ -164,6 +164,7 @@ module.exports = {
             "rust/lifetimes",
             "rust/closures",
             "rust/smart-pointers",
+            "rust/concurrency",
             "rust/testing",
             "rust/tips"
           ],

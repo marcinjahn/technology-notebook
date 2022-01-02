@@ -120,8 +120,8 @@ Functions cannot do that. Captures can be done in three ways, depending on the
 
 ::: tip Closure traits
 - Closure can implement one, two, or all of these traits.
-- By default, all closures implements `FnOnce`.
-- We can force closue to take ownership by using the `move` keyword in front of
+- By default, all closures implement `FnOnce`.
+- We can force closure to take ownership by using the `move` keyword in front of
   the closure
 - when choosing the trait, it's a good idea to start from `Fn` and change it
   only if necessary

@@ -1,3 +1,9 @@
+---
+title: Collections
+description: Collections of values in Rust
+lang: en-US
+---
+
 # Collections
 
 ## Arrays
