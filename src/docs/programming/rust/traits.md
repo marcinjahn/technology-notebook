@@ -187,12 +187,12 @@ on each field of the type. Cloning might involve copying heap data.
 
 ### Copy
 
-Allows to copy a value on a stack. All types that implement `Copy` must also
+Allows copying a value on a stack. All types that implement `Copy` must also
 implement `Clone`.
 
 ### Hash
 
-Allows to create some hash of an instance. The default implementation combines
+Allows creating some hash of an instance. The default implementation combines
 resuts of `hash()` of all the fields of a struct.
 
 ### Default
@@ -205,7 +205,7 @@ Trait Objects enable **polymorphism**.
 
 Without trait objects:
 
-"`rust
+```rust
 pub struct Screen<T: Draw> {
   pub components: Vec<T>,
 }
@@ -215,7 +215,7 @@ The `components` vector's items must all be of the same type. If we want to have
 a vector that may contain values of any type (that implements `Draw`), we can
 use trait object:
 
-"`rust
+```rust
 pub struct Screen {
   pub components: Vec<Box<dyn Draw>> // Box<dyn Draw> is a trait object
 }
@@ -250,4 +250,62 @@ Trait objects may be used if in trait's methods:
 
 - The return type isn't `Self`.
 - There are no generic type parameters.
+
+## Associated Types
+
+Associated types allow traits to act a bit as if they were generic.
+
+A real example from the standard library:
+
+```rust
+pub trait Iterator {
+  type Item;
+  fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+The `next` method will return `Option<Item>` and the `Item` type is unknown
+in the trait's definition. The types that increment `Iterator` have to specify
+what `Item` stands for:
+
+```rust
+impl Iterator for Counter {
+  type Item = u32; // concrete type
+  fn next(&mut self) -> Option<Self::Item> { ... }
+}
+```
+
+::: tip Generics
+Why not use generics then? According to the
+[book](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html), if we used
+generics, anytime we'd call `next`, we'd have to call it like this:
+`next<SomeType>()`, because generic type could be anything. Associated type may
+be implemented only once per type (unlike generics), and the compiler knows
+exactly which type `next()` should use.
+
+Some traits use generics and associated types together (e.g. `Add`).
+:::
+
+## Supertraits
+
+Some traits might require other traits also to be implemented by the types that
+want to use it.
+
+```rust
+use std::fmt;
+
+trait OutlinePrint: fmt::Display {
+  fn outline_print(&self) {
+    let output = self.to_string(); // comes from Display
+    let len = output.len();
+    println!("{}", "*".repeat(len + 4));
+    println!("*{}*", " ".repeat(len + 2));
+    println!("* {} *", output);
+    println!("*{}*", " ".repeat(len + 2));
+    println!("{}", "*".repeat(len + 4));
+  }
+}
+```
+
+In the example above, `Display` is the supertrait of `OutlinePrint`.
 

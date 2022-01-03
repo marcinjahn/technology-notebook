@@ -60,8 +60,8 @@ created for the `i32` type, because that's what we're adding to it later on.
 There is a `String` type, which is stored on a heap. There is also a string
 literal, which is actually a [string slice](./ownership.md#string-slices).
 
-If a function expects a string parameter, it's a good practice to use
-string slice instead of a `String`, because:
+If a function expects a string parameter, it's a good practice to use string
+slice (`&str`) instead of a `String`, because:
 
 - a string literal can be passed as is;
 - a string slice can be easily taken out of a `String` with `&some_string`
@@ -71,6 +71,13 @@ A `format!` macro is useful for creating strings composed of other values:
 ```rust
 let greeting = format!("My name is {} {}", first_name, last_name);
 ```
+
+`str` is a **dynamically sized type** (DST) in Rust. It means that the contents
+of that type are not static and during runtime the `str` value may be of various
+length (depending on the length of the string). Rust prefers types that have
+known sizes. That's why we use `&str` instead, which is a slice - its size is
+known - it's a pointer to `str` and a length of the value there (stores as
+`usize`).
 
 ### Scope
 

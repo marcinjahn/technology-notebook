@@ -126,3 +126,8 @@ Functions cannot do that. Captures can be done in three ways, depending on the
 - when choosing the trait, it's a good idea to start from `Fn` and change it
   only if necessary
 :::
+
+## Function Pointers
+
+Functions can also be passed in place of closures. Function pointers implement
+all three closure traits: `FnOnce`, `FnMut`, `Fn`.
