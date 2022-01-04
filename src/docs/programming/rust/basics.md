@@ -239,9 +239,39 @@ match item {
 ```
 
 `match` does not fall through through other cases. As soon as a case is matched,
-it's executed and `match` is exited.
+it's executed, and `match` is exited.
 
 `match` is very useful with [enums](./enums.md).
+
+::: danger Dropping temporary values
+Some statements with `let` will not behave the same as statements without `let`.
+
+Here's an exmple with `Mutex`:
+
+```rust
+// OPTION I
+loop {
+  let job = receiver.lock().unwrap().recv().unwrap();
+   //some long operation
+}
+
+// OPTION II
+while let Ok(job) = receiver.lock().unwrap().recv() {
+  // some long operation
+}
+```
+
+`Mutex` gets released when the result of `lock()` (an instance of `MutexGuard`)
+goes out of scope. In *OPTION I*, the lock will be removed right after the line
+where it's acquired. The temporary value of the lock is not stored anywhere, and
+it is dropped right after the line. Another thread may acquire the lock while
+the current thread executes some other operations in that loop block.
+
+In *OPTION II*, even though the lock result is not stored anywhere, it is still
+kept until the end of the `while let` block.
+
+That behavior can be observed with `while let`, `if let`, and `match`.
+:::
 
 ## Expressions
 
@@ -291,4 +321,3 @@ we use. Some facts:
 - There is no inheritance, but traits may have default implementations of
   methods
 - Some form of polymorphism can be achieved with generics
-- 
