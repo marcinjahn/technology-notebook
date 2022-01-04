@@ -14,6 +14,7 @@ lang: en-US
   separate files like `src/lib.rs`. That also makes the logic testable (binary
   crates are not testable).
 - `eprintln!` macro prints to stderr.
+- a **clap** cargo is useful for defining CLI arguments
 
 ## Documentation
 

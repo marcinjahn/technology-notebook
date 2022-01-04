@@ -43,7 +43,7 @@ There is no Garbage Collector
 
 ### Control
 
-Programmers have cntrol over how data structures are laid out in memory and how
+Programmers have control over how data structures are laid out in memory and how
 they're accessed. There are some sensible defaults as well.
 
 - Data may be stored on a "stack" or on the "heap".
@@ -55,10 +55,15 @@ they're accessed. There are some sensible defaults as well.
 Rust is not good with cyclic data structures. Implementing doubly-linked list
 might not be easy for a beginner in Rust.
 
-Compilation is slower than in peer languages.
+The compilation is slower than in peer languages.
 
 Rust has steep learning curve due to it being "large". Lots of functionalities,
 keywords, etc.
+
+## Editions
+
+Every two or three years a new *Edition* of Rust comes out. Additionally, smaller
+changes are released every 6 weeks.
 
 ## References
 
