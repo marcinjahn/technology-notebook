@@ -119,6 +119,7 @@ module.exports = {
             "dotnet/generic-host",
             "dotnet/logging",
             "dotnet/configuration",
+            "dotnet/records",
             "dotnet/asp-net",
             "dotnet/entity-framework.md",
             "dotnet/asp-net-validation",
