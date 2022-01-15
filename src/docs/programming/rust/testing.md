@@ -22,10 +22,12 @@ These tests are run as part of `cargo test`.
 A function is a test function when `#[test]` attribute is applied to it.
 
 ```rust
-#[test]
-fn it_works() {
-  let result = 2 + 2;
-  assert_eq!(result, 4);
+#[cfg(test)]
+mod tests {
+  #[test]
+  fn it_works() {
+    assert_eq!(2 + 2, 4);
+  }
 }
 ```
 
@@ -83,13 +85,13 @@ the tests.
 
 ### Integration Tests
 
-Integration tests should be separate from the tested code. There should be a 
+Integration tests should be separate from the tested code. There should be a
 `tests` directory next to `src`. Each file in that directory will become a separate
 crate.
 
 ::: tip
 We don't need to annotate integration tests with `#[cfg(test)]`. Cargo knows that
-files in the `tests` directory are tests. 
+files in the `tests` directory are tests.
 :::
 
 These tests will be run with `cargo test`.
