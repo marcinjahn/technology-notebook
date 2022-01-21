@@ -164,6 +164,7 @@ module.exports = {
             "rust/traits",
             "rust/lifetimes",
             "rust/closures",
+            "rust/pointers",
             "rust/smart-pointers",
             "rust/concurrency",
             "rust/testing",
@@ -245,6 +246,13 @@ module.exports = {
             },
           ],
         },
+        {
+          title: "Blockchain",
+          children: [
+            "blockchain/intro",
+            "blockchain/smart-contracts"
+          ]
+        }
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
     },

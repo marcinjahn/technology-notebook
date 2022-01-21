@@ -2,4 +2,4 @@
 isIntro: true
 ---
 
-General computer hardware and software topics, like **networking**, **security**, etc.
+Various IT topics that are hard to categorize, so they end up here.
