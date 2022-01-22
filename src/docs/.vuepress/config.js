@@ -250,7 +250,8 @@ module.exports = {
           title: "Blockchain",
           children: [
             "blockchain/intro",
-            "blockchain/smart-contracts"
+            "blockchain/smart-contracts",
+            "blockchain/solidity"
           ]
         }
       ],

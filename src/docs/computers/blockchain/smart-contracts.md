@@ -4,6 +4,8 @@ description: Smart Contracts in Ethereum blockchain
 lang: en-US
 ---
 
+# Smart Contract
+
 Smart Contract is an immutable executable code representing a logic of a Dapp.
 They contain the state and operations that enforce the verification,
 validation and recording rules on the blockchain.
@@ -21,48 +23,15 @@ A contract consists of:
 
 - a name
 - data/state
-- rules for invoking functions
+- rules/modifiers for invoking functions
 - functions that may change the state and generate transactions
 
-Rules are not necessary. It may be allowed for anyone to invoke the functions.
+Rules are not necessary. Rules/modifiers are a bit similar to encapsulation in
+OOP. They are gatekeepers that control access to data and functions. They allow
+the specification of rules of validation and verification. They are meant for
+realizing trust.
 
-## Programming Languages
+## Immutability
 
-One of the languages supported by Ethereum is **Solidity**.
-
-A simple program:
-
-```sol
-pragma solidity ^0.6.0;
-contract Counter {
-    uint value;
-
-    function initialize(uint x) public {
-        value = x;
-    }
-
-    function get() view public returns (uint) {
-        return value;
-    }
-
-    function increment(uint n) public {
-        value = value + n;
-    }
-
-    function decrement(uint n) public {
-        value = value - n;
-    }
-}
-```
-
-Some facts:
-
-- `public` keyword makes a function publicly visible, any blockchain participant
-  may invoke it
-- each function invocation is recorded in a ledger
-- any change of `value` is recorded
-- `view` functions do not change state and their execution is not recorded in
-  the ledger.
-
-A deployed smart contract is accessible to anyone who has an identity on the
-blockchain (human or a program).
+Once deployed onto the blockchain, a smart contract is immutable. Therefore,
+before deployment, smart contracts should be tested thoroughly.
