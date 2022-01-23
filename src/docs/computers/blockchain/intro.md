@@ -98,7 +98,7 @@ one of these networks.
 ## Accounts
 
 All blockchain participants (including smart contracts) have an account number
-that uniquely identifies them. They are 160 bits (40 bytes) long. All accouts
+that uniquely identifies them. They are 160 bits (40 bytes) long. All accounts
 can hold a balance of ethers. Thus, there are two implicit attributes of an
 account: a number and a balance.
  
@@ -111,6 +111,18 @@ They both can invoke smart contract function by sending a message. Such a messag
 would contain: a sender and a value. The value is added to the balance held
 by the smart contract. The smart contract needs to have payable modifier (rule) to
 be eligible to receive funds.
+
+Each account has a unique number (160 bits). That number is a result of hashing a public
+key from an asymmetric key pair of an account.
+
+Transactions initiated from an account are signed with the private key of that
+account.
+
+## Networks
+
+There are many Ethereum networks. The one with Network ID = 1 is the main
+network where real ETHs are being used. There are also test networks where mock
+ETH is used (like Ropsten). We can also set up local dev networks for testing.
 
 ## Source Material
 

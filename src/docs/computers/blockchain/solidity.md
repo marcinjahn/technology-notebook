@@ -232,6 +232,29 @@ the remaining *gas*.
 It should be used when checking conditions that are crucial and are not expected
 to ever be false.
 
+### Events
+
+Smart contracts may define and emit events.
+
+A definition example:
+
+```solidity
+event AuctionEnded(address winner, uint highestBid);
+```
+
+Emitting example:
+
+```solidity
+emit AuctionEnded(highestBidder, highestBid);
+```
+
+::: warning Parameters limit
+Maximum three parameters may be used in an event.
+:::
+
+Events are stored on the blockchain, in the block's receipt tree.
+These events can be retrieved by dapps.
+
 ## Remind IDE
 
 It's a web-based IDE for Solidity. It can be found at

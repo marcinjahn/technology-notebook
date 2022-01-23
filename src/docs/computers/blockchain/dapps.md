@@ -42,9 +42,24 @@ dapps or smart contracts. It's similar to what Remix IDE offers in the browser.
 ### MetaMask
 
 MetaMask is a wallet browser extension that allows to connect to the blockchain from the
-browser. It can be used in combination with Ganache for local development.
+browser. It can be used in combination with Ganache for local development, or with real
+Ethereum networks as well. 
 
 ::: warning Ganache Network ID
 For some reason, MetaMask does not want to connect with the defaul Ganache
 networkId (5777). Changing Ganache's networkId to 1337 solves the problem.
 :::
+
+## Data Storage
+
+Dapps, like traditional apps need to persist data. Dapps consist of:
+
+- web app
+- smart contracts
+
+These two parts store data differently.
+
+- web app stores data **off-chain**, in a database
+- smart contact stores data **on-chain**, in the blockchain itself.
+
+Tehe on-chain data should be kept to a minimum.
