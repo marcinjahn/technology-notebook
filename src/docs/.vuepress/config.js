@@ -251,7 +251,8 @@ module.exports = {
           children: [
             "blockchain/intro",
             "blockchain/smart-contracts",
-            "blockchain/solidity"
+            "blockchain/solidity",
+            "blockchain/dapps"
           ]
         }
       ],

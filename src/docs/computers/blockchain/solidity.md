@@ -6,12 +6,15 @@ lang: en-US
 
 # Solidity
 
-One of the languages supported by Ethereum is **Solidity**.
+One of the languages supported by Ethereum is **Solidity**. It is updated quite
+frequently, breaking changes should be expected.
+
+Solidity is used to the creation of **smart contracts**.
 
 A simple program:
 
 ```sol
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.11;
 contract Counter {
     uint value;
 
@@ -33,15 +36,6 @@ contract Counter {
 }
 ```
 
-Some facts:
-
-- `public` keyword makes a function publicly visible; any blockchain participant
-  may invoke it
-- each function invocation is recorded in a ledger
-- any change of `value` is recorded
-- `view` functions do not change state, and their execution is not recorded in
-  the ledger.
-
 A deployed smart contract is accessible to anyone who has an identity on the
 blockchain (human or a program).
 
@@ -52,10 +46,149 @@ blockchain (human or a program).
 - `address` - refers to identity of participants
 - `struct` - allows creation of structures of data
 - `mapping` - defines a dictionary/map/hashtable
+- `enum` - enumeration
+- `array` - e.g. `Proposal[] proposals;`
 
-### Modifiers
+#### Structs
 
-They are used to guard access to data/functions.
+Example
+
+```solidity
+struct Voter {
+    uint weight;
+    bool voted;
+    uint vote;
+}
+```
+
+#### Enums
+
+Example:
+
+```solidity
+enum Phase {Init, Regs, Vote, Done}
+Phase public state = Phase.Init;
+```
+
+### Loops
+
+Loops looks like in C. If the content is just one-line ling, curly brackets may
+be skipped.
+
+```solidity
+for (uint prop = 0; prop < numProposals; prop++) {
+    proposals.push(Proposal(0));
+}
+```
+
+### Functions
+
+```solidity
+function changeState(Phase x) public {
+    // content...
+}
+```
+
+#### Storage
+
+Variables within functions may either end-up in the blockchain or not. Simple
+variables, by default, are not recorded on the blockchain. Structs are recorded
+(by default). We can change that behaviour with keywords:
+
+- `memory` - variable is not stored
+- `storage` - variable is stored
+
+Example:
+
+```solidity
+Voter memory sender = voters[msg.sender];
+```
+
+`Voter` is a struct. By adding the `memory` keyword we made the variable
+temporary. It will not be stored on the blockchain.
+
+#### View Functions
+
+If a function is marked with a `view` keyword, it is not allowed to modify state
+and its execution is not recorded on the blockchain.
+
+If `view` is missing, every invocation is recorded in the ledger.
+
+#### Returning data
+
+Functions may return data. In such a case, we may define a variable that will
+be returned and write some data into it.
+
+```solidity
+function myFunc() returns (uint someData) {
+    someData = 4;
+}
+```
+
+### Constructor
+
+A contract might have a constructor. It is run during the deployment of the contract
+to the blockchain. The deployment is done by some participant of the blockchain.
+The deployment may be performed with some ethers attached. These ethers are added
+to the contact's funds. It's no different from other functions' execution. These can
+also accept funds.
+
+```solidity
+constructor (uint numProposals) {
+    chairperson = msg.sender;
+    voters[chairperson].weight = 2;
+
+    for (uint prop = 0; prop < numProposals; prop++) {
+        proposals.push(Proposal(0));
+    }
+}
+```
+
+### Visiblity Modifiers
+
+Dat and functions may be defined as `public` making them reachable by the
+public. Without that keyword the data/function is internal to the contract and
+may be called only within that contract.
+
+It's analogical to encapsulation in the OOP.
+
+### Access Modifiers
+
+They are used to guard access to data/functions. They are similar to functions.
+
+```solidity
+modifier validPhase(Phase reqPhase) {
+    require(state == reqPhase);
+    _;
+}
+```
+
+::: tip Parameters
+Modifier above accepts a parameter. A modifier might be defined without any 
+modifiers.
+:::
+
+The `_;` invokes the actual function that is guarded by the modifier.
+(can we do some actions in the modifier post function execution?)
+
+To use a modifier, we need to state it in the "header" of a function, like this:
+
+```solidity
+function register(address voter) public validPhase(Phase.Regs) {
+    // ...
+}
+```
+
+The function above will invoke the modifier with the value `Phase.Regs` (it's an
+enum) passed to it. Only if that modifier succeeds the transaction may be
+registered.
+
+::: tip Multiple modifiers
+Multiple modifiers may be applied to a single function. They are executed in the
+same sequence as they are listed on a function.
+
+If any of the modifiers in a chain fails, the rest will not be executed.
+:::
 
 ### Payable
 
@@ -66,15 +199,42 @@ A function with the `payable` keyword accepts payments (in `msg.value`).
 Every function invocation has access to the `msg.sender` field that reveals the
 address of the caller.
 
-### Constructor
+### Built-in functions
 
-A contract might have a constructor. It is run during the deployment of the contract
-to the blockchain. The deployment is done by some participant of the blockchain.
-The deployment may be performed with some ethers attached. These ethers are added
-to the contact's funds. It's no different from other functions' execution. These can
-also accept funds.
+#### Revert
+
+If something is wrong in the execution (e.g. some validation failed), `revert()`
+reverts the transaction. 
+Revert is called automatically by the Smart Contract in case of runtime error.
+
+In case of a revert, all changes done during the execution are reverted.
+
+::: tip
+A reverted transaction is not recorded on the blockchain.
+:::
+
+#### Require
+
+`require(condition)` is a basic assert operation used for validation. If the
+provided condition if false, `revert()` will be called.
+
+`require` does not consume all the remainin gas offered to pay (like `assert`
+does). It should be used in cases where the condition being false is a normal
+situation that is expected to happen (e.g. when validating user inputs).
+
+It's useful in access modifiers.
+
+#### Assert
+
+`assert(condition)` works basically the same as `require`, but it uses up all
+the remaining *gas*.
+
+It should be used when checking conditions that are crucial and are not expected
+to ever be false.
 
 ## Remind IDE
 
 It's a web-based IDE for Solidity. It can be found at
-[https://remix.ethereum.org/](https://remix.ethereum.org/).
+[https://remix.ethereum.org/](https://remix.ethereum.org/). It's suitable for
+playground/learning scenarios. Production apps should use something like
+Truffle.

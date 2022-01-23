@@ -36,7 +36,9 @@ participants. The purpose of blockchain is to verify and validate (or reject)
 transactions and then execute them and record the proof of these actions with
 the consensus of the peer participants.
 
-## Decentralised vs Distributed
+## Keywords
+
+### Decentralised vs Distributed
 
 ![](./assets/distributed-decentralized-cetralized.png)
 
@@ -60,7 +62,25 @@ coordinate by passing messages. Distributed blockchain systems are more secure
 as the system is spread across various nodes. A great example of a distributed
 system is AWS or cloud instances. Instead of data being stored in one single
 point, it is spread across various points across the server. Even if one node
-fails in these networks, it will not affect the entire system. 
+fails in these networks, it will not affect the entire system.
+
+### Validation vs verification
+
+**Verification** is about general rules.
+**Validation** is about application-specific rules.
+
+### Trust
+
+Trust is a measure of confidence in the credibility of a peer participant in a
+system. In a blockchain, trust is established by verification and validation of
+participant data and transactions.
+
+### Integrity
+
+In the blockchain context, **integrity** is about ensuring security and privacy
+of data and confidentiality of transactions.
+
+In blockchain, participants are identified by an account number.
 
 ## Bitcoin vs Ethereum
 
@@ -91,3 +111,7 @@ They both can invoke smart contract function by sending a message. Such a messag
 would contain: a sender and a value. The value is added to the balance held
 by the smart contract. The smart contract needs to have payable modifier (rule) to
 be eligible to receive funds.
+
+## Source Material
+
+- The "Blockchain in Action" book by Bina Ramamurthy
