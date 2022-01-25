@@ -20,19 +20,58 @@ algorithm itself secret.
 
 ## Hash
 
+Examples: MD5 (broken), SHA-1 (broken), SHA-2, SHA-3
+
+::: tip SHA-2 adn SHA-3 variants
+SHA-2/3 comes in different flavours: 224bit, 256bit, 384bit, 512bit.
+SHA-2 omits "2" (e.g. SHA-256).
+SHA-3 includes "3" (e.g. SHA-3-256)
+:::
+
 Hash function turns some data into an irreversible **digest**. It's used mostly
-to check if data is correct, it it matches a known hash/digest (data integrity).
+to check if data is correct - if it matches a known hash/digest (data integrity).
+
+::: tip Infinite inputs
+In reality, the second and third properties of hash functions are not possible
+to hold. There are inifinite possible inputs to hash functions and a finite
+amount of digests (hash result length is fixed).
+:::
+
+SHA-256 is a good enought choice, but SHA-3 is recommended.
+
+Hash functions have the following properties:
+
+- pre-image resistance - we can't get back from the result to the initial form
+- second pre-image resistance - given some input and output, we'll not find
+  another input with the same output
+- collision resistance - there are no two different inputs that result in
+  the same output.
+
+::: tip
+The third property implies the second one. They're quite similar. The difference
+is that *second pre-image resistance* requires the input 1 to be fixed.
+:::
+
+::: tip Hashing passwords
+Argon2 hash function is the best choice for hashing passwords.
+:::
 
 ## MAC
 
+Examples: HMAC, KMAC
+
 Uses hash function together with a private key (known to both the sender and the
 receiver). It's mostly used to verify that the received data is correct (when we
-create MAC by outselves, it matches the received MAC) and sent by authorized
+create MAC by ourselves, it matches the received MAC) and sent by authorized
 entity (it had to know the secret to create a MAC). The received data consists
 of raw data and a MAC. The receiver should calculate the MAC from the raw data
-and compare with the received MAC.
+and compare it with the received MAC.
 
-## HMAC
+MAc can be used for cookies. After login, we can return a cookie containing a
+MAC of the login name. Since only the server knows the secret that is used to
+produce a MAC, users cannot provide fake MACs.
+
+### HMAC
 
 A way to generate a MAC. It uses a pair of a hashing function and a secret key
 to generate a MAC from some message.
@@ -48,22 +87,41 @@ Or, a seed might be used.
 ## Nonce
 
 A number attached to the message. There shouldn't be two messages with the same
-nonces. It guards agains *replay attacks*.
+nonces. It guards against *replay attacks*.
+
+## Symmetric Encryption
+
+Examples: AES (128, 192, or 256 bits)
+
+The bits in the algorithm name refer to the amount of bits in the key.
+
+AES-128 is commonly used, it provides good enough encryption.
+
+### Authenticated Symmetric Encryption
+
+Ciphers generated with AES may be tempered with, and the result of decryption
+might be invalid. That's why we call it *Unauthenticated encryption* - we don't know if the cipher is valid.
+
+Authenticated encryption is used instead to provide some guarantees about
+validity of the cipher. AES-GCM and ChaCha20-Poly1305 are used most often.
 
 ## Asymmetric Encryption
 
-Calculationg a public key from a private key is simple. The opposite is
+Examples: Diffie-Hellman (DH), RSA
+
+Calculating a public key from a private key is simple. The opposite is
 computationally infeasible.
 
 Encrypting some data with a private key is called **signing**. Everyone can
 decrypt it, but they can be sure that it was encrypted by the owner of the
-private key.
+private key. It helps to establish trust. If we trust the signer, then we can
+trust the content of the message that was signed.
 
-Encrypting one data with a public key ensures that only an owner of the private
+Encrypting some data with a public key ensures that only an owner of the private
 key will be able to read it.
 
-The size of data to be encrypted cannot be too big. Usually the symmetric key
-gets encrypted with a public key and then the parties use that symmetric key to
+The size of data to be encrypted cannot be too big. Usually, the symmetric key
+gets encrypted with a public key, and then the parties use that symmetric key to
 encrypt the actual messages. Additionally, symmetric encryption/decryption is
 much faster than asymmetric operations.
 

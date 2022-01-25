@@ -235,7 +235,12 @@ module.exports = {
         {
           title: "Security",
           children: [
-            "security/basic-terms",
+            {
+              "title": "Cryptography",
+              children: [
+                "security/cryptography/basic-terms",
+              ]
+            },
             {
               title: "TPM",
               children: [
