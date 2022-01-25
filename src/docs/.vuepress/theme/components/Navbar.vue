@@ -97,6 +97,8 @@ $navbar-vertical-padding = 0.7rem
 $navbar-horizontal-padding = 1.5rem
 
 .navbar
+  background-color rgba(255, 255, 255, 0.8);
+  backdrop-filter blur(5px)
   padding $navbar-vertical-padding $navbar-horizontal-padding
   line-height $navbarHeight - 1.4rem
   a, span, img
@@ -114,7 +116,7 @@ $navbar-horizontal-padding = 1.5rem
   .links
     padding-left 1.5rem
     box-sizing border-box
-    background-color white
+    // background-color white
     white-space nowrap
     font-size 0.9rem
     position absolute
