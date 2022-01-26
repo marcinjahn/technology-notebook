@@ -102,6 +102,10 @@ module.exports = {
         link: "/computers/",
       },
       {
+        text: "Projects",
+        link: "/projects/",
+      },
+      {
         text: "Meta",
         link: "/meta/",
       },
@@ -262,6 +266,7 @@ module.exports = {
         }
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
+      "/projects/": ["./", "puff"]
     },
   },
 

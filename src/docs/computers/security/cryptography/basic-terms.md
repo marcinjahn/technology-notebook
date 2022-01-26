@@ -11,9 +11,9 @@ lang: en-US
 There are two ways to break cryptography system:
 
 - brute force - protection against it is to have so many password possibilities
-  that it'd be infeasible to try to break it. Another way is to limit amount of
-  attacks that may be performed in a period of time
-- finding algorith weakness
+  that it'd be infeasible to try to break it. Another way is to limit the amount
+  of attacks that may be performed in a period of time
+- finding the algorithm weakness
 
 An algorithm is well designed if its security does not depend on keeping the
 algorithm itself secret.
@@ -22,7 +22,7 @@ algorithm itself secret.
 
 Examples: MD5 (broken), SHA-1 (broken), SHA-2, SHA-3
 
-::: tip SHA-2 adn SHA-3 variants
+::: tip SHA-2 and SHA-3 variants
 SHA-2/3 comes in different flavours: 224bit, 256bit, 384bit, 512bit.
 SHA-2 omits "2" (e.g. SHA-256).
 SHA-3 includes "3" (e.g. SHA-3-256)
@@ -33,11 +33,11 @@ to check if data is correct - if it matches a known hash/digest (data integrity)
 
 ::: tip Infinite inputs
 In reality, the second and third properties of hash functions are not possible
-to hold. There are inifinite possible inputs to hash functions and a finite
+to hold. There are infinite possible inputs to hash functions and a finite
 amount of digests (hash result length is fixed).
 :::
 
-SHA-256 is a good enought choice, but SHA-3 is recommended.
+SHA-256 is a good enough choice, but SHA-3 is recommended.
 
 Hash functions have the following properties:
 
@@ -78,9 +78,9 @@ to generate a MAC from some message.
 
 Encryption does not guarantee integrity. The receiver of encrypted data does not
 know if the received string has not been altered by someone (that someone would
-not know the plain text though). It's a good practice to first encrypt the plain
-text and then HMAC it to get a MAC of the encrypted data. A receiver can check
-if the encrypted string is correct and then they can decrypt it. Then the
+not know the plain text, though). It's a good practice to first encrypt the
+plain text and then HMAC it to get a MAC of the encrypted data. A receiver can
+check if the encrypted string is correct and then they can decrypt it. Then the
 receiver would need to know two secrets - HMAC secret and the encryption key.
 Or, a seed might be used.
 
@@ -107,7 +107,7 @@ validity of the cipher. AES-GCM and ChaCha20-Poly1305 are used most often.
 
 ## Asymmetric Encryption
 
-Examples: Diffie-Hellman (DH), RSA
+Examples: Diffie-Hellman (DH), RSA, ECDH (Elliptic Curve DH) (recommended)
 
 Calculating a public key from a private key is simple. The opposite is
 computationally infeasible.
@@ -120,10 +120,19 @@ trust the content of the message that was signed.
 Encrypting some data with a public key ensures that only an owner of the private
 key will be able to read it.
 
-The size of data to be encrypted cannot be too big. Usually, the symmetric key
-gets encrypted with a public key, and then the parties use that symmetric key to
-encrypt the actual messages. Additionally, symmetric encryption/decryption is
-much faster than asymmetric operations.
+The size of data to be encrypted cannot be too big (~500 characters). Usually,
+the symmetric key gets encrypted with a public key, and then the parties use
+that symmetric key to encrypt the actual messages. Additionally, symmetric
+encryption/decryption is much faster than asymmetric operations.
+
+### Authenticated Encryption
+
+Similarly to symmetric encryption, we need a way to be sure that we got a public
+key of the entity we believe we got it from. If we don't have a way to verify
+that then the key exchange is unauthenticated.
+
+Asymmetric communication can be authenticated (one-sided authentication) or
+mutually authenticated.
 
 ### Digital Signature
 
@@ -156,7 +165,7 @@ top, there's a root certificate, which is trusted unconditionally.
 TPM does not generate or consume X.509 certificates. It can store them though.
 There are some certification processes within TPM:
 
-- TPM vendor and platform manufacturer may provision TPM with **Endorsment
+- TPM vendor and platform manufacturer may provision TPM with **Endorsement
   Keys** (EKs) and corresponding certificates before shipping to the end user.
   the certificates assert respectively that the TPM is produced by the vendor
   and included by the manufacturer in their platform. They are in X.509 format.
@@ -166,4 +175,5 @@ There are some certification processes within TPM:
 
 ## Resources
 
-http://jrruethe.github.io/blog/2014/10/25/cryptography-primer/
+- Real-World Cryptography by David Wong
+- http://jrruethe.github.io/blog/2014/10/25/cryptography-primer/

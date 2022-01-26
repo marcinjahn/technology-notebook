@@ -11,3 +11,12 @@ unsafe, they can be null. Rust's references use raw pointers under the hood.
 
 They are written as either `*const T` (immutable) or `*mut T` (mutable). One can be
 casted to another.
+
+```rust
+fn main() {
+    let a: i64 = 42;
+    let a_ptr = &a as *const i64;
+    println!("a: {} ({:p})", a, a_ptr);
+}
+```
+
