@@ -266,7 +266,7 @@ module.exports = {
         }
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "puff"]
+      "/projects/": ["./", "puff", "mjiot"]
     },
   },
 
