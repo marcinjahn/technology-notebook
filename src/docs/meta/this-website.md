@@ -51,7 +51,7 @@ following:
 ## Code
 
 This site is open-source. You can find the source code and K8s manifests on
-[GitHub](https://github.com/marcinjahn/knowledge-website).
+[GitHub](https://github.com/marcinjahn/technology-notebook).
 
 ## Technologies
 
@@ -81,11 +81,12 @@ For TLS needs, I installed [cert-manager](https://cert-manager.io/) (using
 Encrypt](https://letsencrypt.org/) certificate for my site and it renews it
 periodically.
 
-::: tip Overkill?
-Going with Kubernetes is definitely an overkill for a website like this one. It
-would be much more logical to go with something like [Azure Static Web
-Apps](https://azure.microsoft.com/en-us/services/app-service/static/) (especially in cost, management, and ease of starting out areas). In my
-case though, I already had a K8s cluster that I use for various other projects.
+::: tip Overkill? 
+Going with Kubernetes is definitely an overkill for a website
+like this one. It would be much more logical to go with something like [Azure
+Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/)
+(especially in cost, management, and ease of starting out areas). In my case
+though, I already had a K8s cluster that I use for various other projects.
 Adding this site to it was quite reasonable.
 :::
 
@@ -94,7 +95,7 @@ The DNS records are managed via [NameCheap](https://www.namecheap.com/).
 The website has a CI/CD workflow defined using [GitHub
 Actions](https://docs.github.com/en/actions). In order to make any change, all I
 have to do is push a commit to the _main_ branch of my
-[repository](https://github.com/marcinjahn/knowledge-website).
+[repository](https://github.com/marcinjahn/technology-notebook).
 
 #### GitHub Pages
 
