@@ -125,8 +125,15 @@ module.exports = {
             "dotnet/configuration",
             "dotnet/records",
             "dotnet/asp-net",
-            "dotnet/entity-framework.md",
+            "dotnet/entity-framework",
             "dotnet/asp-net-validation",
+            {
+              "title": "Functional",
+              children: [
+                "dotnet/functional/intro",
+                "dotnet/functional/higher-order-functions"
+              ]
+            }
           ],
         },
         {
