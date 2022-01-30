@@ -128,10 +128,12 @@ module.exports = {
             "dotnet/entity-framework",
             "dotnet/asp-net-validation",
             {
-              "title": "Functional",
+              "title": "Functional Programming",
               children: [
-                "dotnet/functional/intro",
-                "dotnet/functional/higher-order-functions"
+                "dotnet/functional/fundamentals",
+                "dotnet/functional/signatures",
+                "dotnet/functional/dotnet-features",
+                "dotnet/functional/dependency-injection"
               ]
             }
           ],

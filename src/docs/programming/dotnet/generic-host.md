@@ -7,7 +7,7 @@ lang: en-US
 
 # .NET Generic Host
 
-App uses implementation of `IHostedService` to run.
+App uses an implementation of `IHostedService` to run.
 
 ## Imports
 
@@ -60,7 +60,7 @@ private static IHostBuilder GetHostBuilder()
 }
 ```
 
-## Running application
+## Running the application
 
 ```csharp
 static async Task Main(string[] args)
@@ -77,6 +77,32 @@ static async Task Main(string[] args)
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();
     }
+}
+```
+
+.NET 6:
+
+```csharp
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+
+try {
+    using var host = Host.CreateDefaultBuilder(args)
+        .ConfigureServices((_, services) =>
+            services
+                .AddSingleton<InputReader>()
+                .AddSingleton<BmiCalculator>()
+                .AddHostedService<App>())
+        .Build();
+    
+    await host.RunAsync();  
+}
+catch (Exception e)
+{
+    Console.WriteLine("Program run into an exception");
+    Console.WriteLine(e.Message);
+    Console.WriteLine("Press any key to exit");
+    Console.ReadKey();
 }
 ```
 

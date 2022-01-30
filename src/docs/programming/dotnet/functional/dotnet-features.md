@@ -1,17 +1,15 @@
 ---
-title: Intro
-description: Functional Programming in C# intro
+title: .NET Functional Features
+description: Functional Programming in C# - features
 tags: .net, asp.net, c#
 lang: en-US
 ---
 
-# Intro
+# Functional Features of C#
 
-C# is a multi-paradigm language. It allows writing code in a functional style.]
+C# is a multi-paradigm language. It allows writing code in a functional style.
 
-## Language Features
-
-### Records
+## Records
 
 Records allow easily to define immutable structures, which is something
 very important in pure functional languages.
@@ -20,7 +18,7 @@ very important in pure functional languages.
 More on records [here](/programming/dotnet/records.md)
 :::
 
-### Functions withing functions
+## Functions within functions
 
 There are two ways to create a function within another function:
 
@@ -48,7 +46,7 @@ Using some variable from outside of the local function results in a compilation
 error.
 :::
 
-### Tuples
+## Tuples
 
 Tuples are useful since in functional programs there may be lots of small functions
 returning its own data. It would clutter the codebase to define types with return
@@ -69,7 +67,7 @@ var pair = "EURPLN".AsPair();
 WriteLine($"{pair.Base} - {pair.Quote}");
 ```
 
-### Switch Statement
+## Switch Statement
 
 Since the C# 8, `switch` works similarly to Rust's `switch` thanks to pattern
 matching.
@@ -96,7 +94,7 @@ address switch
 ```
 :::
 
-### Delegates
+## Delegates
 
 Custom-defined delegates are rarely used nowadays thanks to the generic `Func`
 and `Action`. These can be even used when "classic" delegates are expected.
