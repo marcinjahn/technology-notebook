@@ -131,8 +131,8 @@ module.exports = {
               "title": "Functional Programming",
               children: [
                 "dotnet/functional/fundamentals",
-                "dotnet/functional/signatures",
                 "dotnet/functional/dotnet-features",
+                "dotnet/functional/signatures",
                 "dotnet/functional/dependency-injection"
               ]
             }

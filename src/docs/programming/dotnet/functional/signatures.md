@@ -93,7 +93,7 @@ Sometimes the "Option" concept is referred to as "Maybe".
 
 Option pattern is useful for functions that are *Partial*. Such functions are
 able to return valid data only for some subset of their domain. It's often not
-clear what a function should do if an input is outside of that subset - throw an
+clear what a function should do if input is outside of that subset - throw an
 exception? Return `null`? Returning `None` is a better way. An example of such a
 function could be a function that parses a `string` into an `int`. Not every
 string is a valid integer.
@@ -109,13 +109,37 @@ validation of inputs before creation.
 
 ### Nullable references in C# 8
 
-C#8 brought a way to specify if a reference value can be nullable. It's a bit
-similar to the `Option<T>`, however it has major drawbacks, biggest of them
-being the fact that it's opt-in and can be entirely skipped.
-However, it still makes sense to enable it since it gives good warnings when
-`null` might be encountered.
+C# 8 brought a way to specify if a reference value can be nullable. It's a bit
+similar to the `Option<T>`, however, it has major drawbacks, the biggest of them
+being the fact that it's opt-in and can be entirely skipped. However, it still
+makes sense to enable it since it gives good warnings when `null` might be
+encountered.
 
 ### Using Option
 
 Rust-like `Match` function can be implemented for consuming `Option<T>`.
 
+Additionally, it's useful to have a `Map` (C#'s `Select`) function on `Option<T>`. That way, we can do the following:
+
+```csharp
+var someOption = FnThatReturnsOption();
+someOption.Map(CalculateData);
+```
+
+Without option, we'd do:
+
+```csharp
+var someValue = FnThatReturnsValue();
+if (someValue is not null) {
+  CalculateData(someValue);
+}
+```
+
+::: tip
+`Option` can be seen as a specialized container and treated like an
+`IEnumerable`. That way we can use the `Map` (and `ForEach`) patterns with them
+the same way.
+
+[More about `Map` and
+`ForEach`](/programming/dotnet/functional/fundamentals.md#map-vs-foreach)
+:::
