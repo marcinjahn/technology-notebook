@@ -10,8 +10,8 @@ Puff is a CLI tool that solves the issue of storing app configuration files in
 various directories (typically, they live in various code projects' folders)
 making it difficult to move these files to another dev machine. Such
 configuration files are often excluded from version control systems due to
-secrets that they may contain. Puff manages those files and stores them in one
-common location. Your apps ccess the configuration files via symlinks that puff
+secrets they may contain. Puff manages those files and stores them in one
+common location. Your apps access the configuration files via symlinks that puff
 creates.
 
 For the .NET developers, these could be `appsettings.json` files. For the NodeJS
@@ -35,3 +35,4 @@ it can be used with any project).
 ## Links
 
 - Code repository: [GitHub](https://github.com/marcinjahn/puff)
+- [crates.io](https://crates.io/crates/puff)
