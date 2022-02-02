@@ -167,7 +167,50 @@ Every monad is also a functor.
 Not every functor is a monad.
 :::
 
+## Regular and Elevated Values
+
+In general, in our programs we're dealing with either *regular values* or
+*elevated values*.
+
+![](./assets/elevated-vs-regular.png)
+
+"Primitive" data types like `int`, `string`, `bool` are *regular values*. The
+types that contain other types are *elevated values* (`List<T>`, `Task<T>`,
+`Option<T>`).
+
+We can look at various functions that operate on data as either:
+
+- returning the same level of abstraction
+- crossing abstraction
+
+![](./assets/crossing-abstraction.png)
+
+Examples:
+
+1. `(int i) => i.ToString()`
+2. `(users) => users.Filter(u => u.LoggedIn)`
+3. `Task.CompletedTask(task)`
+4. `numbers.Sum()`
+
+### Map and Bind
+
+Using this classification, we can look see the following relations:
+
+![](./assets/map.png)
+
+![](./assets/bind.png)
+
+The functions accepted by these two functions differ in the fact that `Bind`
+requires a function that crosses the abstraction upwards.
+
+::: tip
+Working with *regular values* only is inefficient and requires things such as
+checking for `null`, using loops, etc. Working on the *elevated values*
+abstraction level makes it possible to fluently chain function calls.
+:::
+
 ## References
 
 - [https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
 - [http://learnyouahaskell.com/chapters](http://learnyouahaskell.com/chapters)
+- Functional Programming in C# by Enrico Buonanno
