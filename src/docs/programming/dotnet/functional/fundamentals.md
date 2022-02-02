@@ -14,6 +14,8 @@ simplify programs.
 In FP (opposed to OOP), separating functions from data is natural. Functions
 encode logic, and data represent inputs and outputs of functions.
 
+In FP, instead of defining steps how to compute something, we define what the
+result is.
 
 ## Higher-Order Functions
 
@@ -135,9 +137,9 @@ record Pet(string Name);
 record Person(string Name, IEnumerable<Pet> Pets);
 
 var people = new[] {
-  new Person("George", new Lit<Pet>{ new Pet("dog"), new Pet("cat") }),
-  new Person("Peter", new Lit<Pet>{ new Pet("hamster") }),
-  new Person("Jady", new Lit<Pet>{ }),
+  new Person("George", new List<Pet>{ new Pet("dog"), new Pet("cat") }),
+  new Person("Peter", new List<Pet>{ new Pet("hamster") }),
+  new Person("Jady", new List<Pet>{ }),
 }
 
 var animals = people.Bind(p => p.Pets); // ["dog", "cat", "hamster"]
