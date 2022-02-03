@@ -1,15 +1,19 @@
 .custom-block
+  border-radius: 10px
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
   .custom-block-title
     font-weight 600
     margin-bottom -0.4rem
   &.tip, &.warning, &.danger
     padding .1rem 1.5rem
-    border-left-width .5rem
-    border-left-style solid
+    // border-left-width .5rem
+    // border-left-style solid
     margin 1rem 0
   &.tip
-    background-color #f3f5f7
-    border-color #42b983
+    background-color #f1f1f1
+    // border: 1px solid;
+    // border-color #42b983
   &.warning
     background-color rgba(255,229,100,.3)
     border-color darken(#ffe564, 35%)
@@ -29,7 +33,7 @@
   &.details
     display block
     position relative
-    border-radius 2px
+    // border-radius 2px
     margin 1.6em 0
     padding 1.6em
     background-color #eee
