@@ -67,16 +67,6 @@ Once any of the functions returns `Left<T>` there is no way back to the "right"
 track.
 :::
 
-::: warning Left track
-Once any of the functions returns `Left<T>` there is no way back to the "right"
-track.
-:::
-
-::: danger Left track
-Once any of the functions returns `Left<T>` there is no way back to the "right"
-track.
-:::
-
 ## Error Types
 
 There should be a special type for the "left" (error) scenario. We could have a

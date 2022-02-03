@@ -209,6 +209,8 @@ checking for `null`, using loops, etc. Working on the *elevated values*
 abstraction level makes it possible to fluently chain function calls.
 :::
 
+![](./assets/typical-fp-functions-in-abstractions.png)
+
 ## References
 
 - [https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
