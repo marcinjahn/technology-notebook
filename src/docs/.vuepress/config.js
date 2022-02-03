@@ -133,7 +133,9 @@ module.exports = {
                 "dotnet/functional/fundamentals",
                 "dotnet/functional/dotnet-features",
                 "dotnet/functional/signatures",
-                "dotnet/functional/dependency-injection"
+                "dotnet/functional/dependency-injection",
+                "dotnet/functional/composition",
+                "dotnet/functional/error-handling"
               ]
             }
           ],
