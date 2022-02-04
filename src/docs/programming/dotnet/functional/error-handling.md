@@ -74,7 +74,21 @@ simple base `Error` with all necessary properties (like `string Message`) and,
 when needed, we could create derived error types. Such error types could contain
 predefined error messages for convenience.
 
+```csharp
+record UserDoesntExist() 
+    : Error("The provided username does not exist");
+```
+
 ::: tip
 Custom error types help to establish a domain, they give a good overview of
 possible errors.
 :::
+
+## Throwing Exceptions
+
+It is OK to throw exceptions when something is wrong in the program logic. In
+such a case, an exception is a clear sign that some code needs to be fixed.
+
+Additionally, throwing exceptions is alright during the initialization. In
+initialization requires connecting to some message bus and that connection
+fails, it's an exceptional situation and the progrm should probably terminate.

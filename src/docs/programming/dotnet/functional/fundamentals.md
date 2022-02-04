@@ -169,10 +169,10 @@ Not every functor is a monad.
 
 ## Regular and Elevated Values
 
-In general, in our programs we're dealing with either *regular values* or
+In general, in our programs, we're dealing with either *regular values* or
 *elevated values*.
 
-![](./assets/elevated-vs-regular.png)
+![](./assets/elevated-vs-regular.jpeg)
 
 "Primitive" data types like `int`, `string`, `bool` are *regular values*. The
 types that contain other types are *elevated values* (`List<T>`, `Task<T>`,
