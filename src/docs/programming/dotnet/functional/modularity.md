@@ -177,3 +177,6 @@ approach. Older SDKs may use the [Feather HTTP
 framework](https://github.com/featherhttp/framework).
 :::
 
+The functional approach still has decoupled components (functions). Testing
+should become a bit easier, creating mock functions is easier than creating mock
+objects.

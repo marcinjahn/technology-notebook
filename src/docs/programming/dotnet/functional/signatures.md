@@ -30,6 +30,20 @@ they should be as expressive as possible.
 Functions that return `void` or `Task` (or "unit") are side-effect functions.
 They do something with the "outside world".
 
+::: tip Arguments order
+For the functions to be usable with [Patrial
+Application](./partial-application.md), it makes sense to order the arguments
+from the most generic ones to the most specific ones.
+
+```csharp
+// GOOD - Apply can be easily used
+Person Query(string connectionString, string sql);
+
+// BAD - we'd have to apply something like ApplyR to have common connection string
+Person Query(string sql, string connectionString);
+```
+:::
+
 ## Custom Types
 
 It is OK to specify new types for specific purposes, like using `Age` instead of

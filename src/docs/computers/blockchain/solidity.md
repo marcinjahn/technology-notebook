@@ -9,7 +9,7 @@ lang: en-US
 One of the languages supported by Ethereum is **Solidity**. It is updated quite
 frequently, breaking changes should be expected.
 
-Solidity is used to the creation of **smart contracts**.
+Solidity is used for the creation of **smart contracts**.
 
 A simple program:
 
@@ -91,9 +91,9 @@ function changeState(Phase x) public {
 
 #### Storage
 
-Variables within functions may either end-up in the blockchain or not. Simple
+Variables within functions may either end up in the blockchain or not. Simple
 variables, by default, are not recorded on the blockchain. Structs are recorded
-(by default). We can change that behaviour with keywords:
+(by default). We can change that behavior with keywords:
 
 - `memory` - variable is not stored
 - `storage` - variable is stored
@@ -104,13 +104,13 @@ Example:
 Voter memory sender = voters[msg.sender];
 ```
 
-`Voter` is a struct. By adding the `memory` keyword we made the variable
+`Voter` is a struct. By adding the `memory` keyword, we made the variable
 temporary. It will not be stored on the blockchain.
 
 #### View Functions
 
-If a function is marked with a `view` keyword, it is not allowed to modify state
-and its execution is not recorded on the blockchain.
+If a function is marked with a `view` keyword, it is not allowed to modify the
+state and its execution is not recorded on the blockchain.
 
 If `view` is missing, every invocation is recorded in the ledger.
 
@@ -146,8 +146,8 @@ constructor (uint numProposals) {
 
 ### Visiblity Modifiers
 
-Dat and functions may be defined as `public` making them reachable by the
-public. Without that keyword the data/function is internal to the contract and
+Dat and functions may be defined as `public`, making them reachable by the
+public. Without that keyword, the data/function is internal to the contract and
 may be called only within that contract.
 
 It's analogical to encapsulation in the OOP.
@@ -164,8 +164,8 @@ modifier validPhase(Phase reqPhase) {
 ```
 
 ::: tip Parameters
-Modifier above accepts a parameter. A modifier might be defined without any 
-modifiers.
+The modifier above accepts a parameter. A modifier might be defined without any
+parameters.
 :::
 
 The `_;` invokes the actual function that is guarded by the modifier.
@@ -180,7 +180,7 @@ function register(address voter) public validPhase(Phase.Regs) {
 ```
 
 The function above will invoke the modifier with the value `Phase.Regs` (it's an
-enum) passed to it. Only if that modifier succeeds the transaction may be
+enum) passed to it. Only if that modifier succeeds, the transaction may be
 registered.
 
 ::: tip Multiple modifiers
@@ -203,9 +203,9 @@ address of the caller.
 
 #### Revert
 
-If something is wrong in the execution (e.g. some validation failed), `revert()`
-reverts the transaction. 
-Revert is called automatically by the Smart Contract in case of runtime error.
+If something is wrong in the execution (e.g., some validation failed),
+`revert()` reverts the transaction. Revert is called automatically by the Smart
+Contract in case of runtime error.
 
 In case of a revert, all changes done during the execution are reverted.
 
@@ -218,9 +218,9 @@ A reverted transaction is not recorded on the blockchain.
 `require(condition)` is a basic assert operation used for validation. If the
 provided condition if false, `revert()` will be called.
 
-`require` does not consume all the remainin gas offered to pay (like `assert`
+`require` does not consume all the remaining gas offered to pay (like `assert`
 does). It should be used in cases where the condition being false is a normal
-situation that is expected to happen (e.g. when validating user inputs).
+situation that is expected to happen (e.g., when validating user inputs).
 
 It's useful in access modifiers.
 
@@ -252,10 +252,10 @@ emit AuctionEnded(highestBidder, highestBid);
 Maximum three parameters may be used in an event.
 :::
 
-Events are stored on the blockchain, in the block's receipt tree.
+Events are stored on the blockchain in the block's receipt tree.
 These events can be retrieved by dapps.
 
-## Remind IDE
+## Remix IDE
 
 It's a web-based IDE for Solidity. It can be found at
 [https://remix.ethereum.org/](https://remix.ethereum.org/). It's suitable for

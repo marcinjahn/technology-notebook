@@ -110,13 +110,26 @@ Functions are functors as well!
 to be used with side-effect function. Example:
 
 ```csharp
-var names = new string[] {"Andy", "John", "Jules"};
+var names = new string[] { "Andy", "John", "Jules" };
 names
   .Map(n => $"Hello {n}") // pure function
   .ForEach(WriteLine);    // impure function
 ```
 
 `Map` takes a `Func`, while `ForEach` takes an `Action`.
+`ForEach` does not return anything.
+
+### Map vs Do
+
+We should also consider a `Do` function (sometimes called `Tee` or `Tap`). It is
+supposed to be used whenever we need to do some side-effect in the middle of a
+data flow. We could use `Map` for that as well, but `Map` shouldn't be used when
+side effects are involved.
+
+![](./assets/do-fcn.png)
+
+`Do` invokes some provided action and returns the provided value; the flow may
+be continued.
 
 ## Monads
 
@@ -210,6 +223,48 @@ abstraction level makes it possible to fluently chain function calls.
 :::
 
 ![](./assets/typical-fp-functions-in-abstractions.png)
+
+### Reducing a list to a single value
+
+Point 4. on one of the illustrations above shows the case of functions
+that bring the value from the *elevated* level to the *regular* level.
+
+In FP speak, reducing a list of values into a single value is called **fold** or
+**reduce**. In .NET we have LINQ's `Aggregate`. Such function takes an
+*accumulator* and a *reducer* function.
+
+::: tip Lemon Juice Analogy
+A real-world analogy of *reduce* is turning lemons into juice. In that analogy,
+lemons constitute a list that will be reduced. Glass in an *accumulator*. If 0
+lemons are provided, an empty glass is returned. If there are some lemons, the
+state of the glass will be modified with each lemon being squeezed (by a reducer
+function).
+:::
+
+::: tip LINQ
+Some of the LINQ functions simplify the pattern: `Sum`, `Average`, etc.
+
+Here's how `Sum` could look like:
+
+```csharp
+list.Aggregate(0, (acc, item) => acc + item);
+```
+:::
+
+This functionality could also be useful when we want to combine multiple
+functions into one function. A good example is validation. We could have
+multiple functions that validate a request, but we'd want to have just one entry
+point to execute them.
+
+```csharp
+public static Validator<T> CombineValidators(IEnumerable<Validator<T>> validators) =>
+  t => validators.Aggreagate(Valid(t), (acc, validator) => acc.Bind(_ => validator(t)));
+```
+
+::: tip
+`Aggregate` is so generic that it could be used to implement `Map`, `Bind`, or
+`Where`!
+:::
 
 ## References
 

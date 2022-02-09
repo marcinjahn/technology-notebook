@@ -98,3 +98,7 @@ address switch
 
 Custom-defined delegates are rarely used nowadays thanks to the generic `Func`
 and `Action`. These can be even used when "classic" delegates are expected.
+
+However, sometimes defining a custom delegate is actually useful because it
+allows us to name it. `Clock` looks better than `Func<DateTime>` when we're looking
+at function signatures.
