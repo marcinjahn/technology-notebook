@@ -67,7 +67,7 @@ PersistentVolume to it.
 
 Multiple pods can use the same volume by referencing the same claim. Depending
 on the storage type, access will be enabled or not. E.g., some storage providers
-allow write from one node only (so multiple pods on that node can write). Other
+allow writing from one node only (so multiple pods on that node can write). Other
 nodes cannot write.
 
 PV that is ready to be claimed has "Available" status.
@@ -77,13 +77,13 @@ PV that is ready to be claimed has "Available" status.
 PV can configure its reclaim policy:
 
 - **Retain** - when PVC is deleted, the PV becomes "Released", the volume is
-  retained. Admin must manualy remove it. If a PV is claimed, and then the PVC
+  retained. Admin must manually remove it. If a PV is claimed, and then the PVC
   is deleted, the PV's Status becomes "Released", it cannot be claimed in this
   state. It can be claimed again if the object gets edited and the
   `.spec.claimRef` gets removed (or the whole PV needs to be deleted and then
-  recreated). If PV gets deleted, the data stays in tact.
+  recreated). If PV gets deleted, the data stays intact.
 - **Delete** - when PVC is deleted, the PV and the underlying data are deleted
-  as well. It is used with the autoamtically provisioned PVs.
+  as well. It is used with the automatically provisioned PVs.
 
 PV is just a pointer to the data.
 

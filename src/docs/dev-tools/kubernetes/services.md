@@ -10,7 +10,7 @@ Pods can communicate with each other using private IP address space. They can be
 on different nodes, but K8s handles appropriate routing. For a pod, all other
 pods are on the same LAN.
 
-![](assets/pods-network-flat.png)
+![](./assets/pods-network-flat.png)
 
 Problems:
 
@@ -30,9 +30,9 @@ many replicas there are.
 ![](./assets/k8s-service.png)
 :::
 
-Services operate at the Layer 4 of the [OSI model](/networking/osi-model.md).
-They do not understand URLs, cookies (e.g. cookie-based affinity is not
-supported, only IP-based is supported), etc.
+Services operate at the Layer 4 of the [OSI
+model](/computers/networking/osi-model.md). They do not understand URLs, cookies
+(e.g. cookie-based affinity is not supported, only IP-based is supported), etc.
 
 Creating a simple service: `kubectl expose deployment kiada --type=LoadBalancer
 --port 8080`. It exposes all pods in the "kiada" deployment as a new service.
@@ -54,7 +54,7 @@ pod, the namespace must be appended to the URL. Examples:
 Services are resolvable with:
 
 - `<service-name>` - same NS
-- `<service-name><service-ns>` - different NS
+- `<service-name>.<service-namespace>` - different NS
 - `<service-name>.<service-namespace>.svc`
 - `<service-name>.<service-namespace>.svc.cluster.local` - the `cluster.local`
    suffix might be changed at the cluster level.
@@ -119,11 +119,17 @@ balancer -> node -> potentially another node if first one didn't have a pod ->
 pod).
 Additionally, original client's IP is lost due to these hops.
 
+::: warning
+The Load Balancer service allows to exposes just one service outside under a
+single IP address. [Ingresses](./ingress.md) remove that limitation.s
+:::
+
 ## Endpoints
 
-Together with a Service, and **Endpoints** object is created. Its name matches
-that of the Service. It contains a list of {IP}:{PORT} that a given service
-leads to together with other metadata (which node, which pod). It is built based on selectors specified for a service.
+Together with a Service, an **Endpoints** object is created. Its name matches
+that of the Service. It contains a list of `{IP}:{PORT}` that a given service
+leads to together with other metadata (which node, which pod). It is built based
+on selectors specified for a service.
 
 There are also **EndpointSlices** objects, which are created by K8s when the
 number of endpoints of a service is large. Sending around a huge Endpoints

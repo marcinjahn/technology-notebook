@@ -217,11 +217,12 @@ module.exports = {
             "kubernetes/objects",
             "kubernetes/pods",
             "kubernetes/deployments",
-            "kubernetes/services",
             "kubernetes/events",
             "kubernetes/storage",
             "kubernetes/configuration",
             "kubernetes/organization",
+            "kubernetes/services",
+            "kubernetes/ingress"
           ],
         },
         {
