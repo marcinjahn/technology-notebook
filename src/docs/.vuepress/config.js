@@ -128,7 +128,7 @@ module.exports = {
             "dotnet/entity-framework",
             "dotnet/asp-net-validation",
             {
-              "title": "Functional Programming",
+              title: "Functional Programming",
               children: [
                 "dotnet/functional/fundamentals",
                 "dotnet/functional/dotnet-features",
@@ -137,8 +137,8 @@ module.exports = {
                 "dotnet/functional/error-handling",
                 "dotnet/functional/partial-application",
                 "dotnet/functional/modularity",
-              ]
-            }
+              ],
+            },
           ],
         },
         {
@@ -184,12 +184,17 @@ module.exports = {
             "rust/smart-pointers",
             "rust/concurrency",
             "rust/testing",
-            "rust/tips"
+            "rust/tips",
           ],
         },
         {
           title: "C/C++",
-          children: ["c/pointers", "c/strings", "c/dynamic-memory", "c/argc-argv-visualized"],
+          children: [
+            "c/pointers",
+            "c/strings",
+            "c/dynamic-memory",
+            "c/argc-argv-visualized",
+          ],
         },
         {
           title: "CSS",
@@ -222,7 +227,7 @@ module.exports = {
             "kubernetes/configuration",
             "kubernetes/organization",
             "kubernetes/services",
-            "kubernetes/ingress"
+            "kubernetes/ingress",
           ],
         },
         {
@@ -253,10 +258,8 @@ module.exports = {
           title: "Security",
           children: [
             {
-              "title": "Cryptography",
-              children: [
-                "security/cryptography/basic-terms",
-              ]
+              title: "Cryptography",
+              children: ["security/cryptography/basic-terms"],
             },
             {
               title: "TPM",
@@ -274,12 +277,12 @@ module.exports = {
             "blockchain/intro",
             "blockchain/smart-contracts",
             "blockchain/solidity",
-            "blockchain/dapps"
-          ]
-        }
+            "blockchain/dapps",
+          ],
+        },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "puff", "mjiot"]
+      "/projects/": ["./", "puff", "mjiot"],
     },
   },
 
@@ -295,5 +298,11 @@ module.exports = {
         hostname: "https://marcinjahn.com",
       },
     ],
+    [
+      "@mr-hope/seo",
+      {
+        "author": "Marcin Jahn"
+      }
+    ]
   ],
 };
