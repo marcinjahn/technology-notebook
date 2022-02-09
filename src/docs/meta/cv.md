@@ -64,9 +64,9 @@ I am proficient in the following technologies:
 
 ### Languages/Runtimes
 
-- .NET C# - I've worked on various projects based on .NET, ranging from
-  simple console apps and web APIS, through microservices, running in the cloud
-  (on Azure or Kubernetes), to desktop applications built with the WPF
+- .NET C# - I've worked on various projects based on .NET, ranging from simple
+  console apps and web APIs (ASP.NET Core), through microservices, running in
+  the cloud (on Azure or Kubernetes), to desktop applications built with the WPF
   framework.
 - NodeJS - I've been using NodeJS for various applications, such as CLI apps or
   web APIs (Express and Fastify)
