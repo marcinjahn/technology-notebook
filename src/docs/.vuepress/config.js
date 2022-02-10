@@ -240,7 +240,7 @@ module.exports = {
         },
         {
           title: "Azure",
-          children: ["azure/azure-table-storage"],
+          children: ["azure/azure-table-storage", "azure/identity"],
         },
       ],
       "/computers/": [
@@ -301,8 +301,8 @@ module.exports = {
     [
       "@mr-hope/seo",
       {
-        "author": "Marcin Jahn"
-      }
-    ]
+        author: "Marcin Jahn",
+      },
+    ],
   ],
 };
