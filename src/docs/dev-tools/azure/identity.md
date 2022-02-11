@@ -34,6 +34,13 @@ Access Token cannot contain permissions for multiple different services. One
 access taken can have multiple permissions, but only in scope of a single
 resource.
 
+### Acquiring ID Tokens
+
+ID Tokens are acquired via the Implicit Flow.
+[MSDN](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request)
+says that it's necessary to enable ID Tokens in implicit flow in order to
+receive ID Tokens when calling the `/authorize` endpoint.
+
 ## B2X
 
 ### B2B
@@ -51,12 +58,23 @@ single project together.
 
 ### B2C
 
-Allows to federate other identity providers under a single umbrella of AAD.
-Without B2C, all users have to use Microsoft accounts. With B2C the users can
-use any OpenId Connect-compliant IdP.
+It allows federating other identity providers under a single umbrella of AAD
+B2C. Without B2C, all users have to use Microsoft accounts. With B2C, the users
+can use any OpenId Connect-compliant IdP.
+
+B2C allows heavy customization of user flows. E.g., the sign up/sign in page can
+be completely customized, with support for multiple languages, etc.
 
 B2C is used to allow access to our product to users from the world, the actual
 customers.
+
+#### API Connectors
+
+B2C allows to define API Connectors - endpoints that will be called by B2C
+during user flows. For example, one of my custom user attributes in B2C could be
+a nickname. I could have my own rules regarding nicknames and I could configure
+B2C to always call my custom API that either allows or disallows the usage of
+some nickname.
 
 ## Multi-tenant Apps
 
@@ -83,23 +101,119 @@ created based on it.
 
 ### App Roles
 
-App roles allow to create custom roles that the app understands and works with.
-These roles can then be assigned to the users of the app. This way we can create
-our own RBAC rules for the app, limiting what different users can access.
+App roles allow creation of custom roles that the app understands and works
+with. These roles can then be assigned to the users of the app (potenaitally
+other apps). This way, we can create our own RBAC rules for the app, limiting
+what different users can access.
+
+::: tip
+An App Role may be restricted to be usable with:
+- only users and groups
+- only aps
+- any of the above
+:::
 
 The roles may be applied to users/apps in the Enterprise Applications panel of
 AAD. A set of roles would have been created in the app registration. Each tenant
 might assign different sets of people to these roles via their own service
-principals (my app in their tenant).
+principles (my app in their tenant).
+
+Compared to groups, App Roles are a better choice. They are app-specific.
+
+::: tip Required Roles
+We may restrict our app principals to only be accessible to users that have some
+role assigned. If someone without a role tries to get an access token to my app,
+they will not get it, authentication will fail. It's done in the Properties pane
+of Enterprise Applications entry of my app.
+
+Without it, any user in my tenant can get an access token to my apps. That
+access token could be empty, but it's still better to disallow unintended users
+if we don't expect anyone in the organization to use the app.
+:::
 
 The assigned roles will be available in the access token.
 
 ### API Permissions
 
 We can define the allowed set of permissions that the app may ask for. They may
-be also consented by the admin of a tenant. With that, individual users of the
+also be consented by the admin of a tenant. With that, individual users of the
 app will not be asked for consent.
 
-App may also ask for permissions "dynamically", so the permission does not have
-to be defined in *API Permissions* in AAD. In such a case, the user has to
+An app may also ask for permissions "dynamically", so the permission does not
+have to be defined in *API Permissions* in AAD. In such a case, the user has to
 consent the permission to allow the app to get the requested data.
+
+### Expose an API
+
+Described in [Building a Custom API](#building-a-custom-api)
+
+## Building a Custom API
+
+When building our own API that is going to be the actual resource of data
+(protected data), we'd do the following.
+
+The *Authentication* panel in the app's registration would stay empty. This app
+will not allow signing-in of users.
+
+### Scopes
+
+We can define the scopes that our API exposes in the *Expose an API* panel of
+app registration. These scopes are only for user flows (delegated).
+
+Technically, our API does not have to define any scopes, we could just rely on
+the valid access token being delivered, signed by AAD. Scopes allow for
+different levels of access to be defined.
+
+When defining a scope, we can specify if that scope requires a consent of an
+admin of a tenant. If not, just the user's consent will be enough for client
+apps to acquire that permission.
+
+::: warning Client Credentials
+Scopes are for user flows only. Daemon apps should use [App
+Roles](#app-roles).
+The roles may be assigned to users in the *API permissions* panel. Since dameon
+apps are not interactive, there is no way to use dynamic permissions. All
+permissions that the app needs need to be assigned up front.
+
+When requesting a token, a daemon app should ask for the `.default` scope. It
+wil return an access token with all of the permissions (app roles) that were
+assigned to the app in the AAD portal.
+
+Assigned app roles have to be granted consent by an admin.
+:::
+
+::: tip Scopes vs App Roles
+When assigning scopes/app roles to our apps, the scopes we defined in *Expose an
+API* can be found under "Delegated permissions", while the App Roles can be
+found under "Application Permissions
+
+![](./assets/identity-delegated-application-permissions.png)
+:::
+
+## AAD Groups
+
+AAD allows entities to be assigned to groups, similarly to how "old" AD works.
+It causes a problem if there is a big amount of groups (> 250 or even less on
+implicit flow), because they will not fit into JWT. In such a case the groups
+need to be fetched from the Graph API. In organizations being a member of a lot
+of groups is typical.
+
+Roles are considered more modern than Groups. **Usage of Groups is
+discouraged**, becuase:
+
+- Users are typically assigned to a lot of groups. If there's too many, the
+  app has to make a call to Graph API to read groups
+    - It might also be undesired to share information about all the groups that
+      a user belongs to
+- Groups are returned in the token as GUIDs, which is not easy to use in code
+(e.g. with the `Authorize` attribute in ASP.NET). Only in the case of AD
+Connect-synchronized groups, the names will be delivered.
+- Groups are not app-specific, they are global. The token will be huge with
+  lots of unneeded information
+
+::: tip Groups as Roles
+An app registration may be configured (via its Manifest) to include groups as
+roles in the ID Token (and access token?).
+:::
+
+App Roles may be assigned to AAD groups (on premium plan of AAD).
