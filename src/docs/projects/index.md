@@ -2,4 +2,4 @@
 isIntro: true
 ---
 
-Various **projects** that I have been working on.
+Some of the **projects** that I have been working on.

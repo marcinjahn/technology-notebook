@@ -94,7 +94,7 @@ module.exports = {
         link: "/programming/",
       },
       {
-        text: "Dev Tools",
+        text: "Tools and Infrastructure",
         link: "/dev-tools/",
       },
       {
