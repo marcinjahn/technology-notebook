@@ -258,6 +258,10 @@ module.exports = {
           title: "Security",
           children: [
             {
+              title: "OAuth2",
+              "children": ["security/oauth2/sender-constraint"]
+            },
+            {
               title: "Cryptography",
               children: ["security/cryptography/basic-terms"],
             },
