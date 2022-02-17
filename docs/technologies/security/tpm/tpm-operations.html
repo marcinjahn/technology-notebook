@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TPM Operations | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="Information about some fundamental operations that TPM is capable of doing">
+    <meta property="og:url" content="/technologies/security/tpm/tpm-operations.html">
+    <meta property="og:site_name" content="Marcin Jahn | Technology Notebook">
+    <meta property="og:title" content="TPM Operations">
+    <meta property="og:description" content="Information about some fundamental operations that TPM is capable of doing">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en-US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="Marcin Jahn | Technology Notebook">
+    <meta property="article:author" content="Marcin Jahn">
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.03266277.css" as="style"><link rel="preload" href="/assets/js/app.f09cd554.js" as="script"><link rel="preload" href="/assets/js/2.2f4ad232.js" as="script"><link rel="preload" href="/assets/js/13.be24f7d1.js" as="script"><link rel="prefetch" href="/assets/js/10.80cb4d17.js"><link rel="prefetch" href="/assets/js/100.83b71016.js"><link rel="prefetch" href="/assets/js/101.24ea3c9d.js"><link rel="prefetch" href="/assets/js/102.a3e591a9.js"><link rel="prefetch" href="/assets/js/103.3190cd9f.js"><link rel="prefetch" href="/assets/js/104.aaa97dc9.js"><link rel="prefetch" href="/assets/js/11.266c809c.js"><link rel="prefetch" href="/assets/js/12.a5602241.js"><link rel="prefetch" href="/assets/js/14.ced50a7b.js"><link rel="prefetch" href="/assets/js/15.f0e6098c.js"><link rel="prefetch" href="/assets/js/16.5a37c1f4.js"><link rel="prefetch" href="/assets/js/17.7b23e9f5.js"><link rel="prefetch" href="/assets/js/18.7c291257.js"><link rel="prefetch" href="/assets/js/19.7c24b066.js"><link rel="prefetch" href="/assets/js/20.ada9cb69.js"><link rel="prefetch" href="/assets/js/21.a037dc96.js"><link rel="prefetch" href="/assets/js/22.7a6759e7.js"><link rel="prefetch" href="/assets/js/23.e00eb174.js"><link rel="prefetch" href="/assets/js/24.f8f654d9.js"><link rel="prefetch" href="/assets/js/25.2c772bf8.js"><link rel="prefetch" href="/assets/js/26.52331b7a.js"><link rel="prefetch" href="/assets/js/27.6f61cc87.js"><link rel="prefetch" href="/assets/js/28.217ec394.js"><link rel="prefetch" href="/assets/js/29.64156634.js"><link rel="prefetch" href="/assets/js/3.f1f649da.js"><link rel="prefetch" href="/assets/js/30.eecd272e.js"><link rel="prefetch" href="/assets/js/31.8cd5a612.js"><link rel="prefetch" href="/assets/js/32.8ad15f86.js"><link rel="prefetch" href="/assets/js/33.09c1ec05.js"><link rel="prefetch" href="/assets/js/34.1202a5f9.js"><link rel="prefetch" href="/assets/js/35.c7073920.js"><link rel="prefetch" href="/assets/js/36.dad05aab.js"><link rel="prefetch" href="/assets/js/37.6240351a.js"><link rel="prefetch" href="/assets/js/38.c2444a2d.js"><link rel="prefetch" href="/assets/js/39.0d87ad5f.js"><link rel="prefetch" href="/assets/js/4.9a0fea81.js"><link rel="prefetch" href="/assets/js/40.0acd1ea6.js"><link rel="prefetch" href="/assets/js/41.5594f8ac.js"><link rel="prefetch" href="/assets/js/42.5d91f732.js"><link rel="prefetch" href="/assets/js/43.09b74406.js"><link rel="prefetch" href="/assets/js/44.6806c456.js"><link rel="prefetch" href="/assets/js/45.e095ed6a.js"><link rel="prefetch" href="/assets/js/46.2ddb9438.js"><link rel="prefetch" href="/assets/js/47.1be051f8.js"><link rel="prefetch" href="/assets/js/48.03faf5b3.js"><link rel="prefetch" href="/assets/js/49.986c1857.js"><link rel="prefetch" href="/assets/js/5.970fa356.js"><link rel="prefetch" href="/assets/js/50.9a49bcd1.js"><link rel="prefetch" href="/assets/js/51.cfb7b5f1.js"><link rel="prefetch" href="/assets/js/52.d6e4ea4b.js"><link rel="prefetch" href="/assets/js/53.af9ead59.js"><link rel="prefetch" href="/assets/js/54.c0b51f3f.js"><link rel="prefetch" href="/assets/js/55.237943cc.js"><link rel="prefetch" href="/assets/js/56.c1e0e550.js"><link rel="prefetch" href="/assets/js/57.4ae35b10.js"><link rel="prefetch" href="/assets/js/58.37517bd6.js"><link rel="prefetch" href="/assets/js/59.7e809493.js"><link rel="prefetch" href="/assets/js/6.1513f0fb.js"><link rel="prefetch" href="/assets/js/60.5ce1e58a.js"><link rel="prefetch" href="/assets/js/61.aee5f96a.js"><link rel="prefetch" href="/assets/js/62.b44a85a7.js"><link rel="prefetch" href="/assets/js/63.4c4af2a5.js"><link rel="prefetch" href="/assets/js/64.0419fe09.js"><link rel="prefetch" href="/assets/js/65.e30473f3.js"><link rel="prefetch" href="/assets/js/66.8d38d451.js"><link rel="prefetch" href="/assets/js/67.5fd38ce7.js"><link rel="prefetch" href="/assets/js/68.1f86ca3b.js"><link rel="prefetch" href="/assets/js/69.f56ca9d2.js"><link rel="prefetch" href="/assets/js/7.239151d2.js"><link rel="prefetch" href="/assets/js/70.fbf52d24.js"><link rel="prefetch" href="/assets/js/71.fca8a137.js"><link rel="prefetch" href="/assets/js/72.a0450123.js"><link rel="prefetch" href="/assets/js/73.d2781eb0.js"><link rel="prefetch" href="/assets/js/74.94702f32.js"><link rel="prefetch" href="/assets/js/75.bf793be7.js"><link rel="prefetch" href="/assets/js/76.607d7eae.js"><link rel="prefetch" href="/assets/js/77.9bced578.js"><link rel="prefetch" href="/assets/js/78.b1261d38.js"><link rel="prefetch" href="/assets/js/79.70951a51.js"><link rel="prefetch" href="/assets/js/8.9112d18f.js"><link rel="prefetch" href="/assets/js/80.15259c38.js"><link rel="prefetch" href="/assets/js/81.a1525daa.js"><link rel="prefetch" href="/assets/js/82.fd683540.js"><link rel="prefetch" href="/assets/js/83.d3074a56.js"><link rel="prefetch" href="/assets/js/84.e93d279a.js"><link rel="prefetch" href="/assets/js/85.b480919c.js"><link rel="prefetch" href="/assets/js/86.21e55457.js"><link rel="prefetch" href="/assets/js/87.ef8413f1.js"><link rel="prefetch" href="/assets/js/88.d21a4926.js"><link rel="prefetch" href="/assets/js/89.55670b17.js"><link rel="prefetch" href="/assets/js/9.b91348dc.js"><link rel="prefetch" href="/assets/js/90.98cca30b.js"><link rel="prefetch" href="/assets/js/91.fc178beb.js"><link rel="prefetch" href="/assets/js/92.6fc05aee.js"><link rel="prefetch" href="/assets/js/93.e3a06d14.js"><link rel="prefetch" href="/assets/js/94.b2bd3cda.js"><link rel="prefetch" href="/assets/js/95.dab6c474.js"><link rel="prefetch" href="/assets/js/96.aebe4f46.js"><link rel="prefetch" href="/assets/js/97.441d9f3e.js"><link rel="prefetch" href="/assets/js/98.08ed29d2.js"><link rel="prefetch" href="/assets/js/99.8744fd0b.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.03266277.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-f9b87572 data-v-6c2342f8><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-6c2342f8><img src="/img/github.webp" data-v-f9b87572></a></span> <a href="https://github.com/marcinjahn/technology-notebook" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link">
+  Dev Tools
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-6c2342f8><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b" data-v-f9b87572 data-v-6c2342f8><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-6c2342f8><img src="/img/github.webp" data-v-f9b87572></a></span> <a href="https://github.com/marcinjahn/technology-notebook" target="_blank" rel="noopener noreferrer" class="repo-link">
+    Code on GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/technologies/" aria-current="page" class="sidebar-link">/technologies/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Web Protocols</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Security</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>OAuth2</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>Cryptography</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading open"><span>TPM</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/technologies/security/tpm/overview.html" class="sidebar-link">Overiew</a></li><li><a href="/technologies/security/tpm/tpm-entities.html" class="sidebar-link">TPM Entities</a></li><li><a href="/technologies/security/tpm/tpm-operations.html" aria-current="page" class="active sidebar-link">TPM Operations</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#generating-random-numbers" class="sidebar-link">Generating Random Numbers</a></li><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#generating-keys" class="sidebar-link">Generating Keys</a></li><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#using-keys" class="sidebar-link">Using Keys</a></li><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#ownership" class="sidebar-link">Ownership</a></li><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#measured-boot" class="sidebar-link">Measured Boot</a></li><li class="sidebar-sub-header"><a href="/technologies/security/tpm/tpm-operations.html#authorization" class="sidebar-link">Authorization</a></li></ul></li></ul></section></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Blockchain</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="tpm-operations"><a href="#tpm-operations" class="header-anchor">#</a> TPM Operations</h1> <h2 id="generating-random-numbers"><a href="#generating-random-numbers" class="header-anchor">#</a> Generating Random Numbers</h2> <p>The <code>TPM2_CC_GetRandom</code> command generates random bytes (max 48 per call).</p> <h2 id="generating-keys"><a href="#generating-keys" class="header-anchor">#</a> Generating Keys</h2> <p>Each hierarchy can have a primary key, which acts as a parent for all the child
+keys. The children are wrapped (encrypted by the parent).</p> <p>Enrollment Primary Key is certified by the manufacturer of the TPM. It means
+that the key has an accompanying certificate signed by the trusted CA. This
+certificate is stored in the TPM's NVDATA. It can be read and verified any time.
+The NV indices for the certs are reserved.</p> <p><img src="/assets/img/certified-key.19fec696.png" alt=""></p> <p>If EK is trusted, all keys under it can be trusted as well (chain of trust).</p> <p>The Primary Key may be recreated multiple times, it will always be the same, as
+long as the provided parameters (such as key type) are the same. The EK has
+predefined templates, which can be used anytime we need that key. One is for
+RSA, the other for ECC.</p> <p>Keys may be stored persistently, but TPM has limited space for it.</p> <h3 id="attributes"><a href="#attributes" class="header-anchor">#</a> Attributes</h3> <p>Other than algorithm information, it is also required to provide attributes of
+the new key (object). Example:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token function">CreatePrimary</span><span class="token punctuation">(</span>
+  <span class="token constant">TPM2_RH_OWNER</span><span class="token punctuation">,</span>
+  <span class="token constant">TPM2_ALG_RSA</span><span class="token punctuation">,</span>
+  <span class="token comment">/*restricted=*/</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token comment">/*decrypt=*/</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token comment">/*sign=*/</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token comment">/*unique=*/</span> <span class="token string">&quot;hello&quot;</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>Some of the parameters:</p> <ul><li>Decrypt (<code>TPMA_OBJECT_DECRYPT</code>) - Specifies an encryption key.</li> <li>Sign (<code>TPMA_OBJECT_SIGN_ENCRYPT</code>) - Specifies a signing key.</li> <li>Restricted (<code>TPMA_OBJECT_RESTRICTED</code>) - Restricts the key to
+signing/encrypting only internal TPM data.</li></ul> <p>Non primary keys are created with the <code>TPM2_CC_Create</code> command. The command
+requires a handle to the parent key.</p> <h2 id="using-keys"><a href="#using-keys" class="header-anchor">#</a> Using Keys</h2> <p>Keys generated by TPM might be used to sign, verify, encrypt, decrypt data.</p> <h2 id="ownership"><a href="#ownership" class="header-anchor">#</a> Ownership</h2> <p>Endorsement Hierarchy keys are protected by the EK (which is certified and can
+be trusted). The <em>Owner Hierarchy</em> cannot be trusted in the same way, it's not
+certified by the TPM manufacturer. It's the owner'a responsibility to provision
+and certify the primary key of the owner hierarchy. The primary key of the owner
+hierarchy is the <strong>Storage Root Key (SRK)</strong> (like in TPM 1.2?). It's a
+<strong>restricted encryption key</strong>.</p> <p>Having a trusted, <strong>restricted signing key</strong> is useful for remote system
+attestation. It's, therefore, recommended to create and certify a restricted
+signing key during provisioning time. This trusted signing key is also called
+<strong>Attestation Identity Key (AIK)</strong>.</p> <h3 id="taking-ownership"><a href="#taking-ownership" class="header-anchor">#</a> Taking Ownership</h3> <ol><li>Read and validate the EK certificate. Proceed only if you trust the vendor.</li> <li>Clear the owner hierarchy with <code>TPM2_CC_Clear</code>.</li> <li>Create a primary, restricted asymmetric encryption key on the owner hierarchy
+(<code>TPM2_CC_CreatePrimary</code>). Call this the SRK.</li> <li>Certify the SRK with your enterprise CA: create a CSR with SRK public part,
+and ask your internal, trusted CA to sign it. Store the certificate in NV
+data (<code>TPM2_CC_NV_DefineSpace</code>, <code>TPM2_CC_NV_Write</code>). Alternatively, you can
+store the SRK public key in a remote database. Use this database to verify
+the SRK's authenticity in the future.</li> <li>Make the SRK persistent by evicting it to NVDATA (<code>TPM2_CC_EvitControl</code>).</li> <li>Create a restricted asymmetric signing key under the SRK (<code>TPM2_CC_Create</code>,
+<code>TPM2_CC_Load</code>). Call this the <em>AIK</em>.</li> <li>Certify the AIK with your enterprise CA: create a CSR with AIK public part,
+and ask your internal, trusted CA to sign it. Store the certificate in NV
+data (<code>TPM2_CC_NV_DefineSpace</code>, <code>TPM2_CC_NV_Write</code>). Alternatively, you can
+store the AIK public key in a remote database. Use this database to verify
+the AIK's authenticity in the future. It's possible to use the SRK
+certificate as root of trust for the AIK, however, having an AIK certificate
+can simplify some workflows.</li> <li>Make the AIK persistent by evicting it to NVDATA (<code>TPM2_CC_EvitControl</code>).</li></ol> <p>These keys should be set as fixed (non-duplicable): use <code>TPMA_OBJECT_FIXEDTPM</code>
+and <code>TPMA_OBJECT_FIXEDPARENT</code> in the <code>objectAttributes</code> field in their
+templates. At this point we have two trusted keys we can use: one for storage
+(protecting other TPM keys) (SRK?) and one for signing TPM statements (AIK).</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>A common practice is to set the owner hierarchy's auth value to a random string
+during provisioning. It protects keys on this hierarchy against unwanted use.</p></div> <h2 id="measured-boot"><a href="#measured-boot" class="header-anchor">#</a> Measured Boot</h2> <p>It's a standardized technology supported by modern firmware. Before executing an
+element in the boot sequence, it's measured to make sure that it is the expected
+executable. If the result is unexpected, it's not executed.</p> <p><img src="/assets/img/pcr-measured-boot.9dc7aadf.png" alt=""></p> <p>Each element is measured by its predecessor in the sequence.
+Each measurement is stored in a different PCR.</p> <h3 id="measuring-the-firmware"><a href="#measuring-the-firmware" class="header-anchor">#</a> Measuring the Firmware</h3> <p>We assume that the first element (firmware) is trusted. It measures itself into
+PCR0. Vendors publish the expected measurements of their firmware.</p> <p>Another approach is to use CRTM. There's an immutable code component called
+<strong>Core Root of Trust for Measurement (CRTM)</strong>. It is the first piece of code
+that executes on the main processor during the boot process. It measures the
+firmware blob before passing execution to it.</p> <h3 id="event-log"><a href="#event-log" class="header-anchor">#</a> Event Log</h3> <p>There is a log that gives some details about measurements sent to TPM. It's
+maintained by the firmware, bootloader and the OS. Users can read the log to see
+what was measured.</p> <p>Log example:</p> <div class="language-log extra-class"><pre class="language-log"><code>Fimware blob <span class="token string">&quot;firmware.bin&quot;</span><span class="token punctuation">,</span> PCR8<span class="token punctuation">,</span> digest<span class="token operator">=</span><span class="token number">0x11223344</span><span class="token punctuation">.</span>
+Boot app <span class="token string">&quot;/EFI/Windows/Bootloader.efi&quot;</span><span class="token punctuation">,</span> PCR8<span class="token punctuation">,</span> digest<span class="token operator">=</span><span class="token number">0x55667788</span><span class="token punctuation">.</span>
+Kernel image <span class="token string">&quot;c:\Windows\ntoskrnl.exe&quot;</span><span class="token punctuation">,</span> PCR8<span class="token punctuation">,</span> digest<span class="token operator">=</span><span class="token number">0x99AABBCC</span><span class="token punctuation">.</span>
+</code></pre></div><p>Thanks to Measured Boot a <strong>Remote Attestation</strong> may be done. It checks the
+integrity of a system.</p> <h2 id="authorization"><a href="#authorization" class="header-anchor">#</a> Authorization</h2> <p>TPM may be used only with the right authorization. Authorization policies are
+used. Many authorization schemes are supported (e.g. a password scheme).
+Autorization value may be set for the entire hierarchy or on individual keys.</p> <p>An example of authorizing before calling a command:</p> <div class="language-js extra-class"><pre class="language-js"><code>app<span class="token punctuation">.</span><span class="token function">SetAuthPassword</span><span class="token punctuation">(</span><span class="token string">&quot;secret-password&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> key <span class="token operator">=</span> app<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span>
+  primary<span class="token punctuation">.</span>handle<span class="token punctuation">,</span>
+  <span class="token constant">TPM2_ALG_RSA</span><span class="token punctuation">,</span>
+  <span class="token comment">/*restricted=*/</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token comment">/*decrypt=*/</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token comment">/*sign=*/</span> <span class="token number">0</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>When more than three attempts of authorization fail, TPM enters <strong>locked-out</strong>
+mode. It protects against a dictionary attack. It will not accept any command
+for the target object in that state.</p> <h3 id="session-authorization"><a href="#session-authorization" class="header-anchor">#</a> Session Authorization</h3> <p><strong>Session</strong> is an internal TPM object that encodes an authorization value. A
+session has a digest of PCRs. When creating a data/key in TPM, we can specify
+what is the expected PCR digest. If the session's digest matches the one
+expected by the data/key it is accessible.</p></div> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/technologies/security/tpm/tpm-entities.html" class="prev">
+        TPM Entities
+      </a></span> <span class="next"><a href="/technologies/blockchain/intro.html">
+        Overview
+      </a>
+      →
+    </span></p></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/marcinjahn/technology-notebook/edit/main/src/docs/technologies/security/tpm/tpm-operations.md" target="_blank" rel="noopener noreferrer">Feel free to contribute to this article!</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">2/17/2022, 12:34:25 PM</span></div></footer> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.f09cd554.js" defer></script><script src="/assets/js/2.2f4ad232.js" defer></script><script src="/assets/js/13.be24f7d1.js" defer></script>
+  </body>
+</html>
