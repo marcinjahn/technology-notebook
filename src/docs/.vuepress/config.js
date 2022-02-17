@@ -98,8 +98,8 @@ module.exports = {
         link: "/dev-tools/",
       },
       {
-        text: "Computers",
-        link: "/computers/",
+        text: "Technologies",
+        link: "/technologies/",
       },
       {
         text: "Projects",
@@ -243,7 +243,7 @@ module.exports = {
           children: ["azure/azure-table-storage", "azure/identity"],
         },
       ],
-      "/computers/": [
+      "/technologies/": [
         "./",
         {
           title: "Web Protocols",

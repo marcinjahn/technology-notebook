@@ -68,3 +68,8 @@ There are also some other information.
 
 The Resource Server can check whether the `cnf` claim is the public key that
 matches the private key that was used to sign the DPoP proof.
+
+## Resources
+
+- [https://auth0.com/blog/id-token-access-token-what-is-the-difference/](https://auth0.com/blog/id-token-access-token-what-is-the-difference/)
+- [https://community.auth0.com/t/identity-unlocked-explained-episode-1/49866](https://community.auth0.com/t/identity-unlocked-explained-episode-1/49866)

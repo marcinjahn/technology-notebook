@@ -31,7 +31,7 @@ many replicas there are.
 :::
 
 Services operate at the Layer 4 of the [OSI
-model](/computers/networking/osi-model.md). They do not understand URLs, cookies
+model](/technologies/networking/osi-model.md). They do not understand URLs, cookies
 (e.g. cookie-based affinity is not supported, only IP-based is supported), etc.
 
 Creating a simple service: `kubectl expose deployment kiada --type=LoadBalancer
