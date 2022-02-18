@@ -24,3 +24,6 @@ nodes:
 
 Starting : `kind create cluster --config kind-config.yml`
 
+## Dapr
+
+[https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-kind/](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-kind/)
