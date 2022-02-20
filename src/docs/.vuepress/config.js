@@ -200,6 +200,10 @@ module.exports = {
           title: "CSS",
           children: ["css/layouts"],
         },
+        {
+          title: "Algorithms",
+          children: ["algorithms/big-o", "algorithms/arrays"]
+        }
       ],
       "/dev-tools/": [
         "./",
