@@ -232,6 +232,7 @@ module.exports = {
             "kubernetes/organization",
             "kubernetes/services",
             "kubernetes/ingress",
+            "kubernetes/helm"
           ],
         },
         {

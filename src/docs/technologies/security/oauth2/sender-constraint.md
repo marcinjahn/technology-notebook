@@ -43,7 +43,7 @@ of public-private keys. When the client requests an access token, it provides an
 Authorization Server with a bunch of information encoded in JWT, most
 importantly its public key. That JWT is called the **DPoP Proof**. The proof is
 signed so that the Authorization Server can verify that the author of the proof
-knows the private key (why it cares?). Once again, the access token will contain
+knows the private key. Once again, the access token will contain
 a `cnf` claim with the public key of the caller.
 
 Now, whenever we call the Resource Server, we have to include in the request:
@@ -68,6 +68,14 @@ There are also some other information.
 
 The Resource Server can check whether the `cnf` claim is the public key that
 matches the private key that was used to sign the DPoP proof.
+
+::: tip Replay
+DPoP does not protect against the "replay attack". If an attacker gets a hold of
+Access Token and DPoP proof, they can use these to send requests until the
+access token is valid. However, compared to the past, with DPoP the attacker is
+able to send only the type of requests that DPoP proof allows (e.g., the same
+HTTP method).
+:::
 
 ## Resources
 
