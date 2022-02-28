@@ -34,24 +34,29 @@ A **Chart** is a package.
 
 ### Structure
 
-A chart is a folder. It can be compressed as an archive.
+A chart is an archive containing a single folder:
 
 ```
 my-chart
-|-- charts (optional)
-|---- mongodb-7.8.4.tgz
-|-- Chart.yaml
-|-- README.md
-|-- requirements.yaml (optional)
-|-- templates
-|---- deployment.yaml
-|---- _helpers.tpl
-|---- ingress.yaml
-|---- service.yaml
-|---- NOTES.txt
-|-- values.yaml
-|-- values.schema.json
+|  charts (optional)
+|  |  mongodb-7.8.4.tgz
+|  Chart.yaml
+|  README.md
+|  requirements.yaml (optional)
+|  templates
+|  |  deployment.yaml
+|  |  _helpers.tpl
+|  |  ingress.yaml
+|  |  service.yaml
+|  |  NOTES.txt
+|  .helmignore
+|  values.yaml
+|  values.schema.json
 ```
+
+::: tip
+Files in `/templates` prefixed with `_`  are not rendered as manifests.
+:::
 
 - the name of the folder is the name of the chart. 
 - the `Chart.yaml` contains metadata about the chart (like a version, dependencies, etc.)
@@ -61,11 +66,15 @@ my-chart
 K8s-ready YAMLs if customization is not needed).
 - the documentation should be placed in the `README.md` file
 - the message to be displayed after chart installation should be placed in the
-  `templates/NOTES.txt` file
+  `templates/NOTES.txt` file. It is a template, so it can make use of
+  placeholders to dynamically include some values.
 - the template values can be specified in the `values.yaml` file. It contains
   the default values.
 - the `values.schema.json` file defines the structure of the `values.yaml` file
   as JSON schema
+- the `.helmignore` file allows us to specify files that should be ignored by
+  Helm during templates processing
+- the `_helpers.tpl` file is often used to store user-defined functions/snippets
 
 ::: warning requirements.yaml
 The `requirements.yaml` file is supported, but it's not a recommended way of
@@ -100,6 +109,12 @@ as separate charts, and then place them inside of the `charts` directory of the
 Each sub-chart may contain its own `values.yaml` file. The umbrella chart's
 `value.yaml` may overwrite the sub-chart's values.
 
+The values defined in the sub-charts can also be made available to the parent
+child. The sub-chart has to `export` values, and the parent's `values.yaml` has
+to `import-values`. There is also a way that does not require the sub-chart to
+define values inside of `export`. This functionality, in general, is rarely
+used, so I'm not describing it here.
+
 ### Types
 
 Not all charts are apps. Some charts act as libraries of functions for other
@@ -129,7 +144,7 @@ means breaking changes, so I am not able to upgrade?
 
 ### Releases
 
-A **Release** is an installed chart on some cluster. Usually we install a chart
+A **Release** is an installed chart on some cluster. Usually, we install a chart
 once, creating a single release. However, we could also install a chart multiple
 times creating multiple instances in a single cluster (e.g. "dev" and "test"
 environments or multiple instaces of some app, like a DB, for completely
@@ -148,11 +163,11 @@ We can upgrade existing release to a new revision with `helm upgradae {release}
 
 ## Templating
 
-Helm allows us to prepare YAML files with placeholders for values. Thanks to
-that releases can be customized. Some values, specified by the chart author can
-be raplaced, while some others could use the default values.
+Helm allows us to prepare YAML files with placeholders for values - these are
+templates. Thanks to that, releases can be customized. Some values specified by
+the chart author can be replaced, while others could use the default values.
 
-The placeholders in templates are placed in `{{}}`.
+The placeholders in templates are wrapped in `{{}}`.
 
 The placeholders in the templates are replaced with values when running Helm CLI
 commands (like `install` or `upgrade`).
@@ -182,7 +197,7 @@ selector:
     app.kubernetes.io/name: {{ .Chart.Name }}
 ```
 
-`Values.yaml`:
+`values.yaml`:
 
 ```yaml
 service:
@@ -194,12 +209,14 @@ service:
 
 Values for the templates can be supplied from various sources:
 
-- `values.yaml` - placeholder starts from `.Values.`
+- `.Values`:
+  - `values.yaml` - chart's author places default values there
+  - command line parameters (e.g. `helm install --set foo=bar`) - overwrites data
+    from `values.yaml`
+  - any other YAML file (then we need to specify it in the `helm install -f
+    some-file.yaml` command) - overrided values in `values.yaml`
 - `Chart.yaml` - placeholder starts from `.Chart.`
 - other files - placeholder start from `.Files.Get {file-name}`
-- any other YAML file (then we need to specify it in the `helm install -f
-  some-file.yaml` command)
-- command line parameters (e.g. `helm install --set foo=bar`)
 - Template file itself - placeholder starts from `.Template.`.
 - Release runtime data - template starts from `.Release.` (e.g. `Release.Name`,
   `Release.Revision`).
@@ -217,10 +234,42 @@ In the templates we can refer to these values. Examples:
 - `.Values.service.name`
 - `.Values.service.names[0].displayName`
 
+::: tip Globals
+If we define some data within the `global` key of `values.yaml`, the data will
+be available in any sub-chart under `.Values.global`.
+:::
+
 #### Schema
 
 If we define the schema in the `values.schema.json` file, Helm will validate the
 `values.yaml` file before doing any actual operation (like `install`).
+
+### With scope
+
+In our template, we could have lots of repetitions in our placeholders (e.g. all
+of them starting with `.Values.config`). In such a case, we could use `with` to
+specify that prefix just once:
+
+```yaml
+spec:
+  {{ with .Values.config }}
+  type: {{ .type }} # .Values.config.type
+  ports:
+    - port: {{ .port }} # .Values.config.port
+      tagetPort: 80
+  {{ end }}
+```
+
+::: warning New Lines
+The "with" and `end` cause the resulting manifests to have
+additional newlines added in their place, which might be an issue. It can be
+solved with `-`, which removes new lines.
+:::
+
+::: warning
+Inside of the "with" scope, we cannot refer to anything outside of that scope.
+We have to use [Variables](#variables).
+:::
 
 ### Dry Run
 
@@ -229,9 +278,199 @@ template {chart-name}` command (it doesn't even require K8s cluster connection).
 
 We can also use the `helm install {release-name} {char-name} --dry-run --debug`.
 
-### Functions
+### Logic
 
-We may also use functions in the templates.
+We may use functions in the templates when some additional logic is needed.
+There are 2 syntaxes:
+
+- function - `quote(value)`
+  - arguments separated by commas
+- pipeline - `value | quote` 
+  - arguments separated by spaces, and placed after
+  the function - `first_arg | fn other_arg`
+
+Functions come from:
+
+- Go templates
+- Sprig project
+- Helm itself
+
+#### Function Examples
+
+- `default` - returns a value if exists, if not, returns some provided default
+- `quote` - adds quotes
+- `upper` - transforms to upper-case
+- `b64enc` - encodes to base64
+- `trunc` - truncates value to specified amount of characters (useful for
+  labels, which are limited to 63 characters)
+
+Operators are also functions:
+
+- `eq`
+- `ne`
+- `gt`
+- `and`
+- etc.
+
+#### Conditionals
+
+```jsx
+{{ if and .adminEmail (or .serviceAccountJson .existingSecret) }}
+``` 
+
+It translates to: "if (adminEmail AND (serviceAccountJson OR existingSecret))"
+
+Example of usage:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name:
+{{- if .Values.service.name -}} # - removes newline
+{{ .Values.service.name | trimSuffix "- "}}
+{{- else -}}
+{{ .Chart.Name }}
+{{- end -}}
+```
+
+We can build the manifest differently depending on some values.
+
+#### Loops
+
+An example:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+spec:
+{{- range .Values.ingress.hosts }}
+  - host: {{ .hostname | quote }}
+    http:
+      paths:
+      {{- range .paths }}
+        - path: {{ .path }}
+          backend:
+            serviceName: {{ .service }}
+            servicePort: http
+      {{- end }}
+{{- end}}
+```
+
+`values.yaml`:
+
+```yaml
+ingress:
+  hosts:
+    - hostname: frontend.local
+      paths:
+        - path: "/public"
+          service: "frontend"
+        - path: "/admin"
+          service: "admin"
+    - hostname: backend.local
+      paths: []
+```
+
+::: warning
+Inside of the loop, we cannot refer to anything outside of the range's scope.
+We have to use [Variables](#variables).
+:::
+
+#### Variables
+
+Variables allow us to define values within templates and name them. They are
+useful when using the "with" scoping or loops, since within these we cannot
+refer to anything outside of their scope. However, we can refer to variables.
+
+```yaml{1,8}
+{{ $defaultPortName := .Values.defaultPortName }} # variable definition
+spec:
+  {{ with .Values.config }}
+  type: {{ .type }}
+  ports:
+    - port: {{ .port }}
+      tagetPort: 80
+      name: {{ $defaultPortName }} # we use a variable to get a value outside of .Values.config, that we're scoped to
+  {{ end }}
+```
+
+::: tip
+Variables may also point to some scope of the source and we can
+traverse that scope when using the variable.
+
+```yaml
+{{ $currentHost := . }} # catches current scope
+{{ range .paths }}
+  # we can use {{ $currentHost.whatever }} here to break out of the .paths scope
+{{ end }}
+```
+:::
+
+#### Named Templates
+
+We can create a `_helpers.tpl` (just a convention name) file to store various
+snippets that we want to reuse (like some conditionals, loops, or just manifest
+parts). The contents should be wrapped in the `define` function which allows us
+to name the function.
+
+::: tip
+Global Names The names of named templates are global. It's a good practice to
+prefix the name with chart's name. This way we can skip potential conflicts in
+sub-charts.
+:::
+
+To use these named templates we need to `include` them in other templates. We
+could also use Go's `template` instead to include it, but it is not as
+functional (we can't pipe the output to another function).
+
+::: tip Libraries
+A chart of type "library" would contain functions only, without any templates.
+:::
+
+### Dependencies
+
+Chart's dependencies can be included in the following ways:
+
+- by placing chart's folders in `/charts` of the main chart
+- by placing archives of charts in `/charts` of the main chart
+- `dependencies` array in the `Chart.yaml` file.
+- `dependencies` array in the `requirements.yaml` file - OBSOLETE! The
+  `Chart.yaml` file is recommended nowadays.
+
+The `helm dependency update {chart-name}` fetches latest versions of
+dependencies matching ranges defined in the `Chart.yaml`. Helm downloads
+dependencies as `tgz` archives and places them in the `/charts` directory.
+
+::: tip Chart.lock
+Similarly as in npm, Helm has the `Chart.lock` file, which lists the exact
+versions of dependencies that have been pulled. Running `helm dependency build
+{chart-name}` downloads dependencies as defined in that file.
+
+Helm 2 used the `requirements.lock` file for the same purpose.
+:::
+
+#### Conditions
+
+Dependencies can be installed conditionally, based on configuration values
+(`values.yaml`). An example:
+
+```yaml
+dependencies:
+  - name: mongodb
+    version: 7.8.x
+    repository: https://some-repo.com
+    condition: database.enabled # values.yaml
+```
+
+Another way is to tag dependencies with `tag` and set that tag to `true/false`
+in the `values.yaml`. It's useful if multiple dependencies shoud be
+enabled/disabled at once.
+
+::: tip Priority
+Condition overwrite tags
+:::
 
 ## Repositories
 
@@ -243,19 +482,33 @@ By default, Helm CLI does not have any repositories configured.
 
 Repos can be added with `helm repo add repo-name repo-url`.
 
+A repository is just an HTTP server containing the charts and the `index.yaml`
+file describing charts.
+
+::: tip Chartmuseum
+There's an HTTP server implementation dedicated for hosting Helm chart
+repositories - [Chartmuseum](https://chartmuseum.com/)
+:::
+
+### Publishing
+
+Before publishing our charts, we need to package them into archives. It can be
+done with the `helm package {chart-name}` command. It results in a `.tgz`
+archive being created.
+
 ## Internals
 
 Helm stores details of releases in the K8s cluster itself - as secrets. They are
 stored in the same namespace as the application/release.
 
 ::: tip Helm 2
-In Helm 2, there was also a server side component running on the cluster - Tiller.
+In Helm 2, there was also a server-side component running on the cluster - Tiller.
 Helm CLI would communicate with Tiller.
 
-In Helm 3 Tiller no longer exists. Helm CLI communicates with the K8s API only.
+In Helm 3, Tiller no longer exists. Helm CLI communicates with the K8s API only.
 :::
 
-## Three-Way Merge Patch
+### Three-Way Merge Patch
 Helm applies upgrades/downgrades by looking at the following:
 
 - last installed chart version
@@ -288,7 +541,3 @@ uninstall {release-name}`.
 
 We can have a look at the YAMLs of the deployed release with `helm get manifest
 {release-name}`.
-
-## Resources
-
-[Pluralsight](https://app.pluralsight.com/library/courses/kubernetes-packaging-applications-helm/table-of-contents)
