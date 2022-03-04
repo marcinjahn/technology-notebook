@@ -14,6 +14,8 @@ secrets they may contain. Puff manages those files and stores them in one
 common location. Your apps access the configuration files via symlinks that puff
 creates.
 
+![](./assets/puff-help.png)
+
 For the .NET developers, these could be `appsettings.json` files. For the NodeJS
 developers, these could be `.env` files. Often such files contain secrets that you
 want to keep to yourself.
