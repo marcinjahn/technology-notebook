@@ -1,11 +1,11 @@
 ---
-title: Fundamentals of FP
+title: Fundamentals of Functional Programming
 description: Fundamentals of Functional Programming, like Higher-Order Functions (HOF), or purity, in C#
 tags: .net, asp.net, c#
 lang: en-US
 ---
 
-# Fundamentals of FP
+# Fundamentals of Functional Programming
 
 One of the most significant issues in programming nowadays is how to deal with
 the increasing complexity of the software. Functional Programming is a way to

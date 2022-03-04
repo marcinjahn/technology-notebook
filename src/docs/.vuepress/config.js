@@ -128,6 +128,10 @@ module.exports = {
             "dotnet/entity-framework",
             "dotnet/asp-net-validation",
             {
+              title: "ASP.NET Core",
+              children: ["dotnet/asp-net-core/overview"],
+            },
+            {
               title: "Functional Programming",
               children: [
                 "dotnet/functional/fundamentals",
@@ -202,8 +206,8 @@ module.exports = {
         },
         {
           title: "Algorithms",
-          children: ["algorithms/big-o", "algorithms/arrays"]
-        }
+          children: ["algorithms/big-o", "algorithms/arrays"],
+        },
       ],
       "/dev-tools/": [
         "./",
@@ -232,7 +236,7 @@ module.exports = {
             "kubernetes/organization",
             "kubernetes/services",
             "kubernetes/ingress",
-            "kubernetes/helm"
+            "kubernetes/helm",
           ],
         },
         {
@@ -264,7 +268,7 @@ module.exports = {
           children: [
             {
               title: "OAuth2",
-              "children": ["security/oauth2/sender-constraint"]
+              children: ["security/oauth2/sender-constraint"],
             },
             {
               title: "Cryptography",
@@ -291,7 +295,7 @@ module.exports = {
         },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "puff", "mjiot"],
+      "/projects/": ["./", "puff", "mjiot", "alpha-img"],
     },
   },
 
