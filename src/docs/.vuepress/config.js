@@ -129,7 +129,10 @@ module.exports = {
             "dotnet/asp-net-validation",
             {
               title: "ASP.NET Core",
-              children: ["dotnet/asp-net-core/overview"],
+              children: [
+                "dotnet/asp-net-core/overview",
+                "dotnet/asp-net-core/razor-pages",
+              ],
             },
             {
               title: "Functional Programming",
