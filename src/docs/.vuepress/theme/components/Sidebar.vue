@@ -75,4 +75,12 @@ export default {
         top calc(1rem - 2px)
     & > .sidebar-links
       padding 1rem 0
+
+@media (min-width: $MQMobile)
+  .sidebar
+    opacity: 0.4;
+    transition: opacity 200ms linear;
+
+    &:hover
+      opacity: 1;
 </style>
