@@ -132,6 +132,7 @@ module.exports = {
               children: [
                 "dotnet/asp-net-core/overview",
                 "dotnet/asp-net-core/razor-pages",
+                "dotnet/asp-net-core/routing"
               ],
             },
             {

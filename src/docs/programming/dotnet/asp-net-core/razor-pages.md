@@ -1,6 +1,6 @@
 ---
 title: Razor Pages
-description: Information about Razor PagesASP.NET Corre
+description: Razor Pages in ASP.NET Core
 tags: .net, asp.net, c#
 lang: en-US
 ---
