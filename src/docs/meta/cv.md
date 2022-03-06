@@ -93,8 +93,8 @@ I am proficient in the following technologies:
     Associate](https://www.credly.com/badges/4a6fd0b9-aad8-40cf-ba56-a0e741670c2a?source=linked_in_profile)
   - [Azure Solutions Architect
     Expert](https://www.credly.com/badges/7212a5f3-6fed-43b4-8957-b892d1129216)
-- **Linux** - nowadays, all of my server-side apps run on Linux, and I design them
-  Linux-first. I am proficient in using Linux-based operating systems.
+- **Linux** - nowadays, all of my server-side apps run on Linux, and I design
+  them Linux-first. I am proficient in using Linux-based operating systems.
 - **Docker** - most of my apps end up as containers.
 - **Kubernetes** - I deployed numerous apps in Kubernetes. This website is an
   example of that.

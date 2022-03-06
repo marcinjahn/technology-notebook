@@ -5,7 +5,7 @@ tags: .net, asp.net, c#
 lang: en-US
 ---
 
-# Routing
+# Routing in ASP.NET Core
 
 Routing is the process of mapping an incoming request to a handler (Razor Page,
 or an action on some MVC controller).
@@ -40,6 +40,19 @@ handler was selected by the routing middleware. Example of that is the
 `AuthorizationMiddleware`, which can do some authorization based on the selected
 endpoint.
 :::
+
+## Configuration
+
+The routing middleware comes with a set of conventions, which may be changed. It can be done as follows:
+
+```csharp
+services.Configure<RouteOptions>(options => 
+{
+  options.AppendTrailingSlash = true,
+  options.LowercaseUrls = true //by default, URLs are capitalized
+  options.LowercaseQueryStrings = true
+});
+```
 
 ## Route Templates
 
@@ -117,6 +130,8 @@ valid.
 
 ## Generating URLs
 
+### Razor Pages
+
 The framework has a helper for generating URLs to other parts of our app.
 An example:
 
@@ -126,9 +141,40 @@ var url = Url.Page("Products/Winter", new { id = "273" });
 
 The `Url` object is a property on `PageModel` base class. It has various methods
 for building URLs. We can provide some parameters, and the helper will fit this
-into the template of the taget page.
+into the template of the taget page (either as path, or as query).
 
 ::: tip Relative or Absolute
 We can proivde relative or absolute links. The example above was relative.
 Absolute link (starts from the `Pages` directory) should start from a `/`.
 :::
+
+### MVC
+
+It's very similar to Razor Pages. We also have the `Url` object. However, we'd
+use the `Action` method on it, together with the inputs: action name, controller
+name, and optional parameters.
+
+```csharp
+var url = Url.Action(nameof(Winter), nameof(Products), new { id = "273" });
+```
+
+::: tip
+The `Page` and `Action` methods are availble from both the Razor Pages and MVC
+controllers. We can redirect from a Page to a controller and the other way
+around as well.
+:::
+
+::: tip ActionResult
+Often it's more practical to use the `RedirectToPage` or `RedirectToAction`
+methods. They act similarly as the described methods, but they don't return the
+URLs in code.
+:::
+
+### LinkGenerator
+
+There is also a `LinkGenerator` class, which may be used in a code outside of
+Razor Pages or MVC controllers (such as middleware, or any other code).
+
+```csharp
+var url = _linkGenerator.GetPathByPage("/Products/Winter", values: new { id: "273" });
+```

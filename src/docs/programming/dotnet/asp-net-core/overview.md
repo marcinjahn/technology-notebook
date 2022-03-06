@@ -5,7 +5,7 @@ tags: .net, asp.net, c#
 lang: en-US
 ---
 
-# Overview
+# ASP.NET Core Overview
 
 ASP.NET Core allows to build the following main kinds of applications:
 

@@ -1,19 +1,24 @@
 ---
-title: ASP.NET Core Validation
+title: Validation
 description: Validation in ASP.NET Core
 tags: .net, asp.net
 lang: en-US
 ---
 
-# ASP.NET Core Validation
+# Validation in ASP.NET Core
 
-We can use the default method of adding Data attributes (like `[Required]`) or
-use *FluentValidation* package. For ASP.NET Core we need to install
-*FluentValidation.AspNetCore*.
+We can use the default method of adding `DataAnnotations` attributes (like
+`[Required]`) or use *FluentValidation* package. For ASP.NET Core we need to
+install *FluentValidation.AspNetCore*.
 
-## Registering FluentValidations
+::: danger
+The validation status has to be checked explicitly with `ModelState.IsValid`.
+:::
 
-In `Startup`:
+
+## FluentValidations
+
+Registration:
 
 ```csharp
 services.AddControllers().AddFluentValidation(config =>
@@ -22,7 +27,7 @@ services.AddControllers().AddFluentValidation(config =>
 });
 ```
 
-## Validation class
+Usage:
 
 ```csharp
 public class CommandValidator : AbstractValidator<Command>
@@ -33,4 +38,3 @@ public class CommandValidator : AbstractValidator<Command>
     }
 }
 ```
-

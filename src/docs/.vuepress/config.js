@@ -123,15 +123,15 @@ module.exports = {
             "dotnet/logging",
             "dotnet/configuration",
             "dotnet/records",
-            "dotnet/asp-net",
             "dotnet/entity-framework",
-            "dotnet/asp-net-validation",
             {
               title: "ASP.NET Core",
               children: [
                 "dotnet/asp-net-core/overview",
                 "dotnet/asp-net-core/razor-pages",
-                "dotnet/asp-net-core/routing"
+                "dotnet/asp-net-core/routing",
+                "dotnet/asp-net-core/validation",
+                "dotnet/asp-net-core/tips"
               ],
             },
             {

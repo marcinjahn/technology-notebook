@@ -1,11 +1,11 @@
 ---
-title: ASP.NET Tips
+title: Tips
 description: Various useful information about ASP.NET
 tags: .net, asp.net
 lang: en-US
 ---
 
-# ASP.NET Tips
+# ASP.NET Core Tips
 
 ## Cancelling request
 

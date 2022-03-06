@@ -170,11 +170,88 @@ The properties of the model are accessible to the `.cshtml` view making it
 possible to render dynamic data from the model. That data, exposed by the
 `PageModel` may be called a *View Model*.
 
+### Binding
+
+Data is bound from:
+
+1. form
+2. path
+3. query
+4. headers?
+
+By default, the framework looks through all of these sources for each parameter
+to bind. We can also specify the source explicitly:
+
+```csharp
+[BindProperty]
+[FromHeader]
+public string Id { get; set; }
+```
+
+We can also use it on the method parameters.
+
+::: tip JSON
+To bind the JSON data from body, we have to use `FromBody`. Without it, data
+will not be bound!
+:::
+
+::: tip ModelBinder
+The `ModelBinderAttribute` may be used to have a total control over binding. In
+example, we can change the name of value to be looked for in the request
+compared to the name in our code.
+:::
+
+#### Class
+
+If our Page has a few properties to bind from a request, we can introduce a
+separate class that encompasses that data:
+
+```csharp
+class MyPage : PageModel
+{
+  [BindProperty]
+  public InputData InputData { get; set; }
+
+  // ...
+}
+
+class InputData 
+{
+  public string Category { get; set; }
+  public string Product { get; set; }
+  public string Color { get; set; }
+}
+```
+
+#### Validation
+
+Go to [Validation](./validation.md);
+
 ## URL
 
 By default, the page's file path in the project defines the URL that would
 execute that page. E.g. and URL `/products/list` would execute the page at
 `Pages/Products/List.cshtml`.
+
+### Handler
+
+A single `PageModel` class may contain multiple methods to handle requests. The
+name of the method should contain the HTTP method and, optionally, some
+additional suffix. If we have multiple methods for the same HTTP method, but
+with different suffixes, the selected suffix needs to be provided as a `handler`
+parameter.
+
+Method name template: `On{verb}{handler}[Async]`.
+
+The `handler` should be included in the URL template for our Page.
+
+::: tip Uncovered Cases
+If a request comes in that doesn't match any method on `PageModel`, the view is
+generated, but no logic is invoked on the `PageModel`.
+
+An exception from this rule is the HEAD verb. If `OnHead` is not defined,
+`OnGet` will be executed.
+:::
 
 ## Layouts
 
