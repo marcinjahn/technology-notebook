@@ -75,8 +75,7 @@ module.exports = {
     repoLabel: "Code on GitHub",
     docsBranch: "main",
     docsDir: "src/docs",
-    editLinks: true,
-    editLinkText: "Feel free to contribute to this article!",
+    editLinks: false,
     lastUpdated: "Last Updated",
     externalServices: [
       {

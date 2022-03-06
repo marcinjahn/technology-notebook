@@ -131,17 +131,17 @@ export default {
   .edit-link
     display inline-block
     a
-      color lighten($textColor, 25%)
+      color lighten($textColor, 15%)
       margin-right 0.25rem
   .last-updated
     float right
     font-size 0.9em
     .prefix
       font-weight 500
-      color lighten($textColor, 25%)
+      color lighten($textColor, 15%)
     .time
       font-weight 400
-      color #767676
+      color lighten($textColor, 20%)
 
 @media (max-width: $MQMobile)
   .page-edit

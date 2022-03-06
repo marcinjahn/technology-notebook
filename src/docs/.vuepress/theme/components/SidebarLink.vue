@@ -117,11 +117,11 @@ a.sidebar-link
   width: 100%
   box-sizing: border-box
   &:hover
-    color $accentColor
+    color $darkAccentColor
   &.active
     font-weight 600
-    color $accentColor
-    border-left-color $accentColor
+    color $darkAccentColor
+    border-left-color $darkAccentColor
   .sidebar-group &
     padding-left 2rem
   .sidebar-sub-headers &
@@ -130,4 +130,13 @@ a.sidebar-link
     border-left none
     &.active
       font-weight 500
+
+
+@media (max-width: $MQMobile)
+  a.sidebar-link
+    &:hover
+      color $accentColor
+    &.active
+      color $accentColor
+      border-left-color $accentColor
 </style>

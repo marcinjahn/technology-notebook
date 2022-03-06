@@ -17,8 +17,14 @@ export default {
 .page
   padding-bottom 2rem
   display block
+  position: relative
   
 .intro
-  margin-top: 10rem !important
+  // margin-top: 10rem !important
+  // margin-bottom: -10rem !important
   font-size 32px
+  color: rgb(40, 40, 40)
+  position: relative
+  top: 10rem
+
 </style>
