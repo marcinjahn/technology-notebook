@@ -58,6 +58,9 @@ Here are the options:
   navigating to "/products", a "/products/123" route will be taken
 - optional placegolder, e.g. `/products/{productId}/{color?}` - optional
   parameters only make sense at the end of the route template.
+- catch-all parameter, e.g. `/products/{*restOfUrl}` - `restOfUrl` will contain
+  the rest of the URL, even if there are slashes. (there can be either 1 or 2
+  asterisks (`*`) in the template).
 
 ### Constraints
 
@@ -103,9 +106,29 @@ To customize the route of a given Razor Page, we need to modify the `@page`
 directive of a given page. Some examples for a page at `Pages/Items.cshtml`:
 
 - `@page "Something"` - the URL will be "/items/something" (**appending**)
-- `@page "{category}/{productId}"` - the URL will be "items/`{category}`/`{productId}`" (**appending**)
+- `@page "{category}/{productId}"` - the URL will be
+  "items/`{category}`/`{productId}`" (**appending**)
 - `@page "/Something"` - the URL will be "/something" (**replacing**)
-- `@page "/{category}/{productId}"` - the URL will be "/`{category}`/`{productId}`" (**replacing**)
+- `@page "/{category}/{productId}"` - the URL will be
+  "/`{category}`/`{productId}`" (**replacing**)
 
 With such modifications, the default file location-based route is no longer
 valid.
+
+## Generating URLs
+
+The framework has a helper for generating URLs to other parts of our app.
+An example:
+
+```csharp
+var url = Url.Page("Products/Winter", new { id = "273" });
+```
+
+The `Url` object is a property on `PageModel` base class. It has various methods
+for building URLs. We can provide some parameters, and the helper will fit this
+into the template of the taget page.
+
+::: tip Relative or Absolute
+We can proivde relative or absolute links. The example above was relative.
+Absolute link (starts from the `Pages` directory) should start from a `/`.
+:::
