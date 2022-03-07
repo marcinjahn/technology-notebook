@@ -80,7 +80,7 @@ module.exports = {
     externalServices: [
       {
         img: "/img/linkedin.webp",
-        url: "https://www.linkedin.com/in/marcin-jahn-63a9b915b",
+        url: "https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US",
       },
       {
         img: "/img/github.webp",

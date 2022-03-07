@@ -25,4 +25,4 @@ read, that's great! You can find out more about this website
 [here](/meta/this-website.md).
 
 Feel free to contact me with any queries at <a
-href="https://www.linkedin.com/in/marcin-jahn-63a9b915b">LinkedIn</a>.
+href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US">LinkedIn</a>.
