@@ -131,7 +131,7 @@ module.exports = {
                 "dotnet/asp-net-core/razor-pages",
                 "dotnet/asp-net-core/routing",
                 "dotnet/asp-net-core/validation",
-                "dotnet/asp-net-core/tips"
+                "dotnet/asp-net-core/tips",
               ],
             },
             {
@@ -298,7 +298,7 @@ module.exports = {
         },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "puff", "mjiot", "alpha-img"],
+      "/projects/": ["./", "puff", "alpha-img", "mjiot", "io-module"],
     },
   },
 
