@@ -129,7 +129,8 @@ module.exports = {
               children: [
                 "dotnet/asp-net-core/overview",
                 "dotnet/asp-net-core/razor-pages",
-                "dotnet/asp-net-core/routing",
+                "dotnet/asp-net-core/razor-pages-routing",
+                "dotnet/asp-net-core/web-apis",
                 "dotnet/asp-net-core/validation",
                 "dotnet/asp-net-core/tips",
               ],

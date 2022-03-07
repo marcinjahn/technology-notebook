@@ -42,15 +42,28 @@ Here's an example of `Pages/Privacy.cshtml`:
 The file name matches the URL path. `localhost/Privacy` will run the
 `Pages/Privacy.cshtml` page.
 
-Middleware setup:
+The default `Program.cs` file looks as follows:
 
 ```cs
-builder.Services.AddRazorPages(); // register services in the IoC container
+var builder = WebApplication.CreateBuilder(args);
 
-// ...
+builder.Services.AddRazorPages();
 
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting(); // selects the Razor Page
+app.UseAuthorization();
 app.MapRazorPages(); // executes the selected Razor Page
+
+app.Run();
 ```
 
 ## MVC
@@ -102,7 +115,8 @@ are:
   in the same controller (by convention), making it large sometimes.
 - Razor Pages has a convention of placing related things close to each other. In
   MVC all controllers are in one `Controllers` directory, all view models are in
-  the `View Models` directory, and all the views are in teh `Views` directory.
+  the `View Models` directory, and all the views are in thh `Views` directory
+  (with Razor syntax).
 - pages that are static are easier/shorter to code using Razor Pages. In MVC
   we'd have to add an action that just returns the view (boilerplate code).
 
@@ -117,6 +131,8 @@ Razor Pages and MVC approaches can be used together in one application.
 Complex logic for a page should be handled in a the `PageModel` (a base class
 for page models). We could use it to load data from some DB, etc. It is a "code
 behind" file, similar to WPF.
+
+The model to use for a Page is specified with the `@model` directive.
 
 ::: tip Controller
 `PageModel` name is unfortunate. It's a *Controller* in the MVC paradigm.
@@ -169,6 +185,10 @@ A `PageModel` cannot have multiple methods with the same names (like `OnGet`).
 The properties of the model are accessible to the `.cshtml` view making it
 possible to render dynamic data from the model. That data, exposed by the
 `PageModel` may be called a *View Model*.
+
+::: warning
+Views shouldn't call methods on the `PageModel`.
+:::
 
 ### Binding
 
@@ -253,8 +273,194 @@ An exception from this rule is the HEAD verb. If `OnHead` is not defined,
 `OnGet` will be executed.
 :::
 
-## Layouts
+## Data in Razor
 
-Razor Pages has a concept og **layouts**, which is similar to components in SPA
-frameworks. It avoids duplication of common parts of web pages. Layouts can be
-found in the `Pages/Shared` directory.
+Razor Page can access "external" data in the following ways:
+
+- `PageModel`'s public properties - the recommended way (accessed as
+  `@Model.{property}`)
+- `ViewData` - a dictionary whose key-values pair may be set from a `PageModel`.
+  It's useful for passing data between layouts.
+- `HttpContext` object
+- `@inject {service}` - we can use services from DI directly in views
+
+### ViewData
+
+`ViewData` can be set directly in the view itself:
+
+```razor
+<h1>@ViewData["Title"]</h1>
+```
+
+It can also be set in the `PageModel`:
+
+```csharp
+public class MyModel : PageModel
+{
+  // A property of a `PageModel` may be defined as a `ViewData`:
+  [ViewData]
+  public string Title { get; set; }
+
+  public void OnGet() 
+  {
+    Title = "My Title";
+    ViewData["Subtitle"] = "My Subtitle";
+  }
+}
+```
+
+## Razor Syntax
+
+[MSDN](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor) is the best
+place to follow.
+
+### Tag Helpers
+
+Tag Helpers are useful mostly with forms. In general, tag helpers reduce the
+amount of markup that we have to write, making the HTML more readable and less
+C#-y.
+
+The HTML elements that have tag helpers attached to them are modified by the
+framework. No other element can be modified.
+
+::: tip NuGet
+Tag Helpers are included as part of the framework. Additionally, we can get more
+of them from NuGet, or even create our own.
+:::
+Tag Helpers, like validation, relies on the `DataAnnotations`.
+
+An example:
+
+```razor{6,9,11,13,17-19}
+@page
+@model CheckoutModel
+
+<h1>@ViewData["Title]</h1>
+<!-- Tag Helper will generate URL to submit to (adds "action" and "method" HTML attributes) -->
+<form asp-page="Checkout">
+  <div class="form-group">
+    <!-- Label content (from DataAnnotaions' DisplayName or property name itself) -->
+    <label asp-for="Input.FirstName"></label>
+    <!-- Input type (from DataAnnotations) -->
+    <input asp-for="Input.FirstName" />
+    <!-- Validation message (from ModelState) -->
+    <span asp-validation-for="Input.FirstName"></span>
+  </div>
+
+  <div class="form-group">
+    <label asp-for="Input.LastName"></label>
+    <input asp-for="Input.LastName" />
+    <span asp-validation-for="Input.LastName"></span>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+```
+
+With this markup, the generated HTML elements have proper content, ids, names,
+client-side validation.
+
+Some tag helpers are about attributes that mey be added to elements (`asp-*`).
+Some other tag helpers are completely new HTML elements:
+
+```razor
+<environment include="Testing,Staginfg">
+  <div>THIS IS A TESTING ENVIRONMENT</div>
+</environment>
+```
+
+We could have this functionality without Tag Helpers, we could use some `@if`.
+However, Tag Helper makes it shorter and more readable.
+
+## Reusing Code
+
+### Layouts
+
+Razor Pages has a concept of **Layouts**, which allows to define common
+structures of web pages. It avoids duplication of common parts of web pages.
+Layouts can be found in the `Pages/Shared` directory.
+
+A simple layout example:
+
+```razor
+<!DOCTYPE html>
+<html>
+<head>
+  <meta> charset="utf-8" />
+  <!-- Title could come from some child view -->
+  <title>@ViewData["Title]</title>
+  <!-- Layouts are the place to reference CSS, JS -->
+  <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+  @RenderBody()
+</body>
+</html>
+```
+
+Every layout needs to call the `@RenderBody()` function. That is where the child
+view will be rendered. We can also use **Sections** in a layout to define more
+spots for rendering content.
+
+For example, layouts could define:
+
+- a general page structure - navbar, sidebar, footer, and a place to put content
+- multiple-column layout with separate sections to put content in these columns
+
+::: tip "_" Prefix
+Bot the Layouts and the Partial Views file names should be prefixed with `_`.
+:::
+
+#### Choosing a Layout
+
+The base layout should be named `_Layout.cshtml`. This layout is selected for
+every Page by default. A different layout may be selected by setting the
+`Layout` property in a view (e.g. `Layout = "_MyLayout"`).
+
+::: tip Nesting
+Layouts can reference other layouts.
+:::
+
+### Partial Views
+
+Another option to use is **Partial Views**. They act much more similarly like
+components in SPAs.
+
+- **Layouts** define the OUTSIDE of the Page.
+- **Partial Views** may be included INSIDE of the page
+
+Partial Views are all about HTML markup and reusing it. When using a Partial
+View we can pass some data into it. Partial Views do not have `PageModel`s
+associated with them.
+
+```razor
+<partial name="_MyPartial" model="someData">
+```
+
+::: tip Tag Helper
+`<partial>` is a tag helper.
+:::
+
+The file of the Partial View may be located anywhere in teh directory tree of
+the Page that uses it, or in the `Pages/Shared` or `Views/Shared`.
+
+### _ViewImports
+
+The `_ViewImports.cshtml` file may be used to define namespace imports that are
+common in our application. It can be placed in any directory and it will be used
+by any Page in that folder and sub-folders. Placing it in the `/Pages` directory
+makes it applicable to all pages.
+
+We can use `@using` and `@addTagHelper` in `_ViewImports`.
+
+### _ViewStart
+
+The `_ViewStart.cshtml` allows us to run some common code BEFORE the view itself
+executes. It's often used to set the `Layout`. This way we don't have to do it
+repeatedly in every page.
+
+::: warning _ViewStart
+Partial Views and Layouts do not run the `_ViewStart.cshtml` when they execute.
+:::
+
+The filesystem placement works the same way as with the `_ViewImports` files.

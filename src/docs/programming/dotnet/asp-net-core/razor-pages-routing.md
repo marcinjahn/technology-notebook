@@ -1,11 +1,11 @@
 ---
-title: Routing
+title: Routing in Razor Pages
 description: Routing in ASP.NET Core
 tags: .net, asp.net, c#
 lang: en-US
 ---
 
-# Routing in ASP.NET Core
+# Routing with Razor Pages in ASP.NET Core
 
 Routing is the process of mapping an incoming request to a handler (Razor Page,
 or an action on some MVC controller).
@@ -93,6 +93,9 @@ framework would try to bind "test" string to the `id` parameter that is an
 integer.
 
 With proper constraints, that endpoint would be just skipped and not matched.
+The user will get 404, which might not make sense. Maybe a 400 would be more
+appropriate. That's why sometimes it makes more sense to rely on validation than
+on route constraints.
 :::
 
 ## Convention vs Attributes
@@ -146,6 +149,11 @@ into the template of the taget page (either as path, or as query).
 ::: tip Relative or Absolute
 We can proivde relative or absolute links. The example above was relative.
 Absolute link (starts from the `Pages` directory) should start from a `/`.
+:::
+
+::: tip Tag Helpers
+To genrerate links in HTML, the Anchor [Tag
+Helper](./razor-pages.md#tag-helpers) is probably the best option.
 :::
 
 ### MVC
