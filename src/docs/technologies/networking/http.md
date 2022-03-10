@@ -46,7 +46,9 @@ separate TCP connection.
 The main diference is that cookies are sent to servers, while localStorage and
 sessionStorage stay on the client only. Also, localStorage stays in forever.
 
-## HTTP Proxy
+## Proxying
+
+### HTTP Proxy
 
 It needs to be configured on the client. When I send any HTTP request, it's
 going to be modified in a layer 3. The IP address will be set to the IP address
@@ -58,7 +60,7 @@ client was behind a proxy.
 
 Reference: https://www.youtube.com/watch?v=x4E4mbobGEc
 
-## HTTPS Proxy
+### HTTPS Proxy
 
 The proxy needs to see what domain we want to access. This information is
 decrypted though. To go around that, the proxy needs to offer TLS termination
@@ -68,7 +70,7 @@ and provide a certificate that the client needs to trust.
 
 Reference: https://www.youtube.com/watch?v=PAJ5kK50qp8
 
-## HTTP CONNECT proxy
+### HTTP CONNECT proxy
 
 1. First, a client sends HTTP CONNECT to the proxy with domain of the target
    server.
@@ -86,3 +88,20 @@ Te proxy knows only the domain we're communicating with.
 Proxies may be chained, so that a proxy has its own proxy:
 
 ![](https://i.imgur.com/J7mOhkO.png)
+
+## Enforcing HTTPS
+
+There are at least two ways to enforce HTTPS:
+
+- Redirect from HTTP to HTTPS on your server
+- Use HSTS - it's a header that informs the browser to ALWAYS use HTTPS when
+  reaching the app.
+
+::: tip ASP.NET Core
+ASP.NET Core has built-in middleware for both of the points above.
+:::
+
+HSTS should be used only if we do not plan to make use of HTTP in the app.
+Otherwise we can make it impossible for the users to reach the HTTP endpoints.
+
+HSTS should not be used in development.

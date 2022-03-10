@@ -17,7 +17,7 @@ There is middleware for:
   recognized (e.g. via a cookie or token). It uses authentication services to
   recognize the user.
 - **Authorization** - checks if the endpoint's requirements are fulfilled. If not,
-  the reques is short-circuited.
+  the request is short-circuited.
 
 ::: warning Middleware Order
 The Authorization middleware has to be executed after Routing and
