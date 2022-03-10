@@ -7,6 +7,38 @@ lang: en-US
 
 # ASP.NET Core Tips
 
+## Customizing URLs
+
+By default, apps listen on port 5000 (HTTP) or 5001 (HTTPS). We can change it with:
+
+- command-line arguments
+- the `ASPNETCORE_URLS` env
+- `launchSetings.json` - it's not included in a publish, it's for development
+  only
+
+For example:
+
+- `ASPNETCORE_URLS=http://localhost:8080` - just localhost hostname
+- `ASPNETCORE_URLS=http://*:8080` - any hostname that maps to our machine
+- `ASPNETCORE_URLS=http://localhost:8080;http://localhost:5000` - two ports
+
+
+
+
+
+## Reverse Proxy
+
+When our app sits behind a reverse proxy we lose some information like:
+
+- caller IP
+- used protocol (http/https)
+
+This information may be provided to our app by a reverse proxy via the
+`X-Forwarded-*` protocols. By default (using `CreateDefaultBuilder`), ASP.NET
+Core uses middleware that handles these headers, but that middleware is
+disabled. We can enable it with env `ASPNETCORE_FORWARDEDHEADERS_ENABLED =
+true`. This middleware overrides some of the `HttpContext` properties.
+
 ## Cancelling request
 
 Every API endpoint can have `CancellationToken` as one of its parameters. It's
