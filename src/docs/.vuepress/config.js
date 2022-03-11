@@ -71,7 +71,7 @@ module.exports = {
    */
   themeConfig: {
     search: false,
-    repo: "marcinjahn/technology-notebook",
+    // repo: "marcinjahn/technology-notebook",
     repoLabel: "Code on GitHub",
     docsBranch: "main",
     docsDir: "src/docs",

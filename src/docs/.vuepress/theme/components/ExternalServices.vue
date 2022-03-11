@@ -33,7 +33,7 @@ export default {
 .external-services
   @media (min-width: $MQMobile)
     border-left: 1px solid rgb(211, 211, 211);
-    border-right: 1px solid rgb(211, 211, 211);
-    padding-right: 1.5rem;
+    // border-right: 1px solid rgb(211, 211, 211);
+    // padding-right: 1.5rem;
     margin-left: 1.5rem;
 </style>
