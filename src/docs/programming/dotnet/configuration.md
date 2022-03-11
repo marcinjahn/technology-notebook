@@ -35,6 +35,21 @@ An `IEnumerable<T>` property that is initialized cannot be bound to. That's
 becasue `IEnumerable<T>` does not have the `Add` method.
 :::
 
+### Lambda
+
+We are able to customize Options in runtime:
+
+```csharp
+services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
+services.Configure<MyOptions>(options => 
+{
+    options.Mode = Modes.Mode1;
+});
+```
+
+The configuration system executes both operations. First, the `IConfiguration`
+is read and then `Mode` property is overwritten.
+
 ## Without Options
 
 ### Nuget packages:

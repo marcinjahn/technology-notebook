@@ -128,6 +128,7 @@ module.exports = {
               title: "ASP.NET Core",
               children: [
                 "dotnet/asp-net-core/overview",
+                "dotnet/asp-net-core/middleware",
                 "dotnet/asp-net-core/razor-pages",
                 "dotnet/asp-net-core/razor-pages-routing",
                 "dotnet/asp-net-core/web-apis",
