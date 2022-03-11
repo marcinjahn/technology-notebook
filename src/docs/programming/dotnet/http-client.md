@@ -144,7 +144,7 @@ public class RetryPolicyDelegatingHandler : DelegatingHandler
 }
 ```
 
-Registration of cutom handler:
+Registration of custom handler:
 
 ```csharp
 services.AddHttpClient<MyService>()

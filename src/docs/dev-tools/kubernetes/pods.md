@@ -25,9 +25,12 @@ container providing TLS support:
 
 ![](https://i.imgur.com/j38h4ZB.png)
 
-Another example:
+Other examples:
 
-![](https://i.imgur.com/7475N9l.png)
+- some web API container and separate container that prepares data for that API
+  (in some common storage)
+- Istio service mesh
+- Dapr
 
 Containers in a single pod are scaled together.
 
@@ -71,10 +74,8 @@ on the nodes.
 
 ## Init Containers
 
-Pod can have **init container(s)** specified. They can start before the "main"
+Pod can have **init container(s)** specified. They start before the "main"
 container(s), finish successfully, and only then the "main" container(s) start.
-
-![](https://i.imgur.com/hViRCNQ.png)
 
 "Main" containers run in parallel. Init containers run consecutively (1 at a
 time).
@@ -94,11 +95,18 @@ Init containers should work in an idempotent way.
 
 Pod's conditions (a part of "status"):
 
+- PodScheduled - pod scheduled to a worker node
+- Initialized
+- ContainersReady
+- Ready
+
 ![](https://i.imgur.com/Yq0SLM6.png)
 
 Restart policies of pods:
 
-![](https://i.imgur.com/lqVAMNq.png)
+- Always
+- OnFailure - only non-zero exit code causes a restart
+- Never
 
 These policies can be defined only on the pod level, not on the container level.
 
