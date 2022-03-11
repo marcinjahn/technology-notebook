@@ -213,7 +213,13 @@ module.exports = {
         },
         {
           title: "Algorithms",
-          children: ["algorithms/big-o", "algorithms/arrays"],
+          children: [
+            "algorithms/big-o",
+            "algorithms/arrays",
+            "algorithms/linked-lists",
+            "algorithms/queue",
+            "algorithms/hash-table"
+          ],
         },
       ],
       "/dev-tools/": [

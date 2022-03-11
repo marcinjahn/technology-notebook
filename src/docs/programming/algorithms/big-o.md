@@ -7,9 +7,10 @@ lang: en-US
 
 # Big O Notation
 
-![](./assets/big-o-chart.png)
+![](./assets/big-o-graph.png)
 
-we can use the Big O notation to describe Runtime Complexity (time) and Space Complexity(memory).
+We can use the Big O notation to describe Runtime Complexity (time) and Space
+Complexity (memory).
 
 ## O(n^2)
 
@@ -17,9 +18,5 @@ It is a result of nested loops.
 
 ## O(log n)
 
-It has good scalability. The remaining work "items" are reduced by half with
+It has good scalability. The remaining work items are reduced by half with
 every iteration. An example of it is *binary search*.
-
-## O(2^n)
-
-It's the opposite of the *O(log n)* (symmetrical against the *O(n)*).

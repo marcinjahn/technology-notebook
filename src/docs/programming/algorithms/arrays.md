@@ -1,17 +1,44 @@
 ---
-title: Arrays
+title: Array
 description: Arrays
 tags: algorithms
 lang: en-US
 ---
 
-# Arrays
+# Array
 
 ## Runtime Complexity
 
-- Lookup - O(1)
+- Lookup (by index) - O(1)
+- Lookup (by value) - O(n)
 - Insert - O(n)
 - Delete - O(n)
 
-In cases when lots of inserts/removals are needed, a Linked List is a better
-option.
+In cases when lots of inserts/removals are needed, a [Linked
+List](./linked-lists.md) is a better option (unless we add/remove in the
+middle).
+
+## Binary Search
+
+```js
+var search = function(nums, target) {
+    let minIndex = 0;
+    let maxIndex = nums.length - 1;
+    
+    while (minIndex <= maxIndex) {
+        let halfIndex = minIndex + Math.floor((maxIndex - minIndex) / 2);
+        
+        if (nums[halfIndex] === target) {
+            return halfIndex;
+        }
+        else if (nums[halfIndex] < target) {
+            minIndex = halfIndex + 1;
+        }
+        else {
+            maxIndex = halfIndex - 1;
+        }
+    }
+    
+    return -1;  
+};
+```
