@@ -29,10 +29,12 @@ Sets only have keys. They don't allow duplicate keys.
 
 ## Hash Functions
 
-Hash function calculates a hash from a key. In the context of hash maps/sets, we
-need to calculate an index of internal array where we will store an item.
+Internally, hash would store items in some array. We need to calculate an index
+where each item would go. First, we'd take the key and hash it. Then, we'd use
+the module operation to get the index based on the hash.
 
-The simplest hash function that return's index based on a provided key (being a number)
+The simplest hash function that returns index based on a provided key (being a
+number).
 
 ```ts
 hash(key: number): number {
@@ -45,6 +47,9 @@ array has the capacity of 100.
 
 If the item to hash was a string, we could turn it into numerical representation
 first (e.g. by summing all chracters' encoding table indices).
+
+Normally, we use more "established" hashing functions than the simple case
+above.
 
 ### Collisions
 
