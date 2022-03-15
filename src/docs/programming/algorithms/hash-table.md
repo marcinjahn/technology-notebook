@@ -23,6 +23,9 @@ occurs. However, that's a rare situtation, so we still consider all the above
 operations to have O(1) complexity.
 :::
 
+The order of items in the hash map is "random" since it depends on the hashing
+function used by the map and on the order in which we add the items.
+
 ## Set
 
 Sets only have keys. They don't allow duplicate keys.
@@ -33,14 +36,16 @@ Internally, hash would store items in some array. We need to calculate an index
 where each item would go. First, we'd take the key and hash it. Then, we'd use
 the module operation to get the index based on the hash.
 
-The simplest hash function that returns index based on a provided key (being a
-number).
+The simplest function that returns index based on a provided key (being a
+number):
 
 ```ts
-hash(key: number): number {
+getIndex(key: number): number {
     return item % 100;
 }
 ```
+
+The hash function in this case is `x -> x` - it just returns the input!
 
 There will be only 100 hash values. That is useful if our hash map's internal
 array has the capacity of 100.
