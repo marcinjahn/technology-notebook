@@ -25,11 +25,11 @@ Selected publications:
 
 - [ASP.NET
 Core
-series](http://localhost:8080/programming/dotnet/asp-net-core/overview.html#actionresult,)
-- [Rust series](http://localhost:8080/programming/rust/overview.html), 
+series](/programming/dotnet/asp-net-core/overview.md)
+- [Rust series](/programming/rust/overview.md)
 - [Kubernetes
-series](http://localhost:8080/dev-tools/kubernetes/meaning.html),
-- [Helm](http://localhost:8080/dev-tools/kubernetes/helm.html)
+series](/dev-tools/kubernetes/meaning.md)
+- [Helm](/dev-tools/kubernetes/helm.md)
 
 Feel free to contact me with any queries via <a
 href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US">LinkedIn</a>.
