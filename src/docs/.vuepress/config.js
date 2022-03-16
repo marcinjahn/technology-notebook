@@ -219,7 +219,8 @@ module.exports = {
             "algorithms/linked-lists",
             "algorithms/queue",
             "algorithms/hash-table",
-            "algorithms/tree"
+            "algorithms/tree",
+            "algorithms/sorting"
           ],
         },
       ],
