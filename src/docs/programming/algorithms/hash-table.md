@@ -13,7 +13,7 @@ Other names: dictionary, hash map
 
 They are really fast when looking up items.
 
-- Lookup O(1)
+- Lookup - O(1)
 - Insert - O(1)
 - Delete - O(1)
 
@@ -28,7 +28,8 @@ function used by the map and on the order in which we add the items.
 
 ## Set
 
-Sets only have keys. They don't allow duplicate keys.
+Sets only have keys. They don't allow duplicate keys. The order of values is
+undefined (depends from implementation).
 
 ## Hash Functions
 

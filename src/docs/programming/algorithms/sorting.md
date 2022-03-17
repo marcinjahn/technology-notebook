@@ -158,9 +158,9 @@ It's the default sorting algorithm in many programming languages (including
 .NET).
 :::
 
-- **Time Complexity: O(n log(n))** (worst case: O(n^2) - when the picked pivot
+- **Time Complexity: O(n log n)** (worst case: O(n^2) - when the picked pivot
   is the smallest or the greatest element)
-- **Space Complexity: O(log(n))**
+- **Space Complexity: O(log n)**
 
 ```csharp
 static void QuickSort(IList<int> nums)

@@ -220,7 +220,8 @@ module.exports = {
             "algorithms/queue",
             "algorithms/hash-table",
             "algorithms/tree",
-            "algorithms/sorting"
+            "algorithms/sorting",
+            "algorithms/searching"
           ],
         },
       ],

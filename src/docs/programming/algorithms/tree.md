@@ -45,6 +45,16 @@ unbalanced)
 - **Removal**: O(log n) (average); O(n) (worst case, when the tree is highly
 unbalanced)
 
+#### AVL
+
+AVL trees are binary search trees that are self-balancing, keeping the **Balance
+Factor** at maximum 1 at all times.
+
+::: tip Balance Factor
+The **Balance Factor** is the difference between the right and left children on
+the root node.
+:::
+
 ### Traversal
 
 #### Pre-order
@@ -71,3 +81,45 @@ Use-cases:
 
 - deleting all nodes of the tree (since we always deal with children first, then
   the parent)
+
+## B-Tree
+
+![](./assets/b-tree.png)
+
+Characteristics:
+
+- A node can have multiple values
+- A node can have multiple children
+- The children are between the values of the node
+- the tree has to be sorted
+- For *n* values in a node, that node can have *n+1* children
+- **Minimal Degree (T)**
+  - every non-root node has to have at least *T* children and max *2T* children
+  - every non-root node has to have at least *T-1* values and max *2T-1* values
+  - A node with *T* children and *T-1* values is called a **Minimal Node**
+  - a node with *2T* children and *2T-1* values is a **Full Node**
+- All leaf nodes should have the same height
+- Values can only be added to the leaf nodes
+
+An example of a tree that is not B-Tree:
+
+![](./assets/wrong-b-tree.png)
+
+The node "1" does not have enough values (should have at least 2).
+
+## Heap
+
+A tree structure where either:
+
+- all children are smaller than or equal to the parent (**Max-heap**)
+- all chidren are greater than or equal to the parent (**Min-heap**)
+
+Thanks to the above (**Heap Property**) finding min or max value (depending on
+a type of heap) is a O(1) operation.
+
+Additionlly:
+
+- The tree must be complete - before starting a new level, the current level
+  needs to be full
+- Heap can be stored in an array. We just continuously add the nodes from each
+  level
