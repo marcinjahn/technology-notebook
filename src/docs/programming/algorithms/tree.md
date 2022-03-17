@@ -71,7 +71,7 @@ The left child is first, then the node, then the right child.
 
 Use-cases:
 
-- sorting elements in the increasing order (mush be search tree)
+- sorting elements in the increasing order (must be search tree)
 
 #### Post-order
 
