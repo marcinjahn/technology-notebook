@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="SQL Server Overview">
+    <meta property="og:url" content="/dev-tools/sql-server/overview.html">
+    <meta property="og:site_name" content="Marcin Jahn | Technology Notebook">
+    <meta property="og:title" content="Overview">
+    <meta property="og:description" content="SQL Server Overview">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en-US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="Marcin Jahn | Technology Notebook">
+    <meta property="article:author" content="Marcin Jahn">
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.78248196.css" as="style"><link rel="preload" href="/assets/js/app.6d3df966.js" as="script"><link rel="preload" href="/assets/js/2.a6a6810d.js" as="script"><link rel="preload" href="/assets/js/18.c8c76e38.js" as="script"><link rel="prefetch" href="/assets/js/10.ad8c6c04.js"><link rel="prefetch" href="/assets/js/100.d00bdef0.js"><link rel="prefetch" href="/assets/js/101.61f03c16.js"><link rel="prefetch" href="/assets/js/102.500a9204.js"><link rel="prefetch" href="/assets/js/103.68821561.js"><link rel="prefetch" href="/assets/js/104.743c9648.js"><link rel="prefetch" href="/assets/js/105.5ca4dacc.js"><link rel="prefetch" href="/assets/js/106.5efc5b94.js"><link rel="prefetch" href="/assets/js/107.72a4e358.js"><link rel="prefetch" href="/assets/js/108.c3b06303.js"><link rel="prefetch" href="/assets/js/109.5b4955e6.js"><link rel="prefetch" href="/assets/js/11.47563bf1.js"><link rel="prefetch" href="/assets/js/110.8d35f09d.js"><link rel="prefetch" href="/assets/js/111.010a7078.js"><link rel="prefetch" href="/assets/js/112.570daea1.js"><link rel="prefetch" href="/assets/js/113.12a6a123.js"><link rel="prefetch" href="/assets/js/114.9b4500c1.js"><link rel="prefetch" href="/assets/js/115.b139c440.js"><link rel="prefetch" href="/assets/js/116.26e2a841.js"><link rel="prefetch" href="/assets/js/117.6e12fc5c.js"><link rel="prefetch" href="/assets/js/118.ac3b8a4b.js"><link rel="prefetch" href="/assets/js/119.d182f24f.js"><link rel="prefetch" href="/assets/js/12.a7d0f228.js"><link rel="prefetch" href="/assets/js/120.870ba1fa.js"><link rel="prefetch" href="/assets/js/121.65ff1f74.js"><link rel="prefetch" href="/assets/js/122.78fa442a.js"><link rel="prefetch" href="/assets/js/123.ce299a53.js"><link rel="prefetch" href="/assets/js/13.8c57d848.js"><link rel="prefetch" href="/assets/js/14.243579e2.js"><link rel="prefetch" href="/assets/js/15.4f1d69fa.js"><link rel="prefetch" href="/assets/js/16.1efbeece.js"><link rel="prefetch" href="/assets/js/17.da718a56.js"><link rel="prefetch" href="/assets/js/19.8c85519b.js"><link rel="prefetch" href="/assets/js/20.39c0dba1.js"><link rel="prefetch" href="/assets/js/21.d343e279.js"><link rel="prefetch" href="/assets/js/22.f3837432.js"><link rel="prefetch" href="/assets/js/23.ef1c37a4.js"><link rel="prefetch" href="/assets/js/24.75bb55d3.js"><link rel="prefetch" href="/assets/js/25.1275aa7f.js"><link rel="prefetch" href="/assets/js/26.009ab747.js"><link rel="prefetch" href="/assets/js/27.7d9480c1.js"><link rel="prefetch" href="/assets/js/28.81fa86c0.js"><link rel="prefetch" href="/assets/js/29.b6355062.js"><link rel="prefetch" href="/assets/js/3.3337c363.js"><link rel="prefetch" href="/assets/js/30.6fb9711a.js"><link rel="prefetch" href="/assets/js/31.315613c0.js"><link rel="prefetch" href="/assets/js/32.228b1be8.js"><link rel="prefetch" href="/assets/js/33.4ed3be25.js"><link rel="prefetch" href="/assets/js/34.dc17e59b.js"><link rel="prefetch" href="/assets/js/35.b05a1d74.js"><link rel="prefetch" href="/assets/js/36.507d1c67.js"><link rel="prefetch" href="/assets/js/37.a4a1a711.js"><link rel="prefetch" href="/assets/js/38.85c2161d.js"><link rel="prefetch" href="/assets/js/39.68fa04cb.js"><link rel="prefetch" href="/assets/js/4.d47700e6.js"><link rel="prefetch" href="/assets/js/40.b4bafa47.js"><link rel="prefetch" href="/assets/js/41.c7a61ead.js"><link rel="prefetch" href="/assets/js/42.a91c725d.js"><link rel="prefetch" href="/assets/js/43.a75c646b.js"><link rel="prefetch" href="/assets/js/44.ce00cb2a.js"><link rel="prefetch" href="/assets/js/45.70ad63eb.js"><link rel="prefetch" href="/assets/js/46.7f21bf14.js"><link rel="prefetch" href="/assets/js/47.fc74096c.js"><link rel="prefetch" href="/assets/js/48.5cffd6c4.js"><link rel="prefetch" href="/assets/js/49.2875e816.js"><link rel="prefetch" href="/assets/js/5.1d80b827.js"><link rel="prefetch" href="/assets/js/50.09edc3d1.js"><link rel="prefetch" href="/assets/js/51.d88d228c.js"><link rel="prefetch" href="/assets/js/52.9e40675d.js"><link rel="prefetch" href="/assets/js/53.d0f40488.js"><link rel="prefetch" href="/assets/js/54.8252f945.js"><link rel="prefetch" href="/assets/js/55.53ab71b5.js"><link rel="prefetch" href="/assets/js/56.eaa14513.js"><link rel="prefetch" href="/assets/js/57.5172f3c3.js"><link rel="prefetch" href="/assets/js/58.cbcb6909.js"><link rel="prefetch" href="/assets/js/59.8a255c81.js"><link rel="prefetch" href="/assets/js/6.f0133652.js"><link rel="prefetch" href="/assets/js/60.431d7a44.js"><link rel="prefetch" href="/assets/js/61.6bf1457d.js"><link rel="prefetch" href="/assets/js/62.99e5f908.js"><link rel="prefetch" href="/assets/js/63.44f4c403.js"><link rel="prefetch" href="/assets/js/64.0d1294b4.js"><link rel="prefetch" href="/assets/js/65.cc373e44.js"><link rel="prefetch" href="/assets/js/66.98e90798.js"><link rel="prefetch" href="/assets/js/67.c251d1a0.js"><link rel="prefetch" href="/assets/js/68.c2f36812.js"><link rel="prefetch" href="/assets/js/69.e6521fef.js"><link rel="prefetch" href="/assets/js/7.c38608f7.js"><link rel="prefetch" href="/assets/js/70.08f012e1.js"><link rel="prefetch" href="/assets/js/71.b28119a1.js"><link rel="prefetch" href="/assets/js/72.e06280b4.js"><link rel="prefetch" href="/assets/js/73.7cf6458c.js"><link rel="prefetch" href="/assets/js/74.fd9b6f70.js"><link rel="prefetch" href="/assets/js/75.7f2b2e3d.js"><link rel="prefetch" href="/assets/js/76.0e80bfb1.js"><link rel="prefetch" href="/assets/js/77.b6671d04.js"><link rel="prefetch" href="/assets/js/78.20530140.js"><link rel="prefetch" href="/assets/js/79.21b3b649.js"><link rel="prefetch" href="/assets/js/8.47288ab5.js"><link rel="prefetch" href="/assets/js/80.6b91f96d.js"><link rel="prefetch" href="/assets/js/81.487e90fc.js"><link rel="prefetch" href="/assets/js/82.4dc0bf1d.js"><link rel="prefetch" href="/assets/js/83.6ebc9379.js"><link rel="prefetch" href="/assets/js/84.a6ab5b5b.js"><link rel="prefetch" href="/assets/js/85.6e12c0fd.js"><link rel="prefetch" href="/assets/js/86.5ec358eb.js"><link rel="prefetch" href="/assets/js/87.c79e8c88.js"><link rel="prefetch" href="/assets/js/88.f944d782.js"><link rel="prefetch" href="/assets/js/89.ceea7f70.js"><link rel="prefetch" href="/assets/js/9.34945272.js"><link rel="prefetch" href="/assets/js/90.8265762b.js"><link rel="prefetch" href="/assets/js/91.93d23567.js"><link rel="prefetch" href="/assets/js/92.00e84c64.js"><link rel="prefetch" href="/assets/js/93.2fbc62a9.js"><link rel="prefetch" href="/assets/js/94.0e197e49.js"><link rel="prefetch" href="/assets/js/95.28495542.js"><link rel="prefetch" href="/assets/js/96.c081476c.js"><link rel="prefetch" href="/assets/js/97.230e1be8.js"><link rel="prefetch" href="/assets/js/98.c2781e38.js"><link rel="prefetch" href="/assets/js/99.fc4a0fbd.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.78248196.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link router-link-active">
+  Tools and Infrastructure
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/dev-tools/" class="nav-link router-link-active">
+  Tools and Infrastructure
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav>  <ul class="sidebar-links"><li><a href="/dev-tools/" aria-current="page" class="sidebar-link">/dev-tools/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kubernetes</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>SQL Server</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/dev-tools/sql-server/overview.html" aria-current="page" class="active sidebar-link">Overview</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#running-in-a-container" class="sidebar-link">Running in a Container</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#structure" class="sidebar-link">Structure</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#naming" class="sidebar-link">Naming</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#types" class="sidebar-link">Types</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#operations" class="sidebar-link">Operations</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#best-practices" class="sidebar-link">Best Practices</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#constraints" class="sidebar-link">Constraints</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#views" class="sidebar-link">Views</a></li><li class="sidebar-sub-header"><a href="/dev-tools/sql-server/overview.html#indexes" class="sidebar-link">Indexes</a></li></ul></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ansible</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Azure</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="sql-server-overview"><a href="#sql-server-overview" class="header-anchor">#</a> SQL Server Overview</h1> <h2 id="running-in-a-container"><a href="#running-in-a-container" class="header-anchor">#</a> Running in a Container</h2> <p>On AMD64 PCs just use the sql-server docker image.</p> <p>On M1 macs, use the following:</p> <div class="language-sh extra-class"><pre class="language-sh"><code>docker run --cap-add SYS_PTRACE -e <span class="token string">'ACCEPT_EULA=1'</span> -e <span class="token string">'MSSQL_SA_PASSWORD=Qwerty1!'</span> -p <span class="token number">1433</span>:1433 --name azuresqledge -d mcr.microsoft.com/azure-sql-edge
+</code></pre></div><p>It's the SQL Server Edge - at this moment it's the only SQL Server variant
+compiled for ARM64.</p> <div class="custom-block tip"><p class="custom-block-title">Password</p> <p>Password needs to be min 8 chars long, 1 capital letter, 1 digit, 1 symbol.</p></div> <h2 id="structure"><a href="#structure" class="header-anchor">#</a> Structure</h2> <ul><li>RDMS:
+<ul><li>Databases
+<ul><li>Schemas (the default is <em>dbo</em>) - they act as namespaces, they are
+useful for managing security
+<ul><li>Tables
+<ul><li>Columns</li></ul></li></ul></li></ul></li></ul></li></ul> <h2 id="naming"><a href="#naming" class="header-anchor">#</a> Naming</h2> <p>Popular Choices:</p> <ul><li>PascalCase</li> <li>underscore_separated</li> <li>Hybrid_Of_Above</li></ul> <h2 id="types"><a href="#types" class="header-anchor">#</a> Types</h2> <ul><li>text:
+<ul><li><em>char(n)</em> - fixed length - good when we know the length or when length is
+less than 3 (more optimized than varchar(n)) (non-Unicode)</li> <li><em>varchar(n)</em> - variable length (up to <em>n</em>) (non-Unicode)</li> <li><em>nchar(n)</em> - fixed length (Unicode)</li> <li><em>nvarchar(n)</em> - variable length (up to <em>n</em>) (Unicode)</li></ul></li> <li>integers:
+<ul><li><em>tinyint</em> (1 byte - 0-255)</li> <li><em>smallint</em> (2 bytes)</li> <li><em>int</em> (4 bytes)</li> <li><em>bigint</em> (8 bytes)</li></ul></li> <li>decimals:
+<ul><li><em>decimal/numeric</em> (5-17 bytes) - optionally, we can provide precision and
+scale</li> <li><em>money</em> (8 bytes) - 4 decimal places</li> <li><em>smallmoney</em> (4 bytes)</li></ul></li> <li>date/time:
+<ul><li><em>date</em> (3 bytes)</li> <li><em>time</em> - time precision might be adjusted</li> <li><em>datetime</em> (8 bytes) - legacy type</li> <li><em>smalldatetime</em> (4 bytes)</li> <li><em>datetime2</em> (6-8 bytes) - adjustable precision, it's a good choice in
+general</li> <li><em>datetimeoffset</em> (10 bytes) - with timezone</li></ul></li> <li>boolean
+<ul><li><em>bit</em></li></ul></li></ul> <div class="custom-block tip"><p class="custom-block-title">money</p> <p>The <em>money</em> and <em>smallmoney</em> sizes are unique to SQL Server, so potentially it's
+not the best choice.</p></div> <h2 id="operations"><a href="#operations" class="header-anchor">#</a> Operations</h2> <h3 id="creating-a-db"><a href="#creating-a-db" class="header-anchor">#</a> Creating a DB</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">DATABASE</span> BobsShoes<span class="token punctuation">;</span>
+GO
+</code></pre></div><h3 id="creating-a-table"><a href="#creating-a-table" class="header-anchor">#</a> Creating a table</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token comment">-- set the right database context</span>
+<span class="token keyword">USE</span> BobsShoes<span class="token punctuation">;</span>
+GO
+
+<span class="token comment">-- schema (namespace)</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> Orders 
+    <span class="token keyword">AUTHORIZATION</span> dbo<span class="token punctuation">;</span>
+GO
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>Customers <span class="token punctuation">(</span>
+    CustID <span class="token keyword">int</span> <span class="token keyword">IDENTITY</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        <span class="token keyword">CONSTRAINT</span> PK_Customers_CustID <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    CustName nvarchar<span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustStreet nvarchar<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustCity nvarchar<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustStateProv nvarchar<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustCountry nvarchar<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustPostalCode nvarchar<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    SalutationID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> 
+        <span class="token keyword">CONSTRAINT</span> FK_Customers_SaluationID_Salutations_SalutationID 
+            <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Salutations <span class="token punctuation">(</span>SalutationID<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>Stock <span class="token punctuation">(</span>
+    StockID <span class="token keyword">int</span> <span class="token keyword">IDENTITY</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        <span class="token keyword">CONSTRAINT</span> PK_Stock_StockID <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>    
+    StockSKU <span class="token keyword">char</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    StockSize <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    StockName <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    StockPrice <span class="token keyword">numeric</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>Orders <span class="token punctuation">(</span>  
+    OrderID <span class="token keyword">int</span> <span class="token keyword">IDENTITY</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        <span class="token keyword">CONSTRAINT</span> PK_Orders_OrderID <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    OrderDate <span class="token keyword">date</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    OrderRequestedDate <span class="token keyword">date</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    OrderDeliveryDate datetime2<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    CustID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token comment">--,</span>
+        <span class="token keyword">CONSTRAINT</span> FK_Orders_CustID_Customers_CustID 
+            <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Customers <span class="token punctuation">(</span>CustID<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    OrderIsExpedited <span class="token keyword">bit</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+ <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>OrderItems <span class="token punctuation">(</span>
+    OrderItemID <span class="token keyword">int</span> <span class="token keyword">IDENTITY</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        <span class="token keyword">CONSTRAINT</span> PK_OrderItems_OrderItemID <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    OrderID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token comment">--,</span>
+        <span class="token keyword">CONSTRAINT</span> FK_OrderItems_OrderID_Orders_OrderID
+            <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Orders <span class="token punctuation">(</span>OrderID<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    StockID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token comment">--,</span>
+        <span class="token keyword">CONSTRAINT</span> FK_OrderItems_StockID_Stock_StockID
+            <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Stock <span class="token punctuation">(</span>StockID<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    Quantity <span class="token keyword">smallint</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    Discount <span class="token keyword">numeric</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><ul><li><code>TotalPrice</code> is a calculated colum (the values can be persisted with the
+<code>PERSISTED</code> keyword</li> <li><code>Orders.OrderTracking</code> - <code>Orders</code> is the schema, <code>OrdreTracking</code> is table's
+name</li></ul> <h3 id="inserting-rows"><a href="#inserting-rows" class="header-anchor">#</a> Inserting rows</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> Orders<span class="token punctuation">.</span>Stock <span class="token punctuation">(</span>
+        StockSKU<span class="token punctuation">,</span> 
+        StockName<span class="token punctuation">,</span> 
+        StockSize<span class="token punctuation">,</span> 
+        StockPrice<span class="token punctuation">)</span>
+
+<span class="token keyword">VALUES</span>
+    <span class="token punctuation">(</span><span class="token string">'OXFORD01'</span><span class="token punctuation">,</span> <span class="token string">'Oxford'</span><span class="token punctuation">,</span> <span class="token string">'10_D'</span><span class="token punctuation">,</span> <span class="token number">50.</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'BABYSHO1'</span><span class="token punctuation">,</span> <span class="token string">'BabySneakers'</span><span class="token punctuation">,</span> <span class="token string">'3'</span><span class="token punctuation">,</span> <span class="token number">20.</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'HEELS001'</span><span class="token punctuation">,</span> <span class="token string">'Killer Heels'</span><span class="token punctuation">,</span> <span class="token string">'7'</span><span class="token punctuation">,</span> <span class="token number">75.</span><span class="token punctuation">)</span>
+</code></pre></div><h2 id="best-practices"><a href="#best-practices" class="header-anchor">#</a> Best Practices</h2> <h3 id="normal-forms"><a href="#normal-forms" class="header-anchor">#</a> Normal Forms</h3> <p>Normalization defines a set of rules that help to achieve a good design of a
+database, reducing duplication and data anomalies.</p> <ol><li>1NF
+<ul><li>one value per table cell (e.g. first and last names)</li> <li>rows should be unique - primary key should be there</li></ul></li> <li>2NF
+<ul><li>single-column primary keys</li></ul></li> <li>3NF
+<ul><li>Column values should only depend upon the key - if any non-key column
+depends on column(s) other than the key one, this data does not belong in
+that table. For example, keeping patient's doctor phone in the Patients
+database is not a good idea. There should be a separate table - Doctors -
+and patients should be linked ot appropriate doctors.</li></ul></li></ol> <p>There also other Normal Forms.</p> <h2 id="constraints"><a href="#constraints" class="header-anchor">#</a> Constraints</h2> <p>Constraints specify additional rules for the columns in our tables.</p> <div class="custom-block warning"><p class="custom-block-title">Overwriting</p> <p>We can't just overwrite existing constraint. First, we need to remove existing
+constraint, and then we can create a new one.</p></div> <h3 id="null"><a href="#null" class="header-anchor">#</a> NULL</h3> <p>We can &quot;constraint&quot; columns to allow NULLs. By default, the <code>NOT NULL</code> constains
+is applied.</p> <h3 id="default"><a href="#default" class="header-anchor">#</a> DEFAULT</h3> <p>Provides a default value for a column. It is useful when <code>NOT NULL</code> is applied
+as well.</p> <h3 id="primary-keys"><a href="#primary-keys" class="header-anchor">#</a> Primary Keys</h3> <p>Thy ensure uniqueness. It provides a backing index. That index can be
+<strong>clustered</strong> or <strong>unclustered</strong>.</p> <h3 id="unique"><a href="#unique" class="header-anchor">#</a> UNIQUE</h3> <p>It ensures no duplicates of some column. It allows NULL (but only one!). They
+are backed by an index (clustered or unclustered (the default)).</p> <p>The <code>UNIQUE</code> constraint can be applied on multiple columns, meaning that the
+combination of their values should be unique.</p> <h3 id="foreign-keys"><a href="#foreign-keys" class="header-anchor">#</a> Foreign Keys</h3> <p>The Foreign Key constraint links two tables together. We cannot create an entry
+that refers to a non-existing entity. For example, we can't create an
+<code>OrderItem</code> for an <code>Order</code> that doesn't exist.</p> <div class="language-log extra-class"><pre class="language-log"><code>The INSERT statement conflicted with the FOREIGN KEY constraint 
+<span class="token string">&quot;FK_OrderItems_OrderID_Orders_OrderID&quot;</span><span class="token punctuation">.</span> The conflict occurred in 
+database <span class="token string">&quot;BobsShoes&quot;</span><span class="token punctuation">,</span> table <span class="token string">&quot;Orders.Orders&quot;</span><span class="token punctuation">,</span> column <span class="token string">'OrderID'</span><span class="token punctuation">.</span>
+</code></pre></div><div class="custom-block tip"><p class="custom-block-title">Index</p> <p>There is no automatic backing index created for foreign keys. It is recommended
+to create it though.</p></div> <h4 id="cascade"><a href="#cascade" class="header-anchor">#</a> CASCADE</h4> <p>Entities referred to by a foreign key cannot be deleted. We can help ourselves
+with the <code>CASCADE</code> option. Whenever we delete an entity referenced by a foreign
+key, the entity that refers to it will be deleted as well.</p> <div class="language-sql extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>OrderItems<span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    StockID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        CONSTAINT FK_OrderItems_StockID
+            <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Stock <span class="token punctuation">(</span>StockID<span class="token punctuation">)</span>
+                <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">CASCADE</span>
+<span class="token punctuation">)</span>
+</code></pre></div><div class="custom-block tip"><p class="custom-block-title">SET NULL</p> <p>We could also use the <code>SET NULL</code> option instead of <code>CASCADE</code>. That would set the
+value of a foreign key to NULL, instead of deleting the whole row.</p></div> <h3 id="check"><a href="#check" class="header-anchor">#</a> CHECK</h3> <p>This constraint allows to define declarative various conditions on the
+table-level or on the column-level. The conditions are boolean expressions.</p> <div class="custom-block tip"><p class="custom-block-title">SELECT</p> <p>Conditions cannot contain <code>SELECT</code>. However, we can call a function that
+executes <code>SELECT</code>.</p></div> <p>Examples:</p> <ul><li><code>CHECK (LastName &lt;&gt; '')</code> - <code>LastName</code> value can't be empty</li> <li><code>CHECK (StockName &lt;&gt; StockDescription)</code> - two columns can't have the same
+values</li> <li><code>CHECK (Currency IN ('PLN', 'EUR'))</code></li></ul> <p>::: Namig
+It's quite useful to provide custom names for the <code>CHECK</code> constraints. In case
+if some condition is not satisfied, the error message will contain the name of
+the constraint. System-generated names are not very informative.
+:::</p> <h2 id="views"><a href="#views" class="header-anchor">#</a> Views</h2> <p>Views encapsulate queries. This way we can store some commonly used queries and
+use them whenever they're needed. For example, we can create some complicated
+query that joins multiple tables and hides unneded data.</p> <p>Views can be seen as <strong>Virtual Tables</strong>. Applications can invoke the views
+instead of querying the actual tables. This way, backward compatibility can be
+kept. We could add some new column to a table, but make sure that the View still
+returns the same set of data as before.</p> <p>Columns returned in a View can have their names changed.</p> <h3 id="updateable-views"><a href="#updateable-views" class="header-anchor">#</a> Updateable Views</h3> <p>We can update data in tables via Views. However, any such operation can only
+reference columns of only one base table. There are a few other restrictions as
+well.</p> <h2 id="indexes"><a href="#indexes" class="header-anchor">#</a> Indexes</h2> <p>We create indexes:</p> <ul><li>to enforce uniqueness on data (primary keys and unique constraints are backed
+by indexes)</li> <li>to improve query performance - these need to be determined by our workload</li> <li>for foreign keys</li></ul> <p>DB data is stored in pages, sorted by clustered index. Then, these pages are put
+into a B-Tree. All apges are in leaves. Then, a top row of each page is taken to
+build higher layers of the tree (intermediary layers + a root).</p> <p><img src="/assets/img/index-b-tree.b5266b36.png" alt=""></p> <div class="custom-block tip"><p class="custom-block-title">Pages</p> <p>Data is stored in pages. A single page is 8kb in size and contains multiple
+rows.</p></div> <h3 id="clustered-index"><a href="#clustered-index" class="header-anchor">#</a> Clustered Index</h3> <p>The data (rows) in the table is sorted using the index column. It's the default
+backing index for Primary Keys. There is no separate storage of index.</p> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>There can be max one clustered index in a table, because there can be only one
+way of sorting the data.</p></div> <div class="custom-block tip"><p class="custom-block-title">Heap</p> <p>A table without clustered index is a <strong>heap</strong>.</p></div> <h4 id="guidelines"><a href="#guidelines" class="header-anchor">#</a> Guidelines</h4> <p>Ideally, a clustered index values should be <strong>ever-increasing</strong>. That way, the
+organization of existing data does not need to change when new entries are being
+added (page splits). It should also be <strong>unchanging</strong>, for the same reasons
+(changing the index value causes a delete-insert operation pair on the row).
+Additionally, the index should be <strong>narrow</strong> (the less bytes the better). This
+way, there will be less intermediary pages.</p> <h3 id="non-clustered-index"><a href="#non-clustered-index" class="header-anchor">#</a> Non-Clustered Index</h3> <p>It doesn't sort the rows. It's stored in a different place, separately from the
+table (similar to book index). There can be more than one such index per table.</p> <p>When querying data, first DB checks the index, and then it goes to retrieve the
+data at the specified address. Clustered Index uses the data directly, so it's
+faster.</p> <div class="custom-block tip"><p class="custom-block-title">Name</p> <p>We don't have to provide names for primary key constraints, system will
+generate these for us. However, it's better to create names adhering to our
+naming convention.</p></div></div> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/dev-tools/kubernetes/helm.html" class="prev">
+        Helm
+      </a></span> <span class="next"><a href="/dev-tools/git/overview.html">
+        Git
+      </a>
+      →
+    </span></p></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/18/2022, 7:00:35 PM</span></div></footer> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.6d3df966.js" defer></script><script src="/assets/js/2.a6a6810d.js" defer></script><script src="/assets/js/18.c8c76e38.js" defer></script>
+  </body>
+</html>
