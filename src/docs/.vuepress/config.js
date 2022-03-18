@@ -256,6 +256,12 @@ module.exports = {
           ],
         },
         {
+          title: "SQL Server",
+          children: [
+            "sql-server/overview"
+          ]
+        },
+        {
           title: "Git",
           children: ["git/overview"],
         },
