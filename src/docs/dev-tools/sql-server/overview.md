@@ -1,7 +1,7 @@
 ---
 title: Overview
 description: SQL Server Overview
-tags: sql, databases, db, ms sql
+tags: sql, databases, db, server, relational
 lang: en-US
 ---
 
@@ -32,6 +32,16 @@ Password needs to be min 8 chars long, 1 capital letter, 1 digit, 1 symbol.
           useful for managing security
             - Tables
                 - Columns
+            - Views
+            - Stored Procedures
+
+Every object in the database has its fully qualified name in the format:
+`{Instace}.{Database}.{Schema}.{Object}`.
+
+::: tip Instance
+The `{Instance}` part comes from the fact that a single OS can host multiple
+instances of SQL Server.
+:::
 
 ## Naming
 

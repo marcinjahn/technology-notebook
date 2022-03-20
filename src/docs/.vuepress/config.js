@@ -258,7 +258,8 @@ module.exports = {
         {
           title: "SQL Server",
           children: [
-            "sql-server/overview"
+            "sql-server/overview",
+            "sql-server/t-sql"
           ]
         },
         {
