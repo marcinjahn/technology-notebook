@@ -273,7 +273,7 @@ Examples:
   values
 - `CHECK (Currency IN ('PLN', 'EUR'))`
 
-::: Namig
+::: tip Namig
 It's quite useful to provide custom names for the `CHECK` constraints. In case
 if some condition is not satisfied, the error message will contain the name of
 the constraint. System-generated names are not very informative.
@@ -329,7 +329,7 @@ way of sorting the data.
 :::
 
 ::: tip Heap
-A table without clustered index is a **heap**.
+A table without clustered index is a **heap** (why?)
 :::
 
 #### Guidelines
@@ -345,14 +345,90 @@ way, there will be less intermediary pages.
 ### Non-Clustered Index
 
 It doesn't sort the rows. It's stored in a different place, separately from the
-table (similar to book index). There can be more than one such index per table.
+table (similar to book index). It is stored as B-Tree.
 
 When querying data, first DB checks the index, and then it goes to retrieve the
 data at the specified address. Clustered Index uses the data directly, so it's
 faster.
 
-::: tip Name
-We don't have to provide names for primary key constraints, system will
-generate these for us. However, it's better to create names adhering to our
-naming convention.
+::: tip Clustered Index Comparison
+Opposed to clustered index, there can be many non-clustered indexes per table
+(max 999).
+
+By default, the non-clustered index does not contain other columns than the ones
+being indexed. Clustered index contains all columns, becasue that index is the
+data itself. However, non-clustered index duplicates information, since it is
+stored separately from the data.
 :::
+
+The index is always in sync with the data (the same amount of rows).
+
+#### Multiple Columns
+
+Here's how to create an index:
+
+```sql
+CREATE NONCLUSTERED INDEX inx_TransactionTypes ON dbo.Transactions (TransactionType)
+```
+
+The order of columns in the index matters. If our index contains columns
+"Amount" and "TransactionType", the index will be created in a way that rows are
+sorted by "Amount". We can quickly query data by the "Amount" column. However,
+querying on "TransactionType" will require the DB to scan throught the entire
+index data structure to find appropriate rows.
+
+Here's an example:
+
+![](./assets/non-clustered-index-columns-order.png)
+
+Our index has been created optimally for the queries that we want to use. The
+order of the columns is: "TransactionType", "Amount". If we used a reversed
+order, the green query would still work fine, however, the purple one would need
+to scan all the rows.
+
+::: tip Ideal Design
+Ideally, we want to have as few indexes as possible supporting as many queries
+as possible.
+:::
+
+For queries that include inequality predicates, the following applies:
+
+- columns using equality predicates should come before inequality ones in the
+  index
+- multiple inquality columns are hard to index well
+
+::: tip Merge Join
+If we have multiple single-columns indexes, DB can use them both for a single
+query (if it involves multiple columns) and merge-join the results.
+
+It's still better to use an index that includes multiple columns.
+:::
+
+::: tip AND vs OR
+The AND queries can often be satisfied with a single index on multiple columns.
+The OR queries run optimally when there are multiple indexes, for each of the
+queried columns.
+
+The difference comes from the fact that each condition in the AND builds on top
+of the previous result. In the OR case, each condition has to work on the entire
+dataset, and they are joined in the end.
+
+![](./assets/or-predicate-needs-multiple-indexes.png)
+
+The green part is served well by the index, the purple part needs to scan the
+whole index. If there was a separate index for "TransactionType", it would be
+faster.
+:::
+
+#### Tips
+
+- Non-clustered Index can include additional columns than the ones being
+  indexed. A `SELECT` statement can filter based on indexed columns, but it
+  might require some additional columns to be returned. Including these columns
+  in the index itself skips the step where the DB engine would have to lookup
+  this data in the actual raw data files.
+- The index can be a **Filtered Index** - this way, not all of the rows are
+  indexed, but only the ones that satisfy some filter. It makes the index
+  smaller. E.g., it could be useful for tables that use the "soft-deletes"
+  technique. We could skip such entities from the index if our queries should
+  not bother with them.
