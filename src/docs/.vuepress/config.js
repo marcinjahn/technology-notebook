@@ -139,6 +139,12 @@ module.exports = {
               ],
             },
             {
+              title: "Entity Framework Core",
+              children: [
+                "dotnet/entity-framework-core/overview"
+              ]
+            },
+            {
               title: "Functional Programming",
               children: [
                 "dotnet/functional/fundamentals",
