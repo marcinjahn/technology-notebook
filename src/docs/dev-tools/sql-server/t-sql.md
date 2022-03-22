@@ -281,6 +281,8 @@ as `SELECT 2*2;`.
 
 ::: tip Default
 If we just use the `JOIN` keyword in the query, the `INNER JOIN` will be used.
+
+If we use `LEFT/RIGHT JOIN`, the `LEFT/RIGHT OUTER JOIN` will be used.
 :::
 
 #### WHERE
