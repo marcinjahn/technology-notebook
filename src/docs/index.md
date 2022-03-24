@@ -26,6 +26,7 @@ Selected publications:
 - [ASP.NET
 Core
 series](/programming/dotnet/asp-net-core/overview.md)
+- [Entity Framework Core](/programming/dotnet/entity-framework-core/)
 - [Rust series](/programming/rust/overview.md)
 - [Kubernetes
 series](/dev-tools/kubernetes/meaning.md)

@@ -123,7 +123,6 @@ module.exports = {
             "dotnet/logging",
             "dotnet/configuration",
             "dotnet/records",
-            "dotnet/entity-framework",
             {
               title: "ASP.NET Core",
               children: [
@@ -141,7 +140,9 @@ module.exports = {
             {
               title: "Entity Framework Core",
               children: [
-                "dotnet/entity-framework-core/overview"
+                "dotnet/entity-framework-core/",
+                "dotnet/entity-framework-core/testing",
+                "dotnet/entity-framework-core/tips"
               ]
             },
             {

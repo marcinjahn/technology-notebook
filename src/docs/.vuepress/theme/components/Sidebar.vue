@@ -31,7 +31,7 @@ export default {
   overflow: auto;
   // max-height: 80%;
   // background-color grey;
-  top 5 rem
+  top 4 rem
   // left 6 rem
   border-radius 5px;
   // border 1px solid grey;

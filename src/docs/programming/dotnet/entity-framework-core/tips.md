@@ -1,11 +1,11 @@
 ---
-title: Entity Framework
-description: A bit of information about Entity Framework
-tags: .net, entity framework
+title: Tips
+description: Some tips about Entity Framework Core
+tags: .net, entity framework, core, ef, c#
 lang: en-US
 ---
 
-# Entity Framework
+# Entity Framework Core Tips
 
 A class inheriting `DbContext` is needed.
 
@@ -137,3 +137,19 @@ else throw new Exception("Problem saving changes");
 ```
 
 `SaveChangesAsync` returns a number of changes done in DB.
+
+## Global Filters
+
+Global query filters might be useful when using soft-deletes to filter out the
+deleted entities by default.
+
+## ASP.NET Core
+
+### Responses
+
+It's not the best idea to directly return entities of our `DbSet`s. We should
+define DTO classes (records) that will contain responses of our API actions.
+
+Returning DB entities directly exposes the whole database structure, which might
+bring too many information to the client. Additionally, when `Include`ing
+relations, we might encounter cyclic references issue when serializing data.

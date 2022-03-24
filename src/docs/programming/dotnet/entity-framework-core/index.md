@@ -9,7 +9,7 @@ lang: en-US
 
 EF Core is the official .NET data access technology. It's an ORM (Object
 Relational Mapper), providing some framework for how to work with the data
-layer.
+layer. It allows accessing Tables, Stored Procedures, Views, and more.
 
 ## NuGet
 
@@ -30,12 +30,17 @@ public class SamuraiContext : DbContext
 The tables names are inferred from the `DbSet<>` names. 
 
 ::: tip Optional DbSet
-The `DbSet` properties
-are not required. We can have a table without a `DbSet` pointing to it. `DbSet`
-is a convenience that:
+The `DbSet` properties are not required. We can have a table without a `DbSet`
+pointing to it. `DbSet` is a convenience that:
 
 - simplifies navigation to that table from the `DbContext`
 - provides a name for the table
+
+Without a `DbSet` defined in the `DbContext`, we can retrieve it as follows:
+
+```csharp
+var set = context.Set<BattleSamurai>();
+```
 :::
 
 ### SaveChanges
@@ -50,7 +55,7 @@ transaction, so failure of some requests will not corrupt the database.
 
 In some cases, we're not interested in `DbContext`'s tracking capabilities,
 especially when building web APIs where we often fire some query to the DB and
-dispose of the connection. In such cases we can enable **NoTracking** to imrove
+dispose of the connection. In such cases we can enable **NoTracking** to improve
 performance.
 
 We can do that in a few ways:
@@ -64,7 +69,7 @@ We can do that in a few ways:
 
 - on `DbContext` - makes all queries NoTracking by default:
 
-    ```csharp
+    ```csharp{5}
     public class MyContext: DbContext
     {
         public MyContext()
@@ -73,6 +78,24 @@ We can do that in a few ways:
         }
     }
     ```
+
+- in Dependency Injection registration:
+
+    ```csharp{5}
+    builder.Services.AddDbContext<SamuraiContext>(options =>
+    {
+        options
+            .UseSqlServer(builder.Configuration.GetConnectionString("SamuraiDb"))
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    });
+    ```
+
+::: tip Only Queries
+The above methods only impact the tracking of entities that are being queried
+via EF Core. Entities being added or updated are still being tracked, which is a
+good thing. Otherwise, we'd have to set any entity as "Modified" or "Added"
+explicitly every time.
+:::
 
 ### Connection
 
@@ -92,6 +115,8 @@ public class SamuraiContext : DbContext
 }
 ```
 
+In a real scenario, we'd obviously not hardcode the connection string.
+
 ## Conventions
 
 EF Core has a bunch of conventions that are applied by default. Here're some of
@@ -103,6 +128,13 @@ them:
   from SQL Server provider, not the EF Core itself)
 - When C#'s Nullable feature is enabled, reference types are "not nullable" by
   default - the same applies to DB table's columns
+- DB tables names come from `DbSet`'s name or, if `DbSet` was not defined, from
+  a class's name.
+
+    ```csharp
+    // We can also name the table whatever we want
+    modelBuilder.Entity<Horse>().ToTable("MyHorses");
+    ```
 
 The conventions can be tweaked with:
 
@@ -118,14 +150,21 @@ are supposed to land in the VCS.
 Migrations history is kept in the DB itself, in the "__EFMigrationsHistory"
 table.
 
-::: tip EF 6
-Prior to EF Core, during migration application, the database would be queried to
-look for data on applied migrations. It doesn't happen anymore.
-:::
-
 ### Creating Migration
 
-Command: `dotnet ef migrations add <NAME>`
+Command: `dotnet ef migrations add <NAME>`. It should be invoked from a
+directory of a .NET project containig `DbContext`.
+
+::: tip DbContext Initialization
+The command tries to instantiate `DbContext`. By default it looks for that logic
+in the project in the current directory. If a different .NET project has this
+logic (e.g. some ASP.NET Core project), we need to point to it. Here's an
+example:
+
+```sh
+dotnet ef migrations add -s ../WebApi/WebAPI.csproj MyMigration
+```
+:::
 
 When adding a migration, the file `Migrations/*ModelSnapshot.cs` is loaded and
 compared with the current `DbContext`. Based on the difference between these, a
@@ -142,11 +181,24 @@ class with 2 methods:
 - `Up` - work to do when the migration is applied
 - `Down` - work to do when the particular migration is revoked
 
+::: danger DROP
+In cases when we have data in the DB, we should always look at the migration file
+to make sure that it's going to do only what we expected. In some cases, after
+changing various names, it might happen that the migration will `DROP` a table
+and recreate it, which would be a loss of existing data.
+:::
+
+::: tip Empty Migrations
+If we have a specific case we can create an empty migration and code the logic
+of that migration directly in its file. E.g., we could use
+`migrationBuilder.Sql()` method to provide some [SQL to be executed](#raw-sql).
+:::
+
 ### Applying Migration
 
-The EF Tool can either execute the migration for me (good in DEV), or it can
-generate an SQL file with all the migration steps (good for PROD) - I can then
-execute it later on.
+The EF Tool can either execute the migration (good in DEV), or it can generate
+an SQL file with all the migration steps (good for PROD) - we can then execute
+it later on.
 
 Generating a script: `dotnet ef migrations script <FROM> <TO>` - the SQL is
 printed to stdout. We can specify the migration to start from and the one we
@@ -171,6 +223,15 @@ Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='60']
 CREATE DATABASE [SamuraiAppData];
 Executed DbCommand (461ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
 ...
+```
+:::
+
+::: tip DbContext initialization
+Just like with migration creation, we need to point the EF Tool to the project
+that contains `DbContext` creation logic:
+
+```sh
+dotnet ef database update -s ../WebAPI/WebAPI.csproj
 ```
 :::
 
@@ -245,13 +306,22 @@ EF Core has a convention that understands it and it will create three tables:
 - BattleSamurai - association of BattleIds with SamuraiIds (the PK will be a
   combination of these two FKs)
 
+It's called **Skip Navigation**, because in code we can forget about the
+intermediary table and just work with the two entities being related.
+
+::: tip Join class name
+The join class (e.g., BattleSamurai) was named by following EF Core's
+convention: class names are placed alphabetically. That's why it's
+"BattleSamurai" and not "SamuraiBattle".
+:::
+
 #### Join Class
 
 For simplest cases, the above is enough. For some more advanced scenarios, we
 need to create additional class that joins our entities together.
 
 ::: tip EF Core < 5.0
-In older versions of EF Core, it was mandatory to create such class for every
+In older versions of EF Core, it was mandatory to create such a class for every
 many-to-many relationship.
 :::
 
@@ -333,6 +403,9 @@ a single table (of the "principal"). By default, two tables are used.
 :::
 
 ## Queries
+
+EF Core automatically generates `SELECT` queries when accessing objects. We can
+also customize the query that EF Core executes on the `DbContext` level.
 
 ### Execution Methods
 
@@ -490,7 +563,9 @@ We can use SQL's `LIKE` with the `EF.Functions.Like` function:
 var samurais = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
 ```
 
-## Removing Rows
+## Removing Data
+
+Here's how to remove some entity
 
 ```csharp
 var samurai = _context.Samurais.Find(4);
@@ -498,7 +573,40 @@ _context.Samurais.Remove(samurai);
 _context.SaveChanges();
 ```
 
-### Add
+### Many-to-Many
+
+Here's how to remove a Many-to-Many relationship:
+
+```csharp
+var battle = _context.Battles.Include(n => n.Samurais).FirstOrDefault();
+battle.Samurais.RemoveAll(s => true); // remove all samurais from a battle
+// battle.Samurais.Remove(battle.Samurais.First()); // remove a single samurai from a battle
+_context.SaveChanges();
+```
+
+The `Include` above is crucial. If we fetched battles without samurais,
+`DbContext` would not "know" that any samurais were in the battle, and the
+`Remove` call would not have any result.
+
+In case when we're using a more explicit Many-to-Many relationship, with a Join
+table class defined, we can remove an association as follows:
+
+```csharp
+var bs = _context.Set<BattleSamurai>()
+    .SingleOrDefault(bs => bs.BattleId == 1 && bs.SamuraiId == 10);
+if (bs is not null)
+{
+    _context.Remove(b_s);
+    _context.SaveChanges();
+}
+```
+
+::: tip Modifying payload
+If we want to modify some payload data of a many-to-many relationship, we'd have
+to modify the join class object, similarly to the code above.
+:::
+
+## Adding Rows
 
 We can add new rows:
 
@@ -579,11 +687,12 @@ using (var newContext = new SamuraiContext())
 When using `Attach` the `DbContext` (`newContext` in this case) will not treat
 the provided data as "Modified". Instead, it will treat it as "Unchanged".
 However, EF Core sees that one of the quotes in the samurai does not have a
-value for thr `Id` (PK), and for the `SamuraiId` (FK). It will understand that
+value for the `Id` (PK), and for the `SamuraiId` (FK). It will understand that
 this data needs to be sent to the DB.
 
-Another approach would be to add the `Quote` to the DB dirctly, instead of doing
-that via a samurai. For this to work, we need to have a FK property of `Quote`:
+Another approach would be to add the `Quote` to the DB directly, instead of
+doing that via a samurai. For this to work, we need to have a FK property of
+`Quote`:
 
 ```csharp
 var quote = new Quote { Text = "Some text", SamuraiId = samuraiId };
@@ -599,7 +708,8 @@ Disconnected scenario occurs if we want to update some entity with relations:
 
 ```csharp{10}
 var quote = context.Samurais
-    .Include(s => s.Quotes),First(s => s.Id == 2)
+    .Include(s => s.Quotes)
+    .First(s => s.Id == 2)
     .Quotes
     .First();
 
@@ -626,8 +736,137 @@ newContext.Entry(quote).State = EntityState.Modified;
 newContext.SaveChanges();
 ```
 
-We're manually informing EF Core that this quote was modified. As a result, just
-one `UPDATE` command will be sent to the DB.
+We're manually informing EF Core that this quote was modified. Only this one
+entity will be updated, related data is left unchanged - just one `UPDATE`
+command will be sent to the DB.
+
+## Keyless Entities
+
+EF Core 3.0 introduced the possibility to have entities without PK.
+Here's how we can use it:
+
+Create an entity:
+
+```csharp
+public class SamuraiBattleStat
+{
+    public string Name { get; set; }
+    public int? NumberOfBattles { get; set; }
+    public string EarliestBattle { get; set; }
+}
+```
+
+Add a `DbSet` to the `DbContext`:
+
+```csharp
+public DbSet<SamuraiBattleStat> SamuraiBattleStats { get; set; }
+```
+
+Configure the entity to be keyless in `OnModelCreating` of the `DbContext`:
+
+```csharp
+modelBuilder.Entity<SamuraiBattleStat>().HasNoKey();
+```
+
+::: tip Tracking
+Keyless entities are not tracked by `DbContext` and it cannot be enabled.
+:::
+
+::: warning Find() Method
+Even though a keyless entity may be a `DbSet` we cannot use `DbSet`'s `Find()`
+method on it - there's no key after all! The code will compile just fine, but an
+exception will be thrown in the runtime.
+:::
+
+### Views
+
+In case the `SamuraiBattleStat` is supposed to be a View in the DB, we need
+to configure it as follows:
+
+```csharp
+modelBuilder.Entity<SamuraiBattleStat>().HasNoKey().ToView("SamuraiBattleStats");
+```
+
+Without that, EF Core would create a new table.
+
+::: warning Creating Views
+EF Core cannot create Views. They need to be created externally (e.g., with some
+migration executing raw SQL). Even the migration generated after the above
+change will be empty!
+:::
+
+## Raw SQL
+
+In special cases, we can use raw SQL in EF Core. It might be more performant
+than relying on EF Core's queries. 
+
+### Migrations
+
+For example, we might want to have a View or a Stored Procedure in our DB. To
+create that, we'd create an empty migration and add SQL to that migration.
+Here's an example:
+
+```csharp
+public partial class AddStoredProcedures : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.Sql(
+        @"CREATE PROCEDURE dbo.DeleteQuotesForSamurai
+            @samuraiId int
+            AS
+            DELETE FROM Quotes
+            WHERE Quotes.SamuraiId=@samuraiId");
+    }
+
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        // Remove
+    }
+}
+```
+
+### Querying
+
+Here's an example of how we can invoke raw SQL with a `DbContext`:
+
+```csharp
+var samurais = context.Samurais.FromSqlRaw("SELECT * FROM Samurais").ToList();
+```
+
+Since we used a `DbSet`, the result will be mapped to the entity of that
+`DbSet`. The entities will be tracked as well.
+
+::: warning Mapping
+There are some rules that we need to follow for the mapping to succeed:
+
+- The result must contain ALL the properties of the entity - not more, not less.
+- The result cannot contain related data - we can go around it by attaching
+`Include()` after the `FromSqlRaw()`.
+:::
+
+::: tip Parametrized Strings
+We can use interpolation (e.g., `SELECT * FROM {tableName}`). Doing that is
+safer with `FromSqlInterpolated()`. The SQL query will be parametrized.
+:::
+
+### Stored Procedures
+
+```csharp
+var samurais = _context.Samurais.FromSqlInterpolated(
+    $"EXEC dbo.HomesWithNRooms {rooms}").ToList();
+```
+
+### Other Requests
+
+There is also another way to invoke SQL commands:
+
+```csharp
+context.Database.ExecutrSqlRaw("some SQL");
+```
+
+As a response we'll get just a number of rows affected by the command. We could
+use it to execute some stored procedure that does not return data.
 
 ## Logging
 
@@ -655,7 +894,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
 We'll see logs generated by EF Core in the console.
 
-By default, all values are hidden, since they might be sensitive. We can disable that hiding with:
+By default, all values are hidden, since they might be sensitive. We can disable
+that hiding with:
 
 ```csharp
 optionsBuilder.LogTo(Console.WriteLine)
@@ -671,8 +911,3 @@ will already be there.
 
 If at least 4 operations have been added to the `DbContext`, EF Core will
 execute a batch request instead of sending these operations/requests separately.
-
-## Tips
-
-- Global query filters might be useful when using soft-deletes to filter out the
-  deleted entities by default.
