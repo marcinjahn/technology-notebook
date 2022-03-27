@@ -9,7 +9,7 @@ lang: en-US
 
 ## Boyer-Moore-Horspool
 
-It's an algorithm for searching for a substring withing a string. It uses a
+It's an algorithm for searching for a substring within a string. It uses a
 **Bad Match Table** to store characters of the pattern we're searching for (a
 hashmap). Each character is a key, and the value is the shift from the end of
 the pattern where the given character can be found. While iterating through
