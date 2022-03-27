@@ -27,7 +27,8 @@ public void CanInsertSamuraiIntoDatabase()
 
 ## InMemory Provider
 
-It emulates an RDBMS via in-memory lists.
+It emulates an RDBMS via in-memory lists. It's quite simple though, it does not
+support things such as raw SQL.
 
 ```csharp{5}
 [TestMethod]

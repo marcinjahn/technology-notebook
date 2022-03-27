@@ -170,7 +170,7 @@ static void QuickSort(IList<int> nums)
 
 static async void QuickSortInternal(IList<int> nums, int startIndex, int endIndex)
 {
-  if (startIndex < endIndex) return;
+  if (startIndex >= endIndex) return;
 
   var pivotIndex = endIndex;
 
