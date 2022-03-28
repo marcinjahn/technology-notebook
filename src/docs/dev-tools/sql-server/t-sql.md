@@ -291,6 +291,11 @@ Due to the fact that SQL includes NULLs, we have to deal with **Ternary Logic**.
 On top of `true`/`false` there is a possibllity of an `unknown` result. To test
 for `unknown` we use the `IS NULL`/`IS NOT NULL` operators.
 
+::: tip Not Equal
+Both the `!=` and `<>` are inequality operators. It's better to use the `<>`
+though since it follows the ISO standard.
+:::
+
 #### GROUP BY
 
 `GROUP BY` is useful when we do not care about individual entities, but rather
