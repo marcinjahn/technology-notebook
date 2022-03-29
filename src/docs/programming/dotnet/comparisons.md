@@ -59,7 +59,7 @@ this issue.
 
 `Comparer<T>.Default` every type can use the default comparer, which uses the
 T's `IComparer<T>` implementation (or `IComparer` if generic one is missing).
-What if both are missing? Exception?
+What if both are missing? An exception?
 
-`StringComparer` is a static class that has 6 variosu comparers for strings
+`StringComparer` is a static class that has 6 various comparers for strings
 (implements `IComparer` and `IEqualityComparer`).

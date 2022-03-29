@@ -52,7 +52,7 @@ Records may be copied (by value) with some changes to original values like this:
 
 ```csharp
 var rec1 = new Person("Marcin", 25);
-var rec2 = rec1 with { Age = 20 }; // only name gets modified in the new record instance 
+var rec2 = rec1 with { Age = 20 }; // only age gets modified in the new record instance 
 ```
 
 ### Deconstructing

@@ -11,8 +11,8 @@ lang: en-US
 
 ### Reference Types
 
-- Override `Object`'s virtual `Equals(object o)` method (check for: null,
-  ReferenceEquals, fields/properties). For inherited types, first call
+- Override `Object`'s virtual `Equals(object o)` method (check for: `null`,
+  `ReferenceEquals`, fields/properties). For inherited types, first call
   `base.Equals()` and then check for added properties/fields
 - Implement `==` and `!=` - to enable `==` and `!=` (could use the `Object`'s
   static `Equals`, which will call the overridern `Equals`)
@@ -35,7 +35,7 @@ here.
 
 ## Hash Codes
 
-Has Codes are used in HashSets and Dictionaries to be able to retrieve elements
+Hash codes are used in HashSets and Dictionaries to be able to retrieve elements
 efficiently. If two objects are equal they should have the same hash codes (or
 dictionaries might not work)! Therefore `Equals` and `GetHashCode` should rely
 on the same set of properties to get the result.
@@ -156,7 +156,7 @@ uses the `T`'s equality implementation.
 `StringComparer` is a static class that has 6 variosu comparers for strings
 (implements `IComparer` and `IEqualityComparer`).
 
-## `IStructuralEquatable
+## `IStructuralEquatable`
 
 Collections are structurally equal if:
 - they contain same elements

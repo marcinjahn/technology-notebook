@@ -16,6 +16,8 @@ layer. It allows accessing Tables, Stored Procedures, Views, and more.
 - `Microsoft.EntityFrameworkCore` - just the core logic, no providers;
 - `Microsoft.EntityFrameworkCore.SqlServer` - SQL Server provider, installing it
   will also pull in the above package as its dependency.
+- `Microsoft.EntityFrameworkCore.Design` - a package that is needed for invoking
+  migrations
 
 ## DbContext
 
@@ -448,7 +450,7 @@ var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList();
 
 ### Related Data
 
-Be default, when pulling some entities, their related entities are not fetched.
+By default, when pulling some entities, their related entities are not fetched.
 E.g., if I have a 1-to-Many relationship between samurais and quotes, if I query
 for the samurai, the list of quotes will be empty.
 
@@ -487,7 +489,7 @@ Here are some other sceanarios for Eager Loading:
     ```csharp
     context.Samurais
         .Include(s => s.Quotes) // many-to-many
-        .ThenInclude(q => q.Translations); // many-to-many
+        .ThenInclude(q => q.Translations); // one-to-many
     ```
 
 - Include just grandchildren:
@@ -518,7 +520,7 @@ context.Entry(samurai).Reference(s => s.Horse).Load(); //one-to-one
 
 #### Lazy Loading
 
-Lazy Loading fetches the data from the DB as soon as I try to access some
+Lazy Loading fetches the data from the DB as soon as we try to access some
 related data via a Navigation Property.
 
 ::: tip OFF
