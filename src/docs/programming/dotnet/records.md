@@ -55,6 +55,10 @@ var rec1 = new Person("Marcin", 25);
 var rec2 = rec1 with { Age = 20 }; // only age gets modified in the new record instance 
 ```
 
+::: tip Anonymous Types
+The `with` operator can also be applied to anonymous types in C#.
+:::
+
 ### Deconstructing
 
 A bit similarly to JS, we can extract some values from records:
