@@ -269,7 +269,7 @@ public class Quote
 
     // optional
     public Samurai Samurai { get; set; } // Navigation Property (reference to parent)
-    public int SamuraiId { get; set; } // FK
+    public int SamuraiId { get; set; } // FK - it helps EF Core to know that Quote is  a "child"
 }
 ```
 
