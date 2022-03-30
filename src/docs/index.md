@@ -14,7 +14,7 @@ tagline: Notes on IT topics
 # footer: Made by Marcin Jahn with VuePress
 ---
 
-This is [Marcin Jahn](/meta/who-am-i.md), welcome to my notebook!
+My name is [Marcin Jahn](/meta/who-am-i.md), welcome to my notebook!
 
 This website is a place for various IT topics that I felt the need to write
 down. If you find any of the contents useful, that's great! You can find
