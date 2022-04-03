@@ -4,7 +4,8 @@
     :aria-labelledby="data.heroText !== null ? 'main-title' : null"
   >
     <header class="hero">
-      <img
+      <Logo />
+      <!-- <img
         v-if="data.heroImage"
         :src="$withBase(data.heroImage)"
         :alt="data.heroAlt || 'hero'"
@@ -22,7 +23,7 @@
         class="description"
       >
         {{ data.tagline || $description || 'Welcome to your VuePress site' }}
-      </p>
+      </p> -->
 
       <p
         v-if="data.actionText && data.actionLink"
@@ -62,11 +63,12 @@
 
 <script>
 import NavLink from '@theme/components/NavLink.vue'
+import Logo from '@theme/components/Logo.vue'
 
 export default {
   name: 'Home',
 
-  components: { NavLink },
+  components: { NavLink, Logo },
 
   computed: {
     data () {
@@ -90,21 +92,24 @@ export default {
   margin 0px auto
   display block
   .hero
-    text-align center
-    img
-      max-width: 100%
-      max-height 280px
-      display block
-      margin 3rem auto 1.5rem
-    h1
-      font-size 3rem
-    h1, .description, .action
-      margin 1.8rem auto
-    .description
-      max-width 35rem
-      font-size 1.6rem
-      line-height 1.3
-      color lighten($textColor, 40%)
+    display: flex;
+    justify-content: center;
+    // text-align center
+    margin-top 10rem
+    // img
+    //   max-width: 100%
+    //   max-height 280px
+    //   display block
+    //   margin 3rem auto 1.5rem
+    // h1
+    //   font-size 3rem
+    // h1, .description, .action
+    //   margin 1.8rem auto
+    // .description
+      // max-width 35rem
+      // font-size 1.6rem
+      // line-height 1.3
+      // color lighten($textColor, 40%)
     .action-button
       display inline-block
       font-size 1.2rem
@@ -151,15 +156,19 @@ export default {
     .feature
       max-width 100%
       padding 0 2.5rem
+  
+  .hero
+    margin-top 3rem !important
+
 
 @media (max-width: $MQMobileNarrow)
   .home
     padding-left 1.5rem
     padding-right 1.5rem
     .hero
-      img
-        max-height 210px
-        margin 2rem auto 1.2rem
+      // img
+        // max-height 210px
+        // margin 2rem auto 1.2rem
       h1
         font-size 2rem
       h1, .description, .action

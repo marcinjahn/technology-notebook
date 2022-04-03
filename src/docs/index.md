@@ -1,7 +1,7 @@
 ---
 home: true
-heroImage: /img/me.webp
-tagline: Notes on IT topics
+# heroImage: /img/me.webp
+# tagline: Notes on IT topics
 # actionText: Show me the articles! →
 # actionLink: /guide/
 # features:
