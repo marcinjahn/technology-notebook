@@ -291,6 +291,8 @@ module.exports = {
             "networking/tcp",
             "networking/udp",
             "networking/http",
+            "networking/hsts",
+            "networking/sni"
           ],
         },
         {

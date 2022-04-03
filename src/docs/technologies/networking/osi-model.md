@@ -7,12 +7,12 @@ title: OSI Model
 
 ![](https://i.imgur.com/NNcLwn7.png)
 
-- Layer 7 - HTTP
+- Layer 7 - HTTP, SSH, FTP
 - Layer 6 - TLS
-- Layer 5 - ?
-- Layer 4 - TCP
-- Layer 3 - IP
-- Layer 2 - Ethernet
+- Layer 5 - SMB, RPC
+- Layer 4 - TCP, UDP, QUIC
+- Layer 3 - IP, ICMP
+- Layer 2 - Ethernet, WiFi
 - Layer 1 - Electrical signals
 
 ## Resources
