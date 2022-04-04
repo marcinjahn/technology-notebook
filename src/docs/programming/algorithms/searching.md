@@ -7,6 +7,31 @@ lang: en-US
 
 # Searching
 
+## Binary Search
+
+A O(log n) algorithm that searches a specified element in a sorted (!) array.
+
+### Recurcive Algorithm
+
+```csharp
+int BinarySearch(int[] sortedNumbers, int target)
+{
+  if (!sortedNumbers.Any()) return -1;
+
+  var partitionIndex = sortedNumbers.Length / 2;
+
+  if (sortedNumbers[partitionIndex] == target) return partitionIndex;
+  else if (sortedNumbers[partitionIndex] < target)
+  {
+    return partitionIndex + BinarySearch(sortedNumbers.Skip(partitionIndex).ToArray(), target);
+  }
+  else
+  {
+    return BinarySearch(sortedNumbers.Take(partitionIndex).ToArray(), target);
+  }
+}
+```
+
 ## Boyer-Moore-Horspool
 
 It's an algorithm for searching for a substring within a string. It uses a
