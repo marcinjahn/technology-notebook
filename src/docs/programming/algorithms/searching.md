@@ -14,7 +14,7 @@ A O(log n) algorithm that searches a specified element in a sorted (!) array.
 ### Recurcive Algorithm
 
 ```csharp
-int BinarySearch(int[] sortedNumbers, int target)
+int RecursiveBinarySearch(int[] sortedNumbers, int target)
 {
   if (!sortedNumbers.Any()) return -1;
 
@@ -23,12 +23,43 @@ int BinarySearch(int[] sortedNumbers, int target)
   if (sortedNumbers[partitionIndex] == target) return partitionIndex;
   else if (sortedNumbers[partitionIndex] < target)
   {
-    return partitionIndex + BinarySearch(sortedNumbers.Skip(partitionIndex).ToArray(), target);
+    return 
+      partitionIndex + 
+      RecursiveBinarySearch(sortedNumbers.Skip(partitionIndex).ToArray(), target);
   }
   else
   {
-    return BinarySearch(sortedNumbers.Take(partitionIndex).ToArray(), target);
+    return RecursiveBinarySearch(sortedNumbers.Take(partitionIndex).ToArray(), target);
   }
+}
+```
+
+### Iterative Algorithm
+
+```csharp
+int IterativeBinarySearch(int[] sortedNumbers, int target)
+{
+  if (!sortedNumbers.Any()) return -1;
+
+  var minIndex = 0;
+  var maxIndex = sortedNumbers.Length - 1;
+
+  while (minIndex <= maxIndex)
+  {
+    var partitionIndex = ((maxIndex - minIndex) / 2) + minIndex;
+
+    if (sortedNumbers[partitionIndex] == target) return partitionIndex;
+    else if(sortedNumbers[partitionIndex] < target)
+    {
+      minIndex = partitionIndex + 1;
+    }
+    else
+    {
+      maxIndex = partitionIndex - 1;
+    }
+  }
+
+  return -1;
 }
 ```
 
