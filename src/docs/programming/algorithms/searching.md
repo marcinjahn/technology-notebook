@@ -9,7 +9,7 @@ lang: en-US
 
 ## Binary Search
 
-A O(log n) algorithm that searches a specified element in a sorted (!) array.
+A O(log n) algorithm that looks for a specified element in a sorted (!) array.
 
 ### Recurcive Algorithm
 
