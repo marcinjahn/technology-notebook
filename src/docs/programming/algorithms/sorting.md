@@ -99,36 +99,31 @@ arrays and then join them together, sorting in the process.
 - **Space Complexity: O(n)**
 
 ```csharp
-static void MergeSort(IList<int> nums)
+void MergeSort(int[] numbers)
 {
-  if (nums.Count() <= 1) return;
+  if (numbers.Length <= 1) return;
 
-  var halfIndex = nums.Count() / 2;
-  var l = nums.Take(halfIndex).ToArray();
-  var r = nums.Skip(halfIndex).ToArray();
+  var partitionIndex = numbers.Length / 2;
 
-  MergeSort(l);
-  MergeSort(r);
+  var arr1 = numbers.Take(partitionIndex).ToArray();
+  var arr2 = numbers.Skip(partitionIndex).ToArray();
+
+  MergeSort(arr1);
+  MergeSort(arr2);
 
   var i = 0;
   var j = 0;
-  var k = 0;
+  var index = 0;
 
-  while (i < l.Length || j < r.Length) 
+  while (index < numbers.Length)
   {
-    if (i < l.Length && j < r.Length) {
-      if (l[i] < r[j]) 
-      {
-        nums[k++] = l[i++];
-      } else {
-        nums[k++] = r[j++];
-      }
+    if (i == arr1.Length || arr2[j] < arr1[i])
+    {
+      numbers[index++] = arr2[j++];
     }
-    else if (i < l.Length) {
-      nums[k++] = l[i++];
-    }
-    else if (j < r.Length) {
-      nums[k++] = r[j++];
+    else if (j == arr2.Length || arr1[i] < arr2[j])
+    {
+      numbers[index++] = arr1[i++];
     }
   }
 }
