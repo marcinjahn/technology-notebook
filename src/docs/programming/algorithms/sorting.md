@@ -56,39 +56,37 @@ It's slow, but it comes useful when:
 - **Space Complexity: O(1)**
 
 ```csharp
-static void InsertionSort(IList<int> nums)
+void InsertionSort(int[] numbers)
 {
-  for (var i = 0; i < nums.Count() - 1; i++)
+  for (var i = 0; i < numbers.Length - 1; i++)
   {
-    if (nums[i] > nums[i + 1])
+    if (numbers[i] > numbers[i + 1])
     {
-      var insertionIndex = FindInsertionIndex(nums, i + 1);
-      MoveAndInsert(nums, i + 1, insertionIndex);
+      var index = FindInsertionIndex(numbers, i + 1);
+      Insert(numbers, i + 1, index);
     }
   }
-}
 
-static int FindInsertionIndex(IList<int> nums, int index)
-{
-  for (var i = index - 2; i >= 0; i--)
+  int FindInsertionIndex(int[] numbers, int sourceIndex)
   {
-    if (nums[i] <= nums[index]) {
-      return i + 1;
+    for (var i = 0; i < sourceIndex; i++)
+    {
+      if (numbers[i] > numbers[sourceIndex]) return i;
     }
+    return 0;
   }
-  return 0;
-}
 
-static void MoveAndInsert(IList<int> nums, int sourceIndex, int targetIndex) 
-{
-  var temp = nums[sourceIndex];
-
-  for (var i = sourceIndex; i > targetIndex; i--)
+  void Insert(int[] numbers, int originalIndex, int targetIndex)
   {
-    nums[i] = nums[i - 1];
-  }
+    if (originalIndex == targetIndex) return;
 
-  nums[targetIndex] = temp;
+    var temp = numbers[originalIndex];
+    for (var i = originalIndex; i > targetIndex; i--)
+    {
+      numbers[i] = numbers[i - 1];
+    }
+    numbers[targetIndex] = temp;
+  }
 }
 ```
 
