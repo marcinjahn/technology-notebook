@@ -19,18 +19,18 @@ int RecursiveBinarySearch(int[] sortedNumbers, int target)
   if (!sortedNumbers.Any()) return -1;
 
   var partitionIndex = sortedNumbers.Length / 2;
-
-  if (sortedNumbers[partitionIndex] == target) return partitionIndex;
-  else if (sortedNumbers[partitionIndex] < target)
+  
+  if (sortedNumbers[partitionIndex] == n) return partitionIndex;
+  else if(sortedNumbers[partitionIndex] < n) 
   {
-    return 
-      partitionIndex + 
-      RecursiveBinarySearch(sortedNumbers.Skip(partitionIndex).ToArray(), target);
+    var search = RecursiveBinarySearch(sortedNumbers.Skip(partitionIndex + 1).ToArray(), n);
+    // if (-1) gets returned, we need to propagate it back
+    return search == -1 ? -1 :
+      partitionIndex 
+      + search
+      + 1; // since both partitionIndex and search are 0-based indexes, we need to +1
   }
-  else
-  {
-    return RecursiveBinarySearch(sortedNumbers.Take(partitionIndex).ToArray(), target);
-  }
+  else return RecursiveBinarySearch(sortedNumbers.Take(partitionIndex).ToArray(), n);
 }
 ```
 
