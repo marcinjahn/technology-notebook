@@ -50,19 +50,59 @@ Structured logs can be stored in systems like:
 
 Using Serilog:
 
-1. Install Serilog and required sinks via NuGet
-2. Use Serilog
+1. Install NuGet packages:
 
-    ```csharp
-    Log.Logger = new LoggerConfiguration()
-        .WriteTo.Console() // Console sink
-        .CreateLogger();
-
-    var builder = WebApplication.CreateBuilder(args)
-        .UseSerilog();
+    ```sh
+    dotnet add package Serilog.Sinks.Console # Console sink
+    dotnet add package Serilog.Settings.Configuration # allows reading settings from a file
+    dotnet add package Serilog.Extensions.Logging # DI
     ```
 
-### Using Serilog in Program.cs
+2. Use Serilog with DI
+
+    ```csharp
+    var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((host, services) =>
+    {
+        services.AddLogging(builder =>
+        {
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(host.Configuration) // Serilog.Settings.Configuration
+                .CreateLogger();
+
+            builder.ClearProviders(); // removes the default logger
+            builder.AddSerilog(logger);
+        });
+        
+        // Other services...
+    })
+    .Build();
+    ```
+
+3. Configure
+
+    In `appsettings.json`:
+
+    ```json
+    {
+        "Serilog": {
+            "Using":  [ "Serilog.Sinks.Console" ],
+            "MinimumLevel": "Debug",
+            "WriteTo": [ "Console" ]
+        }
+    }
+    ```
+
+    More information can be found
+    [here](https://github.com/serilog/serilog-settings-configuration).
+
+::: tip Rider
+Sometimes Rider may display logs in black font color on the dark background. To
+change that, got to the "Preferences -> Editor -> Color Scheme -> Console
+Colors" and change "Bright White" color to **#FFFFFF**.
+:::
+
+### Usage without Dependency Injection
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
@@ -83,7 +123,7 @@ finally
 }
 ```
 
-## Logging to files with Serilog
+### Logging to files with Serilog
 
 ```csharp
 public static void AddLogging(this IServiceCollection services, AppConfiguration appConfiguration)
