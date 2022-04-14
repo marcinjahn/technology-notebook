@@ -6,6 +6,8 @@ lang: en-US
 
 # Storage
 
+Stateful applications require storage to be attached to its pods.
+
 ## Volumes
 
 ![](https://i.imgur.com/nPKhzLL.png)

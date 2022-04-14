@@ -48,7 +48,7 @@ Checking if pod accepts requests:
 - `k port-forward <pod-name> <pod-port>` - it's the easiest thing to do, but the
   most complex under the hood. It can also be used with Services.
 
-![](https://i.imgur.com/R8QArw1.png)
+    ![](https://i.imgur.com/R8QArw1.png)
 
 ## Logs
 
@@ -65,7 +65,7 @@ on the nodes.
 
 ## Accessing Pods
 
-- `k cp kiada:html/index.html /tmp/index.html` - copying friles to/from
+- `k cp kiada:html/index.html /tmp/index.html` - copying files to/from
   containers
 - `k exec <pod> -- ps aux` - execute a command in a pod (`-it` for interactive)
 - `k attach` - attaches to stdin, stderr, stdin (useful if pod's container

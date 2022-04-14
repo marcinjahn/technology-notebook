@@ -24,8 +24,8 @@ object types have "Spec" and "Status" sections. Such objects typically are for
 static data and do not have an associated controller (e.g. "Event" objects)
 
 "Spec" and "Status" are the most important. User specifies "Spec" and reads
-"Status". Controllers are responsible for turning "Spec" into "State". They read
-the "Spec" and write the "State":
+"Status". Controllers are responsible for turning "Spec" into "Status". They
+read the "Spec" and write the "Status":
 
 ![](https://i.imgur.com/pstHD4R.png)
 
@@ -59,8 +59,6 @@ Some "Status" sections have "Condition". It contains vaious factors that
 indicate the health of the object. I.e., node has info about PIDPressure,
 MemoryPressure, DiskPressure and Ready.
 
----
-
-Once object is created from a YAML, Kubernetes will add additional information
-to it (e.g. `status`, and various metadata). The source YAML != YAML in
-Kubernetes
+Once an object is created from a YAML, Kubernetes will add additional
+information to it (e.g. `status`, and various metadata). The source YAML != YAML
+in Kubernetes

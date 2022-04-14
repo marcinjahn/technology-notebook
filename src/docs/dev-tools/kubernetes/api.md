@@ -7,10 +7,10 @@ lang: en-US
 
 # Kubernetes API
 
-The API exposes operations on the clusters via resources. Often a resource has
-an associated object (e.g. `/apis/apps/v1/namespaces/ns/deployments/mydeploy` is
-a resource that represents an object for `mydeploy` object). Some API resources
-do not have objects associated with them (e.g.
+The API exposes operations on the cluster via resources. Often a resource has an
+associated object (e.g. `/apis/apps/v1/namespaces/ns/deployments/mydeploy` is a
+resource that represents an object for `mydeploy` object). Some API resources do
+not have objects associated with them (e.g.
 `/apis/authorization.k8s.io/v1/subjectaccessreviews` checks for authorization of
 user/service, there's no object associated). A single object may be represented
 by two or more resources. Different versions of some endpoints exist, each can

@@ -18,7 +18,6 @@ There is "Event" object type. Each of them is deleted 1 hour  after creation
 ![](https://i.imgur.com/Wytscp7.png)
 
 
-`k describe <something>` automatically gets events attached to the object we're
+- `k describe <something>` - automatically gets events attached to the object we're
 looking at.
-
-`k get ev --field-selector type=Warning` - displays only Warning events
+- `k get ev --field-selector type=Warning` - displays only Warning events

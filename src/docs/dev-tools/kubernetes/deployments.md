@@ -11,7 +11,7 @@ Creating a simple deployment: `kubectl create deployment kiada
 
 Kubectl sends a POST request to `/deployments` of K8s API to create a
 *Deployment* object. Kubernetes creates a *Pod* object based on Deployment. The
-pod is assigned to a worked node. Kubelet on a worker node pulls the image and
+pod is assigned to a Worker Node. Kubelet on a worker node pulls the image and
 runs the container.
 
 ## Scaling
