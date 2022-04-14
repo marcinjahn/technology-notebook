@@ -10,10 +10,10 @@ title: OSI Model
 - Layer 7 - HTTP, SSH, FTP
 - Layer 6 - TLS
 - Layer 5 - SMB, RPC
-- Layer 4 - TCP, UDP, QUIC
-- Layer 3 - IP, ICMP
-- Layer 2 - Ethernet, WiFi
-- Layer 1 - Electrical signals
+- Layer 4 - TCP, UDP, QUIC - (segments) - (Port)
+- Layer 3 - IP, ICMP - (packets) - (IP)
+- Layer 2 - Ethernet, WiFi - (frames) - (MAC)
+- Layer 1 - Electrical signals - (bits)
 
 ## Resources
 

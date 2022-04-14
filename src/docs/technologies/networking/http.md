@@ -4,12 +4,56 @@ title: HTTP Protocol
 
 # HTTP Protocol
 
+## Typical Request
+
+Here's how a typical HTTP request looks like (up to some level of abstraction).
+The assumptions are:
+
+- the PC and the web browser are "fresh", DNS caches are empty
+- max HTTP/2 is used (no QUIC)
+- we're making a request to "example.com"
+- "example.com" record exists in HSTS
+
+1. "example.com" is a domain name. The networking stack needs IP address, so
+   we're going to reach out to DNS for the IP address
+    1. On Linux, `nsswitch.conf` file is checked to find out about the sources
+      of DNS entries. It could be the `/etc/hosts` file, and some DNS service
+    2. Most likely, we'll reach out to some external DNS service, which is either
+      configured by us or by DHCP.
+    3. We send a request to DNS (let's skip the process of resolving MAC addresses
+      with ARP). DNS uses UDP on port 53.
+    4. DNS respons to us with the IP address. The IP address could be found either
+      in our DNS service or the service could reach out to some other DNS service
+      for the IP.
+2. With the IP address, we can start to establish a [TCP connection](./tcp) with
+   the "example.com" server.
+    1. 3-way handshake occurs and sockets are created on the client and the server
+      (IP-port pairs).
+3. [HSTS](./hsts) can jump in forcing us to use HTTPS (let's assume that it
+   happened). We need to establish TLS session.
+4. The client will start the TLS session with the server. Depending on the TLS
+   version used, a proper handshake procedure will occur.
+    - if TLS 1.3 is used:
+        1. There is a 2-way handshake. The client sends "Client Hello" including:
+          D-H parameters, SNI (encrypted), ALPN.
+        2. The server responds with "Server Hello" including: D-H parameters,
+          certificate (based on SNI).
+    - if TLS 1.2 is used:
+        1. There is a 4-way handshake. The client sends "Client Hello" including:
+          protocols info, SNI.
+        2. Teh server responds with "Server Hello" including: cert, protocol
+          choices.
+        3. Client sends the symmetric key (which is why TLS 1.3 is preferred)
+        4. Server FIN
+5. With the TCP and TLS established, the client can send the actual HTTP request
+   containing all the necessary content.
+6. The server responds with a proper HTTP response.
+
 ## Simple Implementation
 
 HTTP is all about sending appropriately formatted messages over TCP (unless
-HTTP/3 is used). The simplest HTTP server below shows it quite well:
-
-https://medium.com/from-the-scratch/http-server-what-do-you-need-to-know-to-build-a-simple-http-server-from-scratch-d1ef8945e4fa
+HTTP/3 is used). A simple HTTP server implementation shows it quite well:
+[Medium](https://medium.com/from-the-scratch/http-server-what-do-you-need-to-know-to-build-a-simple-http-server-from-scratch-d1ef8945e4fa).
 
 ## Versions
 
@@ -94,7 +138,7 @@ Proxies may be chained, so that a proxy has its own proxy:
 There are at least two ways to enforce HTTPS:
 
 - Redirect from HTTP to HTTPS on your server
-- Use HSTS - it's a header that informs the browser to ALWAYS use HTTPS when
+- Use [HSTS](./hsts) - it's a header that informs the browser to ALWAYS use HTTPS when
   reaching the app.
 
 ::: tip ASP.NET Core
