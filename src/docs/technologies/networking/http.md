@@ -37,12 +37,15 @@ The assumptions are:
         1. There is a 2-way handshake. The client sends "Client Hello" including:
           D-H parameters, SNI (encrypted), ALPN.
         2. The server responds with "Server Hello" including: D-H parameters,
-          certificate (based on SNI).
+          [X.509
+          certificate](/technologies/security/cryptography/basic-terms.md#x-509)
+          (based on SNI).
     - if TLS 1.2 is used:
         1. There is a 4-way handshake. The client sends "Client Hello" including:
           protocols info, SNI.
-        2. Teh server responds with "Server Hello" including: cert, protocol
-          choices.
+        2. The server responds with "Server Hello" including: [X.509
+          certificate](/technologies/security/cryptography/basic-terms.md#x-509),
+          protocol choices.
         3. Client sends the symmetric key (which is why TLS 1.3 is preferred)
         4. Server FIN
 5. With the TCP and TLS established, the client can send the actual HTTP request
