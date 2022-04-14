@@ -4,14 +4,14 @@ description: Kubernetes clusters and their building components
 lang: en-US
 ---
 
-## Cluster
+# Cluster
 
 Machines are split into two groups:
 
 - Control Plane - the brain of the cluster
 - Workload Plane
 
-### Control Plane
+## Control Plane
 
 It consists of:
 
@@ -25,7 +25,7 @@ It consists of:
   "Deployment" objects).
 - etcd - the K8s API Server stores objects here. It's a distributed data store.
 
-### Workload Plane
+## Workload Plane
 
 It consists of:
 
@@ -36,3 +36,10 @@ It consists of:
 - apps
 
 There are also some addons that could be on Worker or Master nodes.
+
+## Failures
+
+In case of a failure of a node, its status changes to **NotReady**. The pods
+that were supposed on that node are still kept as **Running** for the next few
+minutes. After that time, the pods will be recreated on other nodes.
+The exact timings can be configured for the cluster.

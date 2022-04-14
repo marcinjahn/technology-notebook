@@ -1,6 +1,7 @@
 ---
 title: Scaling
 description: ReplicaSet and Deployment objects in Kubernetes
+tags: kubernetes, k8s, scaling, deployment, replicaset
 lang: en-US
 ---
 
@@ -8,12 +9,17 @@ lang: en-US
 
 It's not very convenient to manage pods individually. We need ways to deploy
 pods in multiple replicas, which is a base for high availability of the service.
+Additionally, we need a way to keep pods running in case some node fails.
 
 ::: tip Ownership
 Pods managed by ReplicaSet/Deployment have a special "ownerReference" section in
 their "metadata". A pod can have multiple owners.
 
-Pods are auto-deleted when the owners are deleted.
+Pods are auto-deleted when the owners are deleted (unless the `--cascade=orphan`
+parameter is applied while removing the owner).
+
+If a pod is taken out of the ReplicaSet (like [this](#replacing-a-pod)) the
+"ownerReference" metadata is deleted from it automatically.
 :::
 
 ## ReplicaSet
@@ -22,9 +28,16 @@ ReplicaSet allows us to create a group of pod replicas, instead of just one pod.
 The pods managed by the ReplicaSet are selected using an immutable label
 selector (similarly to [Services](./services.md)). There is also a template,
 which defines the pod(s) that will be created under ReplicaSet. Such a pod has
-to conform to the *selector* specified by the ReplicaSet. If some pods matching
+to conform to the *selector* specified by the ReplicaSet. 
+
+::: tip Excess pods
+If some pods matching
 the selector already existed prior to the creation of the ReplicaSet, they're
 counted as part of the ReplicaSet.
+
+If we manually create some pod(s) that conform to ReplicaSet's selector, the
+controller will delete some pods to reach the *replicas* count.
+:::
 
 Pod names are generated based on the ReplicaSet's name, but it can be changed
 with the `generateName` setting.
@@ -33,6 +46,9 @@ with the `generateName` setting.
 In the past, ReplicationController was used instead of ReplicaSet. It behaved
 the same as ReplicaSet does. It is now deprecated.
 :::
+
+ReplicaSets are rarely used directly due to their lacking pods updates
+possibilities.
 
 ### Updates
 
@@ -43,7 +59,22 @@ If we modify the `template` of some existing ReplicaSet, the existing pods will
 not be updated. Instead, just the pods created by ReplicaSet in the future will
 have the new settings applied.
 
+### Replacing a Pod
+
+Sometimes we might want to investigate some issue in one of the pods, while
+keeping ReplicaSet running with proper scaling. We could temporarily increment
+the *replicas* config, but we'd have to rememeber to decrement it back later on.
+Instead, we can just change the labels of the faulty pod so that it does not
+conform to ReplicaSet's selector. The ReplicaSet's controller will create a new
+pod for its needs while we can start investigating the faulty pod.
+
 ## Deployment
+
+Deployments manage Pods via a ReplicaSet.
+
+
+
+### Example
 
 Creating a simple deployment: `kubectl create deployment kiada
 --image=luksa/kiada:0.1`

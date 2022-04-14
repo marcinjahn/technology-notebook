@@ -138,8 +138,8 @@ module.exports = {
               children: [
                 "dotnet/entity-framework-core/",
                 "dotnet/entity-framework-core/testing",
-                "dotnet/entity-framework-core/tips"
-              ]
+                "dotnet/entity-framework-core/tips",
+              ],
             },
             {
               title: "Functional Programming",
@@ -224,7 +224,7 @@ module.exports = {
             "algorithms/hash-table",
             "algorithms/tree",
             "algorithms/sorting",
-            "algorithms/searching"
+            "algorithms/searching",
           ],
         },
       ],
@@ -238,7 +238,7 @@ module.exports = {
             "networking/udp",
             "networking/http",
             "networking/hsts",
-            "networking/sni"
+            "networking/sni",
           ],
         },
         {
@@ -301,10 +301,7 @@ module.exports = {
         },
         {
           title: "SQL Server",
-          children: [
-            "sql-server/overview",
-            "sql-server/t-sql"
-          ]
+          children: ["sql-server/overview", "sql-server/t-sql"],
         },
         {
           title: "Git",
@@ -342,5 +339,6 @@ module.exports = {
         author: "Marcin Jahn",
       },
     ],
+    "vuepress-plugin-mermaidjs",
   ],
 };
