@@ -93,10 +93,6 @@ module.exports = {
         link: "/programming/",
       },
       {
-        text: "Tools and Infrastructure",
-        link: "/dev-tools/",
-      },
-      {
         text: "Technologies",
         link: "/technologies/",
       },
@@ -232,8 +228,53 @@ module.exports = {
           ],
         },
       ],
-      "/dev-tools/": [
+      // "/dev-tools/": [
+      //   "./",
+        
+      // ],
+      "/technologies/": [
         "./",
+        {
+          title: "Web Protocols",
+          children: [
+            "networking/osi-model",
+            "networking/tcp",
+            "networking/udp",
+            "networking/http",
+            "networking/hsts",
+            "networking/sni"
+          ],
+        },
+        {
+          title: "Security",
+          children: [
+            {
+              title: "OAuth2",
+              children: ["security/oauth2/sender-constraint"],
+            },
+            {
+              title: "Cryptography",
+              children: ["security/cryptography/basic-terms"],
+            },
+            {
+              title: "TPM",
+              children: [
+                "security/tpm/overview",
+                "security/tpm/tpm-entities",
+                "security/tpm/tpm-operations",
+              ],
+            },
+          ],
+        },
+        {
+          title: "Blockchain",
+          children: [
+            "blockchain/intro",
+            "blockchain/smart-contracts",
+            "blockchain/solidity",
+            "blockchain/dapps",
+          ],
+        },
         {
           title: "Linux",
           children: [
@@ -280,50 +321,6 @@ module.exports = {
         {
           title: "Azure",
           children: ["azure/azure-table-storage", "azure/identity"],
-        },
-      ],
-      "/technologies/": [
-        "./",
-        {
-          title: "Web Protocols",
-          children: [
-            "networking/osi-model",
-            "networking/tcp",
-            "networking/udp",
-            "networking/http",
-            "networking/hsts",
-            "networking/sni"
-          ],
-        },
-        {
-          title: "Security",
-          children: [
-            {
-              title: "OAuth2",
-              children: ["security/oauth2/sender-constraint"],
-            },
-            {
-              title: "Cryptography",
-              children: ["security/cryptography/basic-terms"],
-            },
-            {
-              title: "TPM",
-              children: [
-                "security/tpm/overview",
-                "security/tpm/tpm-entities",
-                "security/tpm/tpm-operations",
-              ],
-            },
-          ],
-        },
-        {
-          title: "Blockchain",
-          children: [
-            "blockchain/intro",
-            "blockchain/smart-contracts",
-            "blockchain/solidity",
-            "blockchain/dapps",
-          ],
         },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],

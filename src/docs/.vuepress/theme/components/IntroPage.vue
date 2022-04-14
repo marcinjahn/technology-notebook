@@ -27,4 +27,12 @@ export default {
   position: relative
   top: 10rem
 
+a {
+  color: #852424
+}
+
+a:hover {
+  text-shadow: none !important;
+}
+
 </style>

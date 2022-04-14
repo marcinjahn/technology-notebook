@@ -2,4 +2,6 @@
 isIntro: true
 ---
 
-Various IT topics that are hard to categorize, so they end up here.
+All kinds of technologies and protocols used in software development.
+
+Let's start with [Network Protocols](./networking/osi-model.md).
