@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Microsoft Identity | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="Things related to Microsoft Identity, AAD, etc.">
+    <meta property="og:url" content="/technologies/azure/identity.html">
+    <meta property="og:site_name" content="Marcin Jahn | Technology Notebook">
+    <meta property="og:title" content="Microsoft Identity">
+    <meta property="og:description" content="Things related to Microsoft Identity, AAD, etc.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en-US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="Marcin Jahn | Technology Notebook">
+    <meta property="article:author" content="Marcin Jahn">
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.13695c19.css" as="style"><link rel="preload" href="/assets/js/app.2b903a17.js" as="script"><link rel="preload" href="/assets/js/2.7e39c81e.js" as="script"><link rel="preload" href="/assets/js/22.6a1f8b43.js" as="script"><link rel="prefetch" href="/assets/js/10.a60cd480.js"><link rel="prefetch" href="/assets/js/100.6dec2682.js"><link rel="prefetch" href="/assets/js/101.c7ed7a62.js"><link rel="prefetch" href="/assets/js/102.9f2e40a6.js"><link rel="prefetch" href="/assets/js/103.2bd7d075.js"><link rel="prefetch" href="/assets/js/104.ac1bee8b.js"><link rel="prefetch" href="/assets/js/105.f72cbb9f.js"><link rel="prefetch" href="/assets/js/106.65c835d6.js"><link rel="prefetch" href="/assets/js/107.25f530d3.js"><link rel="prefetch" href="/assets/js/108.3ca26c2b.js"><link rel="prefetch" href="/assets/js/109.1a09ec75.js"><link rel="prefetch" href="/assets/js/11.68cc34a7.js"><link rel="prefetch" href="/assets/js/110.9475b245.js"><link rel="prefetch" href="/assets/js/111.c2fc315f.js"><link rel="prefetch" href="/assets/js/112.4a3af8b9.js"><link rel="prefetch" href="/assets/js/113.fe36efca.js"><link rel="prefetch" href="/assets/js/114.abf5c40a.js"><link rel="prefetch" href="/assets/js/115.6e88580d.js"><link rel="prefetch" href="/assets/js/116.9d34f8fb.js"><link rel="prefetch" href="/assets/js/117.81b95d35.js"><link rel="prefetch" href="/assets/js/118.eaf53369.js"><link rel="prefetch" href="/assets/js/119.1bc1690a.js"><link rel="prefetch" href="/assets/js/12.d906b391.js"><link rel="prefetch" href="/assets/js/120.16cb6907.js"><link rel="prefetch" href="/assets/js/121.7111d4a3.js"><link rel="prefetch" href="/assets/js/122.5b1be23c.js"><link rel="prefetch" href="/assets/js/123.cb8e9940.js"><link rel="prefetch" href="/assets/js/124.6082b8ba.js"><link rel="prefetch" href="/assets/js/125.6d296264.js"><link rel="prefetch" href="/assets/js/126.f8407129.js"><link rel="prefetch" href="/assets/js/127.2bd1b1d2.js"><link rel="prefetch" href="/assets/js/128.e754047e.js"><link rel="prefetch" href="/assets/js/13.ffb80372.js"><link rel="prefetch" href="/assets/js/14.8ee943e7.js"><link rel="prefetch" href="/assets/js/15.bc716e15.js"><link rel="prefetch" href="/assets/js/16.cfa77c99.js"><link rel="prefetch" href="/assets/js/17.8235b8a5.js"><link rel="prefetch" href="/assets/js/18.9dfe5ec8.js"><link rel="prefetch" href="/assets/js/19.ec4fb591.js"><link rel="prefetch" href="/assets/js/20.9ae47b07.js"><link rel="prefetch" href="/assets/js/21.41bc1d6a.js"><link rel="prefetch" href="/assets/js/23.9ec377cc.js"><link rel="prefetch" href="/assets/js/24.86fd08f1.js"><link rel="prefetch" href="/assets/js/25.d3c33607.js"><link rel="prefetch" href="/assets/js/26.85e5f3bb.js"><link rel="prefetch" href="/assets/js/27.143cd9de.js"><link rel="prefetch" href="/assets/js/28.b5b03efe.js"><link rel="prefetch" href="/assets/js/29.48d95f0a.js"><link rel="prefetch" href="/assets/js/3.7436c0e0.js"><link rel="prefetch" href="/assets/js/30.ea7ebaf8.js"><link rel="prefetch" href="/assets/js/31.166aeb14.js"><link rel="prefetch" href="/assets/js/32.36e4280b.js"><link rel="prefetch" href="/assets/js/33.bb537880.js"><link rel="prefetch" href="/assets/js/34.25fbe5f7.js"><link rel="prefetch" href="/assets/js/35.b62c761d.js"><link rel="prefetch" href="/assets/js/36.55979790.js"><link rel="prefetch" href="/assets/js/37.ff413b13.js"><link rel="prefetch" href="/assets/js/38.5a03fad7.js"><link rel="prefetch" href="/assets/js/39.3d2b1d0c.js"><link rel="prefetch" href="/assets/js/4.dbf2d479.js"><link rel="prefetch" href="/assets/js/40.06628b1d.js"><link rel="prefetch" href="/assets/js/41.d7c2247c.js"><link rel="prefetch" href="/assets/js/42.1bf18236.js"><link rel="prefetch" href="/assets/js/43.f02bf073.js"><link rel="prefetch" href="/assets/js/44.b818c454.js"><link rel="prefetch" href="/assets/js/45.b4f5f4c8.js"><link rel="prefetch" href="/assets/js/46.ac010126.js"><link rel="prefetch" href="/assets/js/47.034da4b6.js"><link rel="prefetch" href="/assets/js/48.52139156.js"><link rel="prefetch" href="/assets/js/49.995e4d68.js"><link rel="prefetch" href="/assets/js/5.035ac4a9.js"><link rel="prefetch" href="/assets/js/50.13d4f27d.js"><link rel="prefetch" href="/assets/js/51.31180490.js"><link rel="prefetch" href="/assets/js/52.aa043f73.js"><link rel="prefetch" href="/assets/js/53.6e7f9d7e.js"><link rel="prefetch" href="/assets/js/54.843b4ab1.js"><link rel="prefetch" href="/assets/js/55.513d1509.js"><link rel="prefetch" href="/assets/js/56.a7b6903d.js"><link rel="prefetch" href="/assets/js/57.1b35780e.js"><link rel="prefetch" href="/assets/js/58.50f7c4aa.js"><link rel="prefetch" href="/assets/js/59.785cf87c.js"><link rel="prefetch" href="/assets/js/6.b40e7de2.js"><link rel="prefetch" href="/assets/js/60.5c397685.js"><link rel="prefetch" href="/assets/js/61.e130754e.js"><link rel="prefetch" href="/assets/js/62.40a652ff.js"><link rel="prefetch" href="/assets/js/63.2913897b.js"><link rel="prefetch" href="/assets/js/64.dc18f8ac.js"><link rel="prefetch" href="/assets/js/65.a77f0927.js"><link rel="prefetch" href="/assets/js/66.dad760c4.js"><link rel="prefetch" href="/assets/js/67.e05b7cc8.js"><link rel="prefetch" href="/assets/js/68.fe290f5a.js"><link rel="prefetch" href="/assets/js/69.3c289603.js"><link rel="prefetch" href="/assets/js/7.aa51be97.js"><link rel="prefetch" href="/assets/js/70.f9925c58.js"><link rel="prefetch" href="/assets/js/71.866c5b8f.js"><link rel="prefetch" href="/assets/js/72.b43b6e9d.js"><link rel="prefetch" href="/assets/js/73.5c6d73ee.js"><link rel="prefetch" href="/assets/js/74.71b85284.js"><link rel="prefetch" href="/assets/js/75.4c19eb26.js"><link rel="prefetch" href="/assets/js/76.cb3fda1f.js"><link rel="prefetch" href="/assets/js/77.8e1677b4.js"><link rel="prefetch" href="/assets/js/78.e4bc7d53.js"><link rel="prefetch" href="/assets/js/79.a55c6cf6.js"><link rel="prefetch" href="/assets/js/8.504dac66.js"><link rel="prefetch" href="/assets/js/80.cc3c3ab7.js"><link rel="prefetch" href="/assets/js/81.94948fc4.js"><link rel="prefetch" href="/assets/js/82.20371142.js"><link rel="prefetch" href="/assets/js/83.94049dec.js"><link rel="prefetch" href="/assets/js/84.80ba232b.js"><link rel="prefetch" href="/assets/js/85.e26f497a.js"><link rel="prefetch" href="/assets/js/86.2c2b0274.js"><link rel="prefetch" href="/assets/js/87.5694f41a.js"><link rel="prefetch" href="/assets/js/88.5d234533.js"><link rel="prefetch" href="/assets/js/89.17e88d6c.js"><link rel="prefetch" href="/assets/js/9.1eb71dd1.js"><link rel="prefetch" href="/assets/js/90.93bfce62.js"><link rel="prefetch" href="/assets/js/91.e74e96f5.js"><link rel="prefetch" href="/assets/js/92.0d241826.js"><link rel="prefetch" href="/assets/js/93.913b5192.js"><link rel="prefetch" href="/assets/js/94.aed1fad1.js"><link rel="prefetch" href="/assets/js/95.3ed008f6.js"><link rel="prefetch" href="/assets/js/96.d240805d.js"><link rel="prefetch" href="/assets/js/97.4554ac21.js"><link rel="prefetch" href="/assets/js/98.4d53aecb.js"><link rel="prefetch" href="/assets/js/99.9b74a0fc.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.13695c19.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav>  <ul class="sidebar-links"><li><a href="/technologies/" aria-current="page" class="sidebar-link">/technologies/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Web Protocols</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Security</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Blockchain</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kubernetes</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>SQL Server</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ansible</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Azure</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/technologies/azure/azure-table-storage.html" class="sidebar-link">Table Storage</a></li><li><a href="/technologies/azure/identity.html" aria-current="page" class="active sidebar-link">Microsoft Identity</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#access-token-vs-id-token" class="sidebar-link">Access Token vs. ID Token</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#b2x" class="sidebar-link">B2X</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#multi-tenant-apps" class="sidebar-link">Multi-tenant Apps</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#app-registration-vs-service-principal" class="sidebar-link">App Registration vs. Service Principal</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#app-registrations" class="sidebar-link">App Registrations</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#building-a-custom-api" class="sidebar-link">Building a Custom API</a></li><li class="sidebar-sub-header"><a href="/technologies/azure/identity.html#aad-groups" class="sidebar-link">AAD Groups</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="microsoft-identity"><a href="#microsoft-identity" class="header-anchor">#</a> Microsoft Identity</h1> <h2 id="access-token-vs-id-token"><a href="#access-token-vs-id-token" class="header-anchor">#</a> Access Token vs. ID Token</h2> <p>OAuth2 protocol is used for <strong>authorization</strong> - to allow apps to get access to
+users' resources without having the actual users' credentials to these
+resources. Instead, the app gets permission to retrieve an access token that
+grants access to some resource.</p> <p>ID Token is similar, but it's used for <strong>authentication</strong>. Another difference is
+that the access tokens are to be used by:</p> <ul><li>identity providers (that issue them)</li> <li>resources (that give access to some data (or not) based on claims in the
+tokens)</li></ul> <p>The apps that read that data for the users are not supposed to look into the
+access tokens (and they are not the <em>audience</em>)! However, they are allowed and
+expected to read the ID Tokens to learn who the user is. The actual <em>audience</em>
+of the ID Token is the app that is supposed to display user's name.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>Microsoft Identity implements OAuth2 and OpenID Connect standards.</p></div> <p>Access Token cannot contain permissions for multiple different services. One
+access taken can have multiple permissions, but only in scope of a single
+resource.</p> <h3 id="acquiring-id-tokens"><a href="#acquiring-id-tokens" class="header-anchor">#</a> Acquiring ID Tokens</h3> <p>ID Tokens are acquired via the Implicit Flow.
+<a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#send-the-sign-in-request" target="_blank" rel="noopener noreferrer">MSDN<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>
+says that it's necessary to enable ID Tokens in implicit flow in order to
+receive ID Tokens when calling the <code>/authorize</code> endpoint.</p> <h2 id="b2x"><a href="#b2x" class="header-anchor">#</a> B2X</h2> <h3 id="b2b"><a href="#b2b" class="header-anchor">#</a> B2B</h3> <p>AAD tenant may invite users that are not part of the organization. Such users
+would have <em>shadow accounts</em> created for the needs of business cooperation.
+Admin of a tenant might manage access of the external users via the shadow
+accounts. They may be treated as guest accounts in the organization.</p> <p>Uing B2B, the app may be a signle-tenancy one. The B2B users are treated as
+members of the tenant where they were invited to.</p> <p>B2B is used for cooperation between businesses when they need to work on a
+single project together.</p> <h3 id="b2c"><a href="#b2c" class="header-anchor">#</a> B2C</h3> <p>It allows federating other identity providers under a single umbrella of AAD
+B2C. Without B2C, all users have to use Microsoft accounts. With B2C, the users
+can use any OpenId Connect-compliant IdP.</p> <p>B2C allows heavy customization of user flows. E.g., the sign up/sign in page can
+be completely customized, with support for multiple languages, etc.</p> <p>B2C is used to allow access to our product to users from the world, the actual
+customers.</p> <h4 id="api-connectors"><a href="#api-connectors" class="header-anchor">#</a> API Connectors</h4> <p>B2C allows to define API Connectors - endpoints that will be called by B2C
+during user flows. For example, one of my custom user attributes in B2C could be
+a nickname. I could have my own rules regarding nicknames and I could configure
+B2C to always call my custom API that either allows or disallows the usage of
+some nickname.</p> <h2 id="multi-tenant-apps"><a href="#multi-tenant-apps" class="header-anchor">#</a> Multi-tenant Apps</h2> <p>AAD apps that are multitenant may be logged-into by users from multiple AAD
+tenants. Every tenant gets its own service principal entity for that app.</p> <h2 id="app-registration-vs-service-principal"><a href="#app-registration-vs-service-principal" class="header-anchor">#</a> App Registration vs. Service Principal</h2> <p>There is a concept of <strong>app registration</strong> (client ID) and <strong>service
+principal</strong> (service principal ID).</p> <p>In single-tenant apps these are basically the same thing. There's one app
+registration and one service principal of the app in a single tenant.</p> <p>In multi-tenant apps the concepts are separate. There is one app registration,
+but for every tenant that has users accessing the app, there will be a separate
+service principal created.</p> <p>App Registration is like a template for multiple service principals to be
+created based on it.</p> <h2 id="app-registrations"><a href="#app-registrations" class="header-anchor">#</a> App Registrations</h2> <h3 id="app-roles"><a href="#app-roles" class="header-anchor">#</a> App Roles</h3> <p>App roles allow creation of custom roles that the app understands and works
+with. These roles can then be assigned to the users of the app (potenaitally
+other apps). This way, we can create our own RBAC rules for the app, limiting
+what different users can access.</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <p>An App Role may be restricted to be usable with:</p> <ul><li>only users and groups</li> <li>only aps</li> <li>any of the above</li></ul></div> <p>The roles may be applied to users/apps in the Enterprise Applications panel of
+AAD. A set of roles would have been created in the app registration. Each tenant
+might assign different sets of people to these roles via their own service
+principles (my app in their tenant).</p> <p>Compared to groups, App Roles are a better choice. They are app-specific.</p> <div class="custom-block tip"><p class="custom-block-title">Required Roles</p> <p>We may restrict our app principals to only be accessible to users that have some
+role assigned. If someone without a role tries to get an access token to my app,
+they will not get it, authentication will fail. It's done in the Properties pane
+of Enterprise Applications entry of my app.</p> <p>Without it, any user in my tenant can get an access token to my apps. That
+access token could be empty, but it's still better to disallow unintended users
+if we don't expect anyone in the organization to use the app.</p></div> <p>The assigned roles will be available in the access token.</p> <h3 id="api-permissions"><a href="#api-permissions" class="header-anchor">#</a> API Permissions</h3> <p>We can define the allowed set of permissions that the app may ask for. They may
+also be consented by the admin of a tenant. With that, individual users of the
+app will not be asked for consent.</p> <p>An app may also ask for permissions &quot;dynamically&quot;, so the permission does not
+have to be defined in <em>API Permissions</em> in AAD. In such a case, the user has to
+consent the permission to allow the app to get the requested data.</p> <h3 id="expose-an-api"><a href="#expose-an-api" class="header-anchor">#</a> Expose an API</h3> <p>Described in <a href="#building-a-custom-api">Building a Custom API</a></p> <h2 id="building-a-custom-api"><a href="#building-a-custom-api" class="header-anchor">#</a> Building a Custom API</h2> <p>When building our own API that is going to be the actual resource of data
+(protected data), we'd do the following.</p> <p>The <em>Authentication</em> panel in the app's registration would stay empty. This app
+will not allow signing-in of users.</p> <h3 id="scopes"><a href="#scopes" class="header-anchor">#</a> Scopes</h3> <p>We can define the scopes that our API exposes in the <em>Expose an API</em> panel of
+app registration. These scopes are only for user flows (delegated).</p> <p>Technically, our API does not have to define any scopes, we could just rely on
+the valid access token being delivered, signed by AAD. Scopes allow for
+different levels of access to be defined.</p> <p>When defining a scope, we can specify if that scope requires a consent of an
+admin of a tenant. If not, just the user's consent will be enough for client
+apps to acquire that permission.</p> <div class="custom-block warning"><p class="custom-block-title">Client Credentials</p> <p>Scopes are for user flows only. Daemon apps should use <a href="#app-roles">App
+Roles</a>.
+The roles may be assigned to users in the <em>API permissions</em> panel. Since dameon
+apps are not interactive, there is no way to use dynamic permissions. All
+permissions that the app needs need to be assigned up front.</p> <p>When requesting a token, a daemon app should ask for the <code>.default</code> scope. It
+wil return an access token with all of the permissions (app roles) that were
+assigned to the app in the AAD portal.</p> <p>Assigned app roles have to be granted consent by an admin.</p></div> <div class="custom-block tip"><p class="custom-block-title">Scopes vs App Roles</p> <p>When assigning scopes/app roles to our apps, the scopes we defined in <em>Expose an
+API</em> can be found under &quot;Delegated permissions&quot;, while the App Roles can be
+found under &quot;Application Permissions</p> <p><img src="/assets/img/identity-delegated-application-permissions.cb7f5f76.png" alt=""></p></div> <h2 id="aad-groups"><a href="#aad-groups" class="header-anchor">#</a> AAD Groups</h2> <p>AAD allows entities to be assigned to groups, similarly to how &quot;old&quot; AD works.
+It causes a problem if there is a big amount of groups (&gt; 250 or even less on
+implicit flow), because they will not fit into JWT. In such a case the groups
+need to be fetched from the Graph API. In organizations being a member of a lot
+of groups is typical.</p> <p>Roles are considered more modern than Groups. <strong>Usage of Groups is
+discouraged</strong>, becuase:</p> <ul><li>Users are typically assigned to a lot of groups. If there's too many, the
+app has to make a call to Graph API to read groups
+<ul><li>It might also be undesired to share information about all the groups that
+a user belongs to</li></ul></li> <li>Groups are returned in the token as GUIDs, which is not easy to use in code
+(e.g. with the <code>Authorize</code> attribute in ASP.NET). Only in the case of AD
+Connect-synchronized groups, the names will be delivered.</li> <li>Groups are not app-specific, they are global. The token will be huge with
+lots of unneeded information</li></ul> <div class="custom-block tip"><p class="custom-block-title">Groups as Roles</p> <p>An app registration may be configured (via its Manifest) to include groups as
+roles in the ID Token (and access token?).</p></div> <p>App Roles may be assigned to AAD groups (on premium plan of AAD).</p></div> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/technologies/azure/azure-table-storage.html" class="prev">
+        Table Storage
+      </a></span> <!----></p></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">4/14/2022, 12:26:44 PM</span></div></footer> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.2b903a17.js" defer></script><script src="/assets/js/2.7e39c81e.js" defer></script><script src="/assets/js/22.6a1f8b43.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Git | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="Key information about git version control">
+    <meta property="og:url" content="/technologies/git/overview.html">
+    <meta property="og:site_name" content="Marcin Jahn | Technology Notebook">
+    <meta property="og:title" content="Git">
+    <meta property="og:description" content="Key information about git version control">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en-US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="Marcin Jahn | Technology Notebook">
+    <meta property="article:author" content="Marcin Jahn">
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.13695c19.css" as="style"><link rel="preload" href="/assets/js/app.2b903a17.js" as="script"><link rel="preload" href="/assets/js/2.7e39c81e.js" as="script"><link rel="preload" href="/assets/js/100.6dec2682.js" as="script"><link rel="prefetch" href="/assets/js/10.a60cd480.js"><link rel="prefetch" href="/assets/js/101.c7ed7a62.js"><link rel="prefetch" href="/assets/js/102.9f2e40a6.js"><link rel="prefetch" href="/assets/js/103.2bd7d075.js"><link rel="prefetch" href="/assets/js/104.ac1bee8b.js"><link rel="prefetch" href="/assets/js/105.f72cbb9f.js"><link rel="prefetch" href="/assets/js/106.65c835d6.js"><link rel="prefetch" href="/assets/js/107.25f530d3.js"><link rel="prefetch" href="/assets/js/108.3ca26c2b.js"><link rel="prefetch" href="/assets/js/109.1a09ec75.js"><link rel="prefetch" href="/assets/js/11.68cc34a7.js"><link rel="prefetch" href="/assets/js/110.9475b245.js"><link rel="prefetch" href="/assets/js/111.c2fc315f.js"><link rel="prefetch" href="/assets/js/112.4a3af8b9.js"><link rel="prefetch" href="/assets/js/113.fe36efca.js"><link rel="prefetch" href="/assets/js/114.abf5c40a.js"><link rel="prefetch" href="/assets/js/115.6e88580d.js"><link rel="prefetch" href="/assets/js/116.9d34f8fb.js"><link rel="prefetch" href="/assets/js/117.81b95d35.js"><link rel="prefetch" href="/assets/js/118.eaf53369.js"><link rel="prefetch" href="/assets/js/119.1bc1690a.js"><link rel="prefetch" href="/assets/js/12.d906b391.js"><link rel="prefetch" href="/assets/js/120.16cb6907.js"><link rel="prefetch" href="/assets/js/121.7111d4a3.js"><link rel="prefetch" href="/assets/js/122.5b1be23c.js"><link rel="prefetch" href="/assets/js/123.cb8e9940.js"><link rel="prefetch" href="/assets/js/124.6082b8ba.js"><link rel="prefetch" href="/assets/js/125.6d296264.js"><link rel="prefetch" href="/assets/js/126.f8407129.js"><link rel="prefetch" href="/assets/js/127.2bd1b1d2.js"><link rel="prefetch" href="/assets/js/128.e754047e.js"><link rel="prefetch" href="/assets/js/13.ffb80372.js"><link rel="prefetch" href="/assets/js/14.8ee943e7.js"><link rel="prefetch" href="/assets/js/15.bc716e15.js"><link rel="prefetch" href="/assets/js/16.cfa77c99.js"><link rel="prefetch" href="/assets/js/17.8235b8a5.js"><link rel="prefetch" href="/assets/js/18.9dfe5ec8.js"><link rel="prefetch" href="/assets/js/19.ec4fb591.js"><link rel="prefetch" href="/assets/js/20.9ae47b07.js"><link rel="prefetch" href="/assets/js/21.41bc1d6a.js"><link rel="prefetch" href="/assets/js/22.6a1f8b43.js"><link rel="prefetch" href="/assets/js/23.9ec377cc.js"><link rel="prefetch" href="/assets/js/24.86fd08f1.js"><link rel="prefetch" href="/assets/js/25.d3c33607.js"><link rel="prefetch" href="/assets/js/26.85e5f3bb.js"><link rel="prefetch" href="/assets/js/27.143cd9de.js"><link rel="prefetch" href="/assets/js/28.b5b03efe.js"><link rel="prefetch" href="/assets/js/29.48d95f0a.js"><link rel="prefetch" href="/assets/js/3.7436c0e0.js"><link rel="prefetch" href="/assets/js/30.ea7ebaf8.js"><link rel="prefetch" href="/assets/js/31.166aeb14.js"><link rel="prefetch" href="/assets/js/32.36e4280b.js"><link rel="prefetch" href="/assets/js/33.bb537880.js"><link rel="prefetch" href="/assets/js/34.25fbe5f7.js"><link rel="prefetch" href="/assets/js/35.b62c761d.js"><link rel="prefetch" href="/assets/js/36.55979790.js"><link rel="prefetch" href="/assets/js/37.ff413b13.js"><link rel="prefetch" href="/assets/js/38.5a03fad7.js"><link rel="prefetch" href="/assets/js/39.3d2b1d0c.js"><link rel="prefetch" href="/assets/js/4.dbf2d479.js"><link rel="prefetch" href="/assets/js/40.06628b1d.js"><link rel="prefetch" href="/assets/js/41.d7c2247c.js"><link rel="prefetch" href="/assets/js/42.1bf18236.js"><link rel="prefetch" href="/assets/js/43.f02bf073.js"><link rel="prefetch" href="/assets/js/44.b818c454.js"><link rel="prefetch" href="/assets/js/45.b4f5f4c8.js"><link rel="prefetch" href="/assets/js/46.ac010126.js"><link rel="prefetch" href="/assets/js/47.034da4b6.js"><link rel="prefetch" href="/assets/js/48.52139156.js"><link rel="prefetch" href="/assets/js/49.995e4d68.js"><link rel="prefetch" href="/assets/js/5.035ac4a9.js"><link rel="prefetch" href="/assets/js/50.13d4f27d.js"><link rel="prefetch" href="/assets/js/51.31180490.js"><link rel="prefetch" href="/assets/js/52.aa043f73.js"><link rel="prefetch" href="/assets/js/53.6e7f9d7e.js"><link rel="prefetch" href="/assets/js/54.843b4ab1.js"><link rel="prefetch" href="/assets/js/55.513d1509.js"><link rel="prefetch" href="/assets/js/56.a7b6903d.js"><link rel="prefetch" href="/assets/js/57.1b35780e.js"><link rel="prefetch" href="/assets/js/58.50f7c4aa.js"><link rel="prefetch" href="/assets/js/59.785cf87c.js"><link rel="prefetch" href="/assets/js/6.b40e7de2.js"><link rel="prefetch" href="/assets/js/60.5c397685.js"><link rel="prefetch" href="/assets/js/61.e130754e.js"><link rel="prefetch" href="/assets/js/62.40a652ff.js"><link rel="prefetch" href="/assets/js/63.2913897b.js"><link rel="prefetch" href="/assets/js/64.dc18f8ac.js"><link rel="prefetch" href="/assets/js/65.a77f0927.js"><link rel="prefetch" href="/assets/js/66.dad760c4.js"><link rel="prefetch" href="/assets/js/67.e05b7cc8.js"><link rel="prefetch" href="/assets/js/68.fe290f5a.js"><link rel="prefetch" href="/assets/js/69.3c289603.js"><link rel="prefetch" href="/assets/js/7.aa51be97.js"><link rel="prefetch" href="/assets/js/70.f9925c58.js"><link rel="prefetch" href="/assets/js/71.866c5b8f.js"><link rel="prefetch" href="/assets/js/72.b43b6e9d.js"><link rel="prefetch" href="/assets/js/73.5c6d73ee.js"><link rel="prefetch" href="/assets/js/74.71b85284.js"><link rel="prefetch" href="/assets/js/75.4c19eb26.js"><link rel="prefetch" href="/assets/js/76.cb3fda1f.js"><link rel="prefetch" href="/assets/js/77.8e1677b4.js"><link rel="prefetch" href="/assets/js/78.e4bc7d53.js"><link rel="prefetch" href="/assets/js/79.a55c6cf6.js"><link rel="prefetch" href="/assets/js/8.504dac66.js"><link rel="prefetch" href="/assets/js/80.cc3c3ab7.js"><link rel="prefetch" href="/assets/js/81.94948fc4.js"><link rel="prefetch" href="/assets/js/82.20371142.js"><link rel="prefetch" href="/assets/js/83.94049dec.js"><link rel="prefetch" href="/assets/js/84.80ba232b.js"><link rel="prefetch" href="/assets/js/85.e26f497a.js"><link rel="prefetch" href="/assets/js/86.2c2b0274.js"><link rel="prefetch" href="/assets/js/87.5694f41a.js"><link rel="prefetch" href="/assets/js/88.5d234533.js"><link rel="prefetch" href="/assets/js/89.17e88d6c.js"><link rel="prefetch" href="/assets/js/9.1eb71dd1.js"><link rel="prefetch" href="/assets/js/90.93bfce62.js"><link rel="prefetch" href="/assets/js/91.e74e96f5.js"><link rel="prefetch" href="/assets/js/92.0d241826.js"><link rel="prefetch" href="/assets/js/93.913b5192.js"><link rel="prefetch" href="/assets/js/94.aed1fad1.js"><link rel="prefetch" href="/assets/js/95.3ed008f6.js"><link rel="prefetch" href="/assets/js/96.d240805d.js"><link rel="prefetch" href="/assets/js/97.4554ac21.js"><link rel="prefetch" href="/assets/js/98.4d53aecb.js"><link rel="prefetch" href="/assets/js/99.9b74a0fc.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.13695c19.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav>  <ul class="sidebar-links"><li><a href="/technologies/" aria-current="page" class="sidebar-link">/technologies/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Web Protocols</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Security</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Blockchain</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kubernetes</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>SQL Server</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Git</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/technologies/git/overview.html" aria-current="page" class="active sidebar-link">Git</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#useful-tips" class="sidebar-link">Useful Tips</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#cheat-sheet" class="sidebar-link">Cheat Sheet</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#function" class="sidebar-link">Function</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#internals" class="sidebar-link">Internals</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#rebase" class="sidebar-link">Rebase</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#tags" class="sidebar-link">Tags</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#remotes" class="sidebar-link">Remotes</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#adding-a-part-of-file" class="sidebar-link">Adding a part of file</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#useful-commands" class="sidebar-link">Useful Commands</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#attributes" class="sidebar-link">Attributes</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#submodules" class="sidebar-link">Submodules</a></li><li class="sidebar-sub-header"><a href="/technologies/git/overview.html#hooks" class="sidebar-link">Hooks</a></li></ul></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ansible</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Azure</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="git"><a href="#git" class="header-anchor">#</a> Git</h1> <h2 id="useful-tips"><a href="#useful-tips" class="header-anchor">#</a> Useful Tips</h2> <ul><li>when working on a feature branch, it's a good idea to rebase on top of latest
+version of source branch to keep the history of feature branch clean (without
+merges) (<code>git rebase develop</code>). <code>git pull --rebase</code> is useful in the above
+situation. It automates the whole thing.</li> <li>Git is able to automatically understand that some file got renamed, without an
+explicit <code>git mv</code></li> <li><code>git mv</code> automatically adds a change to the Staging Area (index).</li> <li><code>git rebase -i</code> is powerful - the commits can be reordered!</li> <li>if something goes wrong during a rebase, we can recover our previous state by
+moving the branch to the previous HEAD (<code>git reflog HEAD</code> might help to find
+the SHA-1 of the old HEAD commit), before it's garbage collected</li></ul> <h3 id="commit-targetting"><a href="#commit-targetting" class="header-anchor">#</a> Commit Targetting</h3> <p>Useful for <code>git show &lt;COMMIT&gt;</code>:</p> <ul><li><code>HEAD^</code> - parent</li> <li><code>HEAD^^</code> - parent of the parent</li> <li><code>HEAD~3</code> - 3rd commit behind <code>HEAD</code> (<code>HEAD~0</code> = <code>HEAD</code>)</li> <li><code>HEAD~2^2</code> - if the 2nd commit behind HEAD is a merge commit, it has 2
+parents. This is how we refer to the second parent.</li></ul> <h2 id="cheat-sheet"><a href="#cheat-sheet" class="header-anchor">#</a> Cheat Sheet</h2> <p>https://cheatography.com/loreno10/cheat-sheets/git/</p> <h2 id="function"><a href="#function" class="header-anchor">#</a> Function</h2> <p>Git can be seen as a set of layers:</p> <h4 id="persistent-key-value-map"><a href="#persistent-key-value-map" class="header-anchor">#</a> Persistent key-value map</h4> <p>Git stores objects. Key is SHA-1, and the value is the contents.</p> <h4 id="content-tracker"><a href="#content-tracker" class="header-anchor">#</a> Content tracker</h4> <p>Each commit is a point in the history. Git creates a kind of file system built
+with objects. Different commits point to a different &quot;shape&quot; of our repository.</p> <h2 id="internals"><a href="#internals" class="header-anchor">#</a> Internals</h2> <h3 id="objects"><a href="#objects" class="header-anchor">#</a> Objects</h3> <p><code>.git/objects</code> folder is a database of all Git objects.</p> <p>There are 4 types of objects in Git:</p> <ul><li>blobs</li> <li>trees</li> <li>commits</li> <li>annotated tags</li></ul> <p>Every object in Git has its SHA-1.</p> <p>In example, if a commit is created, a new file is created in <code>.git/objects</code>
+(name is the same as commit's SHA-1):</p> <div class="language- extra-class"><pre class="language-text"><code>tree 4e9e0b052b2f0c5aaeabd215eacbb62c6ea299bf
+author Marcin Jahn &lt;marcin.jahn@pl.abb.com&gt; 1607885340 +0100
+committer Marcin Jahn &lt;marcin.jahn@pl.abb.com&gt; 1607885340 +0100
+
+First commit
+</code></pre></div><p>It contains a basic info about a commit, including the SHA-1 of a <strong>tree</strong> - a
+directory object in Git. If the commit was not first in history, there would
+also be a <em>parent</em> information (SHA-1 of a parent commit(s)). If we look at the
+contents of the tree object (with <code>git cat-file -p 4e9e0b052b2f0c5aaeabd215eacbb62c6ea299bf</code>) we'd get:</p> <div class="language- extra-class"><pre class="language-text"><code>100644 blob 8954f2439cae536b9b35ac39e8d173b90f979ca4  menu.txt
+040000 tree c888eb2c751094817564e75b0f32fb366e719607  recipes
+
+</code></pre></div><p>The root folder of our repo contains two things: <code>menu.txt</code> and <code>recipes</code>
+directory. These 2 are shown above. <strong>Blob</strong> is an object that represents a
+file. Contents of <code>menu.txt</code> blob:</p> <div class="language- extra-class"><pre class="language-text"><code>Put your recipes here
+</code></pre></div><p>This is exactly the same content as the file in our repo. Blobs store just the
+contents of the file. They do not store file's name or its permissions. These
+are stored in the tree that points to that blob.</p> <blockquote><p>The commit points to a tree object, which represents the state of the repo for
+this commit. A tree than points to its contents: files (blobs) and directories
+(trees).</p></blockquote> <p>If there were 2 different files with the same content, just one object would be
+created. It would be pointed to twice (by different trees, if different
+directories contained these files).</p> <p>An example of Git objects:</p> <p><img src="https://i.imgur.com/6UiOGry.png" alt="Git Object Model Example(source:Pluralsight)"></p> <p>There are 2 commits (red). In the last commit, one file (<code>menu.txt</code>) was
+modified. Because of that, a new object was created for that new state of this
+file. Since the <code>recipes</code> directory stayed the same, both commits point to the
+same object.</p> <p>Git might also, for optimization, work a bit differently if files are big. When
+we change just a line of such a file, Git will store only the difference,
+instead of copying the entire file into a new blob object. However, for
+simplicity, it can be ignored.</p> <p>After cloning a project from a remote, the <code>objects</code> directory will not contain
+the individual objects. Instead, there will be a &quot;pack&quot; containing all the
+objects.</p> <h4 id="branches"><a href="#branches" class="header-anchor">#</a> Branches</h4> <p>Branches are stored in <code>.git/refs/heads</code>. Each branch has its file, and contains
+just the SHA-1 of the commit it points to. A branch is just a reference to some
+commit.</p> <h4 id="internal-commands"><a href="#internal-commands" class="header-anchor">#</a> Internal Commands</h4> <p><code>git cat-file -p &lt;SHA-1 of an object&gt;</code> - displays the object's content <code>git count-objects</code> - show how many objects there are in the repo</p> <h4 id="uniqueness"><a href="#uniqueness" class="header-anchor">#</a> Uniqueness</h4> <p>SHA-1 of a commit is unique globally. There might be collision, but the chance
+for that is very low. The SHA-1 of blobs or trees is not unique, because it is
+dependent on the file contents only. Commit's SHA-1 depends from the author,
+timestamp.</p> <h4 id="merge-files"><a href="#merge-files" class="header-anchor">#</a> Merge files</h4> <p>When there's an ongoing merge (i.e., conflict), <code>.git</code> directory will contain
+some <code>MERGING_*</code> files, which inform what we are merging.</p> <h3 id="head-file"><a href="#head-file" class="header-anchor">#</a> HEAD file</h3> <p><code>.git/HEAD</code> contains the path to the current branch, i.e. <code>ref: refs/heads/master</code>. HEAD is a reference to a branch. When checking out another
+branch, the only thing that changes is the content of the <code>.git/HEAD</code> file.</p> <p>If we checkout a commit (&quot;detached&quot; HEAD), instead of a branch, <code>.git/HEAD</code> will
+contain the SHA-1 of that commit.</p> <h4 id="detached-head"><a href="#detached-head" class="header-anchor">#</a> Detached HEAD</h4> <p>We can still commit in the detached state. If we then switch back to some
+branch, these comits will be unreachable. After some time Git will remove them
+from the <code>objects</code> database. We can still use these commits until that happens.</p> <h3 id="index"><a href="#index" class="header-anchor">#</a> Index</h3> <p><code>.git/index</code> contains <strong>Staging Area</strong> changes. It's a binary file, the content
+is not readable.</p> <h2 id="rebase"><a href="#rebase" class="header-anchor">#</a> Rebase</h2> <p>Rebase moves commits around. It can do a fast-forward, just like <code>merge</code>. I.e.,
+in this case, <code>git rebase spaghetti</code> and <code>git merge spaghetti</code> will have the
+same result - &quot;master&quot; will be moved to &quot;spaghetti&quot; commit.
+<img src="https://i.imgur.com/eUeRo82.png" alt=""></p> <h3 id="commits"><a href="#commits" class="header-anchor">#</a> Commits</h3> <p>When rebasing commits, NEW commits are created that are mostly the same as the
+original ones. Parents change, and this changes the SHA-1 - new objects will be
+created as a result. The original commits will be deleted at some point from the
+<code>objects</code> database by Git (garbage collection).</p> <h2 id="tags"><a href="#tags" class="header-anchor">#</a> Tags</h2> <p>There are &quot;normal&quot; and &quot;annotated&quot; tags. Tags are similar to branches, with one
+difference - branches move with commits, tags do not move.</p> <h3 id="normal-tags"><a href="#normal-tags" class="header-anchor">#</a> Normal tags</h3> <p>They are just like a label. They are stored in <code>.git/refs/tags</code> and contain just
+the SHA-1 of the commit that they point to. Such a tag could easily be
+transformed in to a branch, just by moving it to <code>.git/refs/heads</code>, where all
+branches are stored.</p> <h3 id="annotated-tags"><a href="#annotated-tags" class="header-anchor">#</a> Annotated tags</h3> <p>They contain more information - a date, an author, a description. They are
+stored as an object.</p> <h2 id="remotes"><a href="#remotes" class="header-anchor">#</a> Remotes</h2> <p><code>.git/config</code> contains the remotes configuration.</p> <h3 id="pull"><a href="#pull" class="header-anchor">#</a> Pull</h3> <p><code>git pull</code> is a combination of <code>git fetch</code> and <code>git merge</code>.</p> <h2 id="adding-a-part-of-file"><a href="#adding-a-part-of-file" class="header-anchor">#</a> Adding a part of file</h2> <p>It might happen that we modify a few lines of a file, but we do not want to add
+all of it to the commit. We want to add just a part of these changes. <code>git add -p &lt;file&gt;</code> does that. It splits the file into <strong>hunks</strong>. Git asks about each
+hunk and we have to decide to include it (<code>y</code>) or not (<code>n</code>). We might also
+decide to split the hunk into a smaller one (<code>s</code>) and decide for each of the
+smaller hunks separately. After it's done, we may commit.</p> <p><code>-p</code> = <code>--patch</code></p> <p>A few other git commands have the <code>--patch</code> option: <code>add</code>, <code>checkout</code>, <code>stash</code>,
+<code>reset</code>, ...</p> <h2 id="useful-commands"><a href="#useful-commands" class="header-anchor">#</a> Useful Commands</h2> <p><code>git reflog</code> - show the log of things happening in the repo (switching branches,
+new commits, rebases, etc.) <code>git reflog HEAD</code> - show the log of where <code>HEAD</code> was
+<code>git show &lt;SHA-1&gt;</code> - show any file by its SHA-1 <code>git config --global --replace-all core.pager &quot;less -iXFR&quot;</code> - displays <code>git log</code> (and others) like
+<code>cat</code>, instead of <code>less</code> (content does not disappear). <code>git show &lt;COMMIT&gt;</code> -
+shows changes introduced by a commit <code>git blame &lt;FILE&gt;</code> - shows line-by-line,
+who changed each line and when. <code>^</code> means that the line was there since the
+beginning. <code>git revert &lt;COMMIT&gt;</code> - creates a commit that does the opposite
+operations than the supplied commit. It can also revert multiple commits.
+Reverting merge commits is not so straightforward, and requires a bit different
+approach</p> <h3 id="reset"><a href="#reset" class="header-anchor">#</a> Reset</h3> <p><code>git reset</code> does different things in different contexts. <code>git reset</code> moves the
+branch to another commit. It can work in different modes:</p> <p><code>--hard</code> - it sets the working directory and index to the state of the new
+commit - useful when working directory changes do not make sense and we want to
+get back to where we started from <code>--mixed</code> - (default) - it does not change the
+working directory, only sets the index to the new commit - usefult when we have
+some changes staged, but we want to unstage them. It optionally accepts a path
+to a file that should be &quot;reset&quot;. <code>--soft</code> - just moves the branch, does not
+modify working directory, nor index - useful when we want to move back to some
+commit from the past, modify some stuff, and commit again (rewriting history)</p> <p>Examples:</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> reset HEAD menu.txt
+<span class="token function">git</span> reset --hard HEAD
+</code></pre></div><h3 id="switch"><a href="#switch" class="header-anchor">#</a> Switch</h3> <p>Alternative for <code>checkout</code>. Switches branch. Use <code>-c</code> to create one.</p> <h3 id="restore"><a href="#restore" class="header-anchor">#</a> Restore</h3> <p>Alternative for <code>checkout</code>. Restores files from the past.</p> <h3 id="remove-file-from-history"><a href="#remove-file-from-history" class="header-anchor">#</a> Remove file from history</h3> <p>It is possible to remove some file entirely from Git history as if it never
+existed.</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> filter-repo --path menu.txt --invert-paths
+</code></pre></div><p>Entire history gets rewritten, new commits are created. This command might need
+to be installed on its own.</p> <h3 id="bisect"><a href="#bisect" class="header-anchor">#</a> Bisect</h3> <p><code>git bisect</code> allows to find a commit that introduced some issue into the
+codebase. It can work manually or automatically. We specify the range of commits
+that the tool will look in. It will check each commit one-by-one, until it finds
+the &quot;bad&quot; one.</p> <h2 id="attributes"><a href="#attributes" class="header-anchor">#</a> Attributes</h2> <p><code>gitattributes</code> file allows to specify various configs.</p> <h3 id="clean-and-smudge-filters"><a href="#clean-and-smudge-filters" class="header-anchor">#</a> Clean and Smudge filters</h3> <p>Git is able to remove sensitive data from specified files when commiting. It is
+also able to set the sensitive values when checking out the repository. It's
+done using *<em>Git Attributes</em>.</p> <h2 id="submodules"><a href="#submodules" class="header-anchor">#</a> Submodules</h2> <p>Submodules is a way to share code between repos. One repo may have many
+submodules that it makes use of.</p> <h3 id="adding-submodule"><a href="#adding-submodule" class="header-anchor">#</a> Adding submodule</h3> <p>There should be some directory for submodules (i.e., <code>external/</code>).</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> submodule <span class="token function">add</span> <span class="token operator">&lt;</span>REPO_URL<span class="token operator">&gt;</span> external/submodule1
+</code></pre></div><p>Submodule will be cloned into the selected path. A new file - <code>.gitmodules</code> -
+will be created, listing all submodules.</p> <h3 id="more-information-about-submodules"><a href="#more-information-about-submodules" class="header-anchor">#</a> More information about submodules</h3> <p>By default, <code>git status</code> and <code>git diff</code> do not show information about
+modifications to submodules.</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> config --global status.submoduleSummary <span class="token boolean">true</span>
+<span class="token function">git</span> config --global diff.submodule log
+</code></pre></div><p>Now, <code>git status</code> will give more information (i.e., submodule added).
+Additionally, <code>git diff</code> will show info about submodules.</p> <h3 id="cloning-a-repo-with-submodules"><a href="#cloning-a-repo-with-submodules" class="header-anchor">#</a> Cloning a repo with submodules</h3> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> clone <span class="token operator">&lt;</span>REPO<span class="token operator">&gt;</span>
+<span class="token function">git</span> submodule init
+<span class="token function">git</span> submodule update
+</code></pre></div><p>or</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> clone --recursive <span class="token operator">&lt;</span>REPO<span class="token operator">&gt;</span>
+</code></pre></div><p>The second way will work also if there are nested submodules.</p> <h3 id="syncing-repo-with-submodules"><a href="#syncing-repo-with-submodules" class="header-anchor">#</a> Syncing repo with submodules</h3> <p>When working with a team, the following commands allow to make sure that our
+whole repo is in sync with remote:</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> pull
+<span class="token function">git</span> submodule <span class="token function">sync</span> --recursive
+<span class="token function">git</span> submodule update --init --recursive
+</code></pre></div><h3 id="updating-submodule"><a href="#updating-submodule" class="header-anchor">#</a> Updating submodule</h3> <p>When we update a submodule, we need to push it, together with the &quot;main&quot; repo
+that contains this submodule. By default, we need to do it manually. There is a
+config that automates that:</p> <div class="language-sh extra-class"><pre class="language-sh"><code><span class="token function">git</span> config --global push.recurseSubmodules on-demand
+</code></pre></div><p>Now, when pushing main repo, also submodules will be pushed.</p> <h2 id="hooks"><a href="#hooks" class="header-anchor">#</a> Hooks</h2> <p>There are client-side and server-side hooks that can be added. They will eb run
+automatically on speicified actions. By default, client-side hooks are stored in
+<code>.git/hooks</code>. Therefore they are not share with the team. This can be chaged via
+configuration.</p></div> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/technologies/sql-server/t-sql.html" class="prev">
+        T-SQL
+      </a></span> <span class="next"><a href="/technologies/ansible/ansible.html">
+        Ansible
+      </a>
+      →
+    </span></p></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">4/14/2022, 12:26:44 PM</span></div></footer> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.2b903a17.js" defer></script><script src="/assets/js/2.7e39c81e.js" defer></script><script src="/assets/js/100.6dec2682.js" defer></script>
+  </body>
+</html>

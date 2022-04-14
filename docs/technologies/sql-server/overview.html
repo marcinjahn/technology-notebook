@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview | Marcin Jahn | Technology Notebook</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"></script>
+    <script>(function() { if (window.location.href.startsWith('http://localhost')) { return; } window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZSM2N36X8P'); })();</script>
+    <meta name="description" content="SQL Server Overview">
+    <meta property="og:url" content="/technologies/sql-server/overview.html">
+    <meta property="og:site_name" content="Marcin Jahn | Technology Notebook">
+    <meta property="og:title" content="Overview">
+    <meta property="og:description" content="SQL Server Overview">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en-US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image:alt" content="Marcin Jahn | Technology Notebook">
+    <meta property="article:author" content="Marcin Jahn">
+    <meta name="theme-color" content="white">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.13695c19.css" as="style"><link rel="preload" href="/assets/js/app.2b903a17.js" as="script"><link rel="preload" href="/assets/js/2.7e39c81e.js" as="script"><link rel="preload" href="/assets/js/10.a60cd480.js" as="script"><link rel="prefetch" href="/assets/js/100.6dec2682.js"><link rel="prefetch" href="/assets/js/101.c7ed7a62.js"><link rel="prefetch" href="/assets/js/102.9f2e40a6.js"><link rel="prefetch" href="/assets/js/103.2bd7d075.js"><link rel="prefetch" href="/assets/js/104.ac1bee8b.js"><link rel="prefetch" href="/assets/js/105.f72cbb9f.js"><link rel="prefetch" href="/assets/js/106.65c835d6.js"><link rel="prefetch" href="/assets/js/107.25f530d3.js"><link rel="prefetch" href="/assets/js/108.3ca26c2b.js"><link rel="prefetch" href="/assets/js/109.1a09ec75.js"><link rel="prefetch" href="/assets/js/11.68cc34a7.js"><link rel="prefetch" href="/assets/js/110.9475b245.js"><link rel="prefetch" href="/assets/js/111.c2fc315f.js"><link rel="prefetch" href="/assets/js/112.4a3af8b9.js"><link rel="prefetch" href="/assets/js/113.fe36efca.js"><link rel="prefetch" href="/assets/js/114.abf5c40a.js"><link rel="prefetch" href="/assets/js/115.6e88580d.js"><link rel="prefetch" href="/assets/js/116.9d34f8fb.js"><link rel="prefetch" href="/assets/js/117.81b95d35.js"><link rel="prefetch" href="/assets/js/118.eaf53369.js"><link rel="prefetch" href="/assets/js/119.1bc1690a.js"><link rel="prefetch" href="/assets/js/12.d906b391.js"><link rel="prefetch" href="/assets/js/120.16cb6907.js"><link rel="prefetch" href="/assets/js/121.7111d4a3.js"><link rel="prefetch" href="/assets/js/122.5b1be23c.js"><link rel="prefetch" href="/assets/js/123.cb8e9940.js"><link rel="prefetch" href="/assets/js/124.6082b8ba.js"><link rel="prefetch" href="/assets/js/125.6d296264.js"><link rel="prefetch" href="/assets/js/126.f8407129.js"><link rel="prefetch" href="/assets/js/127.2bd1b1d2.js"><link rel="prefetch" href="/assets/js/128.e754047e.js"><link rel="prefetch" href="/assets/js/13.ffb80372.js"><link rel="prefetch" href="/assets/js/14.8ee943e7.js"><link rel="prefetch" href="/assets/js/15.bc716e15.js"><link rel="prefetch" href="/assets/js/16.cfa77c99.js"><link rel="prefetch" href="/assets/js/17.8235b8a5.js"><link rel="prefetch" href="/assets/js/18.9dfe5ec8.js"><link rel="prefetch" href="/assets/js/19.ec4fb591.js"><link rel="prefetch" href="/assets/js/20.9ae47b07.js"><link rel="prefetch" href="/assets/js/21.41bc1d6a.js"><link rel="prefetch" href="/assets/js/22.6a1f8b43.js"><link rel="prefetch" href="/assets/js/23.9ec377cc.js"><link rel="prefetch" href="/assets/js/24.86fd08f1.js"><link rel="prefetch" href="/assets/js/25.d3c33607.js"><link rel="prefetch" href="/assets/js/26.85e5f3bb.js"><link rel="prefetch" href="/assets/js/27.143cd9de.js"><link rel="prefetch" href="/assets/js/28.b5b03efe.js"><link rel="prefetch" href="/assets/js/29.48d95f0a.js"><link rel="prefetch" href="/assets/js/3.7436c0e0.js"><link rel="prefetch" href="/assets/js/30.ea7ebaf8.js"><link rel="prefetch" href="/assets/js/31.166aeb14.js"><link rel="prefetch" href="/assets/js/32.36e4280b.js"><link rel="prefetch" href="/assets/js/33.bb537880.js"><link rel="prefetch" href="/assets/js/34.25fbe5f7.js"><link rel="prefetch" href="/assets/js/35.b62c761d.js"><link rel="prefetch" href="/assets/js/36.55979790.js"><link rel="prefetch" href="/assets/js/37.ff413b13.js"><link rel="prefetch" href="/assets/js/38.5a03fad7.js"><link rel="prefetch" href="/assets/js/39.3d2b1d0c.js"><link rel="prefetch" href="/assets/js/4.dbf2d479.js"><link rel="prefetch" href="/assets/js/40.06628b1d.js"><link rel="prefetch" href="/assets/js/41.d7c2247c.js"><link rel="prefetch" href="/assets/js/42.1bf18236.js"><link rel="prefetch" href="/assets/js/43.f02bf073.js"><link rel="prefetch" href="/assets/js/44.b818c454.js"><link rel="prefetch" href="/assets/js/45.b4f5f4c8.js"><link rel="prefetch" href="/assets/js/46.ac010126.js"><link rel="prefetch" href="/assets/js/47.034da4b6.js"><link rel="prefetch" href="/assets/js/48.52139156.js"><link rel="prefetch" href="/assets/js/49.995e4d68.js"><link rel="prefetch" href="/assets/js/5.035ac4a9.js"><link rel="prefetch" href="/assets/js/50.13d4f27d.js"><link rel="prefetch" href="/assets/js/51.31180490.js"><link rel="prefetch" href="/assets/js/52.aa043f73.js"><link rel="prefetch" href="/assets/js/53.6e7f9d7e.js"><link rel="prefetch" href="/assets/js/54.843b4ab1.js"><link rel="prefetch" href="/assets/js/55.513d1509.js"><link rel="prefetch" href="/assets/js/56.a7b6903d.js"><link rel="prefetch" href="/assets/js/57.1b35780e.js"><link rel="prefetch" href="/assets/js/58.50f7c4aa.js"><link rel="prefetch" href="/assets/js/59.785cf87c.js"><link rel="prefetch" href="/assets/js/6.b40e7de2.js"><link rel="prefetch" href="/assets/js/60.5c397685.js"><link rel="prefetch" href="/assets/js/61.e130754e.js"><link rel="prefetch" href="/assets/js/62.40a652ff.js"><link rel="prefetch" href="/assets/js/63.2913897b.js"><link rel="prefetch" href="/assets/js/64.dc18f8ac.js"><link rel="prefetch" href="/assets/js/65.a77f0927.js"><link rel="prefetch" href="/assets/js/66.dad760c4.js"><link rel="prefetch" href="/assets/js/67.e05b7cc8.js"><link rel="prefetch" href="/assets/js/68.fe290f5a.js"><link rel="prefetch" href="/assets/js/69.3c289603.js"><link rel="prefetch" href="/assets/js/7.aa51be97.js"><link rel="prefetch" href="/assets/js/70.f9925c58.js"><link rel="prefetch" href="/assets/js/71.866c5b8f.js"><link rel="prefetch" href="/assets/js/72.b43b6e9d.js"><link rel="prefetch" href="/assets/js/73.5c6d73ee.js"><link rel="prefetch" href="/assets/js/74.71b85284.js"><link rel="prefetch" href="/assets/js/75.4c19eb26.js"><link rel="prefetch" href="/assets/js/76.cb3fda1f.js"><link rel="prefetch" href="/assets/js/77.8e1677b4.js"><link rel="prefetch" href="/assets/js/78.e4bc7d53.js"><link rel="prefetch" href="/assets/js/79.a55c6cf6.js"><link rel="prefetch" href="/assets/js/8.504dac66.js"><link rel="prefetch" href="/assets/js/80.cc3c3ab7.js"><link rel="prefetch" href="/assets/js/81.94948fc4.js"><link rel="prefetch" href="/assets/js/82.20371142.js"><link rel="prefetch" href="/assets/js/83.94049dec.js"><link rel="prefetch" href="/assets/js/84.80ba232b.js"><link rel="prefetch" href="/assets/js/85.e26f497a.js"><link rel="prefetch" href="/assets/js/86.2c2b0274.js"><link rel="prefetch" href="/assets/js/87.5694f41a.js"><link rel="prefetch" href="/assets/js/88.5d234533.js"><link rel="prefetch" href="/assets/js/89.17e88d6c.js"><link rel="prefetch" href="/assets/js/9.1eb71dd1.js"><link rel="prefetch" href="/assets/js/90.93bfce62.js"><link rel="prefetch" href="/assets/js/91.e74e96f5.js"><link rel="prefetch" href="/assets/js/92.0d241826.js"><link rel="prefetch" href="/assets/js/93.913b5192.js"><link rel="prefetch" href="/assets/js/94.aed1fad1.js"><link rel="prefetch" href="/assets/js/95.3ed008f6.js"><link rel="prefetch" href="/assets/js/96.d240805d.js"><link rel="prefetch" href="/assets/js/97.4554ac21.js"><link rel="prefetch" href="/assets/js/98.4d53aecb.js"><link rel="prefetch" href="/assets/js/99.9b74a0fc.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.13695c19.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar boxshadow"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Marcin Jahn | Technology Notebook</span></a> <div class="links"><!----> <nav class="nav-links can-hide"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/programming/" class="nav-link">
+  Programming
+</a></div><div class="nav-item"><a href="/technologies/" class="nav-link router-link-active">
+  Technologies
+</a></div><div class="nav-item"><a href="/projects/" class="nav-link">
+  Projects
+</a></div><div class="nav-item"><a href="/meta/" class="nav-link">
+  Meta
+</a></div> <span class="external-services" data-v-10a38898><a target="_blank" href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US" data-v-f9b87572 data-v-10a38898><img src="/img/linkedin.webp" data-v-f9b87572></a><a target="_blank" href="https://github.com/marcinjahn" data-v-f9b87572 data-v-10a38898><img src="/img/github.webp" data-v-f9b87572></a></span> <!----></nav>  <ul class="sidebar-links"><li><a href="/technologies/" aria-current="page" class="sidebar-link">/technologies/</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Web Protocols</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Security</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Blockchain</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kubernetes</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>SQL Server</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/technologies/sql-server/overview.html" aria-current="page" class="active sidebar-link">Overview</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#running-in-a-container" class="sidebar-link">Running in a Container</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#structure" class="sidebar-link">Structure</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#naming" class="sidebar-link">Naming</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#best-practices" class="sidebar-link">Best Practices</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#constraints" class="sidebar-link">Constraints</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#views" class="sidebar-link">Views</a></li><li class="sidebar-sub-header"><a href="/technologies/sql-server/overview.html#indexes" class="sidebar-link">Indexes</a></li></ul></li><li><a href="/technologies/sql-server/t-sql.html" class="sidebar-link">T-SQL</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ansible</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Azure</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content"><div class="content__default"><h1 id="sql-server-overview"><a href="#sql-server-overview" class="header-anchor">#</a> SQL Server Overview</h1> <h2 id="running-in-a-container"><a href="#running-in-a-container" class="header-anchor">#</a> Running in a Container</h2> <p>On AMD64 PCs just use the sql-server docker image.</p> <p>On M1 macs, use the following:</p> <div class="language-sh extra-class"><pre class="language-sh"><code>docker run --cap-add SYS_PTRACE -e <span class="token string">'ACCEPT_EULA=1'</span> -e <span class="token string">'MSSQL_SA_PASSWORD=Qwerty1!'</span> -p <span class="token number">1433</span>:1433 --name azuresqledge -d mcr.microsoft.com/azure-sql-edge
+</code></pre></div><p>It's the SQL Server Edge - at this moment it's the only SQL Server variant
+compiled for ARM64.</p> <div class="custom-block tip"><p class="custom-block-title">Password</p> <p>Password needs to be min 8 chars long, 1 capital letter, 1 digit, 1 symbol.</p></div> <h2 id="structure"><a href="#structure" class="header-anchor">#</a> Structure</h2> <ul><li>RDMS:
+<ul><li>Databases
+<ul><li>Schemas (the default is <em>dbo</em>) - they act as namespaces, they are
+useful for managing security
+<ul><li>Tables
+<ul><li>Columns</li></ul></li> <li>Views</li> <li>Stored Procedures</li></ul></li></ul></li></ul></li></ul> <p>Every object in the database has its fully qualified name in the format:
+<code>{Instace}.{Database}.{Schema}.{Object}</code>.</p> <div class="custom-block tip"><p class="custom-block-title">Instance</p> <p>The <code>{Instance}</code> part comes from the fact that a single OS can host multiple
+instances of SQL Server.</p></div> <h2 id="naming"><a href="#naming" class="header-anchor">#</a> Naming</h2> <p>Popular Choices:</p> <ul><li>PascalCase</li> <li>underscore_separated</li> <li>Hybrid_Of_Above</li></ul> <h2 id="best-practices"><a href="#best-practices" class="header-anchor">#</a> Best Practices</h2> <h3 id="normal-forms"><a href="#normal-forms" class="header-anchor">#</a> Normal Forms</h3> <p>Normalization defines a set of rules that help to achieve a good design of a
+database, reducing duplication and data anomalies.</p> <ol><li>1NF
+<ul><li>one value per table cell (e.g. first and last names)</li> <li>rows should be unique - primary key should be there</li></ul></li> <li>2NF
+<ul><li>single-column primary keys</li></ul></li> <li>3NF
+<ul><li>Column values should only depend upon the key - if any non-key column
+depends on column(s) other than the key one, this data does not belong in
+that table. For example, keeping patient's doctor phone in the Patients
+database is not a good idea. There should be a separate table - Doctors -
+and patients should be linked ot appropriate doctors.</li></ul></li></ol> <p>There also other Normal Forms.</p> <h2 id="constraints"><a href="#constraints" class="header-anchor">#</a> Constraints</h2> <p>Constraints specify additional rules for the columns in our tables.</p> <div class="custom-block warning"><p class="custom-block-title">Overwriting</p> <p>We can't just overwrite existing constraint. First, we need to remove existing
+constraint, and then we can create a new one.</p></div> <h3 id="null"><a href="#null" class="header-anchor">#</a> NULL</h3> <p>We can &quot;constraint&quot; columns to allow NULLs. By default, the <code>NOT NULL</code> constains
+is applied.</p> <h3 id="default"><a href="#default" class="header-anchor">#</a> DEFAULT</h3> <p>Provides a default value for a column. It is useful when <code>NOT NULL</code> is applied
+as well.</p> <h3 id="primary-keys"><a href="#primary-keys" class="header-anchor">#</a> Primary Keys</h3> <p>Thy ensure uniqueness. It provides a backing index. That index can be
+<strong>clustered</strong> or <strong>unclustered</strong>.</p> <h3 id="unique"><a href="#unique" class="header-anchor">#</a> UNIQUE</h3> <p>It ensures no duplicates of some column. It allows NULL (but only one!). They
+are backed by an index (clustered or unclustered (the default)).</p> <p>The <code>UNIQUE</code> constraint can be applied on multiple columns, meaning that the
+combination of their values should be unique.</p> <h3 id="foreign-keys"><a href="#foreign-keys" class="header-anchor">#</a> Foreign Keys</h3> <p>The Foreign Key constraint links two tables together. We cannot create an entry
+that refers to a non-existing entity. For example, we can't create an
+<code>OrderItem</code> for an <code>Order</code> that doesn't exist.</p> <div class="language-log extra-class"><pre class="language-log"><code>The INSERT statement conflicted with the FOREIGN KEY constraint 
+<span class="token string">&quot;FK_OrderItems_OrderID_Orders_OrderID&quot;</span><span class="token punctuation">.</span> The conflict occurred in 
+database <span class="token string">&quot;BobsShoes&quot;</span><span class="token punctuation">,</span> table <span class="token string">&quot;Orders.Orders&quot;</span><span class="token punctuation">,</span> column <span class="token string">'OrderID'</span><span class="token punctuation">.</span>
+</code></pre></div><div class="custom-block tip"><p class="custom-block-title">Index</p> <p>There is no automatic backing index created for foreign keys. It is recommended
+to create it though.</p></div> <h4 id="cascade"><a href="#cascade" class="header-anchor">#</a> CASCADE</h4> <p>Entities referred to by a foreign key cannot be deleted. We can help ourselves
+with the <code>CASCADE</code> option. Whenever we delete an entity referenced by a foreign
+key, the entity that refers to it will be deleted as well.</p> <div class="language-sql extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Orders<span class="token punctuation">.</span>OrderItems<span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    StockID <span class="token keyword">int</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+        CONSTAINT FK_OrderItems_StockID
+            <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token keyword">REFERENCES</span> Orders<span class="token punctuation">.</span>Stock <span class="token punctuation">(</span>StockID<span class="token punctuation">)</span>
+                <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">CASCADE</span>
+<span class="token punctuation">)</span>
+</code></pre></div><div class="custom-block tip"><p class="custom-block-title">SET NULL</p> <p>We could also use the <code>SET NULL</code> option instead of <code>CASCADE</code>. That would set the
+value of a foreign key to NULL, instead of deleting the whole row.</p></div> <h3 id="check"><a href="#check" class="header-anchor">#</a> CHECK</h3> <p>This constraint allows to define declarative various conditions on the
+table-level or on the column-level. The conditions are boolean expressions.</p> <div class="custom-block tip"><p class="custom-block-title">SELECT</p> <p>Conditions cannot contain <code>SELECT</code>. However, we can call a function that
+executes <code>SELECT</code>.</p></div> <p>Examples:</p> <ul><li><code>CHECK (LastName &lt;&gt; '')</code> - <code>LastName</code> value can't be empty</li> <li><code>CHECK (StockName &lt;&gt; StockDescription)</code> - two columns can't have the same
+values</li> <li><code>CHECK (Currency IN ('PLN', 'EUR'))</code></li></ul> <div class="custom-block tip"><p class="custom-block-title">Namig</p> <p>It's quite useful to provide custom names for the <code>CHECK</code> constraints. In case
+if some condition is not satisfied, the error message will contain the name of
+the constraint. System-generated names are not very informative.</p></div> <h2 id="views"><a href="#views" class="header-anchor">#</a> Views</h2> <p>Views encapsulate queries. This way we can store some commonly used queries and
+use them whenever they're needed. For example, we can create some complicated
+query that joins multiple tables and hides unneded data.</p> <p>Views can be seen as <strong>Virtual Tables</strong>. Applications can invoke the views
+instead of querying the actual tables. This way, backward compatibility can be
+kept. We could add some new column to a table, but make sure that the View still
+returns the same set of data as before.</p> <p>Columns returned in a View can have their names changed.</p> <h3 id="updateable-views"><a href="#updateable-views" class="header-anchor">#</a> Updateable Views</h3> <p>We can update data in tables via Views. However, any such operation can only
+reference columns of only one base table. There are a few other restrictions as
+well.</p> <h2 id="indexes"><a href="#indexes" class="header-anchor">#</a> Indexes</h2> <p>We create indexes:</p> <ul><li>to enforce uniqueness on data (primary keys and unique constraints are backed
+by indexes)</li> <li>to improve query performance - these need to be determined by our workload</li> <li>for foreign keys</li></ul> <p>DB data is stored in pages, sorted by clustered index. Then, these pages are put
+into a B-Tree. All apges are in leaves. Then, a top row of each page is taken to
+build higher layers of the tree (intermediary layers + a root).</p> <p><img src="/assets/img/index-b-tree.b5266b36.png" alt=""></p> <div class="custom-block tip"><p class="custom-block-title">Pages</p> <p>Data is stored in pages. A single page is 8kb in size and contains multiple
+rows.</p></div> <h3 id="clustered-index"><a href="#clustered-index" class="header-anchor">#</a> Clustered Index</h3> <p>The data (rows) in the table is sorted using the index column. It's the default
+backing index for Primary Keys. There is no separate storage of index.</p> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>There can be max one clustered index in a table, because there can be only one
+way of sorting the data.</p></div> <div class="custom-block tip"><p class="custom-block-title">Heap</p> <p>A table without clustered index is a <strong>heap</strong> (why?)</p></div> <h4 id="guidelines"><a href="#guidelines" class="header-anchor">#</a> Guidelines</h4> <p>Ideally, a clustered index values should be <strong>ever-increasing</strong>. That way, the
+organization of existing data does not need to change when new entries are being
+added (page splits). It should also be <strong>unchanging</strong>, for the same reasons
+(changing the index value causes a delete-insert operation pair on the row).
+Additionally, the index should be <strong>narrow</strong> (the less bytes the better). This
+way, there will be less intermediary pages.</p> <h3 id="non-clustered-index"><a href="#non-clustered-index" class="header-anchor">#</a> Non-Clustered Index</h3> <p>It doesn't sort the rows. It's stored in a different place, separately from the
+table (similar to book index). It is stored as B-Tree.</p> <p>When querying data, first DB checks the index, and then it goes to retrieve the
+data at the specified address. Clustered Index uses the data directly, so it's
+faster.</p> <div class="custom-block tip"><p class="custom-block-title">Clustered Index Comparison</p> <p>Opposed to clustered index, there can be many non-clustered indexes per table
+(max 999).</p> <p>By default, the non-clustered index does not contain other columns than the ones
+being indexed. Clustered index contains all columns, becasue that index is the
+data itself. However, non-clustered index duplicates information, since it is
+stored separately from the data.</p></div> <p>The index is always in sync with the data (the same amount of rows).</p> <h4 id="multiple-columns"><a href="#multiple-columns" class="header-anchor">#</a> Multiple Columns</h4> <p>Here's how to create an index:</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">NONCLUSTERED</span> <span class="token keyword">INDEX</span> inx_TransactionTypes <span class="token keyword">ON</span> dbo<span class="token punctuation">.</span><span class="token keyword">Transactions</span> <span class="token punctuation">(</span>TransactionType<span class="token punctuation">)</span>
+</code></pre></div><p>The order of columns in the index matters. If our index contains columns
+&quot;Amount&quot; and &quot;TransactionType&quot;, the index will be created in a way that rows are
+sorted by &quot;Amount&quot;. We can quickly query data by the &quot;Amount&quot; column. However,
+querying on &quot;TransactionType&quot; will require the DB to scan throught the entire
+index data structure to find appropriate rows.</p> <p>Here's an example:</p> <p><img src="/assets/img/non-clustered-index-columns-order.326977e5.png" alt=""></p> <p>Our index has been created optimally for the queries that we want to use. The
+order of the columns is: &quot;TransactionType&quot;, &quot;Amount&quot;. If we used a reversed
+order, the green query would still work fine, however, the purple one would need
+to scan all the rows.</p> <div class="custom-block tip"><p class="custom-block-title">Ideal Design</p> <p>Ideally, we want to have as few indexes as possible supporting as many queries
+as possible.</p></div> <p>For queries that include inequality predicates, the following applies:</p> <ul><li>columns using equality predicates should come before inequality ones in the
+index</li> <li>multiple inquality columns are hard to index well</li></ul> <div class="custom-block tip"><p class="custom-block-title">Merge Join</p> <p>If we have multiple single-columns indexes, DB can use them both for a single
+query (if it involves multiple columns) and merge-join the results.</p> <p>It's still better to use an index that includes multiple columns.</p></div> <div class="custom-block tip"><p class="custom-block-title">AND vs OR</p> <p>The AND queries can often be satisfied with a single index on multiple columns.
+The OR queries run optimally when there are multiple indexes, for each of the
+queried columns.</p> <p>The difference comes from the fact that each condition in the AND builds on top
+of the previous result. In the OR case, each condition has to work on the entire
+dataset, and they are joined in the end.</p> <p><img src="/assets/img/or-predicate-needs-multiple-indexes.1bd8d7bb.png" alt=""></p> <p>The green part is served well by the index, the purple part needs to scan the
+whole index. If there was a separate index for &quot;TransactionType&quot;, it would be
+faster.</p></div> <h4 id="tips"><a href="#tips" class="header-anchor">#</a> Tips</h4> <ul><li>Non-clustered Index can include additional columns than the ones being
+indexed. A <code>SELECT</code> statement can filter based on indexed columns, but it
+might require some additional columns to be returned. Including these columns
+in the index itself skips the step where the DB engine would have to lookup
+this data in the actual raw data files.</li> <li>The index can be a <strong>Filtered Index</strong> - this way, not all of the rows are
+indexed, but only the ones that satisfy some filter. It makes the index
+smaller. E.g., it could be useful for tables that use the &quot;soft-deletes&quot;
+technique. We could skip such entities from the index if our queries should
+not bother with them.</li></ul></div> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/technologies/kubernetes/helm.html" class="prev">
+        Helm
+      </a></span> <span class="next"><a href="/technologies/sql-server/t-sql.html">
+        T-SQL
+      </a>
+      →
+    </span></p></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">4/14/2022, 12:26:44 PM</span></div></footer> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.2b903a17.js" defer></script><script src="/assets/js/2.7e39c81e.js" defer></script><script src="/assets/js/10.a60cd480.js" defer></script>
+  </body>
+</html>
