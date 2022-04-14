@@ -30,8 +30,8 @@ series](/programming/dotnet/asp-net-core/overview.md)
 - [Entity Framework Core](/programming/dotnet/entity-framework-core/)
 - [Rust series](/programming/rust/overview.md)
 - [Kubernetes
-series](/dev-tools/kubernetes/meaning.md)
-- [Helm](/dev-tools/kubernetes/helm.md)
+series](/technologies/kubernetes/meaning.md)
+- [Helm](/technologies/kubernetes/helm.md)
 
 Feel free to contact me with any queries via <a
 href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US">LinkedIn</a>.

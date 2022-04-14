@@ -228,10 +228,6 @@ module.exports = {
           ],
         },
       ],
-      // "/dev-tools/": [
-      //   "./",
-        
-      // ],
       "/technologies/": [
         "./",
         {
