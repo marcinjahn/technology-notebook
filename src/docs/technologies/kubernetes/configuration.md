@@ -50,11 +50,30 @@ files (like ConfigMaps).
 
 Supported metadata fields:
 
-![](https://i.imgur.com/wBTt9eT.png)
+|Field|Description|Allowed in env|Allowed in volume|
+|-|-|-|-|
+|metadata.name|The pod's name.|Yes|Yes|
+|metadata.namespace|The pod's namespace.|Yes|Yes|
+|metadata.uid|The pod's UID.|Yes|Yes|
+|metadata.labels|All the pod's labels, one label per line, formatted as key="value"|No|Yes|
+|metadata.labels['key']|The value of the specified label.|Yes|Yes|
+|metadata.annotations|All the pod's annotations, one per line, formatted as key="value".|No|Yes|
+|metadata.annotations['key']|The value of the specified annotation.|Yes|Yes|
+|spec.nodeName|The name of the worker node the pod runs on.|Yes|No|
+|spec.serviceAccountName|The name of the pod's service account.|Yes|No|
+|status.podIp|The pod's IP address.|Yes|No|
+|status.hostIP|The worker node's IP address.|Yes|No|
 
 Supported resource cnstraints injection:
 
-![](https://i.imgur.com/2lMIWAD.png)
+|Resource field|Description|Allowed in env|Allowed in vol|
+|-|-|-|-|
+|requests.cpu|The container's CPU request.|Yes|Yes|
+|requests.memory|The container's memory request.|Yes|Yes|
+|requests.ephemeral-storage|The container's ephemeral storage request.|Yes|Yes|
+|limits.cpu|The container's CPU limit.|Yes|Yes|
+|limits.memory|The container's memory limit.|Yes|Yes|
+|limits.ephemeral-storage|The container's ephemeral storage limit.|Yes|Yes|
 
 ### Projected Volumes
 
