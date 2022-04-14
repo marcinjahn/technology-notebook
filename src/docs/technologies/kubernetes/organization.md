@@ -46,8 +46,8 @@ Labels are key-value pairs that can be added to any object to decorate it with
 some meta data. Labels are placed in `metadata.labels` section of YAML.
 
 K8s uses labels on its own. For example Node objects have `kubernetes/io.arch`
-labels idicating CPU architecture of a node. K8s does not usually add labels to
-objects that users create.
+labels indicating the CPU architecture of a node. K8s does not usually add
+labels to objects that users create.
 
 Labels have various limitations in length, and accepted characters of keys and
 values.
