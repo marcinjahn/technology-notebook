@@ -289,7 +289,7 @@ module.exports = {
             "kubernetes/api",
             "kubernetes/objects",
             "kubernetes/pods",
-            "kubernetes/deployments",
+            "kubernetes/scaling",
             "kubernetes/events",
             "kubernetes/storage",
             "kubernetes/configuration",

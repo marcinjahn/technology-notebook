@@ -12,6 +12,7 @@ Ingresses add features on top of services. Some of the features:
 - matching paths
 - TLS termination
 - session affinity
+- auth (e.g. OAuthProxy)
 - CORS
 - many other...
 
@@ -40,12 +41,12 @@ the nginx team.
 Most of the features of ingresses is configured via annotations. That's due to
 variety of ingress implementations available on the market, each with different
 unique capabilities. It would be difficult to standardize the set of features
-that ingress should have, so the configuration exposes via Ingress object is
+that ingress should have, so the configuration exposed via Ingress object is
 minimal. Additionally, some ingresses are configured via separate K8s objects.
 
 ## Default Backend
 
-If no ingree sules match the request, normally a 404 is returned. We can specify
+If no ingress rules match the request, normally a 404 is returned. We can specify
 a defualt backend service where unmatched requests will be sent to.
 
 ## Multiple Ingress Controllers

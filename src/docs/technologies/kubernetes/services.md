@@ -92,9 +92,10 @@ K8s supports the following Service types:
 
 ### Load Balancer
 
-Kuberneets allows to create a service of LoadBalancer type, but it does not
-provide load balancing itself. It asks the cloud infrastucture to provide it.
-The IP address of the load balancer becomes an External IP of the service.
+Kubernetes allows to create a service of LoadBalancer type, but it does not
+provide load balancing itself. It asks the cloud infrastucture (via cloud
+proivder-specific controller?) to provide it. The IP address of the load
+balancer becomes an External IP of the service.
 
 ![](https://i.imgur.com/ClDDOJ7.png)
 
@@ -121,7 +122,7 @@ Additionally, original client's IP is lost due to these hops.
 
 ::: warning
 The Load Balancer service allows to exposes just one service outside under a
-single IP address. [Ingresses](./ingress.md) remove that limitation.s
+single IP address. [Ingresses](./ingress.md) remove that limitation.
 :::
 
 ## Endpoints
