@@ -17,4 +17,4 @@ title: OSI Model
 
 ## Resources
 
-[YT](https://www.youtube.com/watch?v=7IS7gigunyI&list=PLQnljOFTspQUBSgBXilKhRMJ1ACqr7pTr&index=1)
+[YT](https://www.youtube.com/watch?v=7IS7gigunyI)
