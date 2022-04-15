@@ -269,7 +269,7 @@ some manual work.
 We can create a separate deployment with the new version and scale it to low
 number of replicas. The labels of the new pods should match the `selector` of
 the Service that was used for the old version. This way, the new pods are added
-to the pool of pods behind the service. If we see that the new version works, we
+to the pool ofw pods behind the service. If we see that the new version works, we
 can go ahead and update the old deployment and delete the canary one.
 
 ### A/B Testing
