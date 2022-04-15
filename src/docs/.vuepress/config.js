@@ -339,6 +339,6 @@ module.exports = {
         author: "Marcin Jahn",
       },
     ],
-    "vuepress-plugin-mermaidjs",
+    'mermaidjs'
   ],
 };

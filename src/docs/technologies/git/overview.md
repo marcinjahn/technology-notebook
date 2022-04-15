@@ -174,7 +174,15 @@ Rebase moves commits around. It can do a fast-forward, just like `merge`. I.e.,
 in this case, `git rebase spaghetti` and `git merge spaghetti` will have the
 same result - "master" will be moved to "spaghetti" commit.
 
-![](https://i.imgur.com/eUeRo82.png)
+``` mermaid
+gitGraph:
+    commit
+    commit
+    branch spaghetti
+    checkout spaghetti
+    commit
+    commit
+```
 
 ### Commits
 
