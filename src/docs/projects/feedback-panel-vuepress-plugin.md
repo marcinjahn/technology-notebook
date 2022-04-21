@@ -8,7 +8,10 @@ lang: en-US
 
 [![npm version](https://badge.fury.io/js/vuepress-plugin-feedback-panel.svg)](https://badge.fury.io/js/vuepress-plugin-feedback-panel)
 
-[GitHub](https://github.com/marcinjahn/vuepress-plugin-feedback-panel/tree/1.0.3)
+You can find the code at [GitHub](https://github.com/marcinjahn/vuepress-plugin-feedback-panel).
+
+This plugin is listed on [Awesome
+VuePress](https://github.com/vuepress/awesome-vuepress/blob/main/v1.md).
 
 A VuePress 1.x plugin that adds a global feedback widget to your website.
 
