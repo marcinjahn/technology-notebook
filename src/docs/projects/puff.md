@@ -34,6 +34,10 @@ keeping secrets out of the app's directory. The way how puff works is totally
 different from what dotnet Secret Manager does (also, puff is not dotnet-only,
 it can be used with any project).
 
+## Technologies
+
+- Rust
+
 ## Links
 
 - Code repository: [GitHub](https://github.com/marcinjahn/puff)

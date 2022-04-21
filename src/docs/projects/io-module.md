@@ -11,6 +11,11 @@ I/O module for mobile devices".
 
 ![](./assets/io-module.png)
 
+## Technologies
+
+- Universal Windows Platform (UWP) on .NET
+- AVR C/C++
+
 ## Abstract
 
 This thesis concentrates on presenting the implementation and the final effect

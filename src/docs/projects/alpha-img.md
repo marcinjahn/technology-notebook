@@ -21,7 +21,7 @@ single click.
 
 The solution consists of (the code is available on GitHub):
 
-- [Vue.JS SPA](https://github.com/marcinjahn/alpha-img.spa-vue)
+- [Vue.js SPA](https://github.com/marcinjahn/alpha-img.spa-vue)
 - [.NET C# Web API](https://github.com/marcinjahn/alpha-img.webapi-dotnet)
 
 A public instance of the solution is deployed to Heroku at
@@ -38,3 +38,8 @@ some seconds of delay for your first request
 The app is in a rather raw state in regards to its styling. I plan to improve
 that if I find some time for it.
 :::
+
+## Technologies
+
+- .NET Core (C#)
+- Vue.js

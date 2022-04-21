@@ -10,6 +10,16 @@ MJ IoT was a result of my work on a thesis titled "Design and implementation of
 Internet of Things System based on cloud computing model". It is an IoT system
 build using the microservices architecture.
 
+## Technologies
+
+- .NET Framework
+- .NET Core
+- AVR C/C++
+- Microsoft Azure Platform
+    - Azure SQL
+    - Cosmos DB
+    - Azure Functions
+
 ## Abstract
 
 The thesis presents practical implementation of Internet of Things system that
@@ -67,8 +77,9 @@ their devices. The app was created in Agular.
 
 ## Devices
 
-Here are a few examples of the devices that I've built for the needs of the project.
-Some of them are a mixture of hardware and software, while some others were purely software-based.
+Here are a few examples of the devices that I've built for the needs of the
+project. Some of them are a mixture of hardware and software, while some others
+were purely software-based.
 
 ### Heater
 
@@ -87,15 +98,16 @@ One of my sensors was a simple temperature and humidity sensor that I've connect
 
 ### Display
 
-A purely software-based device - a display. It could be connected to other devices
-to display their outputs (e.g. when connected to the temperature output of the
-temperature and humidity sensor we could observe the temperature).
+A purely software-based device - a display. It could be connected to other
+devices to display their outputs (e.g. when connected to the temperature output
+of the temperature and humidity sensor we could observe the temperature).
 
 ![](./assets/mjiot-display.png)
 
 ### Hysteresis Controller
 
-Another software-based device was a hysteresis controller that allows for an automated control of other appliances based on configuration parameters.
+Another software-based device was a hysteresis controller that allows for an
+automated control of other appliances based on configuration parameters.
 
 ![](./assets/mjiot-hysteresis-controller.png)
 

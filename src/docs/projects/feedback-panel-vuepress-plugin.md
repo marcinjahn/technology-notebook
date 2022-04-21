@@ -27,6 +27,11 @@ website:
 The questions list is configurable. The answers will be sent to the webhook URL
 that you have to provide in the configuration.
 
+## Technologies
+
+- Node.js
+- VuePress Plugin API
+
 ## Installation
 
 ```sh
