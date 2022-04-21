@@ -321,7 +321,7 @@ module.exports = {
         },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "puff", "alpha-img", "mjiot", "io-module"],
+      "/projects/": ["./", "feedback-panel-vuepress-plugin", "puff", "alpha-img", "mjiot", "io-module"],
     },
   },
 
