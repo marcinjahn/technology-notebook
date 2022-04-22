@@ -6,7 +6,7 @@ lang: en-US
 
 # VuePress Feedback Plugin
 
-[![npm version](https://badge.fury.io/js/vuepress-plugin-feedback-panel.svg)](https://badge.fury.io/js/vuepress-plugin-feedback-panel)
+[NPM](https://badge.fury.io/js/vuepress-plugin-feedback-panel)
 
 You can find the code at [GitHub](https://github.com/marcinjahn/vuepress-plugin-feedback-panel).
 
