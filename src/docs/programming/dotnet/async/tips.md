@@ -1,11 +1,14 @@
 ---
-title: Async
-description: Details about async/await in .NET
-tags: .net
+title: TAP Tips
+description: How to use Task-based Asynchronous Pattern (TAP) effectively
+tags: .net, async, dotnet, await, tap, task
 lang: en-US
 ---
 
-# Async
+# TAP Tips
+
+TAP stands for Task-based Asynchronous Pattern. Here're a few tips how to
+use it effectively in some scenarios.
 
 ## Long running operations
 

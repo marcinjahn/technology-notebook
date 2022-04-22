@@ -112,7 +112,13 @@ module.exports = {
           title: ".NET",
           children: [
             "dotnet/http-client",
-            "dotnet/async",
+            {
+              title: "Async",
+              children: [
+                "dotnet/async/async",
+                "dotnet/async/tips"
+              ]
+            },
             "dotnet/equality",
             "dotnet/comparisons",
             "dotnet/generic-host",
@@ -321,7 +327,14 @@ module.exports = {
         },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
-      "/projects/": ["./", "feedback-panel-vuepress-plugin", "puff", "alpha-img", "mjiot", "io-module"],
+      "/projects/": [
+        "./",
+        "feedback-panel-vuepress-plugin",
+        "puff",
+        "alpha-img",
+        "mjiot",
+        "io-module",
+      ],
     },
   },
 
@@ -343,6 +356,6 @@ module.exports = {
         author: "Marcin Jahn",
       },
     ],
-    'mermaidjs'
+    "mermaidjs",
   ],
 };
