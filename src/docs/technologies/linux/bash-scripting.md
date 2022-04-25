@@ -27,6 +27,23 @@ comments.
 `#!/bin/bash -x` - like above, but it will also show variables values. Doesn't
 show comments.
 
+## Errors
+
+It's a good idea to include the following line in the beginning of the 
+script. It will stop execution in case of errors:
+
+```sh
+set -euo pipefail
+```
+
+It's a shorthand of:
+
+```sh
+set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on unbound variable
+set -o pipefail  # don't hide errors within pipes
+```
+
 ## Variables
 
 ### Naming
