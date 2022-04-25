@@ -114,10 +114,7 @@ module.exports = {
             "dotnet/http-client",
             {
               title: "Async",
-              children: [
-                "dotnet/async/async",
-                "dotnet/async/tips"
-              ]
+              children: ["dotnet/async/async", "dotnet/async/tips"],
             },
             "dotnet/equality",
             "dotnet/comparisons",
@@ -311,7 +308,12 @@ module.exports = {
         },
         {
           title: "MongoDB",
-          children: ["mongodb/nosql", "mongodb/mongo-overview"],
+          children: [
+            "mongodb/nosql",
+            "mongodb/mongo-overview",
+            "mongodb/crud",
+            "mongodb/free-text-search",
+          ],
         },
         {
           title: "Git",
