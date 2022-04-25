@@ -333,6 +333,7 @@ module.exports = {
         "./",
         "feedback-panel-vuepress-plugin",
         "puff",
+        "nand2tetris-implementation",
         "alpha-img",
         "mjiot",
         "io-module",
