@@ -12,6 +12,9 @@ lang: en-US
 - `db.{collection}.insertOne()`
 - `db.{collection}.insertMany()`
 
+::: tip insert
+There's also the `insert()` command, but it's deprecated.
+:::
 
 ### insertOne
 
@@ -38,7 +41,8 @@ Response:
 ```
 
 The `acknowledged: true` part means that the command was acknowledged by the
-ReplicaSet. It does not mean that the command was successful.
+ReplicaSet. It does not mean that the command was successful. It depends on
+the selected [Write Concern](#write-concern).
 
 ### insertMany
 
@@ -85,8 +89,15 @@ by using distributed transactions.
 
 Insert operation will create a collection if it doesn't exist yet.
 
+We can provide a second parameter `{"ordered": false}` to speed up the
+`insertMany`. This way, MongoDB does not have to insert documents in order and
+can do it parallelly.
+
+### _id
+
 Every document has an `_id` field. If the provided document doesn't have it,
-MongoDB will add it by itself. It must be unique.
+MongoDB will add it by itself. It must be unique. By default, it's of type
+ObjectId (BSON), but we can set it ourselves as any type.
 
 ## READ
 
@@ -123,13 +134,13 @@ db.movies
 
 The [MongoDB
 documentation](https://www.mongodb.com/docs/manual/reference/operator/query/)
-contains a list of supported operators.
+contains a list of all the supported operators.
 
 Examples:
 
 ```js
 // All documents with `name` equal to "Marcin". It's a simplified version of `{ name: { $eq: 'Marcin' } }`
-{ name: 'Marcin' } // or { name: { $eg: 'Marcin' } }
+{ name: 'Marcin' } // or { name: { $eq: 'Marcin' } }
 
 // Search for a document with a specific id.
 { _id: ObjectId(2jdf8sdnrbwuru8fsd3wrewfd) }
@@ -140,7 +151,7 @@ Examples:
 // If `cast` is an array, it will return all the documents which contains "John Smith" as one of the array's elements.
 { cast: "John Smith" }
 
-// When looking for a value within an object we can separate fields with a `.`. The key has to be decorated with a `"`.
+// When looking for a value within an object we can separate fields with a `.`. The key has to be decorated with a `"`. It can also be used with objects within arrays
 { "name.last": "Smith" }
 
 // Joining multiple conditions with AND.
@@ -156,6 +167,12 @@ Examples:
 
 A full example: `db.{collection}.find({name: 'Marcin'})`.
 
+::: tip $not vs $ne
+`{ amount: { $ne: 5 } }` and `{ amount: { $not: 5 } }` are different. `$not`
+will also return documents that do not even have the "amount" field. `$ne` will
+only return documents that have this field.
+:::
+
 ::: tip Regular Expressions
 The `$in` operator can be used with regular expressions:
 
@@ -163,6 +180,8 @@ The `$in` operator can be used with regular expressions:
 // Cars that start with 'F'
 db.cars.find({ model: { $in: [/^F/] } })
 ```
+
+There's also a `$regex$` filter.
 :::
 
 ::: tip Conversions
@@ -173,6 +192,60 @@ an int, but we pass it as a float, it will still work.
 ::: tip Arrays and Objects
 When comparing objects and arrays we need to provide them in full. The internal
 elements have to be provided in the same orded as they were stored in the DB.
+:::
+
+::: tip Comments
+As part of a filter, we can also include the `$comment` field, which is a string
+that explains the filter. These commends end up in the tracing logs.
+:::
+
+#### $expr
+
+There is also a way to filter documents based on operations on various fields
+within a document. For example, we could return only those documents where the
+difference between the values of fields "totalSeats" and "registeredSeats" is
+greater than 5:
+
+```json
+{
+    $expr: {
+        $gt: [
+            $subtract: ["$totalSeats", "$registeredSeats"],
+            NumberDecimal(5)
+        ]
+    }
+}
+```
+
+#### Arrays
+
+There are operators to be used with arrays:
+
+- `{$all: [...]}` - matches if an array contains all of the provided elements
+  (order doesn't matter) 
+- `{$size: n}` - matches if an array contains `n` elements
+- `$elemMatch` - multiple conditions to be matched for an array item. It is
+  useful when the array item is an object
+
+    Example:
+
+    ```js
+    // Document sample:
+    {
+        "name": "John",
+        "skils": [
+            { "name": "flying", "lvl": 8 },
+            { "name": "driving", "lvl": 4 },
+        ]
+    }
+
+    //Query:
+    db.players.find({ skills: { $elemMatch: { name: "flying", lvl: { $gt: 7 }}}})
+    ```
+
+::: warning $eg 
+The `$eq` operator can be used as well, but it requires the elements to match
+exactly (even order needs to be the same).
 :::
 
 #### Special Cases
@@ -237,6 +310,78 @@ We can't mix inclusions/exclusions in one query, unless we're excluding "_id"
 while including other fields. In other words, if "_id" is not involved we can
 use only "1"s or "0"s in a projection.
 :::
+
+#### Arrays
+
+Arrays have their own projection operators:
+
+- `$slice` - limits the number of items of an array to be returned
+
+    ```js
+    // Max two elements in the 'skills' array will be returned per document
+    db.players.find({}, { skills: { $slice: 2 } })
+    ```
+
+    There is also another variant which allows to skip `m` elementes and return
+    `n` elements (`[m,n]`):
+
+    ```js
+    // Return second and third skill only (per document)
+    db.players.find({}, { skills: { $slice: [1, 2] } })
+    ```
+
+- `$` - a bit similar to `$slice`, but returns first `n` items that match the filter
+
+    ```js
+    // Returns only players who can drive, the returned documents will have only "driving"
+    // skill present, even if it doesn't come first in the array
+    db.players.find( 
+        { skills: "driving" }, 
+        { "skills.$": 1 })
+    ```
+
+- `$elemMatch` - useful for object items in the array. It can further filter the
+  documents with specified confitions
+
+    Example:
+
+    ```js
+    // Document samples:
+    [
+        {
+            "name": "John",
+            "skils": [
+                { "name": "flying", "lvl": 8 },
+                { "name": "driving", "lvl": 4 },
+            ]
+        },
+        {
+            "name": "Mark",
+        }
+    ]
+
+    //Query:
+    db.players.find({}, { skills: { $elemMatch: { lvl: { $gt: 7 }}}})
+
+    // We'll get both documents back:
+    [
+        {
+            "name": "John",
+            "skils": [
+                { "name": "flying", "lvl": 8 },
+            ]
+        },
+        {
+            "name": "Mark",
+        }
+    ]
+    ```
+
+    ::: tip Filter vs Projection
+    The filter's `$elemMatch` is different from the projection's `$elemMatch`.
+    The first one affects the number of documents being returned. The latter one
+    only impacts the content of array field of a document.
+    :::
 
 ### Read Concern
 
@@ -308,6 +453,11 @@ We can get the count of documents satisfying the query by adding
 
 We can get a count of all the documents in a collection with `countDocuments()`.
 
+### Collation
+
+There is a way to fine tune collation of the query, making sure that the proper
+language is used, casing, and many more.
+
 ## UPDATE
 
 Documents in the DB can be updated.
@@ -343,9 +493,9 @@ Atomicity is at the level of a single document.
 
 Examples:
 
- We can specify the filter for a document to find, and the changes to be made:
+We can specify the filter for a document to find, and the changes to be made:
 
-```js
+```js{6}
 db.movies.updateOne(
     { 
         title: { $eq: "The Old Movie" } 
@@ -430,8 +580,51 @@ If we specify some field that did not exist in the original documented, that
 field will be added.
 :::
 
-Other options include the `w` for [Write Concern](#write-concern) and `wtimeout`
-for the [timeout](#write-concern).
+Additionally, for upsert, we can specify `$setOnInsert`, which defines default
+values for a documented in case it needs to be created.
+
+Other options include:
+- `w` for [Write Concern](#write-concern)
+- `wtimeout` for the [timeout](#write-concern).
+- `arrayFilters`
+
+### Operators
+
+Update may use the following operators:
+
+- `$set` - sets a value of a field
+- `$unset` - removes a field
+
+    ```json
+    { $unset: { "takenSeats": "" } }
+    ```
+- `$inc` - increment the field's value
+
+    ```json
+    { $inc: { "takenSeats": 1 } }
+    ```
+    
+    If the field doesn't exist, the starting value is assumed to be 0.
+    A negative value may be used as well.
+
+- `$mul` - multiplies the field's value
+
+The [MongoDB
+Docs](https://www.mongodb.com/docs/manual/reference/operator/update/) contain
+the complete list of update operators.
+
+#### Arrays
+
+Arrays have their own update operators:
+
+- `$pop` - removes a single value from an array either from the beginning or the
+  end.
+- `$pull` - removes multiple elements, that meet some condition, from an array 
+- `$push` - adds values to the array. There are modifiers that specify the
+  position of elements, or multiple values to be added.
+
+There's also the `arrayFilters` option that specifies elements that should be
+updated in an array (e.g., with `$inc`).
 
 ## DELETE
 
@@ -440,7 +633,7 @@ The commands for deletion are:
 - `db.{collection}.deleteOne()`
 - `db.{collection}.deleteMany()`
 - `db.{collection}.remove()` - pretty much the same as the two above, there is a
-  special parameter to control whther just one or many document should be
+  special parameter to control whether just one or many document should be
   removed.
 
 Indexes are not dropped implicitly. We need to remove them explicitly if we want
@@ -464,5 +657,5 @@ db.movies.deleteMany({ rating: 2 })
 ```
 
 ::: danger Remove all
-An empty object passed as a query will remove all the documents in a collection.
+`db.{collection}.deleteMany({})` will remove all the documents in a collection.
 :::

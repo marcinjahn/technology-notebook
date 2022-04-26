@@ -15,6 +15,7 @@ lang: en-US
 - free open source Community Edition
 - pluggable storage engine support
 - queries use MQL (MongoDB Query Language)
+- has free text search capabilities
 
 ## Terminology
 
@@ -135,6 +136,11 @@ Casing matters in the commands
 
 MongoDB Compass is the official GUI for exploring MongoDB databases. It's
 available for Linux, macOS, Windows.
+
+### mongoimport
+
+A tool that is added to MongoDB installations that allows for bulk imports of
+data.
 
 ### Testing
 
