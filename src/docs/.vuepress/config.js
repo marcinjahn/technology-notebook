@@ -122,6 +122,7 @@ module.exports = {
             "dotnet/logging",
             "dotnet/configuration",
             "dotnet/records",
+            "dotnet/grpc",
             {
               title: "ASP.NET Core",
               children: [
@@ -242,6 +243,7 @@ module.exports = {
             "networking/http",
             "networking/hsts",
             "networking/sni",
+            "networking/grpc"
           ],
         },
         {
