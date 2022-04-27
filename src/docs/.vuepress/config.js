@@ -110,7 +110,7 @@ module.exports = {
         "./",
         {
           title: ".NET",
-          img: "dotnet.jpg",
+          img: "dotnet.webp",
           children: [
             "dotnet/http-client",
             {
@@ -162,7 +162,7 @@ module.exports = {
         },
         {
           title: "JavaScript",
-          img: "javascript.png",
+          img: "javascript.webp",
           children: [
             "javascript/oop",
             "javascript/weird-js",
@@ -186,7 +186,7 @@ module.exports = {
         },
         {
           title: "Rust",
-          img: "rust.png",
+          img: "rust.webp",
           children: [
             "rust/overview",
             "rust/cargo",
@@ -210,7 +210,7 @@ module.exports = {
         },
         {
           title: "C/C++",
-          img: "c.png",
+          img: "c.webp",
           children: [
             "c/pointers",
             "c/strings",
@@ -220,12 +220,12 @@ module.exports = {
         },
         {
           title: "CSS",
-          img: "css.png",
+          img: "css.webp",
           children: ["css/layouts"],
         },
         {
           title: "Algorithms",
-          img: "algorithms.png",
+          img: "algorithms.webp",
           children: [
             "algorithms/big-o",
             "algorithms/arrays",
@@ -242,7 +242,7 @@ module.exports = {
         "./",
         {
           title: "Networking",
-          img: "network.png",
+          img: "network.webp",
           children: [
             "networking/osi-model",
             "networking/tcp",
@@ -255,7 +255,7 @@ module.exports = {
         },
         {
           title: "Security",
-          img: "security.jpeg",
+          img: "security.webp",
           children: [
             {
               title: "OAuth2",
@@ -277,7 +277,7 @@ module.exports = {
         },
         {
           title: "Blockchain",
-          img: "blockchain.png",
+          img: "blockchain.webp",
           children: [
             "blockchain/intro",
             "blockchain/smart-contracts",
@@ -287,7 +287,7 @@ module.exports = {
         },
         {
           title: "Linux",
-          img: "linux.png",
+          img: "linux.webp",
           children: [
             "linux/linux",
             "linux/containers",
@@ -297,7 +297,7 @@ module.exports = {
         },
         {
           title: "Kubernetes",
-          img: "kubernetes.png",
+          img: "kubernetes.webp",
           children: [
             "kubernetes/meaning",
             "kubernetes/cluster",
@@ -332,22 +332,22 @@ module.exports = {
         },
         {
           title: "Git",
-          img: "git.png",
+          img: "git.webp",
           children: ["git/overview"],
         },
         {
           title: "Ansible",
-          img: "ansible.png",
+          img: "ansible.webp",
           children: ["ansible/ansible"],
         },
         {
           title: "Azure",
-          img: "azure.png",
+          img: "azure.webp",
           children: ["azure/azure-table-storage", "azure/identity"],
         },
         {
           title: "Google Cloud",
-          img: "gcp.png",
+          img: "gcp.webp",
           children: [
             "google-cloud/overview"
           ]
