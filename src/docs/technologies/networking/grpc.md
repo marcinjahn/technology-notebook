@@ -86,4 +86,4 @@ ASP.NET Core supports it via an additional NuGet package.
 
 ## References
 
-[Pluralsight](https://app.pluralsight.com/library/courses/aspdotnet-core-6-using-grpc/discussion)
+[Pluralsight](https://app.pluralsight.com/library/courses/aspdotnet-core-6-using-grpc/)

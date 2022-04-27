@@ -212,3 +212,10 @@ The client-side code is very similar.
 
 ## Authorization
 
+The "standard" auth flow of ASP.NET Core works in gRPC as well. The service
+classes on the server side may be decorated with the `[Authorize]` annotation,
+similarly to the HTTP Controllers (what about individual rpc methods?).
+
+## References
+
+[Pluralsight](https://app.pluralsight.com/library/courses/aspdotnet-core-6-using-grpc/)
