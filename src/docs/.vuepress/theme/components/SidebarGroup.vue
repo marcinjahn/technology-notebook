@@ -4,9 +4,9 @@
     :class="[
       {
         collapsable,
-        'is-sub-group': depth !== 0
+        'is-sub-group': depth !== 0,
       },
-      `depth-${depth}`
+      `depth-${depth}`,
     ]"
   >
     <RouterLink
@@ -14,17 +14,13 @@
       class="sidebar-heading clickable"
       :class="{
         open,
-        'active': isActive($route, item.path)
+        active: isActive($route, item.path),
       }"
       :to="item.path"
       @click.native="$emit('toggle')"
     >
       <span>{{ item.title }}</span>
-      <span
-        v-if="collapsable"
-        class="arrow"
-        :class="open ? 'down' : 'right'"
-      />
+      <span v-if="collapsable" class="arrow" :class="open ? 'down' : 'right'" />
     </RouterLink>
 
     <p
@@ -33,12 +29,9 @@
       :class="{ open }"
       @click="$emit('toggle')"
     >
+      <span v-if="item.img" class="img-container"><img :src="item.img" /></span>
       <span>{{ item.title }}</span>
-      <span
-        v-if="collapsable"
-        class="arrow"
-        :class="open ? 'down' : 'right'"
-      />
+      <span v-if="collapsable" class="arrow" :class="open ? 'down' : 'right'" />
     </p>
 
     <DropdownTransition>
@@ -55,30 +48,26 @@
 </template>
 
 <script>
-import { isActive } from '../util'
-import DropdownTransition from '@theme/components/DropdownTransition.vue'
+import { isActive } from "../util";
+import DropdownTransition from "@theme/components/DropdownTransition.vue";
 
 export default {
-  name: 'SidebarGroup',
+  name: "SidebarGroup",
 
   components: {
-    DropdownTransition
+    DropdownTransition,
   },
 
-  props: [
-    'item',
-    'open',
-    'collapsable',
-    'depth'
-  ],
+  props: ["item", "open", "collapsable", "depth"],
 
   // ref: https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
-  beforeCreate () {
-    this.$options.components.SidebarLinks = require('@theme/components/SidebarLinks.vue').default
+  beforeCreate() {
+    this.$options.components.SidebarLinks =
+      require("@theme/components/SidebarLinks.vue").default;
   },
 
-  methods: { isActive }
-}
+  methods: { isActive },
+};
 </script>
 
 <style lang="stylus">
@@ -133,6 +122,23 @@ export default {
       border-left-color $accentColor
     &:hover
       color $accentColor
+
+  .img-container
+    display: inline-block;
+    height: 1.5em;
+    width: 1.5em;
+    top: 0.4em;
+    position: relative;
+    margin-right: 0.5em;
+
+    img
+      max-height: 1.4em;
+      max-width: 1.4em;
+      filter: grayscale(100%);
+      transition: filter 0.4s;
+
+  &.open img, &:hover img
+    filter: none;
 
 .sidebar-group-items
   transition height .1s ease-out

@@ -110,6 +110,7 @@ module.exports = {
         "./",
         {
           title: ".NET",
+          img: "dotnet.jpg",
           children: [
             "dotnet/http-client",
             {
@@ -161,6 +162,7 @@ module.exports = {
         },
         {
           title: "JavaScript",
+          img: "javascript.png",
           children: [
             "javascript/oop",
             "javascript/weird-js",
@@ -184,6 +186,7 @@ module.exports = {
         },
         {
           title: "Rust",
+          img: "rust.png",
           children: [
             "rust/overview",
             "rust/cargo",
@@ -207,6 +210,7 @@ module.exports = {
         },
         {
           title: "C/C++",
+          img: "c.png",
           children: [
             "c/pointers",
             "c/strings",
@@ -216,10 +220,12 @@ module.exports = {
         },
         {
           title: "CSS",
+          img: "css.png",
           children: ["css/layouts"],
         },
         {
           title: "Algorithms",
+          img: "algorithms.png",
           children: [
             "algorithms/big-o",
             "algorithms/arrays",
@@ -235,7 +241,8 @@ module.exports = {
       "/technologies/": [
         "./",
         {
-          title: "Web Protocols",
+          title: "Networking",
+          img: "network.png",
           children: [
             "networking/osi-model",
             "networking/tcp",
@@ -248,6 +255,7 @@ module.exports = {
         },
         {
           title: "Security",
+          img: "security.jpeg",
           children: [
             {
               title: "OAuth2",
@@ -269,6 +277,7 @@ module.exports = {
         },
         {
           title: "Blockchain",
+          img: "blockchain.png",
           children: [
             "blockchain/intro",
             "blockchain/smart-contracts",
@@ -278,6 +287,7 @@ module.exports = {
         },
         {
           title: "Linux",
+          img: "linux.png",
           children: [
             "linux/linux",
             "linux/containers",
@@ -287,6 +297,7 @@ module.exports = {
         },
         {
           title: "Kubernetes",
+          img: "kubernetes.png",
           children: [
             "kubernetes/meaning",
             "kubernetes/cluster",
@@ -306,10 +317,12 @@ module.exports = {
         },
         {
           title: "SQL Server",
+          img: "sql-server.webp",
           children: ["sql-server/", "sql-server/t-sql"],
         },
         {
           title: "MongoDB",
+          img: "mongodb.webp",
           children: [
             "mongodb/nosql",
             "mongodb/mongo-overview",
@@ -319,16 +332,26 @@ module.exports = {
         },
         {
           title: "Git",
+          img: "git.png",
           children: ["git/overview"],
         },
         {
           title: "Ansible",
+          img: "ansible.png",
           children: ["ansible/ansible"],
         },
         {
           title: "Azure",
+          img: "azure.png",
           children: ["azure/azure-table-storage", "azure/identity"],
         },
+        {
+          title: "Google Cloud",
+          img: "gcp.png",
+          children: [
+            "google-cloud/overview"
+          ]
+        }
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
       "/projects/": [
