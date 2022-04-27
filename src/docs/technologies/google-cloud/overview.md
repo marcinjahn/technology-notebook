@@ -99,3 +99,95 @@ Apps using runtimes other than "custom" are expected to listed on the port
 provided in the `PORT` environment variable. The "custom" Docker apps are
 expected to listed on port `8080`.
 :::
+
+## SQL
+
+We can deploy managed SQL databases:
+
+- MySQL
+- PostgreSQL
+- Microsoft SQL Server
+
+## Service Accounts
+
+Service Accounts are identities for applications that need to access GCP. We can
+managed their access via roles.
+
+In some cases, GCP creates Service Accounts in the background for us. For
+example, App Engine has its own default Service Account. We can manage it.
+
+Service Accounts are assignable to:
+
+- users - a given user can act as this Service Account
+- GCP resources - it works like Managed Identity on Azure
+
+## Storage
+
+Google Cloud Storage stores files (**Objects**) in **Buckets**. Similarly to
+Azure Storage, we can select a tier (here called **Storage Class**):
+
+- Standard - cheap retreival, expensive storage
+- Nearline
+- Coldline
+- Archive - cheap storage, expensive retrieval
+
+Access may be managed on the Bucket level, or individually for each Object.
+
+**Signed URLs** is something similar to Azure Storage SAS Tokens. It allows to
+generate temporary URLs to read/write Objects.
+
+There's also a way to manage Objects' lifetime, similarly to Azure Blog Storage.
+Objects may change tier after some configured timespan.
+
+## Cloud Tasks
+
+It's similar to Azure Service Bus, or Azure Storage Queue. Cloud Tasks are
+specifically targetted to be used by App Engine apps.
+
+## Cloud Scheduler
+
+It's a CRON-like service that does something on schedule:
+
+- triggers App Engine
+- sends pub/sub messages
+- invokes some HTTP endpoint
+
+## Monitoring
+
+### Cloud Logging
+
+It works like App Insights in Azure.
+
+We can easily write to a log using the CLI:
+
+```sh
+gcloud logging write my-log-instance "A log example"
+```
+
+Structured logging is also supported.
+
+App Engine (and other services, such as Functions) are connected to Cloud
+Logging, so stdout/stderr goes there automatically.
+
+### Cloud Debugger
+
+It's a web interface that allows us to debug our code. We can see callstack and
+variables live as the app is being executed in GCP.
+
+I saw how it works with interpreted language such as JS. What about compiled
+languages such as .NET? Debugger gives us a way to upload the source code, so
+potentially it is able to synchronize the deployed binary with the source code?
+
+We can even add logs to the running code.
+
+### Cloud Trace
+
+It collects some statistics about our apps (most frequent URLs, latency, etc.).
+We can also see detailed information about network activity of our apps,
+similarly to how Azure App Insights displays it. We can see consecutive network
+calls being executed by our apps.
+
+## References
+
+[LinkedIn Google Cloud Platform Essential Training for
+Developers](https://www.linkedin.com/learning/google-cloud-platform-gcp-essential-training-for-developers)
