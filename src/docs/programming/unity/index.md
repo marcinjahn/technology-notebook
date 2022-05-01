@@ -29,7 +29,7 @@ object to work.
 ## Collisions
 
 If we want to collide with some object, both objects should have a **Collider**.
-Additionally, to make the objects move on collision, they need to gave
+Additionally, to make the objects move on collision, they need to have
 **Rigidbody**. Rigidbody is what adds physics to the objects. One of its
 properties is **Gravity**. In 2D top-down games, Gravity should be brought down
 to 0, otherwise the Rigidbody will cause the game object to fall down.
@@ -67,6 +67,15 @@ public class FinishLine : MonoBehaviour
     }
 }
 ```
+
+::: warning Physical Collision
+When **isTrigger** is selected, the Collider no longer works as "collision
+barrier", meaning that objects will not physically hit each other. Instead, the
+objects will just pass through each other.
+
+An alternative approach is to leave the **isTrigger** unchecked and to use the
+**OnCollisionEnter2D** method instead of the **OnTriggerEnter2D** one.
+:::
 
 ## Timing
 
@@ -106,3 +115,59 @@ To have the Camera following the plater, we can do one of:
     ```
 
 - use **Cinemachine** - a package for camera management
+
+## Tagging
+
+Tagging is a useful concept in Unity that allows us to add a simple string
+metadata to our game objects. Multiple objects might reuse the same tag. In our
+scripts, we can read tags of other objects to create some conditions. For
+example, a Finish Line should only activate its script when Player reaches it.
+Other objects passing through it might not necessarily need to invoke any
+actions. The way to do it would be to check the tag of the `other` object.
+
+```cs
+public class FinishLine : MonoBehaviour
+{
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag != "Player") return;
+        
+        Debug.Log("Finish Line reached!");
+    }
+}
+```
+
+::: tip Hierarchy
+If a top-level object in some hierarchy has a tag, but some other, lower-level
+object has a Collider, the tag will still be readable.
+:::
+
+## Delay
+
+There are two ways to delay some action in Unity:
+
+- `Invoke()` - works like `setTimeout` in JS. Weirdly, instead of accepting a
+  delegate, it accepts a name of the method to be invoked, as string. That means
+  that it used reflection under the hood, which is not perfect.
+- Coroutines
+
+(What about async?)
+
+## Particles
+
+Unity suppors Particle System. Any game object might have Particle System
+component added. Another way is to add a game object for the particles and to
+attach the particles to some other object.
+
+Particles are very configurable, we can set all the looks of it as we'd like. An
+interesting setting is the **Simulation Space**. By default it's set to "Local",
+which means that the particles will always be positioned relatively to the
+object they're attached to. An alternative is the "World" setting, which makes
+the particles position relative to the game world, making some effects more
+valid. If player bleeds, we don't want to blood drips to move with the player,
+but rather to stay where they were released.
+
+Another important settings are:
+
+- Looping
+- Play On Awake
