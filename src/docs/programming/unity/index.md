@@ -26,6 +26,37 @@ positioning of the child items is relative to their parents.
 Scripts can be added to the Assets, and they should be attached to some game
 object to work.
 
+### Editor Access
+
+To modify script's (class's) fields in the Unity Editor UI, one of these should be applied:
+
+- the field should be decorated with `SerializeField`
+- the field shuld be `public`
+
+The first approach is the recommended one, since a `public` field makes it
+accessible to any other script as well.
+
+### External Access
+
+Each script is a class. We can access instances of these classes from other scripts (classes) as follows:
+
+```cs
+FindObjectOfType<PlayerController>().DoSomething();
+```
+
+The `FindObjectOfType` comes from the `MonoBehaviour` base class. It returns the
+first found instance of `PlayerController` (I'm assuming that there is such a
+script defined). We can also use `FindObjectsOfType<>()` if we expect there to
+be many instances of some script.
+
+The C# `public` keyword should be assigned to those components of our classes
+that we want to be accessible from the outside, by other scripts.
+
+::: tip
+The `FindObjectOfType<>()` method may also be used to find components
+placed on other game objects.
+:::
+
 ## Collisions
 
 If we want to collide with some object, both objects should have a **Collider**.
