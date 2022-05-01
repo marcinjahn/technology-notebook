@@ -12,8 +12,8 @@ installations. Through the Unity Hub, install the lateset release of Unity, and
 run.
 
 ::: tip Apple Silicon 
-On Apple Silicon macs, for some reason, Intel binary is being downloaded. It's
-better to manually select the Apple Silicon version.
+On Apple Silicon macs, for some reason, Intel binary is being downloaded by
+default. You should manually select the Apple Silicon version instead.
 :::
 
 ## Hierarchy
@@ -38,7 +38,8 @@ accessible to any other script as well.
 
 ### External Access
 
-Each script is a class. We can access instances of these classes from other scripts (classes) as follows:
+Each script is a class. We can access instances of these classes from other
+scripts (classes) as follows:
 
 ```cs
 FindObjectOfType<PlayerController>().DoSomething();
@@ -127,7 +128,7 @@ way, we can calculate speed of objects, to make things look and behave
 ## Sprite Shape
 
 Sprite Shape is perfect for creating ground in 2D platformer games. It allows us
-to modify the shape of the land easily with vector graphics tools. We sould add
+to modify the shape of the land easily with vector graphics tools. We should add
 an **Edge Collider** to it, and it will automatically follow the Sprite Shape's
 shape. Sometimes it's necessary to adjust the offset of the Shape Controller to
 have the collision exactly where we want it to be.
@@ -136,7 +137,7 @@ have the collision exactly where we want it to be.
 
 ## Camera Follow
 
-To have the Camera following the plater, we can do one of:
+To have the Camera following the player, we can do one of:
 
 - script the camera position to be updated in every frame to player's position
 
