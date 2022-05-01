@@ -46,6 +46,28 @@ performance, but it might cause the collision detection to fail sometimes
 (when?). A fix for that is to change the detection to **Continuous**.
 :::
 
+### Collision Trigger
+
+Sometimes we don't need physics to be involved in a collision. All we might want
+is to know that some object touched another. An example of that is a player
+reaching the finish line
+
+![](./assets/player-and-finish-line.png)
+
+For such cases, a Collider has the **isTrigger** property. A proper script
+behind object with such a collider will fire anytime another collider touches
+this collider.
+
+```cs
+public class FinishLine : MonoBehaviour
+{
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Finish Line reached!");
+    }
+}
+```
+
 ## Timing
 
 The spped of movement of objects should not rely on FPS of the host machine. We
