@@ -36,6 +36,24 @@ To modify script's (class's) fields in the Unity Editor UI, one of these should 
 The first approach is the recommended one, since a `public` field makes it
 accessible to any other script as well.
 
+::: tip Headers
+If we have many `SerializeFields` fields, we can group them into categories with
+`Header`:
+
+```cs
+[Header("Questions")]
+[SerializeField] private TextMeshProUGUI _questionText;
+[SerializeField] private QuestionSO _question;
+
+[Header("Answers")]
+[SerializeField] private GameObject[] _answerButtons;
+[SerializeField] private Sprite _defaultAnswerSprite;
+[SerializeField] private Sprite _correctAnswerSprite;
+```
+:::
+
+![](./assets/serializefield-in-ui.png)
+
 ### External Access
 
 Each script is a class. We can access instances of these classes from other
@@ -44,6 +62,11 @@ scripts (classes) as follows:
 ```cs
 FindObjectOfType<PlayerController>().DoSomething();
 ```
+
+::: warning Service Locator
+It's a bit like a Service Locator pattern, which I don't like. It's worth
+investigating if Dependency Injection is used in the Unity ecosystem.
+:::
 
 The `FindObjectOfType` comes from the `MonoBehaviour` base class. It returns the
 first found instance of `PlayerController` (I'm assuming that there is such a
@@ -57,6 +80,68 @@ that we want to be accessible from the outside, by other scripts.
 The `FindObjectOfType<>()` method may also be used to find components
 placed on other game objects.
 :::
+
+::: danger Awake()
+The `FindObjectOfType` should not be used in `Start`, but rather in the `Awake`
+lifecycle method. Otherwise we might encounter some `NullReferenceException`s
+being thrown.
+:::
+
+### Scriptable Objects
+
+Other than a normal Script, there is also a **Scriptable Object**. This kind of
+script is optimized for low memory footprint, it is useful for storing data.
+They are not attachable to game objects.
+
+Examples of usage:
+
+- statistics of objects in RPG game
+- all cards in card game
+- questions/answers in a quiz game.
+
+We create a Scriptable Object the same way as a typical Script (*Create* -> *C#
+Script*).
+
+Here's code example:
+
+```cs
+[CreateAssetMenu(menuName = "Quiz Question", fileName = "New Question")]
+public class QuestionSO : ScriptableObject
+{
+    [TextArea(2, 6)] //displays a bigger text area in the Unity editor
+    [SerializeField]
+    private string _question = "Enter new question text here";
+    public string Question => _question; // public getter
+
+    [SerializeField]
+    private string[] _answers = new string[4];
+
+    [SerializeField] 
+    private int _correctAnswerIndex;
+    public int CorrectAnswerIndex => _correctAnswerIndex; // public getter
+
+    public string GetAnswer(int index) => _answers[index]; // public method
+}
+```
+
+The `[CreateAssetMenu]` attribute makes our Scriptable Object available in the
+context menu of Unity's *Create*:
+
+![](./assets/scriptable-object-in-context-menu.png)
+
+::: tip Customization
+We can customize the text of the extry in the context menu and the name of the
+file being created when it's clicked with:
+
+```cs
+[CreateAssetMenu(menuName = "Quiz Question", fileName = "New Question")]
+```
+:::
+
+When we create an "object" based on our Scriptable Object, Unity's Editor will
+display the fields that we've configured:
+
+![](./assets/scriptable-object-in-editor.png)  
 
 ## Collisions
 
