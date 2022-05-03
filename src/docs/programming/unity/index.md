@@ -288,3 +288,79 @@ Another important settings are:
 
 - Looping
 - Play On Awake
+
+## Tiles
+
+When creating 2D games, especially pixelart ones, it makes sense to use square
+tiles to build the game world. It could be some platformed or top-down game.
+
+The process is usually as follows:
+
+1. Create/Get some assets with these tiles. Usually the tiles belonging to one
+    "theme" are packaged all together in one file. Here's an example:
+    
+    ![](./assets/tile-asset-pack.png)
+
+2. Add this file (or files) to the project.
+3. Adjust the *Pixels Per Unit** setting so that the size of the inidividual
+   tiles is correct (whatever is comfortable, e.g., tile's width equal to Unity
+   unit).
+4. Select the file, change its **Sprite Mode** to **Multiple**.
+5. Open the Sprite Editor and split the file so that each tile has its own box.
+   Click **Apply** and close the editor.
+
+    ::: tip
+    Usually, the tiles should have the same size.
+    :::
+
+6. Add a TileMap game object to the Scene. It will also create a Grid game
+   object. If there will be multiple Tilemaps (different layers of the scene),
+   put them all under a single Grid.
+7. Open the Tile Palette and create a new palette.
+8. Drag the split tiles into the palette, save the assets somewhere (like the
+   `Assets/Tiles` directory).
+
+At this point, we can start placing the tiles into our Tilemap. When there are
+multiple Tilemaps, make sure that the right one is selected before you start to
+place the tiles.
+
+::: tip Erasing
+There is an Eraser tool in the palette. If we want to erase more than one
+element at a tile, we can draw a bigger rectangle in the palette in some empty
+space. That empty rectangle will be "copied" and we will be able to place it
+anywhere in our world, removing all tiles underneath.
+:::
+
+### Rule Tile
+
+Placing tiles one by one is quite tedious, especially when building bigger
+levels. It might make sense to create a **Rule Tile**. Rule tile is a
+combination of multiple tiles, where each of them has rules defined regarding
+its placement. Here's an example of a rule:
+
+![](./assets/rule-tile.png)
+
+For the specified tile, there shouldn't be any other tile placed where the red
+"X"s are placed. On the other hand, this kind of tile requires some other tiles
+to be placed on the opposite corned (greed arrows). Additionally, we this tile
+can be mirrored in the X axis - the grey array signifies that.
+
+We also have the option to specify the same rules for multiple tiles, making the
+choice random for Unity.
+
+The order of the rules is meaningful. The first rule that satisfies the given
+placement will be selected.
+
+With the Rule Tile defined, creating the world is greatly simplified, we just
+have to paint a single Rule Tile all over the place, and the proper sprites will
+be painted in its place. Here's an example:
+
+![](./assets/rule-tile-result.png)
+
+It seems that a separate Rule Tile should be created for separate "themes" of
+our tiles. For example, the tiles for the forest would be different than the
+tiles for dungeons. The rules would probably be similar, but the sprites would
+be different.
+
+(Don't the assets from Unity Asset Store come with the Rule tile predefined? I
+guess it would make sense)
