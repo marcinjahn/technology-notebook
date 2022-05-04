@@ -1,7 +1,7 @@
 ---
 title: Unity
 description: Unity Overview
-tags: unity, game, dev
+tags: unity, game, dev, gamedev, 2d
 lang: en-US
 ---
 
@@ -163,6 +163,24 @@ performance, but it might cause the collision detection to fail sometimes
 (when?). A fix for that is to change the detection to **Continuous**.
 :::
 
+### Layers
+
+Game objects may be placed on different layers (different than Sorting Layers).
+Then, we can define how objects from different layers collide with each other
+(or not) in the Project Settings (2D Physics section):
+
+![](./assets/layers-collisions-settings.png)
+
+In this cases, all layers collide with all the other layers.
+
+With layering we could have a setup where a player is able to go through some
+objects (of some specific layer), while enemies (being on a different layer that
+the player) will not be able to go through these objects.
+
+::: tip
+Layers can also be used for other things, like excluding some objects from being displayed by the camera.
+:::
+
 ### Collision Trigger
 
 Sometimes we don't need physics to be involved in a collision. All we might want
@@ -212,7 +230,7 @@ way, we can calculate speed of objects, to make things look and behave
 
 ## Sprite Shape
 
-Sprite Shape is perfect for creating ground in 2D platformer games. It allows us
+**Sprite Shape** is perfect for creating ground in 2D platformer games. It allows us
 to modify the shape of the land easily with vector graphics tools. We should add
 an **Edge Collider** to it, and it will automatically follow the Sprite Shape's
 shape. Sometimes it's necessary to adjust the offset of the Shape Controller to
@@ -364,3 +382,43 @@ be different.
 
 (Don't the assets from Unity Asset Store come with the Rule tile predefined? I
 guess it would make sense)
+
+## Prefabs
+
+If we want to reuse some game object many times in our game, it makes sense to
+turn it into a **Prefab**. Prefab is a template that can be instantiated as many
+times as we want. So, for example, we could have Player game objects with
+configured graphics, animations, sounds, etc. We could turn it into a prefab to
+easily instantiate it in different levels. We could probably say that the
+default game objects that we can create in Unity (like the Circle Sprite) is a
+kind of a prefab.
+
+To turn some game object into a prefab, we need to drag that object from the
+Hierarchy panel down to the Project explorer. A new file with a `.prefab`
+extension will be created.
+
+When we make changes to the prefab, all instances will be updated as well. We
+can still apply some individual changes to a single instance of a prefab
+("override") as well though.
+
+Prefab instances have a blue-ish color in the Hierarchy panel.
+
+## Input System
+
+Unity has two ways of controlling the game:
+
+- the *old way* with `UnityEngine.Input` APIs - simpler
+- the *new way* with the *Input System* package that has to be installed into a
+  project. It is more convoluted to set up, but it is more "declarative". There
+  is a panel where we can configure all possible actions in the game and bind it
+  to various sources (keyboards, gamepads, etc.). 
+  
+  ![](./assets/new-input-system-panel.png)
+  
+  There are many ways to invoke
+  our scripts on input - via special methods, events, and others.
+
+::: warning
+You can't use both systems at the same time. When the "new" Input System gets
+installed, the older APIs get disabled.
+:::
