@@ -143,13 +143,24 @@ display the fields that we've configured:
 
 ![](./assets/scriptable-object-in-editor.png)  
 
-## Collisions
+## Physics
+
+Physics in the game is caused by **RigidBody**. One of its properties is
+**Gravity**. In 2D top-down games, Gravity should be brought down to 0,
+otherwise the Rigidbody will cause the game object to fall down.
+
+For a Rigidbody, there's a *Body Type* selection:
+
+- *Kinematic* - for things that move but are not going to bounce of ofther objects
+- *Dynamic* - "full" physics, with bouncing
+- *Static* - object is not going ot move, we just need it to be collidable
+  (Collider is still needed).
+
+### Collisions
 
 If we want to collide with some object, both objects should have a **Collider**.
 Additionally, to make the objects move on collision, they need to have
-**Rigidbody**. Rigidbody is what adds physics to the objects. One of its
-properties is **Gravity**. In 2D top-down games, Gravity should be brought down
-to 0, otherwise the Rigidbody will cause the game object to fall down.
+**Rigidbody**.
 
 ::: tip Physics Sprite
 Instead of creating a Sprite, attaching a Collider and Rigidbody, we can create
@@ -163,7 +174,7 @@ performance, but it might cause the collision detection to fail sometimes
 (when?). A fix for that is to change the detection to **Continuous**.
 :::
 
-### Layers
+#### Layers
 
 Game objects may be placed on different layers (different than Sorting Layers).
 Then, we can define how objects from different layers collide with each other
@@ -181,7 +192,7 @@ the player) will not be able to go through these objects.
 Layers can also be used for other things, like excluding some objects from being displayed by the camera.
 :::
 
-### Collision Trigger
+#### Collision Trigger
 
 Sometimes we don't need physics to be involved in a collision. All we might want
 is to know that some object touched another. An example of that is a player
@@ -238,7 +249,9 @@ have the collision exactly where we want it to be.
 
 ![](./assets/sprite-shape-collision.png)
 
-## Camera Follow
+## Camera
+
+### Auto-follow
 
 To have the Camera following the player, we can do one of:
 
@@ -249,7 +262,31 @@ To have the Camera following the player, we can do one of:
     // we're adding -10 on Z axis to keep the camera away from the game world
     ```
 
-- use **Cinemachine** - a package for camera management
+- use **Cinemachine** - a package for camera management. The camera will
+  auto-follow any specified game object. Additionally, we're able to specify
+  things such as: deadzone, damping factor, and many more.
+
+### Cinemachine
+
+Cinemachine is much more than just auto-follow. It allows us to:
+
+- Create multiple virtual cameras. We can switch between them based on some
+  condition, like the current state of some object in its Animator. A
+  **State-Driven Camera** is needed for that.
+
+    ![](./assets/state-camera.png)
+
+- We can define the borders (confinement) that restricts the camera's movement.
+Here's an example:
+
+    ![](./assets/cinemachine-confinement-result.png)
+
+    Even though the player should be in the center, due to confinement settings,
+    the camera does not move past the collision area of the confinement object.
+    The confinement is an extension that needs to be added to the virtual
+    camera:
+
+    ![](./assets/cinemachine-confinement-extension.png)
 
 ## Tagging
 
@@ -310,7 +347,7 @@ Another important settings are:
 ## Tiles
 
 When creating 2D games, especially pixelart ones, it makes sense to use square
-tiles to build the game world. It could be some platformed or top-down game.
+tiles to build the game world. It could be some platformer or top-down game.
 
 The process is usually as follows:
 
@@ -320,7 +357,7 @@ The process is usually as follows:
     ![](./assets/tile-asset-pack.png)
 
 2. Add this file (or files) to the project.
-3. Adjust the *Pixels Per Unit** setting so that the size of the inidividual
+3. Adjust the **Pixels Per Unit** setting so that the size of the inidividual
    tiles is correct (whatever is comfortable, e.g., tile's width equal to Unity
    unit).
 4. Select the file, change its **Sprite Mode** to **Multiple**.
@@ -422,3 +459,31 @@ Unity has two ways of controlling the game:
 You can't use both systems at the same time. When the "new" Input System gets
 installed, the older APIs get disabled.
 :::
+
+## Animations
+
+Game objects may be animated. Here's what is needed:
+
+- the actual animation sprites - we highlight all of them and create an
+  **Animation** file based on them.
+- the **Animation Controller** file - we have to create it in the Project panel.
+  When it's created, we can drag-n-drop the *Animations* created in the previous
+  step. Each animation is a state in a state machine that we'll be defining. We
+  can create transitions from one state to another. We can define some
+  *Parameters*. Based on values of these parameteres, we'll be transitioning
+  from one state to another.
+- the **Animator** component on the game object to be animated. In the
+  component, we need to point to the proper Animation Controller that we want to
+  use with that game object.
+
+Here's an example of some Animation Controller setup:
+
+![](./assets/animator-setup.png)
+
+There are a few states, the transitions are defined based on the values of the
+parameters.
+
+## Tips
+
+- If the icons in the Scene panel are too big, we can decrease their size by
+manimulaitng the **3D Icons Size** slider under the globe icon in the toolbar.
