@@ -440,6 +440,22 @@ can still apply some individual changes to a single instance of a prefab
 
 Prefab instances have a blue-ish color in the Hierarchy panel.
 
+### Variants
+
+Prefabs may also use a kind of inheritance. Here's an example:
+
+I could have a crystal collectible in my game. Such an item is a good candidate
+for a prefab. Then, I could decide to have another kind of a crystal, that one
+would have a different color, and possibly a different value in the game.
+Instead of creating a totally different prefab, I could create an instance of my
+original prefab, change it as needed, and create a new prefab based on it. Unity
+Editor will ask if I want to save it as a **Prefab Variant**.
+
+With Prefab Variants, changes made to the original Prefab are also translated to
+the Variant. This exludes changes to properties that the Variant was created
+with. So, if my variant crystal was supposed to have a different color, changing
+the color of the original crystal will not impact the Variant.
+
 ## Input System
 
 Unity has two ways of controlling the game:

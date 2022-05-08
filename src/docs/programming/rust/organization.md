@@ -219,3 +219,8 @@ pub use self::some_module::another_module::UsefulType
 
 The `UsefulType` is available from the level of the file where we put that
 declaration. It will be also visible in the documentation of our crate.
+
+## References
+
+[Two ways to create module hierarchy in Rust
+(Reddit)](https://www.reddit.com/r/rust/comments/ujry0b/media_how_to_create_a_module_hierarchy_in_rust/)
