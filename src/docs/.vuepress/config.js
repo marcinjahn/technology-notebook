@@ -212,6 +212,7 @@ module.exports = {
           title: "C/C++",
           img: "c.webp",
           children: [
+            "c/compilation",
             "c/pointers",
             "c/strings",
             "c/dynamic-memory",
@@ -226,7 +227,7 @@ module.exports = {
         {
           title: "Unity",
           img: "unity.webp",
-          children: ["unity/"]
+          children: ["unity/"],
         },
         {
           title: "Algorithms",
@@ -255,7 +256,7 @@ module.exports = {
             "networking/http",
             "networking/hsts",
             "networking/sni",
-            "networking/grpc"
+            "networking/grpc",
           ],
         },
         {
@@ -353,10 +354,8 @@ module.exports = {
         {
           title: "Google Cloud",
           img: "gcp.webp",
-          children: [
-            "google-cloud/overview"
-          ]
-        }
+          children: ["google-cloud/overview"],
+        },
       ],
       "/meta/": ["./", "who-am-i", "cv", "this-website"],
       "/projects/": [
@@ -390,5 +389,6 @@ module.exports = {
       },
     ],
     "mermaidjs",
-  ],
+    "tabs"
+  ]
 };
