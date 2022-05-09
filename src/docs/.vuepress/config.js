@@ -124,6 +124,7 @@ module.exports = {
             "dotnet/configuration",
             "dotnet/records",
             "dotnet/grpc",
+            "dotnet/platform-invoke",
             {
               title: "ASP.NET Core",
               children: [
