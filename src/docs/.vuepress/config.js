@@ -296,7 +296,8 @@ module.exports = {
           title: "Linux",
           img: "linux.webp",
           children: [
-            "linux/linux",
+            "linux/gist",
+            "linux/system-calls",
             "linux/containers",
             "linux/bash-scripting",
             "linux/lfs",

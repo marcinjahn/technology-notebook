@@ -47,7 +47,7 @@ Docker really uses cgroups to limit the process.
 
 ## Capabilities
 
-COntainers should not be able to invoke sys-calls that may break other
+Containers should not be able to invoke sys-calls that may break other
 containers (like changing time, or loading kernel modules).
 
 Docker has `--privileged` flag that gives special permissions to containers.

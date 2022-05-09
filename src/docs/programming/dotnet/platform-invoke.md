@@ -48,6 +48,12 @@ class that exposes the C functions to the .NET world.
 Another good example is [GtkSharp](https://github.com/GtkSharp/GtkSharp), which
 is a .NET wrapper for GTK toolkit.
 
+## Hosting .NET in native code
+
+There is also a way for the reversed operation - running managed .NET code
+withing a native C/C++ code. It's explained on
+[MSDN](https://docs.microsoft.com/en-us/dotnet/core/tutorials/netcore-hosting).
+
 ## References
 
 - [Interoperating with unmanaged code
