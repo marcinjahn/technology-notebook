@@ -265,7 +265,7 @@ libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffff8fb54000)
 libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffff8fb30000)
 ```
 
-::: Other OSs
+::: tip Other OSs
 The `.so` files are Linux dynamic libraries. Windows uses `.dll`, and macOS uses
 `.dylib`.
 :::
