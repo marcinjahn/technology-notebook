@@ -231,8 +231,11 @@ Linker "glues" together the `.o` files. It also can link dynamic libraries
 (`.so` files) that may come form the "outside" of our solution (like some
 standard libraries). An example of it could be "iostream".
 
-::: tip soname
-Here's some information about [soname](https://en.wikipedia.org/wiki/Soname)
+::: tip .so files
+The `.so` shared library might be generated with `gcc -shared -fPIC lib.c -o
+lib.so`.
+
+Here's some information about [soname](https://en.wikipedia.org/wiki/Soname).
 :::
 
 ```cpp
