@@ -1,9 +1,9 @@
 <template>
   <div class="main-container">
-    <img class="my-photo" src="/img/me.webp" />
-    <div cass="text-container">
-      <h1 id="main-title" class="title">Marcin Jahn</h1>
-      <h2 id="subtitle" class="title">Technology Notebook</h2>
+    <img class="my-photo" src="/img/me.webp" title="Marcin Jahn photo" />
+    <div class="text-container">
+      <h1 id="main-title" class="title">Marcin Jahn's</h1>
+      <h2 id="subtitle" class="title">Tech Notebook</h2>
       <!-- <p class="description">Notes on IT topics</p> -->
     </div>
   </div>
@@ -11,14 +11,14 @@
 
 <style lang="stylus">
 .main-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .text-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .my-photo {
@@ -57,5 +57,15 @@
   line-height: 1.3;
   color: lighten($textColor, 40%);
   margin-bottom: 0;
+}
+
+@media (max-width: $MQMobile) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .text-container {
+    align-items: center;
+  }
 }
 </style>

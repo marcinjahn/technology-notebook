@@ -4,7 +4,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: "Marcin Jahn | Technology Notebook",
+  title: "Marcin Jahn | Tech Notebook",
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */
@@ -15,7 +15,7 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/config/#head
    */
   head: [
-    ["meta", { name: "theme-color", content: "white" }],
+    ["meta", { name: "theme-color", content: "#7D84B2" }],
     ["meta", { name: "apple-mobile-web-app-capable", content: "yes" }],
     [
       "meta",
