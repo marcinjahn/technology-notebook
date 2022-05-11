@@ -2,8 +2,9 @@
   <div class="main-container">
     <img class="my-photo" src="/img/me.webp" />
     <div cass="text-container">
-      <h1 id="main-title">Marcin Jahn <br>Technology Notebook</h1>
-      <p class="description">Notes on IT topics</p>
+      <h1 id="main-title" class="title">Marcin Jahn</h1>
+      <h2 id="subtitle" class="title">Technology Notebook</h2>
+      <!-- <p class="description">Notes on IT topics</p> -->
     </div>
   </div>
 </template>
@@ -28,9 +29,25 @@
   margin-right: 2rem;
 }
 
+.title {
+  color: white;
+  text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+            0px 8px 13px rgba(0,0,0,0.1),
+            0px 18px 23px rgba(0,0,0,0.1);
+}
+
 #main-title {
   font-size 3rem;
   margin-top: 0;
+  margin-bottom: 0;
+}
+
+#subtitle {
+  font-size 2.5rem;
+  margin-top: 0;
+  text-decoration: none;
+  border-bottom: 0;
+  color: #CCC;
 }
 
 .description {
