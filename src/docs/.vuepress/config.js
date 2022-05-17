@@ -256,6 +256,7 @@ module.exports = {
             "networking/udp",
             "networking/http",
             "networking/hsts",
+            "networking/dns",
             "networking/sni",
             "networking/grpc",
           ],
@@ -301,6 +302,7 @@ module.exports = {
             "linux/containers",
             "linux/bash-scripting",
             "linux/lfs",
+            "linux/networking"
           ],
         },
         {
