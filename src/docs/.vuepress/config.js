@@ -213,6 +213,7 @@ module.exports = {
           title: "C/C++",
           img: "c.webp",
           children: [
+            "c/classes",
             "c/compilation",
             "c/pointers",
             "c/strings",

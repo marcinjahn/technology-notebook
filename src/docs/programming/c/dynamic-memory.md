@@ -8,7 +8,7 @@ lang: en-US
 
 When a program needs to store huge amount of data in memory, or when the amount
 of data is underterministic at compile time, the **heap** memory segment is
-used. It is "unlimited" (unlike the **stack**.
+used. It is "unlimited" (unlike the **stack**).
 
 ## Heap commands in C
 
