@@ -245,6 +245,13 @@ module.exports = {
             "algorithms/searching",
           ],
         },
+        {
+          title: "Architecture",
+          img: "architecture.webp",
+          children: [
+            "architecture/asp-net-core"
+          ]
+        }
       ],
       "/technologies/": [
         "./",
