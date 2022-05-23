@@ -128,6 +128,55 @@ sure that the new name is not empty.
 Entities also contain *Events*. These may be used to inform other parts of the
 system of changes.
 
+### Value Objects
+
+Identity of **Value Objects** is based on composition of its values. They're
+immutable. Value objects may contain methods (without side-effects).
+
+Value Objects are basically non-identified types that are specific to our
+sub-domain. They group together some related data. Examples include:
+
+- money
+- date range
+
+An instance of a value object does not represent any unique entity, it's just a
+set of information representing something in our domain.
+
+It's recommended to first consider Value Object when deciding whether to use
+[Entity](#entities) or Value Object for a given thing.
+
+::: tip Identifiers
+In some projects identifiers of Entities are value objects. These are custom
+types that contain just an identifier (for example as a `Guid`). So, we could
+have a type called `CustomerIdValueObject`. Some argue that it makes the
+solution more explicit, but I don't really agree with that. I think it
+complicates things more than necessary.
+
+```cs
+// Supposedly, these types help to not pass arguments in the wrong order
+public void CreateAppointment(ClientId clientId, DoctorId doctorId);
+```
+:::
+
+Date types are a great example of value objects.
+
+### Domain Services
+
+Logic/behaviour that doesn't fit into Entities or Value Objects goes into
+separate classes called **Domain Services**. Such services often deal with
+different kinds of entities/value objects. For example, they could orchestrate
+some workflow.
+
+Also infrastructure-level logic, like logging, sending notifications, etc. is
+considered to be in the Doman Services area.
+
+Before creating a service, we should make sure that the logic we're adding
+doesn't fit into any of the existing domain elements (entities/value objects).
+
+::: warning
+Overuse of domain services might lead to anemic models.
+:::
+
 ## Shared Kernel
 
 In DDD, a **Shared Kernel** is code that is used between different bounded
