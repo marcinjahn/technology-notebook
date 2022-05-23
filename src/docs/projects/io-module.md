@@ -1,6 +1,6 @@
 ---
 title: Wireless I/O Module
-description: A master thesis project - MJ IoT
+description: A BSc thesis project - MJ IoT
 lang: en-US
 ---
 
