@@ -249,7 +249,8 @@ module.exports = {
           title: "Architecture",
           img: "architecture.webp",
           children: [
-            "architecture/asp-net-core"
+            "architecture/asp-net-core",
+            "architecture/ddd"
           ]
         }
       ],
