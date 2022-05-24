@@ -70,7 +70,7 @@ by `to`). In this case, the `div` will be rendered inside of an element with id
 The parameters of a route can be given as props. To do that, the route needs to
 have this option enabled, i.e.:
 
-```vue
+```js
 { path: '/teams/:teamId', component: TeamMembers, props: true }
 ```
 

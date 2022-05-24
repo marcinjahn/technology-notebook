@@ -90,6 +90,9 @@ Designing our domain model is crucial. According to Eric Evans:
 
 > The domain is the heart of business software.
 
+Another point is that models evolve over time. Our initial assumptions can be
+often invalidated as we progress in understanding the domain.
+
 In our modeling, we should focus on the behaviours of the models. To find such
 behaviours, we need to look at all the possible events that may occur in the
 system - those events are basically the use-cases that the solution is expected
@@ -177,6 +180,78 @@ doesn't fit into any of the existing domain elements (entities/value objects).
 Overuse of domain services might lead to anemic models.
 :::
 
+### Aggregates
+
+When building our Entities we will often end up with **Aggregate** entities,
+that is, entities that are linked with other entities or value objects. 
+
+Citing [Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html):
+
+> A DDD aggregate is a cluster of domain objects that can be treated as a single
+> unit. An example may be an order and its line-items, these will be separate
+> objects, but it's useful to treat the order (together with its line items) as
+> a single aggregate.
+
+There will also be an **Aggreagate Root** - an entry point of an aggregate that
+"defines" the aggregate as a whole. To find out what is an aggregate root, we
+need to look at individual components and think if the removal of a given
+component would result in removal of its contained components. (cascading
+delete) If it would, that's probably an Aggregate Root.
+
+Aggregate Root is like a central entity that defines it completely. It should
+allow us to keep the whole object in a valid state (enforcing invariants). We
+should modify the aggregate only throught the Aggregate Root. The root will make
+sure that the invariants are satisfied.
+
+::: tip 
+There will also be entities that do not include other entities or value objects.
+The convention is to call these Aggreagtes as well.
+:::
+
+How many aggregate roots should there be in a single bounded context?
+
+### Associations
+
+DDD encourages one-way relations between entities. It's popular in Entity
+Framework to define navigation properties in both ways. It turns out it's not
+always needed. It makes entities more complex. By default, we should start our
+modeling with uni-directional relationships and switch to bi-directional ones
+only when necessary.
+
+It still is OK to keep an identifier of the other entity (like a foreign key) in
+the "child" entity.
+
+::: warning
+One aggregate should only reference external entities that are aggregate roots.
+For example, if a *Customer* has some *Address*, other aggregates (e.g.,
+*Order*) should not reference the *Address* directly. Instead, they should get
+that address through a *Customer*.
+
+Aggregate Roots define the complete entity. We should not link some other
+aggregate to a part of an aggregate.
+
+However, it's OK to link to some other non-root entity by the FK.
+:::
+
+When thinking to associate two aggregates, it's worth to remember what defines
+an Aggregate Root:
+
+> We need to look at individual components and think if the removal of a given
+component would result in removal of its contained components. If it would,
+that's probably an Aggregate Root.
+
+If removal of our root should not result in the removal of linked aggregates,
+possibly we don't need to include these children as "Navigation Properties".
+Instead, maybe just an ID of that other entitiy is enough.
+
+An example is an aggregate called *Appointment*. It would contain references to:
+
+- Patient
+- Doctor
+
+However, since removing an Appointment should not remove Patient and Doctor, it
+makes sense to reference these just by ID, not by Navigation Properites.
+
 ## Shared Kernel
 
 In DDD, a **Shared Kernel** is code that is used between different bounded
@@ -184,7 +259,47 @@ context. It's basically a kind of project that .NET developers often call
 *Common*. The shared part should be as stable as possible. Changes in that code
 will affect a lot of places.
 
+## Repositories
+
+Repository pattern is a well-known approach and it is also used outside of DDD.
+DDD-specific fact is that only the Aggregate Roots should have their
+repositories. Other aggregates should be accessed via their aggregate roots.
+
+A few tips:
+
+- there should be some common `IRepository<T>` interface implementated by all the repositories
+- if some kind of repository (like `PatientsRepository`) has special needs, it's
+  OK to add some special methods to just that repository (or rather its
+  interface `IPatientsRepository`). An example of such a method could be
+  `GetPatientsOfDoctorWithId(Guid doctorId)`.
+- we could have separate repositories for querying and commanding, following CQRS.
+
+### Specifications
+
+The second point from the list above might turn some repositories into huge
+classes. The solution for that is to turn these specific use-cases into
+so-called **Specifications**. These are classes that provide predicates for
+different use-cases. Then, our repositories would have a way to provide a
+specification to it.
+
+```cs
+public interface IRepository<T>
+{
+  public T GetBySpec(Specification spec);
+}
+```
+
+It is similar to the Strategy pattern. It also provides separation of concerns
+since the repository code can stay relatively clean and simple, while specific
+use-cases will be handled by their own classes.
+
+It will work well with Entity Framework or ORMs in general. Other data access
+methods would requie Specifications that are aware of the persistance layer
+query language, I believe.
+
 ## Sources
 
 - [Domain-Driven Design Fundamentals
   (Pluralsight)](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
+- [Code
+  Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)
