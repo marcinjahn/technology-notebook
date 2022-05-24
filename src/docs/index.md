@@ -35,3 +35,9 @@ series](/technologies/kubernetes/meaning.md)
 
 Feel free to contact me with any queries via <a
 href="https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US">LinkedIn</a>.
+
+::: tip cirro.services
+I also provide software development services at
+[cirro.services](https://www.cirro.services). Be sure to reach out if you need
+my help!
+:::

@@ -1,11 +1,14 @@
 <template>
-  <a target="_blank" :href="url"><img :src="$withBase(logoImg)" /></a>
+  <a target="_blank" :href="url">
+    <img v-if="logoImg" :src="$withBase(logoImg)" />
+    <span v-else>{{title}}</span>
+  </a>
 </template>
 
 <script>
 export default {
   name: "ExternalService",
-  props: ["logoImg", "url"],
+  props: ["logoImg", "url", "title"],
 };
 </script>
 

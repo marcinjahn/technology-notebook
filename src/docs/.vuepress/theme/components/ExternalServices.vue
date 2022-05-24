@@ -3,6 +3,7 @@
     <ExternalService v-for="service in services" 
     :logoImg="service.img"
     :url="service.url"
+    :title="service.title"
     :key="service.url" />
   </span>
 </template>

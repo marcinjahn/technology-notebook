@@ -86,6 +86,10 @@ module.exports = {
         img: "/img/github.webp",
         url: "https://github.com/marcinjahn",
       },
+      {
+        title: "cirro.services",
+        url: "https://www.cirro.services"
+      },
     ],
     nav: [
       {
