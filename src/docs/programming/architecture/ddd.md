@@ -67,8 +67,8 @@ Every context will have its own ubiquitous language.
 The namings in different Bounded Contexts and their relations is what defines
 **Context Maps**. It could be that different Bounded Contexts use the same name
 for different entities. It could also happen that different bounded context
-would model the same entity (like a Customer in Appointment Scheduler context
-and Customer in the Billing context).
+would model the same entity differently (like a Customer in Appointment
+Scheduler context and Customer in the Billing context).
 
 A Context Map clearly shows what a given entity is represented by in another
 context.
@@ -267,7 +267,8 @@ repositories. Other aggregates should be accessed via their aggregate roots.
 
 A few tips:
 
-- there should be some common `IRepository<T>` interface implementated by all the repositories
+- there should be some common `IRepository<T>` interface implementated by all
+  the repositories
 - if some kind of repository (like `PatientsRepository`) has special needs, it's
   OK to add some special methods to just that repository (or rather its
   interface `IPatientsRepository`). An example of such a method could be
@@ -296,6 +297,84 @@ use-cases will be handled by their own classes.
 It will work well with Entity Framework or ORMs in general. Other data access
 methods would requie Specifications that are aware of the persistance layer
 query language, I believe.
+
+## Events
+
+There are two kinds of events:
+
+- in-domain - Domain Events (in-process)
+- across domains/bounded contexts - Integration Events
+
+### Domain Events
+
+Domain Events are raised when something happens in the domain that could be of
+interested to other pieces of our application (but in the same process!). They
+should be describable in the Ubiquitous Language and their names should
+correspond to that. The naming should be in the past tense, since the events
+will always inform about something that has already happened. Some examples:
+
+- Clinet Registered
+- Appointment Scheduled
+
+::: tip YAGNI
+Create events only when there is some use case for it. Don't create them "just
+in case".
+:::
+
+In code, each event is a separate class. It should iunclude the set of
+information that might be interesting for a given event. The information should
+be initailized via constructor and be immutable.
+
+#### Creting Events
+
+Each entity that is capable of emitting events would have `Events` property.
+
+```cs
+public class Appointment : Entity
+{
+  public IList<IDomainEvent> Events { get; set; } = new List<INotification>();
+}
+```
+
+#### Dispatching Events
+
+The events could be dispatched in the **Repository**, right after the entities
+emitting the events are saved. The generic repository base class is a good place
+to handle that.
+
+::: tip MediatR
+MediatR could be used to dispatch and handle events.
+:::
+
+Events may have multiple handlers. Normally, the order of their execution should
+not matter.
+
+### Integration Events
+
+These events are the way to share information that something happens across
+domains or applications. They often include more information than the Domain
+Events since the source of the destination of the event might not be able to get
+these information on its own. For example, instead of just sharing the ID of
+some changed entity, we would also share some more defining properties, like a
+Name. It could also happen that the event handler would have to get back to the
+source service to ask for more details. We don't really want that, especially if
+there'll be a lot of events, or a lot of handlers.
+
+::: tip Domain and Integration Events
+We could have cases where some event has both Domain and Integration Events
+defined. The entity would publish a Domain Event and one of the handlers would
+publish an Integration Event, knowing that there might be some handlers
+interested in this event outside of the domain or app.
+:::
+
+Integration Events often use some kind of message bus, like Azure Service Bus.
+
+## Anti-Corruption Layer
+
+It often happens that we have to integrate with systems that are outside of our
+control. Such systems will most likely use different modeling than us. In such
+cases, **Anti-Corruption Layers** help us to create a kind of mapper between our
+domains and the other systems. Such layers are basically like Adapters.
 
 ## Sources
 
