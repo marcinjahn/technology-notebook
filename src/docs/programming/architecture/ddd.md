@@ -412,9 +412,9 @@ domains and the other systems. Such layers are basically like Adapters.
 
 ## Sources
 
-- [Domain-Driven Design Fundamentals
-  (Pluralsight)](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
-- [Domain-Driven Design in Practice
-  (Pluralsight)](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
+- [DDD on Pluralsight](https://app.pluralsight.com/paths/skill/domain-driven-design)
+  - [Domain-Driven Design Fundamentals](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
+  - [Domain-Driven Design in
+    Practice](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
 - [Code
   Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)
