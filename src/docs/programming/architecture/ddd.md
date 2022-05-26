@@ -342,12 +342,12 @@ There are two kinds of events:
 ### Domain Events
 
 Domain Events are raised when something happens in the domain that could be of
-interested to other pieces of our application (but in the same process!). They
-should be describable in the Ubiquitous Language and their names should
+interest to the other pieces of our application (but in the same process!).
+They should be describable in the Ubiquitous Language and their names should
 correspond to that. The naming should be in the past tense, since the events
 will always inform about something that has already happened. Some examples:
 
-- Clinet Registered
+- Client Registered
 - Appointment Scheduled
 
 ::: tip YAGNI
@@ -387,11 +387,11 @@ not matter.
 
 These events are the way to share information that something happens across
 domains or applications. They often include more information than the Domain
-Events since the source of the destination of the event might not be able to get
-these information on its own. For example, instead of just sharing the ID of
-some changed entity, we would also share some more defining properties, like a
-Name. It could also happen that the event handler would have to get back to the
-source service to ask for more details. We don't really want that, especially if
+Events since the receiver of the event might not be able to get these
+information on its own. For example, instead of just sharing the ID of some
+changed entity, we would also share some more defining properties, like a Name.
+It could also happen that the event handler would have to get back to the source
+service to ask for more details. We don't really want that, especially if
 there'll be a lot of events, or a lot of handlers.
 
 ::: tip Domain and Integration Events
@@ -414,5 +414,7 @@ domains and the other systems. Such layers are basically like Adapters.
 
 - [Domain-Driven Design Fundamentals
   (Pluralsight)](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
+- [Domain-Driven Design in Practice
+  (Pluralsight)](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
 - [Code
   Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)
