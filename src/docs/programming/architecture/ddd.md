@@ -163,6 +163,18 @@ public void CreateAppointment(ClientId clientId, DoctorId doctorId);
 
 Date types are a great example of value objects.
 
+::: tip
+It is OK for Value Objects to reference Entities!
+
+A quote from Eric Evans:
+
+> VALUE OBJECTS can even reference ENTITIES. For example, if I ask an online map
+> service for a scenic driving route from San Francisco to Los Angeles, it might
+> derive a Route object linking L.A. and San Francisco via the Pacific Coast
+> Highway. That Route object would be a VALUE, even though the three objects it
+> references (two cities and a highway) are all ENTITIES.
+:::
+
 ### Domain Services
 
 Logic/behaviour that doesn't fit into Entities or Value Objects goes into
@@ -192,23 +204,45 @@ Citing [Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html):
 > objects, but it's useful to treat the order (together with its line items) as
 > a single aggregate.
 
+::: tip
+One Entity should only belong to one Aggregate. One Value Object can belong to
+many Aggregates.
+:::
+
+::: warning
+Just the fact that one entity refers to another (via some property) does not
+mean that they are a part of the same Aggregate! It could be that some entity
+belonging to one Aggregate refers to some other entity that is an Aggregate Root
+of another Aggregate.
+
+An example of that could be the Snack Machine scenario from [Domain-Driven
+Design in Practice
+(Pluralsight)](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice).
+We had there: *Snack Machine* -> *Slots* -> *Snacks*.
+
+*Snack Machine* and *Slot* belonged to one Aggregate (since a *Slot* cannot exist
+without a *Snack Machine*). A *Snack* was a separate Aggregate.
+:::
+
+#### Aggregate Root
+
 There will also be an **Aggreagate Root** - an entry point of an aggregate that
 "defines" the aggregate as a whole. To find out what is an aggregate root, we
 need to look at individual components and think if the removal of a given
-component would result in removal of its contained components. (cascading
-delete) If it would, that's probably an Aggregate Root.
+component would result in removal of its contained components (cascading
+delete). If it would, that's probably an Aggregate Root.
 
 Aggregate Root is like a central entity that defines it completely. It should
 allow us to keep the whole object in a valid state (enforcing invariants). We
-should modify the aggregate only throught the Aggregate Root. The root will make
-sure that the invariants are satisfied.
+should access/modify the aggregate only throught the Aggregate Root. The root
+will make sure that the invariants are satisfied.
 
 ::: tip 
 There will also be entities that do not include other entities or value objects.
-The convention is to call these Aggreagtes as well.
+The convention is to call these Aggregates as well.
 :::
 
-How many aggregate roots should there be in a single bounded context?
+A single bounded context or domain may contain a few Aggregate Roots.
 
 ### Associations
 
