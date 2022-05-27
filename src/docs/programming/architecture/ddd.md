@@ -416,5 +416,7 @@ domains and the other systems. Such layers are basically like Adapters.
   - [Domain-Driven Design Fundamentals](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
   - [Domain-Driven Design in
     Practice](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
+  - [Refactoring from Anemic Domain Model Towards a Rich
+    One](https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model)
 - [Code
   Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)

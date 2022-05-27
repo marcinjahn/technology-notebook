@@ -45,3 +45,5 @@ we'd use the dependencies (like a database) to do the actual work.
 
 - [Clean Architecture: Patterns, Practices, and Principles
   (Pluralsight)](https://app.pluralsight.com/library/courses/clean-architecture-patterns-practices-principles)
+- [Refactoring from Anemic Domain Model Towards a Rich One
+  (Pluralsight)](https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model)
