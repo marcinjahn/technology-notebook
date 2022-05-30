@@ -406,9 +406,18 @@ Integration Events often use some kind of message bus, like Azure Service Bus.
 ## Anti-Corruption Layer
 
 It often happens that we have to integrate with systems that are outside of our
-control. Such systems will most likely use different modeling than us. In such
-cases, **Anti-Corruption Layers** help us to create a kind of mapper between our
-domains and the other systems. Such layers are basically like Adapters.
+control. Such systems will most likely use a different modeling than ours. In
+such cases, **Anti-Corruption Layers** help us to create a kind of mapper
+between our domains and the other systems. Such layers are basically like
+Adapters.
+
+It could also work the other way round. We could have a "legacy" system that we
+want to update to integrate with a "well-designed" DDD project. In order not to
+introduce the new concepts into legacy codebase, we could create an ACL layer
+(like some set of services) that will communicate with our DDD system properly
+and return the data as the legacy system expects.
+
+![](./assets/acl-legacy-to-ddd.png)
 
 ## Sources
 
@@ -418,5 +427,7 @@ domains and the other systems. Such layers are basically like Adapters.
     Practice](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
   - [Refactoring from Anemic Domain Model Towards a Rich
     One](https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model)
+  - [Domain-Driven Design: Working with Legacy
+    Projects](https://app.pluralsight.com/library/courses/domain-driven-design-legacy-projects/table-of-contents)
 - [Code
   Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)
