@@ -31,7 +31,7 @@ server responds with **101 (Switching Protocols)**. After that, both parties can
 communicate via WebSocket.
 
 Here's an example of how the upgrade looks like in the HTTP protocol (taken from
-[Wikipedia](https://en.wikipedia.org/wiki/WebSocket))
+the [Wikipedia](https://en.wikipedia.org/wiki/WebSocket)):
 
 Client request (just like in HTTP, each line ends with `\r\n` and there must be
 an extra blank line at the end):
