@@ -1,5 +1,5 @@
 ---
-tags: networking
+tags: networking, osi model, iso
 title: OSI Model
 ---
 

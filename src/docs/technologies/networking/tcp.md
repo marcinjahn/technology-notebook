@@ -1,6 +1,7 @@
 ---
-tags: networking
+tags: networking, tcp, transport
 title: TCP Procol
+description: TCP Protocol of the Networking stack
 ---
 
 # Transport Control Protocol (TCP)
