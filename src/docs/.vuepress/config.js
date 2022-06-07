@@ -88,7 +88,7 @@ module.exports = {
       },
       {
         title: "cirro.services",
-        url: "https://www.cirro.services"
+        url: "https://www.cirro.services",
       },
     ],
     nav: [
@@ -228,7 +228,7 @@ module.exports = {
         {
           title: "CSS",
           img: "css.webp",
-          children: ["css/layouts"],
+          children: ["css/responsive-design", "css/layouts"],
         },
         {
           title: "Unity",
@@ -252,11 +252,8 @@ module.exports = {
         {
           title: "Architecture",
           img: "architecture.webp",
-          children: [
-            "architecture/asp-net-core",
-            "architecture/ddd"
-          ]
-        }
+          children: ["architecture/asp-net-core", "architecture/ddd"],
+        },
       ],
       "/technologies/": [
         "./",
@@ -316,7 +313,7 @@ module.exports = {
             "linux/containers",
             "linux/bash-scripting",
             "linux/lfs",
-            "linux/networking"
+            "linux/networking",
           ],
         },
         {
@@ -407,6 +404,6 @@ module.exports = {
       },
     ],
     "mermaidjs",
-    "tabs"
-  ]
+    "tabs",
+  ],
 };
