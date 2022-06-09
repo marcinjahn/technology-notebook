@@ -14,7 +14,10 @@ of elements, the pages stop being responsive.
 
 ## Units
 
-**em** and **rem** are essential for responsive design.
+**em** and **rem** are essential for responsive design. We do not use absolute
+units, like `cm`, because their size is constant no matter the distance that we
+look at the screen from. The desktop and phone display need different sizes of
+elements due to that distance.
 
 ### em and rem
 
