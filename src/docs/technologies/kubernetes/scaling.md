@@ -108,7 +108,7 @@ used for one of the selectors.
 
 There are two update strategies supported by the Deployment:
 
-- **Recreat** - all pods deleted at the same time. There is some downtime until
+- **Recreate** - all pods deleted at the same time. There is some downtime until
   the new pods get created. It should be used when downtime is acceptable or
   when apps should not run in mixed versions
 - **RollingUpdate** - old pods are gradually replaced with new ones. It's the
