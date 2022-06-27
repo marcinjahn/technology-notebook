@@ -228,7 +228,7 @@ module.exports = {
         {
           title: "CSS",
           img: "css.webp",
-          children: ["css/responsive-design", "css/tricks", "css/pixels"],
+          children: ["css/responsive-design", "css/tips", "css/pixels"],
         },
         {
           title: "Unity",

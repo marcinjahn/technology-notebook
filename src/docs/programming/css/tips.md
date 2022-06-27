@@ -1,0 +1,89 @@
+---
+title: CSS Tips
+description: Some info on CSS
+tags: css, html, web
+lang: en-US
+---
+
+# CSS Tips
+
+## Resources
+
+Generally about CSS layouts: [Smashing
+Magazine](https://www.smashingmagazine.com/2018/05/guide-css-layout/).
+
+## Border-box setting
+
+```css
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+```
+
+## BEM
+
+Naming CSS classes is hard. Especially in bigger projects. There are some CSS
+naming systems. [BEM](http://getbem.com/introduction/) is one of them and it's
+quite simple. It focuses on defining:
+
+- Blocks - something that can exist on its own (e.g., hero)
+- Elements - something that is dependent on a containin block (e.g., hero__text)
+- Modifiers - variation of something (e.g. btn--success)
+
+Here's a [YT video](https://www.youtube.com/watch?v=SLjHSVwXYq4) about it.
+
+## SASS
+
+A good CSS preprocessor to use is [SASS](https://sass-lang.com/).
+
+## Media Queries
+
+We can either design our sites mobile-first or desktop-first. Usually, the
+latter is chosen (although the first option makes more sense nowadays). Then,
+the media queries are created for mobile.
+
+::: tip Mobile-first
+The argument for the mobile-first design is that webpages are responsive by
+default (images are an exception). Mobile websites look very similar to what we
+get without layout styling. The elements are usually displayed as blocks, one
+after another. That makes mobile design much easier to pull off. 
+
+Obviously, another argument is that nowadays people use smartphones a lot.
+:::
+
+### Tresholds
+
+There are two main techniques for choosing breakpoints:
+
+- looking at sizes of specific devices (like iPhone or iPad) - there are so many
+  devices nowadays, that this might be overwhelming
+- looking at our desktop-first site, resizing it, and just looking where it starts
+  to look bad - probably a better alternative
+
+It's also worth to remember that realistically:
+
+- people are not going to change the size of the window too much while seeing the site
+- some sizes are not going to be used
+
+What that means is that probably it doesn't make sense to invest time into
+making the site look great on every possible screen size. Just focus on the
+realistic ones.
+
+::: tip Common tresholds
+Often poeple use **600px** as a treshold between mobile and above, and then
+**900px** between tablet and above. Additionally, if needed, **1200px** and
+**1800px** could be good choices for large monitors, if we want to display
+things in special ways on those.
+:::
+
+Here's a nice article with some reasoning:
+[freeCodeCamp](https://www.freecodecamp.org/news/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862/).
+
+::: danger Viewport
+Don't forget to use the viewport `meta` tag, otherwise the media queries will
+not work properly. Without, the website will zoom-out instead of being
+responsive on mobile.
+:::

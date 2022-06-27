@@ -12,6 +12,18 @@ The webpages are responsive by default. As soon as we start to constrain sizes
 of elements, the pages stop being responsive.
 :::
 
+The above is not true for images though. They will overflow on screen sizes smaller than the image itself. To fix that, the following CSS can be added:
+
+```css
+img {
+  max-width: 100%;
+}
+```
+
+We're using `max-width` and not `width`, because we want the image to be in its
+original size when possible and shrink down to 100% only when the screen is too
+small.
+
 ## Units
 
 **em** and **rem** are essential for responsive design. We do not use absolute
