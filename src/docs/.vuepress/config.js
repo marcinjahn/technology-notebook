@@ -123,6 +123,7 @@ module.exports = {
             },
             "dotnet/equality",
             "dotnet/comparisons",
+            "dotnet/enumerable",
             "dotnet/generic-host",
             "dotnet/logging",
             "dotnet/configuration",
