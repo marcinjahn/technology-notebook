@@ -182,3 +182,4 @@ use of something like `TOP` to deliver just 3 people instances.
 - [IEnumerator (MSDN)](https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerator?view=net-6.0)
 - [YouTube (IEnumerable)](https://www.youtube.com/watch?v=UfT-st9dl8Q)
 - [Iterator Block Implementation](https://csharpindepth.com/Articles/IteratorBlockImplementation)
+- [Implementing IQueryable (MSDN)](https://docs.microsoft.com/en-us/archive/blogs/mattwar/linq-building-an-iqueryable-provider-part-i)
