@@ -176,6 +176,20 @@ inefficient. However, thanks to the use of `IQueryable`, when the `Take(3)` was
 added, the expression tree got modified and the constructed SQL query could make
 use of something like `TOP` to deliver just 3 people instances.
 
+Here's a quote from [MSDN](https://docs.microsoft.com/en-us/archive/blogs/mattwar/linq-building-an-iqueryable-provider-part-i):
+
+> The second property (Expression) gives you the expression that corresponds to the query.
+> This is quintessential essence of IQueryable’s being. The actual ‘query’
+> underneath the hood of an IQueryable is an expression that represents the
+> query as a tree of LINQ query operators/method calls. This is the part of the
+> IQueryable that your provider must comprehend in order to do anything useful.
+> If you look deeper you will see that the whole IQueryable infrastructure
+> (including the System.Linq.Queryable version of LINQ standard query operators)
+> is just a mechanism to auto-construct expression tree nodes for you. When you
+> use the Queryable.Where method to apply a filter to an IQueryable, it simply
+> builds you a new IQueryable adding a method-call expression node on top of the
+> tree representing the call you just made to Queryable.Where.
+
 ## References
 
 - [IEnumerable (MSDN)](https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerable?view=net-6.0)
