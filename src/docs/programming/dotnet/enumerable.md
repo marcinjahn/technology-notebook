@@ -145,18 +145,30 @@ line of code in the loop, but there could be more.
 
 So, basically, `yield` creates a custom `IEnumerator` (behind the scenes) that
 returns values only when we ask for them. The code in the method using `yield`
-runs ONLY when we ask for the next element.
+runs ONLY when we ask for the next element. It is very similar to how LINQ
+works.
 
-It is very similar to how LINQ works.
+### LINQ
+
+A small remark about LINQ and its `IEnumerable` is that it is not always the
+case that one element is pulled from the source at a time. In some cases we have
+to know all the values upfront before we're able to return even the first value.
+Example of it are:
+
+- `Reverse`
+- `OrderBy`
+
+We can't reverse a collection if we don't know the last value.
 
 ## IQueryable
 
-The `IQueryable` interface is a bit similar to `IEnumerable`. In fact, it
-inherits from `IEnumerable`. `IQueryable` is mostly used with LINQ and data
-providers. The advantage of it is that is allows to construct a query before
-executing it against a data source (e.g., a database). `IQueryable` has a
-property called `Expression`. This is the expression tree that a given instance
-of `IQueryable` represents. For example (using Entity Framework):
+The `IQueryable` interface is a bit similar to `IEnumerable`, but also totally
+different at the same time. In fact, it inherits from `IEnumerable`.
+`IQueryable` is mostly used with LINQ and data providers. The advantage of it is
+that is allows to construct a query before executing it against a data source
+(e.g., a database). `IQueryable` has a property called `Expression`. This is the
+expression tree that a given instance of `IQueryable` represents. For example
+(using Entity Framework):
 
 ```cs
 var people = context.People.Where(p => p.Name.StartsWith("B"));
@@ -190,6 +202,120 @@ Here's a quote from [MSDN](https://docs.microsoft.com/en-us/archive/blogs/mattwa
 > builds you a new IQueryable adding a method-call expression node on top of the
 > tree representing the call you just made to Queryable.Where.
 
+::: tip In-memory is OK
+If we had a similar case with LINQ to Objects, `IEnumerable`s would be fine.
+Here's an example:
+
+```cs
+var top3 = GetCollection().Where(n => n < 6).Take(3);
+
+foreach (var item in top3)
+{
+    Console.WriteLine(item);
+}
+
+IEnumerable<int> GetCollection()
+{
+    for (int i = 0; i < 8; i++)
+    {
+        Console.WriteLine("YIELD");
+        yield return i;
+    }
+}
+```
+
+`YIELD` is printed three times. With external systems (like databases) we can't
+go and ask for items one by one, that would be really inefficient. We need some
+mechanism to prepare an optimized query and send it once. That's what
+`IQueryable` is for.
+:::
+
+## IAsyncEnumerable and IAsyncEnumerator
+
+An async version of `IEnumerable` and `IEnumerator` is the pair of
+`IAsyncEnumerable` and `IAsyncEnumerator`.
+
+Here's a comparison of their methods/properties:
+
+- Enumerable:
+
+|IEnumerable|IAsyncEnumerable|
+|-|-|
+|GetEnumerator|GetAsyncEnumerator|
+
+- Enumerator:
+
+|IEnumerator|IAsyncEnumerator|
+|-|-|
+|Current|Current|
+|MoveNext|MoveNextAsync|
+|Dispose|DisposeAsync|
+|Reset| - |
+
+Really, the most important difference between traditional and async Enumerable
+is that the latter supports async loading of next items via `MoveNextAsync`.
+
+Here's an example of how to use the `IAsyncEnumerable`:
+
+```cs
+var collection = GetCollection();
+await foreach(var item in collection)
+{
+    Console.WriteLine(item);
+}
+
+private async IAsyncEnumerable<string> GetCollection()
+{
+    for (var i = 0; i < 5; i++)
+    {
+        yield return await LoadItemFromTheWeb(i);
+    }
+}
+```
+
+The compiler actually translates the `await foreach...` into code that invokes
+`await e.MoveNextAsync()` in a loop.
+
+### CancellationToken
+
+Async methods normally support cancellation. `IAsyncEnumerable`'s
+`GetAsyncEnumerator` is no different. It accepts a `CancellationToken`. However,
+since we're rarely calling that method directly (we use `await foreach` instead,
+which deals with enumerators behind the scenes), there's a special way to pass
+the `CancellationToken`:
+
+```cs
+await foreach (int item in GetAsyncEnumerable().WithCancellation(ct))
+  Console.WriteLine(item);
+```
+
+The `WithCancellation(ct)` extension method passes the token.
+
+On the other side, we also need to be able to accept `CancellationToken` to our methods that return `IAsyncEnumerable`. We use a special attribute for that:
+
+```cs{2}
+private async IAsyncEnumerable<string> GetCollection(
+    [EnumeratorCancellation] CancellationToken cancellationToken = default
+)
+{
+    for (var i = 0; i < 5; i++)
+    {
+        yield return await LoadItemFromTheWeb(i, cancellationToken);
+    }
+}
+```
+
+The compiler will know that it should pass the `CancellationToken` (that we
+could provide via `WithCancellatin(...)`) to our method.
+
+### LINQ
+
+LINQ does not support `IAsyncEnumerable`s by default. There's a NuGet package
+for that -
+[System.Linq.Async](https://www.nuget.org/packages/System.Linq.Async). Adding it
+in is all we need to do, the namespace to import is just `System.Linq`, like in
+the standard LINQ.
+
 ## References
 
 - [IEnumerable (MSDN)](https://docs.microsoft.com/en-us/dotnet/api/system.collections.ienumerable?view=net-6.0)
@@ -197,3 +323,6 @@ Here's a quote from [MSDN](https://docs.microsoft.com/en-us/archive/blogs/mattwa
 - [YouTube (IEnumerable)](https://www.youtube.com/watch?v=UfT-st9dl8Q)
 - [Iterator Block Implementation](https://csharpindepth.com/Articles/IteratorBlockImplementation)
 - [Implementing IQueryable (MSDN)](https://docs.microsoft.com/en-us/archive/blogs/mattwar/linq-building-an-iqueryable-provider-part-i)
+- [YouTube (IAsyncEnumerable)](https://www.youtube.com/watch?v=Ktl8K2b1-WU)
+- [Iterating with Async Enumerables in C# 8
+  (MSDN)](https://docs.microsoft.com/en-us/archive/msdn-magazine/2019/november/csharp-iterating-with-async-enumerables-in-csharp-8)
