@@ -174,7 +174,6 @@ module.exports = {
             "javascript/weird-js",
             "javascript/functions",
             "javascript/es-modules",
-            "javascript/advanced-vuejs",
             "javascript/nodejs",
             "javascript/axios",
             {
@@ -183,6 +182,13 @@ module.exports = {
                 "javascript/typescript/env-setup",
                 "javascript/typescript/tips",
               ],
+            },
+            "javascript/advanced-vuejs",
+            {
+              title: "Angular",
+              children:[
+                "javascript/angular/basics.md"
+              ]
             },
             {
               title: "React",
