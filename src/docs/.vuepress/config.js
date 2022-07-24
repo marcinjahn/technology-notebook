@@ -183,17 +183,19 @@ module.exports = {
                 "javascript/typescript/tips",
               ],
             },
-            "javascript/advanced-vuejs",
             {
               title: "Angular",
               children:[
-                "javascript/angular/basics.md"
+                "javascript/angular/overview",
+                "javascript/angular/components",
+                "javascript/angular/directives"
               ]
             },
             {
               title: "React",
               children: ["javascript/react/routing", "javascript/react/mobx"],
             },
+            "javascript/advanced-vuejs",
           ],
         },
         {
