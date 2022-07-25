@@ -188,7 +188,8 @@ module.exports = {
               children:[
                 "javascript/angular/overview",
                 "javascript/angular/components",
-                "javascript/angular/directives"
+                "javascript/angular/directives",
+                "javascript/angular/tips"
               ]
             },
             {

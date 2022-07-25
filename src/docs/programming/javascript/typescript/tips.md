@@ -27,3 +27,14 @@ export interface IActivity {
 }
 
 ```
+
+## Properties Declaration
+
+We can quickly declare some class properties and make them settable via a
+constructor like this:
+
+```ts
+export class Ingredient {
+  constructor(public name: string, public amount: number) {}
+}
+```

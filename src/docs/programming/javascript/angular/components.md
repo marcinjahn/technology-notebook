@@ -136,9 +136,9 @@ Here's an example:
 
 I am able to access `username` in the TS code and I am also able to modify it.
 
-### Events
+## Events
 
-We can bind to events with `(event)="expression"`. For example:
+We can bind to "native" events with `(event)="expression"`. For example:
 
 ```html
 <button (click)="onButtonClick()">Add</button>
@@ -147,10 +147,74 @@ We can bind to events with `(event)="expression"`. For example:
 The `onButtonClick` method would have to exist on our component. We could also
 put some expression directly in the HTML instead of invoking a method.
 
-#### Event Details
+### Event Details
 
 We can pass an object with event details by including `$event`:
 
 ```html
 <button (click)="onButtonClick($event)">Add</button>
 ```
+
+### Custom Events
+
+Our comonents can emit custom events that the parent of the component can
+handle:
+
+```ts{3}
+@Component(...)
+export class MyComponent {
+    @Output() userCreated = new EventEmitter<User>();
+
+    someMethod() {
+        this.userCreated.emit({name: 'Greg', age: 22});
+    }
+}
+```
+
+The parent comonent would attach to that event like this:
+
+```html
+<app-my-component (userCreated)="onUserCreated($event)"></ap-my-component>
+```
+
+The `onUserCreated` would be some method defined on that parent. The `$event`
+would be the instance of `User` the `MyComponent` passed to the event.
+
+::: tip
+`EventEmitter<>` and `Output` must be imported from `@angular/core`.
+:::
+
+We can alias the name of the event similarly to how we can do that in **Inuts**
+that I will describe next.
+
+## Inputs
+
+In order to allow our components to accept "arguments", we need to define them,
+like this:
+
+```ts{3}
+@Component(...)
+export class MyComponent {
+    @Input() name: string;
+}
+```
+
+The parent component would pass data into `MyComponent` like this:
+
+```html
+<app-my-component [name]="Steve"></app-my-component>
+```
+
+::: tip Aliasing
+We can change the property's name that the parent sees with:
+
+```ts
+@Input('username') name: string;
+```
+
+Now, the parent has to bind to `username`, not `name`:
+
+```html
+<app-my-component [username]="Steve"></app-my-component>
+```
+:::
