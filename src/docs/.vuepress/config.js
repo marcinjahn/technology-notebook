@@ -167,7 +167,7 @@ module.exports = {
           ],
         },
         {
-          title: "JavaScript",
+          title: "JavaScript & SPA",
           img: "javascript.webp",
           children: [
             "javascript/oop",

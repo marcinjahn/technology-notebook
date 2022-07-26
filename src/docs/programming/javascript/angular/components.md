@@ -218,3 +218,94 @@ Now, the parent has to bind to `username`, not `name`:
 <app-my-component [username]="Steve"></app-my-component>
 ```
 :::
+
+## Accepting Children
+
+Our components may display some children that would be passed by the parent
+component. Here's how to do that.
+
+The component that accepts children needs to have this somewhere in its
+template:
+
+```html
+<ng-content></ng-content>
+```
+
+The children would be passed like that:
+
+```html
+<app-some-component>
+    <p>I am being passed into SomeComponent!</p>
+</app-some-component>
+```
+
+If a component does not define `<ng-content>` anywhere in its template, any
+content that we pass into it is just lost.
+
+### @ViewContent
+
+We might need to access some HTML element that is passed to our component as a
+child. We can't do that with [@ViewChild](./tips.md#viewchild), because it can
+only be used for elements that belong to our component directly. There's another
+decorator though - `@ViewContent`.
+
+Here's an example:
+
+From the parent we pass some child into `SomeComponent`:
+
+```html
+<app-some-component>
+    <p #paragraph>Bla bla bla</p>
+</app-some-component>
+```
+
+From the `SomeComponent` (that received the paragraph into its `<ng-content>`):
+
+```ts
+// The property can be called whatever we want
+@ViewContent('paragraph') paragraph: ElementRef;
+```
+
+::: warning
+If you're about to use the `ElementRef` from the `ngOnInit` hook, you should add
+`{ static: true }`:
+
+```ts
+@ViewContent('paragraph', { static: true }) paragraph: ElementRef;
+```
+
+I don't really know why you'd even want to do that since the target element
+would not be even initialized yet. It will be initialized in the
+`ngAfterContentInit` though.
+:::
+
+## Component Lifecycle
+
+- `ngOnInit` - fired once the component is initialized. It's not yet displayed,
+  but the object for it was created in memory (the constructor finished its
+  execution at this point). Accessing DOM elements from here (e.g. via
+  [references](./tips.md#references-to-html-elements)) might not give us the
+  expected result since they might not be initialized yet. It's better to use
+  `ngAfterViewInit` for that.
+- `ngOnChanges` - fired when the component is initialized and also each time any
+  property with the `@Input` decorator is modified. It is the only hook that
+  receives an argument - these are the changes that Angular found (with current
+  and previous values).
+- `ngDoCheck` - run whenever Angular checks for changes in the component. Even
+  if nothing really changed, Angular has to check it first, and this method will
+  be called. The change detection is triggered by various things: events,
+  Promise resolution and others.
+- `ngAfterContentInit` - called when the child passed to this component gets
+  initialized (`<ng-content>`).
+- `ngAfterContentChecked` - fired when the Angular's change detection finishes
+  checking the child component.
+- `ngAfterViewInit` - fired when the component gets rendered on the screen
+- `ngAfterViewChecked` - fired when the view (including children) has been
+  checked by Angular.
+- `ngOnDestroy` - called once the component is about to be destroyed.
+
+::: tip Imports
+Each lifecycle method implementation requires our component to implement a
+specific type. For example, `ngOnInit` requires `OnInit` to be implemented.
+:::
+
