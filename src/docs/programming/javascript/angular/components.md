@@ -31,7 +31,7 @@ import { Component } from "@angular/core";
 export class AppComponent {}
 ```
 
-Angular promotes the s;eparation of things into different files, opposed to
+Angular promotes the separation of things into different files, opposed to
 frameworks like Vue.js. However, we are able to have HTML/CSS in the `ts` file
 simply by replacing `templateUrl`/`styleUrls` with `template`/`styles` and
 providing the HTML there as a string.
@@ -52,8 +52,7 @@ class:
 
 The `selector` property is actually not just the way to name the component. It
 is a specifier of where to render it. It's kind of similar to Kubernetes'
-Service object and its `selector`, which specifies where to send the traffic. I
-know that this analogy is a bit of a stretch.
+Service object and its `selector`, which specifies where to send the traffic.
 
 Most often we just specify our own tag for the component.
 
@@ -125,7 +124,7 @@ The `{{}}` would also work.
 
 #### Two-way Binding
 
-In forms it is useful to bind in two-ways, so that we can control the contents
+In forms, it is useful to bind in two-ways, so that we can control the contents
 of the input and also read that content.
 
 Here's an example:
@@ -160,7 +159,7 @@ We can pass an object with event details by including `$event`:
 Our comonents can emit custom events that the parent of the component can
 handle:
 
-```ts{3}
+```ts{3,6}
 @Component(...)
 export class MyComponent {
     @Output() userCreated = new EventEmitter<User>();
@@ -184,7 +183,7 @@ would be the instance of `User` the `MyComponent` passed to the event.
 `EventEmitter<>` and `Output` must be imported from `@angular/core`.
 :::
 
-We can alias the name of the event similarly to how we can do that in **Inuts**
+We can alias the name of the event similarly to how we can do that in **Inputs**
 that I will describe next.
 
 ## Inputs

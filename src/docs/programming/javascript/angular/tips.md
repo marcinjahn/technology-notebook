@@ -22,6 +22,11 @@ it gets loaded.
 We can mark any HTML element with a reference to be able to access it easily
 from somewhere else.
 
+::: tip Renderer2
+It's recommened to use [Renderer2](#renderer2) instead of accessing the DOM
+directly.
+:::
+
 Here's an example:
 
 ```html
@@ -87,3 +92,28 @@ the style. [There's also a way](https://angular.io/guide/view-encapsulation) to
 do it via [Shadow
 DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM),
 but that's not supported by some of the browsers.
+
+## Renderer2
+
+It is recommended to use `Renderer2` to access DOM elements instead of doing it
+via [references](#references-to-html-elements). This is safer in environments
+such as Service Worker, server or mobile.
+
+We can inject it into our classes and use as follows:
+
+```ts
+class SomeClass {
+    @ViewChild('el') elRef: ElementRef; // or injected into the constructor in a directive
+
+    constructor(private renderer: Renderer2) {}
+
+    someMethod() {
+        this.render.setStyle(elRef.nativeElement, 'color', 'white');
+    }
+}
+```
+
+## References
+
+[Renderer2 on
+DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-using-renderer2)

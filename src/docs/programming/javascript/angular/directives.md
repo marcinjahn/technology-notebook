@@ -45,8 +45,10 @@ The "else" syntax really sucks compared to Vue.js... It would be easier to use
 another `*ngIf` with reversed condition.
 
 ::: tip Star
-The star prefixing `ngIf` is an information that this directive is *structural*
-- it changes the DOM (adds/removes an element).
+The star prefixing `ngIf` is an information that this directive is *structural*.
+It changes the DOM (adds/removes an element).
+
+**We can't have more than one structural directive on one element!**
 :::
 
 ### ngStyle
@@ -91,3 +93,57 @@ We can also get the index of the iteration with:
 ```
 
 The `i` variable may be used within the loop now.
+
+## Custom Directives
+
+Some conventions:
+
+- the file names for directive are usually in the format `{name}.directive.ts`.
+- the `selector` is usually camelCase.
+
+Here's a simple example:
+
+```ts
+@Directive({
+  selector: '[appMyDirective]'
+})
+class MyDirective implements OnInit {
+  
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+
+  ngOnInit() {
+    this.renderer.setStyle(elementRef.nativeElement, 'color', 'blue');
+  }
+}
+```
+
+Usage:
+
+```html
+<p appMyDirective>Some text</p>
+```
+
+The background of the paragraph will be blue.
+
+::: warning Registration
+Our directive has to be registered in a module, just like any component that we
+create. Same as with component, we place the directives in the `declarations`
+array.
+:::
+
+A few highlights:
+
+- the `[appMyDirective]` selector is in square brackets, which means that the
+  directive will be used as an attribute. If our selector was without the square
+  brackets, it would be specifying an HTML element that this directive would be
+  applied to (like `p`).
+- the `elementRef` in the constructor is the element that the directive was
+  applied to. It gets injected into the instance automatically by Angular. The
+  name can be whatever we want, just the type needs to be `ElementRef`.
+- it's a good idea to use [Renderer2](./tips.md#renderer2).
+- we can do something with our element. `ngOnInit` lifecycle hook is a good
+  place to do it.
+
+::: tip Angular CLI
+We can generate directives quickly with `ng g d <name>`.
+:::
