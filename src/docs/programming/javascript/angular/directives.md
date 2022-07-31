@@ -1,17 +1,20 @@
 ---
 title: Directives
 description: Directives in Angular SPA framework
-tags: angular, spa, js, ts, directive
+tags: angular, spa, js, ts, directive, binding
 lang: en-US
 ---
 
 # Directives
 
 Directives are a way to kind of decorate HTML element with some additional
-logic. Similarly to [Components](./components.md), they can be applied to element using:
+logic. Similarly to [Components](./components.md), they can be applied to
+element using:
 
 - attributes (most often used)
 - classes
+- element type
+- id
 
 For example, I could have this:
 
@@ -25,31 +28,12 @@ Directive is a TS class with a `@Directive` decorator applied to it.
 
 There are also some built-in directives.
 
+Directives can be:
+
+- "casual" - do not add/remove elements from the DOM
+- structural - add/remove elements from the DOM
+
 ## Built-in Directives
-
-### *ngIf
-
-A conditional:
-
-```html
-<p *ngIf="userExists">Username is {{username}}</p>
-
-<!-- With else: -->
-<p *ngIf="userExists; else noUser">Username is {{username}}</p>
-<ng-template #noUser>
-    <p>User does not exist</p>
-</ng-template>
-```
-
-The "else" syntax really sucks compared to Vue.js... It would be easier to use
-another `*ngIf` with reversed condition.
-
-::: tip Star
-The star prefixing `ngIf` is an information that this directive is *structural*.
-It changes the DOM (adds/removes an element).
-
-**We can't have more than one structural directive on one element!**
-:::
 
 ### ngStyle
 
@@ -75,6 +59,65 @@ It's very similar to `ngStyle`, but it applies classes based on some logic.
 
 The `.highlighted` CSS class will be applied to this paragraph only if it's an
 admin.
+
+### *ngIf
+
+A conditional:
+
+```html
+<p *ngIf="userExists">Username is {{ username }}</p>
+
+<!-- With else: -->
+<p *ngIf="userExists; else noUser">Username is {{ username }}</p>
+<ng-template #noUser>
+    <p>User does not exist</p>
+</ng-template>
+```
+
+The "else" syntax really sucks compared to Vue.js... It would be easier to use
+another `*ngIf` with reversed condition.
+
+#### *ngIf Behind the Scenes
+
+Angular transforms the `*ngIf` into something like this:
+
+```html
+<ng-template [ngIf]="userExists">
+  <p>Username is {{ username }}</p>
+</ng-template>
+```
+
+This is the "raw" version of `ngIf`. It owuld actually work if we placed it in
+an app.
+
+::: tip Star
+The star prefixing `ngIf` is an information that this directive is *structural*.
+The star turns the element that the directive is applied to into a child of
+`<ng-template>`.
+
+Structural directives that have inputs with the same name can skip the square
+brackets, because names with a star are not gonna conflict with any built-in
+property of DOM elements. That's why we can write `*ngIf` and not `[*ngIf]`.
+
+**We can't have more than one structural directive on one element!**
+:::
+
+### ngSwitch
+
+Similarly to `switch` in most programming languages, we have `ngSwitch`
+directive in Angular. This one is a bit unique, because we use it as a
+combination of a few directives.
+
+```html
+<div [ngSwitch]="someValue">
+  <p *ngSwitchCase="1">It's 1</p>
+  <p *ngSwitchCase="2">It's 2</p>
+  <p *ngSwitchCase="3">It's 3</p>
+  <p *ngSwitchCaseDefault>It's something else</p>
+</div>
+```
+
+Only one case is displayed at a time.
 
 ### *ngFor
 
@@ -136,7 +179,8 @@ A few highlights:
 - the `[appMyDirective]` selector is in square brackets, which means that the
   directive will be used as an attribute. If our selector was without the square
   brackets, it would be specifying an HTML element that this directive would be
-  applied to (like `p`).
+  applied to (like `p`). If it ha a dot at the beginning, it would select
+  elements with a specified class.
 - the `elementRef` in the constructor is the element that the directive was
   applied to. It gets injected into the instance automatically by Angular. The
   name can be whatever we want, just the type needs to be `ElementRef`.
@@ -147,3 +191,180 @@ A few highlights:
 ::: tip Angular CLI
 We can generate directives quickly with `ng g d <name>`.
 :::
+
+### Reacting to Events
+
+Directives can listen to events on the elements they are attached to.
+Here's an example:
+
+```ts{8}
+@Directive({
+  selector: '[appMyDirective]'
+})
+class MyDirective {
+  
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+
+  @HostListener('mouseenter') onMouseEnter(eventData) {
+    // do something...
+  }
+}
+```
+
+### @HostBinding
+
+There's an even easier way to modify DOM properties than using
+[references](./tips.md#references-to-html-elements) or
+[Renderer2](./tips.md#renderer2). It's a decorator called `HostBinding`. It
+allows to bind to a specified property on the DOM element to access it easily.
+
+Here's an example:
+
+```ts{6,11}
+@Directive({
+  selector: '[appMyDirective]'
+})
+class MyDirective implements OnInit {
+
+  @HostBinding('style.color') elColor: string;
+  
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+
+  ngOnInit() {
+    this.elColor = 'white';
+  }
+}
+```
+
+::: tip Renderer2
+There's nothing wrong with using [Renderer2](./tips.md#renderer2). It's just
+another convenient way to access the DOM.
+:::
+
+### Directive's Inputs
+
+Our directives can support some inut arguments, very similarly to the way how
+[Comonents](./components.md) accept inputs. This way, users of the directive can
+have some influence on how it works.
+
+Here's an example:
+
+```ts{6,12}
+@Directive({
+  selector: '[appMyDirective]'
+})
+class MyDirective implements OnInit {
+
+  @Input() color: string; // it could have some default value if it's not provided
+  @HostBinding('style.color') elColor: string;
+  
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+
+  ngOnInit() {
+    this.elColor = this.color;
+  }
+}
+```
+
+This is a silightly modified code compared to the previous example. Now the
+color applied to our element is no longer hardcoded. Here's how the binding is
+done in the template:
+
+```html
+<p appMyDirective [color]="'blue'">Some text</p>
+```
+
+Angular figures out if the provided input belongs to the directive or the
+element itself. (What if there's a conflict?)
+
+#### Reusing directive's name for an input
+
+Some built-in directives, such as `[ngClass]` accept the inut (a class name)
+directly under the directive's name, like this:
+
+```html
+<p [ngClass]="{ highlighted: username === 'admin' }">{{Username}}</p>
+```
+
+We can do it as well in our directives:
+
+```ts{6}
+@Directive({
+  selector: '[appMyDirective]'
+})
+class MyDirective {
+
+  @Input('appMyDirective') color: string;
+
+  // ...
+}
+```
+
+We'd use that directive as follows:
+
+```html
+<p [appMyDirective]="'blue'">Some text</p>
+```
+The `appMyDirective` has two meanings now:
+
+- it's an attribute which marks DOM elements that we want to apply our directive
+  to;
+- it's an inut of our directive allowing users to set some value.
+
+Angular allows us to use the shorthand of including the `appMyDirective` in
+square brackets to communicate to the framework both of the meanings listed
+above.
+
+::: tip Other Inputs
+We can use the technique described above together with other inputs that have
+their own inidividual names.
+:::
+
+---
+
+::: tip @Output
+Other than `@Input`s, directives can also have `@Output`s. That makes them even
+more similar to [Components](./components.md).
+:::
+
+### Custom Structural Directives
+
+As it was described in the [*ngIf section](#ngif), structural components have a
+star prefixing the directive's name. That causes the elements to be placed in
+`<ng-template>`, which is Angular's way to specify templates.
+
+Here's an example of how to build our own structural components. This is an
+imlementation of `*notIf`:
+
+```ts
+@Directive({
+  selector: '[ifNot]'
+})
+class IfNotDirective {
+
+  @Input() set ifNot(condition: bool) {
+    if (!condition) {
+      this.vsRef.createEmbeddedView(this.templateRef); // display content
+    } else {
+      this.vcRef.clear(); // remove content
+    }
+  }
+
+  constructor(private templateRef: TemplateRef<any>, private vcRef: ViewContainerRef) { }
+}
+```
+
+We'd use it like this:
+
+```html
+<p [*ifNot]="userFound">User not found</p>
+```
+
+In the directive's class we used the following (auto-injected) elements:
+
+- `TemplateRef<any>` - this represents the `<ng-template>` that is generated due to a '*'
+- `ViewContainerRef` - this represents the place where the element (that our
+  directive is applied to) should be located.
+
+Basically, `TemplateRef<any>` represents the *WHAT*, and the `ViewContainerRef`
+represents the *WHERE*, helping our directive to do its job.
