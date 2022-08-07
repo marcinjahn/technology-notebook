@@ -34,7 +34,7 @@ export class AppComponent {}
 Angular promotes the separation of things into different files, opposed to
 frameworks like Vue.js. However, we are able to have HTML/CSS in the `ts` file
 simply by replacing `templateUrl`/`styleUrls` with `template`/`styles` and
-providing the HTML there as a string.
+providing the HTML or CSS there as a string.
 
 ## selector
 

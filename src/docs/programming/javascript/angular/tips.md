@@ -113,7 +113,34 @@ class SomeClass {
 }
 ```
 
+## Moving Events to Services
+
+Normally, our components would emit events, and a parent of the component can
+react to that. The problem appears when the component that wants to get some
+event is not a direct parent of it. Then, we have to move the event up (and
+sometimes down) the component tree to connect the two ends. It's cumbersome.
+
+One solution to that problem is to move the `EventEmitter<T>` instance to a service.
+Then, both the even producer and consumer inject that service. The producer can raise the event via the service:
+
+```ts
+this.someService.someEvent.emit();
+```
+
+The consumer(s) can subscribe to it:
+
+```ts
+this.someService.someEvent.subscribe(() => {
+    // do something...
+})
+```
+
+::: warning
+The problem with this approach is that now everyone who has access to
+`someService` can produce/consume events.
+:::
+
 ## References
 
 [Renderer2 on
-DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-using-renderer2)
+DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-using-renderer2) 

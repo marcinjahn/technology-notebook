@@ -87,7 +87,7 @@ Angular transforms the `*ngIf` into something like this:
 </ng-template>
 ```
 
-This is the "raw" version of `ngIf`. It owuld actually work if we placed it in
+This is the "raw" version of `ngIf`. It would actually work if we placed it in
 an app.
 
 ::: tip Star
@@ -170,7 +170,7 @@ The background of the paragraph will be blue.
 
 ::: warning Registration
 Our directive has to be registered in a module, just like any component that we
-create. Same as with component, we place the directives in the `declarations`
+create. Similarly to components, we place the directives in the `declarations`
 array.
 :::
 
@@ -179,7 +179,7 @@ A few highlights:
 - the `[appMyDirective]` selector is in square brackets, which means that the
   directive will be used as an attribute. If our selector was without the square
   brackets, it would be specifying an HTML element that this directive would be
-  applied to (like `p`). If it ha a dot at the beginning, it would select
+  applied to (like `p`). If it has a dot at the beginning, it would select
   elements with a specified class.
 - the `elementRef` in the constructor is the element that the directive was
   applied to. It gets injected into the instance automatically by Angular. The
@@ -236,6 +236,14 @@ class MyDirective implements OnInit {
 }
 ```
 
+Another example shows how we can toggle a class on some element:
+
+```ts
+@HostBinding('class.open') isOpen = false;
+```
+
+Setting `isOpen` to `true` adds the class `open` to the element.
+
 ::: tip Renderer2
 There's nothing wrong with using [Renderer2](./tips.md#renderer2). It's just
 another convenient way to access the DOM.
@@ -243,8 +251,8 @@ another convenient way to access the DOM.
 
 ### Directive's Inputs
 
-Our directives can support some inut arguments, very similarly to the way how
-[Comonents](./components.md) accept inputs. This way, users of the directive can
+Our directives can support some input arguments, very similarly to the way how
+[Components](./components.md) accept inputs. This way, users of the directive can
 have some influence on how it works.
 
 Here's an example:
@@ -317,7 +325,7 @@ above.
 
 ::: tip Other Inputs
 We can use the technique described above together with other inputs that have
-their own inidividual names.
+their own individual names.
 :::
 
 ---
@@ -334,7 +342,7 @@ star prefixing the directive's name. That causes the elements to be placed in
 `<ng-template>`, which is Angular's way to specify templates.
 
 Here's an example of how to build our own structural components. This is an
-imlementation of `*notIf`:
+imlementation of `*ifNot`:
 
 ```ts
 @Directive({

@@ -1,0 +1,133 @@
+---
+title: Services and DI
+description: Services and Dependency Injection in Angular SPA framework
+tags: angular, spa, js, ts, services, dependency injection
+lang: en-US
+---
+
+# Services and Dependency Injection
+
+Angular has a bit of similarity to the .NET ecosystem in regards to handling
+services. The classes that provide some specific functionalities (like logging)
+can be brought into other classes (e.g. comonents) using Deoendency Injection.
+Here's a simple example:
+
+This is some service:
+
+```ts
+export class LoggerService {
+    log(message: string) {
+        console.log(message);
+    }
+}
+```
+
+Here's a class that wants to use the service:
+
+```ts{3,6,9}
+@Component({
+    ...,
+    providers: [LoggerService]
+})
+export class MyComponent {
+    constructor(private logger: LoggerService) {}
+
+    someMethod() {
+        this.logger.log('Something happened');
+    }
+}
+```
+
+The highlighted lines show, in order:
+
+1. How to create a *scope* for `LoggerService`
+2. Constructor injection
+3. Using the injected service.
+
+::: tip File Naming
+Just like other kinds of entities in Angular, files containing services
+are usually named following the template of `<name>.service.ts`.
+:::
+
+Services in Angular are just typical TypeScript classes. They do not use any
+Angular-specific decorator (unless you want to [inject some other
+service](#injecting-into-services)).
+
+## Scope
+
+The way how we injected the service into the component in the example above has
+some consequences:
+
+- the child components (direct and indirect) will receive the same instance of
+  the `LoggerService` (if they ask for it)
+- all the other comonents (other than the children of `MyComponent`) would
+  receive different instance(s) of `LoggerService`
+
+The Angular injector is *hierarchical*. We can inject services into:
+
+- components - `providers` of a module or component
+- services - `providers` of a module and `@Injectable`
+- directives
+- pipes
+
+### Singleton
+
+Providing a sevice via `SomeComponent` makes it a singleton among the children
+tree of that component.
+
+Providing a service via the `AppComponent` makes it a singleton among all
+components (since `AppComponent` is usually the root of any Angular app).
+
+Providing a service via the `AppModule` makes it a **global singleton** (for
+both all the components and services).
+
+::: tip
+We can also decide that some service should be a singleton on this service's
+level via the `@Injectable({provideIn: 'root'})` decorator. Then, we don't have
+to put it in any `providers` array.
+:::
+
+---
+
+The way how Angular sets up DI is different from the .NET's way of doing that.
+In .NET we decide whether the service should be a singleton or not at the
+aplication root level. In Angular, each class/component may decide whether it
+wants to reuse some service instance or to get a new one.
+
+::: warning Overriding
+An instance of the service being injected (according to the rules above) may be
+overridden by a different instance of that service if we decide to `provide` it
+again.
+
+The class that requires some service, but does not `provide` it, will receive
+the instance that was provided up in the tree (assuming that it was provided
+there).
+:::
+
+## Injecting into Services
+
+Services may be injected into other services. Services do not use decorators by
+default, so there is no `providers` array. Instead, services that want to have
+some dependency injected, need to use the special `@Injectable` decorator.
+
+Here's an example:
+
+```ts{1,3,6}
+@Injectable()
+export class DataService {
+    constructor(private logger: Logger) {}
+
+    doSomething: Promise<Something> {
+        this.logger.log("Doing something");
+    }
+}
+```
+
+Angular will try to match all the arguments that are required by the
+constructor with DI.
+
+::: warning
+In order for a service to be injectable, it has to be `provided` in some module
+or the decorator should be used like this: `@Injectable(provideIn: 'root')`
+(there are other `provideIn` options as well).
+:::

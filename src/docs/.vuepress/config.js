@@ -189,6 +189,8 @@ module.exports = {
                 "javascript/angular/overview",
                 "javascript/angular/components",
                 "javascript/angular/directives",
+                "javascript/angular/services",
+                "javascript/angular/routing",
                 "javascript/angular/tips"
               ]
             },
@@ -416,4 +418,7 @@ module.exports = {
     "mermaidjs",
     "tabs",
   ],
+  // markdown: {
+  //   lineNumbers: true
+  // }
 };
