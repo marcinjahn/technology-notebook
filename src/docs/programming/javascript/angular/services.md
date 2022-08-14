@@ -9,7 +9,7 @@ lang: en-US
 
 Angular has a bit of similarity to the .NET ecosystem in regards to handling
 services. The classes that provide some specific functionalities (like logging)
-can be brought into other classes (e.g. comonents) using Deoendency Injection.
+can be brought into other classes (e.g. components) using Dependency Injection.
 Here's a simple example:
 
 This is some service:
@@ -50,7 +50,7 @@ are usually named following the template of `<name>.service.ts`.
 :::
 
 Services in Angular are just typical TypeScript classes. They do not use any
-Angular-specific decorator (unless you want to [inject some other
+Angular-specific decorator (unless you want to [inject into some other
 service](#injecting-into-services)).
 
 ## Scope
@@ -124,7 +124,7 @@ export class DataService {
 ```
 
 Angular will try to match all the arguments that are required by the
-constructor with DI.
+constructor with DI. In this case, `Logger` would be injected.
 
 ::: warning
 In order for a service to be injectable, it has to be `provided` in some module

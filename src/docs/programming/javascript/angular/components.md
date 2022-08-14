@@ -122,6 +122,14 @@ produces
 The `{{}}` would also work.
 :::
 
+::: warning Brackets vs. no brackets
+We don't always have to provide square brackets when binding to some `@Input`.
+
+If brackets are there, the value is treated as an expression.
+
+If there are no brackets the value is treated as a string.
+:::
+
 #### Two-way Binding
 
 In forms, it is useful to bind in two-ways, so that we can control the contents

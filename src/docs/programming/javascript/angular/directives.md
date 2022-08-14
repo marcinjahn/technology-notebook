@@ -95,10 +95,6 @@ The star prefixing `ngIf` is an information that this directive is *structural*.
 The star turns the element that the directive is applied to into a child of
 `<ng-template>`.
 
-Structural directives that have inputs with the same name can skip the square
-brackets, because names with a star are not gonna conflict with any built-in
-property of DOM elements. That's why we can write `*ngIf` and not `[*ngIf]`.
-
 **We can't have more than one structural directive on one element!**
 :::
 
