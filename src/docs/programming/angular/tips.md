@@ -120,19 +120,30 @@ react to that. The problem appears when the component that wants to get some
 event is not a direct parent of it. Then, we have to move the event up (and
 sometimes down) the component tree to connect the two ends. It's cumbersome.
 
-One solution to that problem is to move the `EventEmitter<T>` instance to a service.
-Then, both the even producer and consumer inject that service. The producer can raise the event via the service:
+One solution is to:
+
+- move the `EventEmitter<T>` to a service;
+- replace that `EventEmitter<T>` with `Subject<T>` - it works pretty much the
+  same, but is more functional (read [here](./observables.md#subject)).
+  `EventEmitter<T>` would still work if for some reason we want to keep using
+  that.
+
+Then, both the even producer and consumer inject that service. The producer can
+raise the event via the service:
 
 ```ts
-this.someService.someEvent.emit();
+this.someService.someEvent.next(someData);
 ```
 
 The consumer(s) can subscribe to it:
 
 ```ts
-this.someService.someEvent.subscribe(() => {
+const sub = this.someService.someEvent.subscribe((data) => {
     // do something...
-})
+});
+
+// Rememember to unsubscribe
+sub.unsubscribe();
 ```
 
 ::: warning

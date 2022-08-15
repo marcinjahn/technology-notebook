@@ -167,7 +167,21 @@ module.exports = {
           ],
         },
         {
-          title: "JavaScript & SPA",
+          title: "Angular",
+          img: "angular.webp",
+          children:[
+            "angular/overview",
+            "angular/components",
+            "angular/directives",
+            "angular/services",
+            "angular/routing",
+            "angular/observables",
+            "angular/forms",
+            "angular/tips"
+          ]
+        },
+        {
+          title: "JavaScript",
           img: "javascript.webp",
           children: [
             "javascript/oop",
@@ -182,17 +196,6 @@ module.exports = {
                 "javascript/typescript/env-setup",
                 "javascript/typescript/tips",
               ],
-            },
-            {
-              title: "Angular",
-              children:[
-                "javascript/angular/overview",
-                "javascript/angular/components",
-                "javascript/angular/directives",
-                "javascript/angular/services",
-                "javascript/angular/routing",
-                "javascript/angular/tips"
-              ]
             },
             {
               title: "React",

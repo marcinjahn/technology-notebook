@@ -8,7 +8,14 @@ lang: en-US
 # Routing in Angular
 
 Angular has a built-in router. When initializing a new project, the CLI asks if
-it should be included or not. We can configure routing in the module file.
+it should be included or not. If we opted for "No" initially, we can add routing
+module manually:
+
+```sh
+ng generate module app-routing --flat --module=app
+```
+
+We can also configure routing in the `AppModule` file:
 
 ```ts
 const routes: Routes = [

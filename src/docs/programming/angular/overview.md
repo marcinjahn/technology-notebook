@@ -9,11 +9,10 @@ lang: en-US
 
 Angular is an SPA framework, once very popular, nowadays rather losing interest
 year by year. It has its legacy though, I think it did a pretty good job of
-popularizing TypeScript. Interestingly, it uses TypeScripts
+popularizing TypeScript. Interestingly, it uses TypeScript's
 [Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
 feature, which is experiemntal since as long as I remember (and I started with
-Angular 2, and we're at Angular 14 at the moment I'm writing this). I wonder if
-it's ever going to go out of the experimental phase, it's a bit weird.
+Angular 2, and we're at Angular 14 at the moment I'm writing this).
 
 ## Installation
 
