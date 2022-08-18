@@ -151,6 +151,22 @@ The problem with this approach is that now everyone who has access to
 `someService` can produce/consume events.
 :::
 
+## Disabling a button for invalid forms
+
+Here's an easy way to disable a button if a form is not valid:
+
+```html{8}
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <input type="text" ngModel name="age">
+        <input type="text">
+        <select ngModel name="options">
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+        </select>
+        <button [disabled]="!f.valid" type="submit">Sumbit</button>
+    </form>
+```
+
 ## References
 
 [Renderer2 on
