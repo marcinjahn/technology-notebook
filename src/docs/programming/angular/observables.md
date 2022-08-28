@@ -73,10 +73,12 @@ component is no longer displayed. In such case, the component should implement
 subscription there.
 
 ::: tip Router
-Angular's Router allows us to subscribe to various observables (e.g. `params`).
+Angular's [Router](./routing.md) allows us to subscribe to various observables (e.g. `params`).
 Exceptionally, we don't need to unsubscribe from them, because Angular will do
 that for us in the background. Using `unsubscribe()` does not cause any harm
 though.
+
+[HttpClient](./http.md) has similar characteristics.
 :::
 
 ### Error handling
@@ -97,6 +99,34 @@ const sub = someObservable.subsctibe(
 
 Without handling errors explicitly, Observable will throw the error to the
 console.
+
+### catchError
+
+We cna also use the `catchError` [operator](#operators). We can attach it once
+to some observable, to include some error handling logic. It is useful when we
+want to have some common error-handling logic. We can rethrow an error from
+withing that operator with `throwError(...)`.
+
+```ts
+const observable = someObservable.catchError(e => {
+    // log the error or whatever..
+    throwError(e);
+})
+
+const sub1 = observable.subscribe(n => {
+    // do somehting...
+}, error =>{
+    // handle error...
+})
+
+const sub2 = observable.subscribe(n => {
+    // do something...
+})
+```
+
+Like the example above shows, the individual subscribers can still attach their
+own error handling logic. The "common" handler will always be fired first, and
+then the error will be propagated to the subscribers.
 
 ### Completion
 
@@ -152,7 +182,8 @@ modifiedObservable.subscribe(val => console.log(val));
 
 We apply operators with the `pipe()` function. We used the `map` operator. There
 are lots more in the `rxjs/operators` import. For example, there is `filter`,
-which rejects values that do not conform to the provided predicate.
+which rejects values that do not conform to the provided predicate; or
+`catchError`, which allows to handle error "globally" somehow.
 
 ::: tip Chaining
 To chain a few operators sequentially, we can call `pipe()` multiple times, or

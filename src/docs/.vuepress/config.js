@@ -177,6 +177,8 @@ module.exports = {
             "angular/routing",
             "angular/observables",
             "angular/forms",
+            "angular/pipes",
+            "angular/http",
             "angular/tips"
           ]
         },

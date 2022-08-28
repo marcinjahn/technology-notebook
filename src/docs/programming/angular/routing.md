@@ -186,7 +186,7 @@ export class SomeComponent {
 Router can be injected into classes, just like any other service.
 :::
 
-The path that we navigate to is (by default) relative to the current path.
+The path that we navigate to is (by default) relative to the root.
 Having or not having slash in the beginning does not change anything (it does
 matter with [routerLink](#navigation))! We can change the path that `navigate`
 will be executed in relation to with `relativeTo`. For example, we could pass to
