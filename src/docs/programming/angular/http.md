@@ -1,7 +1,7 @@
 ---
 title: HTTP
 description: HTTP requests in Angular SPA framework - senidng requests to Web API servers
-tags: angular, spa, js, ts, http, request, web, api
+tags: angular, spa, js, ts, http, request, web, api, interceptor
 lang: en-US
 ---
 
@@ -69,9 +69,135 @@ let sub = httpClient.get("api.com", {
 ```
 
 ::: tip Events
-We can also observe `'events'` This one will bring multiple events informing
-about the stage that the request is at (e.g. `Sent`, `Response`).
+We can also observe `'events'` This one will bring multiple messages to
+subscribers, informing about the stages that the request is at (e.g. `Sent`,
+`Response`, etc.).
+
+This seems to be the only useful use of `Observables` for HTTP requests, and a
+very niche one. Otherwise, I don't really see why `Promises` wouldn't be
+utilized by default.
 :::
+
+### Response String
+
+Angular automatically converts the responses to JS objects. We can tell it not
+to do it:
+
+```ts
+let sub = httpClient.get("api.com", {
+    responseType: 'text' // 'json' by default
+})
+```
+
+It can't be used iwth generic versions of HTTP client's methods, it wouldn't
+make sense anyway, because the whole point of these generics is to automatically
+get a typed response.
+
+## Interceptors
+
+Interceptors allow us to set up some global action on outgoing HTTP requests
+and/or incoming HTTP responses. They work a bit like middleware in ASP.NET Core.
+Interceptors are created as services implementing `HttpInterceptor`.
+
+### Request Interceptors
+
+```ts
+export class MyInterceptorService implements HttpInterceptor {
+    interpcet(request: HttpRequest<any>, next: HttpHandler) {
+        // do something with the request (log, attach some headers, etc.)
+        return next.handle(request); // send the request further down the pipeline
+    }
+}
+```
+
+The `request` argument is generic. If we know the type of the respones, we can
+use it here instead of `any`.
+
+Here's how we register interceptors. In the module, we'd do:
+
+```ts
+@NgModule({
+    declaractions: [ AppComponent ],
+    imports: [ BrowserModule, HttpClientModule ],
+    providers: [
+        { 
+            provide: HTTP_INTERCEPTORS,
+            useClass: MyInterceptorService,
+            multi: true // with this, we can have multiple interceptors
+        }
+    ]
+})
+export class AppModule {}
+```
+
+What we're doing above is just the [DI](./services.md). We treat
+`HTTP_INTERCEPTORS` as a placeholder for actual interceptors. Angular's inner
+code asks for `HTTP_INTERCEPTORS` and it is given whatever we register.
+
+::: tip Multiple Interceptors
+Here's how we'd register multiple interceptors:
+
+```ts
+providers: [
+    { 
+        provide: HTTP_INTERCEPTORS,
+        useClass: MyInterceptorService,
+        multi: true
+    },
+        { 
+        provide: HTTP_INTERCEPTORS,
+        useClass: AnotherInterceptorService,
+        multi: true
+    }
+]
+```
+
+The order of execution of the interceptors pipeline is the same as the order of
+their registration.
+:::
+
+::: warning
+In order to restrict the interceptor only to some sub-group of requests, we need
+to filter requests out in the interceptor itself. All the interceptors are
+invoked for any HTTP request.
+:::
+
+### Response Interceptors
+
+Intercepting incoming responses uses the same kind of services as shown
+previously. This time though, we need to makse use of the fact that the second
+parameter of the interceptor returns an `Observable`. It is going to notify us
+of the lifetime of the request.
+
+```ts
+export class MyInterceptorService implements HttpInterceptor {
+    interpcet(request: HttpRequest<any>, next: HttpHandler) {
+        return next.handle(request).pipe(tap(event => {
+            // do something...
+        }))
+    }
+}
+```
+
+The `event` that we get access to is the same kind of event that was mentioned
+in [Raw Response](#raw-response) section. We might want to filter out all the
+events that are not of type equal to `Response`. The interceptor may modify the
+response or do anything else with it.
+
+:::tip RxJS tap
+`tap` is an operator that allows us to do some action on every event, but it 
+does not transform the event in any way (like `map` would do for example).
+:::
+
+## Promise
+
+Instead of using `Observables`, we can utilize `Promises`, making it possile to
+use `async`/`await` in our code:
+
+```ts
+let promise = httpClient.get<Stuff>('api.com').toPromise();
+await promise;
+```
 
 ## Best Practices
 
