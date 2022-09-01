@@ -70,7 +70,7 @@ Usually, we do not define routes directly in `app.module.ts`. Instead, we'd
 create a separate module file `app-routing.module.ts` with the routing setup
 inside of it.
 
-```ts{13,15}
+```ts
 const routes: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
   // other routes...
@@ -396,7 +396,7 @@ in some way.
 Guards are services and we normally store them in `*.service.ts` files.
 
 ::: tip Provide
-Guards, like any service, needs to be `provided` somewhere.
+A guard, like any service, needs to be `provided` somewhere.
 :::
 
 Here's a simple example:
@@ -571,7 +571,7 @@ When a given component needs some external data to be loaded before it can be
 displayed, custom **Resolvers** can be used.
 
 ::: tip Provide
-Resolvers, like any service, needs to be `provided` somewhere.
+A resolver, like any service, needs to be `provided` somewhere.
 :::
 
 Here's an example of such a resolver:
@@ -629,8 +629,6 @@ export class MovieComponent implements OnInit {
 We subscribe to the result, because the resulting data could change when we
 reload the component (Angular will not reload the whole component for
 performance reasons).
-
-(Will subscription work when data is returned synchronously?)
 
 The result is placed in `this.route.data` object under the key that we used in
 the route definition's `resolve` section (`movie` in this case). The `data`
