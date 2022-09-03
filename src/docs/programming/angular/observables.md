@@ -22,6 +22,18 @@ the observer(s) will be notified about that (HTTP request is an example of such
 an Observable). Observables might also be inifinite and the completion will
 never occur.
 
+::: tip $ Postfix
+In Angular, there is an unofficial convention to postfix variables representing
+`Observable<T>` with a **$** sign. Additionally, often the last value of the
+observable is stored in a variable called the same as the one holding the
+`Observable<T>`, but without the "$" sign this time.
+
+```ts
+temperature$: Observable<number>;
+temperature: number; // last value of temperature$
+```
+:::
+
 ## Built-in Observables
 
 rxJS comes with a few built-in functions that create observables:
@@ -181,14 +193,24 @@ modifiedObservable.subscribe(val => console.log(val));
 ```
 
 We apply operators with the `pipe()` function. We used the `map` operator. There
-are lots more in the `rxjs/operators` import. For example, there is `filter`,
-which rejects values that do not conform to the provided predicate; or
-`catchError`, which allows to handle error "globally" somehow.
+are lots more in the `rxjs/operators` import. For example:
+
+- `filter` rejects values that do not conform to the provided predicate;
+- `catchError` allows to handle error "globally" somehow and `throwError`
+  (possible a new one) down the chain
+- `exhaustMap` turns `Observable<T>` into an `Observable<U>`. It is useful when
+  a result (some `T`) of one observable is needed to create another observable
+  (of `V`).
+- `take` - automatically completes the resulting `Observable` after receiving
+  `n` items from it. We do not need to `unsubscribe()` from it, it will be
+  handled automatically. It is useful when we want to get just one latest value
+  of some `Observable` (like the `BehaviorSubject` described down below).
 
 ::: tip Chaining
 To chain a few operators sequentially, we can call `pipe()` multiple times, or
 we can provide more operators as next arguments to `pipe()`.
 :::
+
 
 ## Subject
 
@@ -219,4 +241,11 @@ sub.unsubscribe();
 ::: tip Operators
 We can use [operators](#operators) on `Subjects`, we can't do that with
 `EventEmitter`.
+:::
+
+::: tip BehaviorSubject
+There's also another variant of `Subject` called `BehaviorSubject`. It comes
+with an additional feature - the subscriber is always able to read the last
+value of the Subject, even if it subscribes after that value was published.
+It needs to be initialized via constructor with some initial value.
 :::
