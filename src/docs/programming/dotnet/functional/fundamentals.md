@@ -1,7 +1,7 @@
 ---
 title: Fundamentals of Functional Programming
 description: Fundamentals of Functional Programming, like Higher-Order Functions (HOF), or purity, in C#
-tags: .net, asp.net, c#
+tags: .net, asp.net, c#, functional, programming, fp
 lang: en-US
 ---
 
@@ -187,9 +187,13 @@ In general, in our programs, we're dealing with either *regular values* or
 
 ![](./assets/elevated-vs-regular.jpeg)
 
+**NOTE:** The image above has regular/elevated naming reversed. Sorry, my bad! 
+
 "Primitive" data types like `int`, `string`, `bool` are *regular values*. The
 types that contain other types are *elevated values* (`List<T>`, `Task<T>`,
-`Option<T>`).
+`Option<T>`). Note that the regular values do not actually need to be primitive
+data types, they can also be instances of classes like `Person` or whatever.
+It's just a simplified view of the matter.
 
 We can look at various functions that operate on data as either:
 

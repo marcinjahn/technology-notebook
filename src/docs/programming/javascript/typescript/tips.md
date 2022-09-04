@@ -38,3 +38,11 @@ export class Ingredient {
   constructor(public name: string, public amount: number) {}
 }
 ```
+
+## never type
+
+There's a `never` type. It's a bit similar to `void` in the sense that the user is not expected to use the value of that type. The distintion is:
+
+- functions that return `void` actually return `undefined`
+- functions that return `never` are programmed in a way that they never actually
+  return. They could always throw some exception or they might be just infinite.

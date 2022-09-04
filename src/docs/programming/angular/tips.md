@@ -78,7 +78,7 @@ We can also access other components or directives this way with:
 ```
 
 It will be a reference to the first usage of `SomeComponent` within the current
-component's template.
+component's template. It would work the same way with a directive.
 :::
 
 ## Encapsulated Styles

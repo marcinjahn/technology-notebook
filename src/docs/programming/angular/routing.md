@@ -411,7 +411,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRoute, 
     state: RouterStateSnapshot)
-     : bool | Observable<bool> | Promise<bool> {
+     : bool {
 
       if (this.isAuthorized) {
         return true;
@@ -426,17 +426,33 @@ export class AuthGuard implements CanActivate {
 The guard needs to implement `CanActivate`. Its `canActivate` method should
 return one of:
 
-- `bool`
-- `Observable<bool>`
-- `Promise<bool>`
+- `bool | UrlTree`
+- `Observable<bool | UrlTree>`
+- `Promise<bool | UrlTree>`
 
 ::: tip
 The actual logic of checking whether the user is authorized would probably be
 put in some other service.
 :::
 
+### UrlTree
+
 We can route users to some other page in the guard, most likely when the
-condition is not satisfied.
+condition is not satisfied. We use the `UrlTree` for that - it's one of the
+types that may be returned from guards. Here's how we'd return it:
+
+```ts
+if (notAuthorized) {
+  return this.router.createUrlTree(['/login']);
+}
+```
+
+The `router` is an instance of a `Router`.
+
+::: tip
+It's OK to return either a boolean `true` or an `UrlTree` in the same guard
+depending on the success/failure of the checked condition.
+:::
 
 ---
 

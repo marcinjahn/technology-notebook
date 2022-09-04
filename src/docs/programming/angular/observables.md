@@ -198,19 +198,30 @@ are lots more in the `rxjs/operators` import. For example:
 - `filter` rejects values that do not conform to the provided predicate;
 - `catchError` allows to handle error "globally" somehow and `throwError`
   (possible a new one) down the chain
-- `exhaustMap` turns `Observable<T>` into an `Observable<U>`. It is useful when
-  a result (some `T`) of one observable is needed to create another observable
-  (of `V`).
 - `take` - automatically completes the resulting `Observable` after receiving
   `n` items from it. We do not need to `unsubscribe()` from it, it will be
   handled automatically. It is useful when we want to get just one latest value
   of some `Observable` (like the `BehaviorSubject` described down below).
+- `exhaustMap` similar to `map`, but accepts function that crosses boundaries (more on that in the *tip* below)
+
+::: tip exhaustMap
+An `Observable<T>` could be treated as a
+[functor](../dotnet/functional/fundamentals.md#functors) and a
+[monad](../dotnet/functional/fundamentals.md#monads).
+
+The `map` operator is like a `Map` on a functor. It turns `Observable<T>` into
+`Observable<U>` by accepting a function that turns a *regular value* `T` into a
+regular value `U`.
+
+The `exhaustMap` operator is like a `Bind` on a monad. It turns `Observable<T>`
+into `Observable<U>` by accepting a function that turns a regular value `T`
+into an *elevated value* - `Observable<U>`.
+:::
 
 ::: tip Chaining
 To chain a few operators sequentially, we can call `pipe()` multiple times, or
 we can provide more operators as next arguments to `pipe()`.
 :::
-
 
 ## Subject
 

@@ -316,3 +316,15 @@ Each lifecycle method implementation requires our component to implement a
 specific type. For example, `ngOnInit` requires `OnInit` to be implemented.
 :::
 
+## Instantiating Components from TypeScript
+
+Normally, we include all the components that we want to render in our template
+`.html` files. However, in more dynamic scenarios, it might be impossible to
+know upfront which components will be needed on a given page. That's where
+**Dynamic Components** might be used. We're able to create components within our
+TypeScript code and render them on the page.
+
+Here's how to do it:
+[StackOverflow](https://stackoverflow.com/questions/70946038/replace-deprecated-angular-componentfactoryresolver-componentfactory).
+
+In Angular <13, we'd use `ComponentFactoryResolver`. Nowadays, it's deprecated.
