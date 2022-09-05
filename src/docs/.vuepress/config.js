@@ -179,6 +179,7 @@ module.exports = {
             "angular/forms",
             "angular/pipes",
             "angular/http",
+            "angular/modules",
             "angular/tips"
           ]
         },

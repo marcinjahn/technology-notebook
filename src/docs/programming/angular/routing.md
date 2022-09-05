@@ -104,6 +104,8 @@ Then, the `app.module` file gets simplified:
 export class AppModule { }
 ```
 
+We can also [split routes per feature](./modules.md#routes).
+
 ## Navigation in HTML
 
 With routing in place, we don't want to navigate between different pages in our

@@ -35,7 +35,7 @@ instructions.
 ## Modules
 
 By default, the app has the `AppModule` module. We can also create more of them.
-A module is like a package that bundles things together. Wit simple apps, the
+A module is like a package that bundles things together. With simple apps, the
 default `AppModule` is enough. Each component needs to be registered in some
 module (in the `declarations` array).
 
@@ -46,5 +46,4 @@ module (in the `declarations` array).
 How does it know which module to add it to?
 :::
 
-We can `import` other modules into our modules. This way, in the components we
-can use some features provided by these modules.
+More on modules can be found [here](./modules.md).
