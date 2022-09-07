@@ -33,16 +33,10 @@ Some advantages:
 Registration:
 
 ```csharp
-services.AddControllers().AddFluentValidation(config =>
-{
-    // Auto-register all validators in DI
-    config.RegisterValidatorsFromAssemblyContaining<Program>();
-
-    // Complex properties will be validated as well, not just top-level properties
-    config.ImplicitlyValidateChildProperties = true;
-
-    // By default, the DataAnnotations will still be executed, we can disable it
-    config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+services.AddValidatorsFromAssemblyContaining<SomeDataValidator>();
+services.AddFluentValidationAutoValidation(options => 
+{ 
+    options.DisableDataAnnotationsValidation = true;
 });
 ```
 
