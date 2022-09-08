@@ -651,3 +651,7 @@ performance reasons).
 The result is placed in `this.route.data` object under the key that we used in
 the route definition's `resolve` section (`movie` in this case). The `data`
 object was also used in the [Static Data](#static-data).
+
+## Lazy Loading
+
+Lazy Loading is described in the [Modules](./modules.md#lazy-loading) section.

@@ -17,7 +17,7 @@ Modules are a way of bundling various Angular entities together:
 A proper organization of code between modules results in:
 
 - feature separation
-- better performance
+- better performance (when lazy loading is used)
 
 Angular itself bundles its various parts into modules. Here are some examples:
 
@@ -31,21 +31,27 @@ Angular itself bundles its various parts into modules. Here are some examples:
 
 The `NgModule` decorator has the following options:
 
-- `declarations` - here, we register all the **components**, **directives**, and
+- **declarations** - here, we register all the **components**, **directives**, and
   **pipes**.
-- `imports` - here, we pull in other modules, either provided by external
+
+  ::: warning
+  A single entity may only be declared once! Two or more modules can't declare the same thing.
+  :::
+
+- **imports** - here, we pull in other modules, either provided by external
   parties (e.g. Angular itself) or our own modules.
-- `exports` - a way to expose some entities to the other modules (those that
-  will `import` the current module). E.g., if I export `RouterModule` from
+- **exports** - a way to expose some entities to the other modules (those that
+  will import the current module). E.g., if I export `RouterModule` from
   `SomeModule`, any module that imports `SomeModule` may use `RouterModule`'s
-  features (its services, directives, etc.). We can export modules, components,
-  directives, pipes. Export only those entities that you want to be usable in
-  entities (like components) declared in other modules.
-- `providers` - Dependency Injection setup. Alternatively, services can
+  features (its services, directives, etc.). We can export imports and
+  declarations: modules, components, directives, pipes. Export only those
+  entities that you want to be usable in entities (like components) declared in
+  other modules.
+- **providers** - Dependency Injection setup. Alternatively, services can
   configure their injection via the `Injectable` decorator and its `providedIn`
   property.
-- `bootstrap` - defines the starting component(s) (usually `AppComponent`)
-- `entryComponents` - *deprecated*, it was used for [dynamic
+- **bootstrap** - defines the starting component(s) (usually `AppComponent`)
+- **entryComponents** - *deprecated*, it was used for [dynamic
   modules](./components.md#instantiating-components-from-typescript) in the
   past.
 
@@ -57,6 +63,9 @@ about the products domain. Also, we could have another set of components that
 are all about managing orders. In this idealized scenario, we'd put
 products-related components into one module, and the orders-related stuff into
 another module.
+
+Another case would be to group together some shared components that are used
+throughout different domains into their own module.
 
 ### Scope
 
@@ -89,7 +98,7 @@ modules that want to make use of these features, should import the
 ## Routes
 
 Our feature modules representing different sections of the app could also handle
-its routes. We could go even further and create separate routes modules per
+their routes. We could go even further and create separate routes modules per
 feature. Each feature would have such a module with its specific routes.
 
 Here's an example of such a module:
@@ -116,11 +125,147 @@ export class ProductsRoutingModule { }
 ```
 
 ::: tip forChild
-In the main `RouterModule` we usually use `RouterModule.forRoot()` method. In
+In the main `AppRoutingModule` we usually use `RouterModule.forRoot()` method. In
 these feature-specific route modules, we use `RouterModule.forChild`. In the
-end, all these routes will be merged together.
+end, all these routes will be merged together. `forChild` is also needed to
+enable [lazy loading](#lazy-loading)!
 :::
 
 Note that even though in this routing module we reference some components, we
 don't need to import them via the `imports` array. We need to import stuff only
 if we plan to use it in the templates.
+
+## Lazy Loading
+
+Until now, we've been discussing **Eager-loaded Modules**. They are loaded on
+bootstrap together with the `AppModule`. With proper module organization we can
+make use of **lazy loading**. 
+
+With eager-loaded modules, when the user visits our website, all of our code is
+being downloaded by their browser at once. For smaller applications, it's not a
+big deal. For bigger apps though, it surely is something worth optimizing. With
+lazy loading, the code is being downloaded as it's needed. For example, if a
+user goes to `/profile`, only the module responsible for that feature area
+should get loaded. It might be seen as a downside, the app will not be as snappy
+as before (unless proper [preload strategy](#preload-strategy) is used). The
+initial load will be faster though.
+
+Lazy loading makes sense especially if our users are not going to typically
+visit all the views during their session. If they're not going to even see
+`/products`, why would they download it.
+
+::: tip
+Not all modules should be lazy loaded. If our app has some "core" feature
+areas that are always visited by the users, it probably doesn't make sense
+to lazy load them.
+:::
+
+### Implementation
+
+Lazy loading is mostly accomplished with a proper setup of routing.
+To use lazy loading, our feature modules need to have their own [routing
+modules](#routes) that will use `Router.forChild(...)`.
+
+Before we introduce lazy loading, our feature modules have the following setup:
+
+- they are imported into the `AppModule` - that's needed, because they need to
+  be loaded at some point, otherwise they'd never get imported
+- they have their own routing config that is being merged with the "main"
+  routing setup in `AppModule` (or some other separate routing module like
+  `AppRoutingModule`).
+
+Here's what we need to change:
+
+1. The main routing module (the one that calls `Router.forRoot(...)`) should now
+include the routes to our feature areas, like this:
+
+    ```ts
+    const routes: Routes = [
+      { path: '', redirectTo: '/products', pathMatch: 'full' },
+      { 
+        path: 'products', 
+        loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) 
+      }
+    ];
+    ```
+
+2. Now, in the lazily loaded module's routing setup, we should treat the routing
+path as if that module was at the root. Without lazy loading, we had `path:
+'products'`, because feature module's routing would get merged with the "main"
+routing. Now, the products area is treated as a child of the main routing. All
+the child's routes go under the "*/products*" path, and the child module does
+not need to know about it.
+
+    ```ts{7}
+    const routes: Routes = [
+      {
+        path: '',
+        component: ProductsComponent,
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', component: ProdctsListComponent, pathMatch: 'full' }, // /products
+          { path: 'new', component: NewProductComponent }, // /products/new
+          { path: ':id', component: ProductComponent, resolve: [ ProductResolverService ] }, // /products/:id
+        ],
+      }
+    ];
+
+    @NgModule({
+      imports: [ RouterModule.forChild(routes) ],
+      exports: [ RouterModule ]
+    })
+    export class ProductsRoutingModule { }
+    ```
+
+3. Lastly, make sure to **not** import (`NgModule`-import) the feature module
+(like `ProductsModule` in this case) into the `AppModule`. The dynamic import in
+the routing setup does that already. Additionally importing it with the `imports`
+array would eagerly load the module.
+
+With that, the code is split into bundles, each one fetched as needed.
+
+::: danger Imports
+With lazy loading, it becomes quite important to properly define ES imports.
+Anything that we import in our files gets added to our bundle. Make sure to
+import only the stuff you need. It's common to forget about cleaning up
+the imports after some refactoring.
+:::
+
+::: tip Angular Modules
+With lazy loading, also the Angular's `vendor.js` bundle may get decreased.
+For example, if we'r using forms only in some feature area, after introducing
+lazy loading, `FormsModule` will be fetched together with that feature area
+instead of at bootstrap.
+:::
+
+### Preload Strategy
+
+Lazy loading might make our app feel slow. Preload Strategy may fix that. After
+splitting our app into bundles, we can download them all at bootstrap instead of
+waiting for the user to actually need it. It may be configured in the root
+routing configuration:
+
+```ts{6}
+@NgModule({
+  declarations: [],
+  imports: [RouterModule.forRoot(
+    routes, 
+    { 
+      preloadingStrategy: PreloadAllModules // NoPreloading is the default
+    }
+  )],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {
+}
+```
+
+The initial bundle is still kept small, the other bundles are downloading after
+the first one gets fetched.
+
+### Dependency Injection
+
+Eager-loaded modules that provide services, make them available globally.
+
+Lazy-loaded modules that proivde services, make them available only in that
+module.
