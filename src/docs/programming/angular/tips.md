@@ -167,6 +167,23 @@ Here's an easy way to disable a button if a form is not valid:
     </form>
 ```
 
+## Environments
+
+Angular has built-in support for switching config values between DEV and PROD
+environments. Any app initialized by the CLI has the `src/environments`
+directory where two files exist:
+
+- `environment.ts` - for DEV
+- `environemnt.prod.ts` - for PROD
+
+During the build, Angular CLI will attach one of them to the bundle. When we
+build with `ng build`, the PROD one will be used.
+
+Inside of the environemnt files we can put all the config values we need. Then,
+we import the `environment` object wherever we need to use these configs.
+
+**What if there should be more envs than two?**
+
 ## References
 
 [Renderer2 on

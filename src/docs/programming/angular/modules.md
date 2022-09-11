@@ -27,7 +27,7 @@ Angular itself bundles its various parts into modules. Here are some examples:
   are there!
 - `HttpClientModule` - it only provides services
 
-## Module Decorator
+## ngModule Decorator
 
 The `NgModule` decorator has the following options:
 
@@ -38,12 +38,12 @@ The `NgModule` decorator has the following options:
   A single entity may only be declared once! Two or more modules can't declare the same thing.
   :::
 
-- **imports** - here, we pull in other modules, either provided by external
+- **imports** - here, we pull in other modules (or other things if [Standalone Components](./standalone-components.md) are being used), either provided by external
   parties (e.g. Angular itself) or our own modules.
 - **exports** - a way to expose some entities to the other modules (those that
   will import the current module). E.g., if I export `RouterModule` from
   `SomeModule`, any module that imports `SomeModule` may use `RouterModule`'s
-  features (its services, directives, etc.). We can export imports and
+  features (e.g., its directives). We can export imports and
   declarations: modules, components, directives, pipes. Export only those
   entities that you want to be usable in entities (like components) declared in
   other modules.
@@ -71,9 +71,9 @@ throughout different domains into their own module.
 
 The entities declared in a module (e.g. components) have access ONLY to entities
 that this module declares or imports (services are an exception, more on that
-later). For example, if I create a `MyModule` module with some declared
-component, I can use `routerLink` in that component only if I import
-`RouterModule` into `MyModule` first. **I think this rule applies only to
+[later](#dependency-injection)). For example, if I create a `MyModule` module
+with some declared component, I can use `routerLink` in that component only if I
+import `RouterModule` into `MyModule` first. **I think this rule applies only to
 templates and the components, directives or pipes that we use within them (?)**
 
 It's important to note that we can import the same module multiple times into
@@ -166,18 +166,19 @@ Lazy loading is mostly accomplished with a proper setup of routing.
 To use lazy loading, our feature modules need to have their own [routing
 modules](#routes) that will use `Router.forChild(...)`.
 
-Before we introduce lazy loading, our feature modules have the following setup:
+Until now, our feature modules had the following setup:
 
-- they are imported into the `AppModule` - that's needed, because they need to
-  be loaded at some point, otherwise they'd never get imported
-- they have their own routing config that is being merged with the "main"
+- they were imported into the `AppModule` - that wass needed, because they had
+  to be loaded at some point, otherwise they'd never be bundled.
+- they had their own routing config that was being merged with the "main"
   routing setup in `AppModule` (or some other separate routing module like
   `AppRoutingModule`).
 
 Here's what we need to change:
 
 1. The main routing module (the one that calls `Router.forRoot(...)`) should now
-include the routes to our feature areas, like this:
+include the routes to our feature areas together with a lambda to load these
+modules dynamically, like this:
 
     ```ts
     const routes: Routes = [
@@ -260,12 +261,13 @@ export class AppRoutingModule {
 }
 ```
 
-The initial bundle is still kept small, the other bundles are downloading after
-the first one gets fetched.
+The initial bundle is still kept small, the other bundles will be downloaded
+after the first one gets fetched.
 
 ### Dependency Injection
 
-Eager-loaded modules that provide services, make them available globally.
+Eager-loaded modules that provide services, make them available globally. That's
+why we don't need to put modules that provide services into the `imports` array.
 
 Lazy-loaded modules that proivde services, make them available only in that
-module.
+single module.

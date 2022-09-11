@@ -180,7 +180,9 @@ module.exports = {
             "angular/pipes",
             "angular/http",
             "angular/modules",
-            "angular/tips"
+            "angular/ngrx",
+            "angular/tips",
+            "angular/standalone-components"
           ]
         },
         {
