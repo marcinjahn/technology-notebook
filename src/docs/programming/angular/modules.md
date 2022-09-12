@@ -38,8 +38,9 @@ The `NgModule` decorator has the following options:
   A single entity may only be declared once! Two or more modules can't declare the same thing.
   :::
 
-- **imports** - here, we pull in other modules (or other things if [Standalone Components](./standalone-components.md) are being used), either provided by external
-  parties (e.g. Angular itself) or our own modules.
+- **imports** - here, we pull in other modules (or other things if [Standalone
+  Components](./standalone-components.md) are being used), either provided by
+  external parties (e.g. Angular itself) or our own modules.
 - **exports** - a way to expose some entities to the other modules (those that
   will import the current module). E.g., if I export `RouterModule` from
   `SomeModule`, any module that imports `SomeModule` may use `RouterModule`'s
