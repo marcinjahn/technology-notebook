@@ -24,11 +24,11 @@ NgRx is an overkill for smaller applications.
 ## Installation
 
 ```sh
-npm i @ngrx/store
-
+npm i @ngrx/store # Core
+npm i @ngrx/effects # Side-effects
 ```
 
-## Building Blocks
+## (Some) Building Blocks
 
 NgRx exposes three main types of entities:
 
@@ -42,6 +42,8 @@ There is one store, but there are many actions and reducers:
   their own reducers)
 - each entity type will have 1 or more actions (e.g. Product will have
   AddProduct, UpdateProduct, while Users will have AddUser, RemoveUser, etc.)
+- each feature section of our app will have its own `store` directory where the
+  reducer and actions files will be kept
 
 ### Actions
 
@@ -55,9 +57,10 @@ Since actions are typically small, it's OK to keep them all in one file. Here's
 an example:
 
 ```ts
-// action types
-export const ADD_PRODUCT = 'ADD_INGREDIENT';
-export const ADD_PRODUCTS = 'ADD_INGREDIENTS';
+// action types - there's a convention of prefixing string with the name of feature
+// in square brackets to avoid potential conflicts with other features
+export const ADD_PRODUCT = '[Products Catalog] Add Product';
+export const ADD_PRODUCTS = '[Products Catalog] Add Products';
 
 // actions
 export class AddProduct implements Action {
@@ -85,15 +88,24 @@ a reducer).
 ### Reducers
 
 Reducers handle actions. A single reducer will handle all the actions of a
-specific entity kind (like a Product).
+specific entity kind (like a Product). The store in our app is built with the
+help of reducers!
 
-Typically, reducer will be use a `switch-case`. Here's an example:
+Reducer is a function that is invoked anytime some action is dispatched (and at
+the bootstrap of our app!). It receives two parameters:
+
+- the current state (or an initial state if we set it up this way)
+- the action (with its optional payload)
+
+And, it returns the new state.
+
+Typically, a reducer will use a `switch-case` statement. Here's an example:
 
 ```ts
 // a typical import grouping all actions under one object
 import * as ProductsCatalogActions from "./products.actions";
 
-// a type of ProductsCatalog state
+// a type of ProductsCatalog state.
 export interface State {
   products: Product[];
   selectedProduct?: Product
@@ -111,14 +123,14 @@ const initialState: State = {
 // the actual reducer is a function
 export function productsCatalogReducer(
   state: State = initialState, // reducer will be called by Angular on init with null state, so initialStae will jump in
-  action: ProductsCatalogActions.ProductsActions // our union type
+  action: ProductsCatalogActions.ProductsActions // our action union type
 ) {
   // handles each action
   switch(action.type) {
     case ProductsActions.ADD_PRODUCT:
       return {
-        ...state,
-        products: [...state.products, action.payload ]
+        ...state, // a typicl pattern of copying the rest of the previous state
+        products: [...state.products, action.payload ] // products field of the state gets replaced
       }
     case ProductsActions.ADD_PRODUCTS:
       return {
@@ -131,6 +143,12 @@ export function productsCatalogReducer(
   }
 }
 ```
+
+::: tip Invocation
+Reducers are not invoked by our app components directly. Instead, it is handled by
+NgRx when we [dispatch some action](#dispatch) or on init (with action type set
+to *@ngrx/store/init*).
+:::
 
 ::: warning State Modifications 
 Reducer should always return new object(s). Modifications of existing state are
@@ -150,49 +168,71 @@ We probably are going to have a few kinds of data and a few reducers. It makes
 sense to define a global type that defines all kinds of data being stored:
 
 ```ts
+// naming convention for imports
+import * as fromproductsCatalog from "../products/store/products-catalog.reducer";
+import * as fromAuth from "../auth/store/auth.reducer";
+
 export interface AppState {
-  productsCatalog: State
+  productsCatalog: fromProductsCatalog.State, // stores stuff related to products catalog
+  auth: fromAuth.State // stores auth data (like currently logged-in user)
 }
 ```
 
-With such a type it's easier to inject the store into classes.
+With such a type, it's easier to inject the store into classes. Since the
+`AppState` type is global within our app, it makes sense to put it in its own
+file called `app.reducer.ts`, in the `/app/store/` directory.
 
-## Using Store
+In the same file, we can also put the listing of all the reducers within our app:
+
+```ts
+export const appReducer: ActionReducerMap<AppState> = {
+  shoppingList: fromShoppingList.shoppingListReducer,
+  auth: fromAuth.authReducer
+};
+```
+
+It will come useful very quickly.
+
+## Using the Store
 
 ### Register
 
 First of all, our store needs to be imported in some module:
 
 ```ts
+import * as fromApp from "./store/app.reducer"; // again, import convention
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({
-      productsCatalog: productsCatalogReducer
-    }),
+    StoreModule.forRoot(fromApp.appReducer), // appReducer is our reducers map
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
 ```
 
+This is the place where we inform the framework of any reducers that we have
+defined. In the end, the reducers build up the store in the app.
+
 ### Inject
 
 Our components or services may inject the `Store` in order to access
 its data:
 
-```ts
+```ts{4}
+import * as fromApp from "../store/app.reducer";
+
 constructor(
-  private store: Store<AppState>
+  private store: Store<fromApp.AppState>
 ) { }
 ```
 
-The `Store<>` is a generic type. We need to inform what data interests us
-(`ProductsCatalog`) and what kind of data it stores (`products` of type
-`Product[]`).
+The `Store<>` is a generic type. Thanks to [Store Type](#store-type) being
+defined as an interface, we can quickly specify our store.
 
 ### Use
 
@@ -208,11 +248,18 @@ That dispatch will go through NgRx's internals, which will invoke our reducer.
 Based on the action (`AddProduct`) it will update the store with the new
 `product`.
 
+::: warning 
+Whenever we dispatch some action, it's not just the corresponding reducer that
+gets invoked. All the reducers get invoked! Only one of them will have proper
+handler for the supplied action type, other reducers will just execute their
+"default" case.
+:::
+
 #### Subscribe
 
 Store's data is exposed via `Observable`s:
 
-```
+```ts
 products$: Observable<{ products: products[] }>;
 
 ...
@@ -227,3 +274,20 @@ We do not have to `unsubscribe` from NgRx store subscriptions. It will happen
 automatically.
 :::
 
+## Side Effects
+
+([@ngrx/effects](https://www.npmjs.com/package/@ngrx/effects)) is an additional
+package for NgRx that adds **Side Effects**. Until now we had some actions
+defined, and reducers that acted on them. Reducers focused on state
+"modifications". They should not contain any logic other than that.
+
+However, our state actions are often associated with some additional logic that
+we need to execute - sending some network request, storing some data in local
+storage, etc. Such additional (but required) operations may be put into effects.
+
+Each feature in our app can have its own `store/*.effects.ts` file. Here's an
+example:
+
+```ts
+
+```
