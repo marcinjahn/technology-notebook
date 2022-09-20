@@ -437,6 +437,16 @@ The actual logic of checking whether the user is authorized would probably be
 put in some other service.
 :::
 
+::: warning
+If we try to naviagate to the same page that we're currently in, guard for that
+page will not be executed by default. This might be a problem when we want to
+log the user out and navigate them to the same page, which normally should be
+guarded.
+
+The default behavior may be changed in the route configuration with
+`runGuardsAndResolvers: 'always',`.
+:::
+
 ### UrlTree
 
 We can route users to some other page in the guard, most likely when the

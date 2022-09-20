@@ -269,9 +269,8 @@ this.products$ = this.store.select('productsCatalog');
 
 Any `dispatch` that "modifies" the store, would bring data via the subscription.
 
-::: tip
-We do not have to `unsubscribe` from NgRx store subscriptions. It will happen
-automatically.
+::: warning Unsibscribe
+Like with any subscription, we need to rememebr to `unsubscribe` on destroy.
 :::
 
 ## Side Effects
@@ -291,3 +290,17 @@ example:
 ```ts
 
 ```
+
+Effects typically return observable returning NgRx actions. That's because
+effects are kind of in-between stuff that happens when we invoke some action.
+Example of that could be an effect that:
+
+1. Listens for the *[Auth] Login Start* actions
+2. Wehever such action comes in, it sends a login request to some authentication server
+3. When the response comes back, it either issues *[Auth] Logic Success* or *[Auth] Login Fail* action.
+4. The reducer sets up the state properly for all 3 kinds of actions mentioned above.
+5. Some UI component subscribes to state changes and reacts properly to each
+   state change.
+
+In some cases though, effects do not emit any actions. Instead, some effect
+could use a [Router](./routing.md) to redirect the user somewhere else.
