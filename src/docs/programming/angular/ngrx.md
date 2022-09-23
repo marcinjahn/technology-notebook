@@ -36,6 +36,9 @@ NgRx exposes three main types of entities:
 - reducers
 - actions
 
+There are also [effects](#side-effects), but they come as part of separate
+package.
+
 There is one store, but there are many actions and reducers:
 
 - each entity type will have its own reducer (e.g. Products or Users will have
@@ -87,9 +90,9 @@ a reducer).
 
 ### Reducers
 
-Reducers handle actions. A single reducer will handle all the actions of a
-specific entity kind (like a Product). The store in our app is built with the
-help of reducers!
+Reducers handle actions in the context of the store. A single reducer will
+handle all the actions of a specific entity kind (like a Product). The store in
+our app is built with the help of reducers!
 
 Reducer is a function that is invoked anytime some action is dispatched (and at
 the bootstrap of our app!). It receives two parameters:
@@ -161,6 +164,11 @@ great with `switch-case` or `if-else`. The compiler automatically infers the
 type of `action.payload` based on the `case` that we're currently in.
 We don't need to manually cast anything.
 :::
+
+It's important to mention that reducers are very limited in what they actually
+do. They should first of all take care of the store. They should not interact
+with the ourside world. Things such as network requests, accessing storage, etc.
+- these should be left to [effects](#side-effects).
 
 ### Store Type
 
@@ -282,7 +290,7 @@ defined, and reducers that acted on them. Reducers focused on state
 
 However, our state actions are often associated with some additional logic that
 we need to execute - sending some network request, storing some data in local
-storage, etc. Such additional (but required) operations may be put into effects.
+storage, etc. This is what effects are for.
 
 Each feature in our app can have its own `store/*.effects.ts` file. Here's an
 example:
@@ -291,8 +299,8 @@ example:
 
 ```
 
-Effects typically return observable returning NgRx actions. That's because
-effects are kind of in-between stuff that happens when we invoke some action.
+Effects typically return observable of NgRx actions. That's because
+effect is a kind of an in-between step that happens when we invoke some action.
 Example of that could be an effect that:
 
 1. Listens for the *[Auth] Login Start* actions
@@ -302,5 +310,24 @@ Example of that could be an effect that:
 5. Some UI component subscribes to state changes and reacts properly to each
    state change.
 
-In some cases though, effects do not emit any actions. Instead, some effect
+In some cases though, effects do not emit any actions. Instead, an effect
 could use a [Router](./routing.md) to redirect the user somewhere else.
+
+## Extra Packages
+
+### Redux Dev Tools
+
+[Redux Dev Tools](https://github.com/reduxjs/redux-devtools) is a browser extension (or standalone app) that is similar to browser DevTools. It requires the app to be extended with DevTools module, which is not ideal, but allows us to see in detail what happens with the store:
+
+- actions being emited
+- shape of the store after each action
+- and more...
+
+### Router Store
+
+An offical package from NgRx
+[@ngrx/router-store](https://www.npmjs.com/package/@ngrx/router-store) is an
+addition that emits [actions](#actions) based on [Router](./routing.md)'s
+activity. Whenever some navigation happens, etc., a specific action type is
+emitted with some payload, allowing us to react to it in our actions or
+reducers. 
