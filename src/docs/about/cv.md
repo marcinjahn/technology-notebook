@@ -8,7 +8,16 @@ lang: en-US
 
 ## Work Experience
 
-### Technology Evangelist at ABB Business Services (2017-present)
+#### Software Developer at eSky Group (2022-present)
+
+**Location**: Remote
+
+- Working on Hotels and Packages sections of eSky portfolio of offerings
+- Developing microservices on Kubernetes platform, hosted on Google Cloud
+  Platform
+- Developing projects in .NET C#; Angular; NestJS
+
+#### Senior Technology Evangelist at ABB Business Services (2017-present)
 
 **Location**: Łódź, Poland
 
@@ -29,7 +38,7 @@ lang: en-US
 - The Annual Award for the work in 2021 (received by 3 employees out of 100+ in
   the project)
 
-### Software Developer at ABB Business Services (2016-2017)
+#### Software Developer at ABB Business Services (2016-2017)
 
 **Location**: Łódź, Poland
 
@@ -38,7 +47,7 @@ lang: en-US
 
 ## Education
 
-### MSc in Automation Control and Robotics at Politechnika Łódzka
+#### MSc in Automation Control and Robotics at Politechnika Łódzka
 
 **Location**: Łódź, Poland
 
@@ -47,7 +56,7 @@ titled "Design and implementation of Internet of Things System based on cloud
 computing model" (written in the Polish language). You can read more about my
 thesis [here](/projects/mjiot.html).
 
-### BSc in Automation Control and Robotics at Politechnika Łódzka
+#### BSc in Automation Control and Robotics at Politechnika Łódzka
 
 **Location**: Łódź, Poland
 
@@ -69,20 +78,23 @@ By the end of my BSc studies, I started an internship at ABB in Łódź.
 
 I am proficient in the following technologies:
 
-### Languages/Runtimes
+#### Languages/Runtimes
 
 - **.NET C#** - I've worked on various projects based on .NET, ranging from
   simple console apps and web APIs (ASP.NET Core), through microservices,
   running in the cloud (Azure Functions, Web Apps, Container Instnces, AKS), to
-  desktop applications built with the WPF framework.
+  desktop applications built with the WPF framework. I've started with .NET
+  Framework, and switched to .NET Core as soon as it became mature enough.
 - **NodeJS** - I've been using NodeJS for various applications, such as CLI apps or
-  web APIs (Express and Fastify)
-- **Typescript** - the best flavor of JavaScript; I use it for frontend
+  web APIs (Express and Fastify, also with NestJS on top)
+- **TypeScript** - the best flavor of JavaScript; I use it for frontend
   or NodeJS apps that contain more than just a few functions.
+- **Angular** - I've worked on SPAs built with Angular, also in projects
+  utilizing NgRx.
 - **Vue.JS** - I created numerous frontend apps using Vue.JS (I also have a lot of
   experience with VuePress, including creating custom plugins for it)
 
-### Other
+#### Other
 
 - **Azure** - I have built numerous cloud solutions in Azure, mainly using the
   microservices approach. I have experience with IaaS, PaaS, and SaaS offerings
@@ -94,7 +106,7 @@ I am proficient in the following technologies:
   - [Azure Solutions Architect
     Expert](https://www.credly.com/badges/7212a5f3-6fed-43b4-8957-b892d1129216)
 - **Linux** - nowadays, all of my server-side apps run on Linux, and I design
-  them Linux-first. I am proficient in using Linux-based operating systems.
+  them Linux-first. I use Linux-based OS daily on my work machine.
 - **Docker** - most of my apps end up as containers.
 - **Kubernetes** - I deployed numerous apps in Kubernetes. This website is an
   example of that.
