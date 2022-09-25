@@ -93,6 +93,10 @@ module.exports = {
     ],
     nav: [
       {
+        text: "Home",
+        link: "/"
+      },
+      {
         text: "Programming",
         link: "/programming/",
       },

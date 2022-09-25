@@ -5,18 +5,14 @@
         <main class="home">
             <div class="theme-default-content">
                 <Content />
+                <router-link class="gohome" to="/">&larr; Go Home</router-link>
             </div>
         </main>
     </div>
 </template>
 
 <script>
-import Home from "@theme/components/Home.vue";
 import Navbar from "@theme/components/Navbar.vue";
-import Page from "@theme/components/Page.vue";
-import Sidebar from "@theme/components/Sidebar.vue";
-import { resolveSidebarItems } from "../util";
-import IntroPage from "../components/IntroPage.vue";
 
 export default {
     name: "PostLayout",
@@ -33,6 +29,10 @@ export default {
   max-width $homePageWidth
   margin 0px auto
   display block
+
+.gohome
+    margin-top: 2rem;
+    display: block;
 
 @media (max-width: $MQMobile)
   .home

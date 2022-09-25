@@ -48,13 +48,16 @@
             <!-- <Content /> -->
 
             <p>
-                Hi! My name is <a href="/about/who-am-i.html">Marcin Jahn</a>, I
-                am a software engineer and technology enthusiast. Welcome to my
-                <a href="/about/this-website.html">notebook</a>! You can either
-                check out my notes about
-                <a href="/programming">Programming</a> and various
-                <a href="/technologies">Technologies</a> or just check out some
-                updates from me below.
+                Hi! My name is
+                <router-link to="/about/who-am-i.html">Marcin Jahn</router-link
+                >, I am a software engineer and technology enthusiast. Welcome
+                to my
+                <router-link to="/about/this-website.html">notebook</router-link
+                >! You can either check out my notes about
+                <router-link to="/programming">Programming</router-link> and
+                various
+                <router-link to="/technologies">Technologies</router-link> or
+                just check out some updates from me below.
             </p>
 
             <hr />
