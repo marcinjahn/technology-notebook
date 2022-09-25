@@ -47,10 +47,20 @@
         <div class="theme-default-content">
             <!-- <Content /> -->
 
-      
+            <p>
+                Hi! My name is <a href="/about/who-am-i.html">Marcin Jahn</a>, I
+                am a software engineer and technology enthusiast. Welcome to my
+                <a href="/about/this-website.html">notebook</a>! You can either
+                check out my notes about
+                <a href="/programming">Programming</a> and various
+                <a href="/technologies">Technologies</a> or just check out some
+                updates from me below.
+            </p>
+
+            <hr />
 
             <div v-for="page in $pagination.pages">
-                <BlogPost :post="page" />
+                <BlogPost :post="page" class="blog-post" />
             </div>
             <div id="pagination">
                 <router-link
@@ -163,6 +173,7 @@ export default {
 
 @media (max-width: $MQMobile)
   .home
+    padding $navbarHeight 0 0
     .features
       flex-direction column
     .feature
@@ -193,4 +204,13 @@ export default {
     .feature
       h2
         font-size 1.25rem
+
+.blog-post
+  margin-bottom: 3rem;
+
+hr
+  height: 1px;
+  background-color: #bbb;
+  border: none;
+  margin-top: 2rem;
 </style>

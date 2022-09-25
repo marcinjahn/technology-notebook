@@ -14,13 +14,13 @@ home: true
 # footer: Made by Marcin Jahn with VuePress
 ---
 
-My name is [Marcin Jahn](/meta/who-am-i.md), I am a software engineer and
+My name is [Marcin Jahn](/about/who-am-i.md), I am a software engineer and
 technology enthusiast. Welcome to my notebook!
 
 This website is a place for various IT topics that I felt the need to write
 down. If you find any of the contents useful, that's great! You can find
 out more about how this website was built (and why)
-[here](/meta/this-website.md).
+[here](/about/this-website.md).
 
 Some of the publications:
 
