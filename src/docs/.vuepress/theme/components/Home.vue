@@ -1,11 +1,11 @@
 <template>
-  <main
-    class="home"
-    :aria-labelledby="data.heroText !== null ? 'main-title' : null"
-  >
-    <header class="hero">
-      <Logo />
-      <!-- <img
+    <main
+        class="home"
+        :aria-labelledby="data.heroText !== null ? 'main-title' : null"
+    >
+        <header class="hero">
+            <Logo />
+            <!-- <img
         v-if="data.heroImage"
         :src="$withBase(data.heroImage)"
         :alt="data.heroAlt || 'hero'"
@@ -25,17 +25,11 @@
         {{ data.tagline || $description || 'Welcome to your VuePress site' }}
       </p> -->
 
-      <p
-        v-if="data.actionText && data.actionLink"
-        class="action"
-      >
-        <NavLink
-          class="action-button"
-          :item="actionLink"
-        />
-      </p>
-    </header>
-
+            <p v-if="data.actionText && data.actionLink" class="action">
+                <NavLink class="action-button" :item="actionLink" />
+            </p>
+        </header>
+        <!-- 
     <div
       v-if="data.features && data.features.length"
       class="features"
@@ -48,41 +42,59 @@
         <h2>{{ feature.title }}</h2>
         <p>{{ feature.details }}</p>
       </div>
-    </div>
+    </div> -->
 
-    <Content class="theme-default-content" />
+        <div class="theme-default-content">
+            <!-- <Content /> -->
 
-    <div
-      v-if="data.footer"
-      class="footer"
-    >
-      {{ data.footer }}
-    </div>
-  </main>
+      
+
+            <div v-for="page in $pagination.pages">
+                <BlogPost :post="page" />
+            </div>
+            <div id="pagination">
+                <router-link
+                    v-if="$pagination.hasPrev"
+                    :to="$pagination.prevLink"
+                    >Prev</router-link
+                >
+                <router-link
+                    v-if="$pagination.hasNext"
+                    :to="$pagination.nextLink"
+                    >Next</router-link
+                >
+            </div>
+        </div>
+
+        <div v-if="data.footer" class="footer">
+            {{ data.footer }}
+        </div>
+    </main>
 </template>
 
 <script>
-import NavLink from '@theme/components/NavLink.vue'
-import Logo from '@theme/components/Logo.vue'
+import NavLink from "@theme/components/NavLink.vue";
+import Logo from "@theme/components/Logo.vue";
+import BlogPost from "./BlogPost.vue";
 
 export default {
-  name: 'Home',
+    name: "Home",
 
-  components: { NavLink, Logo },
+    components: { NavLink, Logo, BlogPost },
 
-  computed: {
-    data () {
-      return this.$page.frontmatter
+    computed: {
+        data() {
+            return this.$page.frontmatter;
+        },
+
+        actionLink() {
+            return {
+                link: this.data.actionLink,
+                text: this.data.actionText,
+            };
+        },
     },
-
-    actionLink () {
-      return {
-        link: this.data.actionLink,
-        text: this.data.actionText
-      }
-    }
-  }
-}
+};
 </script>
 
 <style lang="stylus">
@@ -156,7 +168,7 @@ export default {
     .feature
       max-width 100%
       padding 0 2.5rem
-  
+
   .hero
     margin-top 3rem !important
 

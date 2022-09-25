@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@mr-hope/vuepress-plugin-seo": "^1.26.0",
+    "@vuepress/plugin-blog": "^1.9.4",
     "vuepress-plugin-mermaidjs": "^1.9.1"
   }
 }

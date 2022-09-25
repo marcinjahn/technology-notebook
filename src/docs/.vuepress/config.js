@@ -105,8 +105,8 @@ module.exports = {
         link: "/projects/",
       },
       {
-        text: "Meta",
-        link: "/meta/",
+        text: "About",
+        link: "/about/",
       },
     ],
     sidebar: {
@@ -392,7 +392,7 @@ module.exports = {
           children: ["google-cloud/overview"],
         },
       ],
-      "/meta/": ["./", "who-am-i", "cv", "this-website"],
+      "/about/": ["./", "who-am-i", "cv", "this-website"],
       "/projects/": [
         "./",
         "feedback-panel-vuepress-plugin",
@@ -425,6 +425,25 @@ module.exports = {
     ],
     "mermaidjs",
     "tabs",
+    [
+      '@vuepress/blog',
+      {
+        directories: [
+          {
+            // Unique ID of current classification
+            id: 'post',
+            // Target directory
+            dirname: '_posts',
+            // Path of the `entry page` (or `list page`)
+            path: '/',
+            itemLayout: 'PostLayout',
+            frontmatter: {
+              home: true,
+            }
+          },
+        ],
+      },
+    ]
   ],
   // markdown: {
   //   lineNumbers: true
