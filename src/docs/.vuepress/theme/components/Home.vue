@@ -117,7 +117,7 @@ export default {
     display: flex;
     justify-content: center;
     // text-align center
-    margin-top 10rem
+    margin-top 5rem
     // img
     //   max-width: 100%
     //   max-height 280px
