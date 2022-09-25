@@ -1,9 +1,7 @@
 <template>
     <div>
-        <a :href="post.path"
-            ><h4>{{ post.title }}</h4></a
-        >
-        <p>{{ postBody }} <a :href="post.path">(Read more...)</a></p>
+        <router-link :to="post.path"><h4>{{ post.title }}</h4></router-link>
+        <p>{{ postBody }} <router-link :to="post.path">(Read more)</router-link></p>
     </div>
 </template>
 
@@ -13,9 +11,16 @@ export default {
     props: ["post"],
     computed: {
         postBody() {
-            return this.post.frontmatter.summary.substring(
-                this.post.title.length
-            ) + "...";
+            return (
+                this.post.frontmatter.summary.substring(
+                    this.post.title.length
+                ) + "..."
+            );
+        },
+    },
+    methods: {
+        go(path) {
+            this.$router.push(path);
         },
     },
 };
