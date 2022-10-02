@@ -296,8 +296,42 @@ Each feature in our app can have its own `store/*.effects.ts` file. Here's an
 example:
 
 ```ts
+@Injectable()
+export class RecipesEffects {
+  constructor(
+    private actions$: Actions, 
+    private httpClient: HttpClient, 
+    private store: Store<fromApp.AppState>) {
+  }
 
+  @Effect()
+  fetchRecipes = this.actions$.pipe(
+    ofType(RecipesActions.FETCH_RECIPES),
+    switchMap(() => this.httpClient.get<Recipe[]>("https://my-api.com")),
+    map(recipes => {
+      return recipes.map(recipe => {
+        return {
+          ...recipe,
+          ingredients: recipe.ingredients ? recipe.ingredients : []
+        };
+      })
+    }),
+    map(recipes => new SetRecipes(recipes)));
+
+  @Effect()
+  storeRecipes = this.actions$.pipe(
+    ofType(RecipesActions.STORE_RECIPES),
+    withLatestFrom(this.store.select('recipes')),
+    switchMap(([_, { recipes }]) => {
+      return this.httpClient.put("https://angular-max-tutorial-default-rtdb.europe-west1.firebasedatabase.app/recipes.json",
+        recipes)
+    })
+  )
+}
 ```
+
+Effects for a given domain is a class with properties representing different
+effects.
 
 Effects typically return observable of NgRx actions. That's because
 effect is a kind of an in-between step that happens when we invoke some action.
@@ -312,6 +346,19 @@ Example of that could be an effect that:
 
 In some cases though, effects do not emit any actions. Instead, an effect
 could use a [Router](./routing.md) to redirect the user somewhere else.
+To do that, the `Effect` decorator needs to be provided with an argument:
+
+```ts
+@Effect({ dispatch: false })
+```
+
+### Accessing State
+
+Accessing state within an action is possible with the `withLatestFrom`
+[RxJs](./observables.md) operator. It joins the original observable with data from 
+some another observable (like some state selector).
+
+The `storeRecipes` effect from up above made use of that operator.
 
 ## Extra Packages
 
