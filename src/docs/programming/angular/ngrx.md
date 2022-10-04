@@ -50,37 +50,27 @@ There is one store, but there are many actions and reducers:
 
 ### Actions
 
-Actions are the atomic operations that we want to apply on our state. Things
+Actions are the atomic operations that we want to apply on our state. They
+represent the interactions of our users with the data ket in the store. Things
 such as adding, modifying, deleting data from our state is exposed via actions.
-Each action is a separate class, with its own data. Additionally, each action
-has its own `type`. That type is used to inform a reducer about the kind of
-action that we want to execute.
+An action can (optionally) carry some data. Additionally, each action has its
+own `type`. That type is used to inform a reducer about the kind of action that
+we want to execute. Action can be viewed as a kind of event.
 
-Since actions are typically small, it's OK to keep them all in one file. Here's
-an example:
+Since actions are typically small, it's OK to keep them all in one file (per
+feature). Here's an example:
 
 ```ts
-// action types - there's a convention of prefixing string with the name of feature
-// in square brackets to avoid potential conflicts with other features
-export const ADD_PRODUCT = '[Products Catalog] Add Product';
-export const ADD_PRODUCTS = '[Products Catalog] Add Products';
+import { props } from "@ngrx/store";
+import { createAction } from '@ngrx/store';
 
-// actions
-export class AddProduct implements Action {
-  readonly type = ADD_INGREDIENT; // comes with the Action interface
 
-  // optional data
-  constructor(public payload: Product) {}
-}
+export const logout = createAction('[Auth] Logout');
 
-export class AddProducts implements Action {
-  readonly type = ADD_INGREDIENTS;
-
-  constructor(public payload: Product[]) {}
-}
-
-// such a union type makes the reducer's code more succinct
-export type ProductsActions = AddIngredient | AddIngredients;
+export const loginStart = createAction(
+  '[Auth] Login Start',
+  props<{ email: string, password: string }>()
+)
 ```
 
 Actions are **dispatched**, as we will see a bit later. Actions are a bit
@@ -94,57 +84,51 @@ Reducers handle actions in the context of the store. A single reducer will
 handle all the actions of a specific entity kind (like a Product). The store in
 our app is built with the help of reducers!
 
-Reducer is a function that is invoked anytime some action is dispatched (and at
-the bootstrap of our app!). It receives two parameters:
+Reducer is a pure function that is invoked anytime some action is dispatched
+(and at the bootstrap of our app!). It receives two parameters:
 
 - the current state (or an initial state if we set it up this way)
 - the action (with its optional payload)
 
 And, it returns the new state.
 
-Typically, a reducer will use a `switch-case` statement. Here's an example:
-
 ```ts
-// a typical import grouping all actions under one object
-import * as ProductsCatalogActions from "./products.actions";
-
-// a type of ProductsCatalog state.
 export interface State {
-  products: Product[];
-  selectedProduct?: Product
+ user: User;
+ authError: string;
+ loading: boolean
 }
 
-// optional initial state
-const initialState: State = {
-  products: [
-    new Product(1, 'Book'),
-    new Ingredient(2, 'Steam Deck'),
-  ],
-  selectedProduct: null
-}
+const initialState : State = {
+  user: null,
+  authError: null,
+  loading: false
+};
 
-// the actual reducer is a function
-export function productsCatalogReducer(
-  state: State = initialState, // reducer will be called by Angular on init with null state, so initialStae will jump in
-  action: ProductsCatalogActions.ProductsActions // our action union type
-) {
-  // handles each action
-  switch(action.type) {
-    case ProductsActions.ADD_PRODUCT:
-      return {
-        ...state, // a typicl pattern of copying the rest of the previous state
-        products: [...state.products, action.payload ] // products field of the state gets replaced
-      }
-    case ProductsActions.ADD_PRODUCTS:
-      return {
-        ...state,
-        products: [...state.products, ...action.payload]
-      }
-    default:
-      // the initial call (invoked by Angular) will not have any action.type, we return the initialState here
-      return state;
-  }
-}
+
+export const authReducer = createReducer(
+  initialState,
+
+  on(logout, (state) => ({
+    ...state,
+    user: null
+  })),
+
+  on(authenticateSuccess, (state, { email, userId, token, expirationDate }) => {
+    const user = new User(
+      email,
+      userId,
+      token,
+      expirationDate);
+
+    return {
+      ...state,
+      authError: null,
+      user,
+      loading: false
+    };
+  })
+);
 ```
 
 ::: tip Invocation
@@ -155,14 +139,15 @@ to *@ngrx/store/init*).
 
 ::: warning State Modifications 
 Reducer should always return new object(s). Modifications of existing state are
-forbidden!
+forbidden! That's why we use the spread operator. If our state is more complex,
+we need to deal with that properly, since the spread operator only does a
+shallow copy.
 :::
 
-::: tip Union Type
-TypeScript's union type that groups all the actions makes the type recognition
-great with `switch-case` or `if-else`. The compiler automatically infers the
-type of `action.payload` based on the `case` that we're currently in.
-We don't need to manually cast anything.
+::: warning
+When any action is dispatched in our app, ALL the reducers will get invoked.
+Whether they handle the action though is determined by the `on` functions within
+it.
 :::
 
 It's important to mention that reducers are very limited in what they actually
@@ -226,6 +211,14 @@ export class AppModule { }
 This is the place where we inform the framework of any reducers that we have
 defined. In the end, the reducers build up the store in the app.
 
+::: tip Features
+We can also register different parts of our state in feature modules.
+
+```ts
+StoreModule.forFeature(myFeatureKey, myFeatureReducer)
+```
+:::
+
 ### Inject
 
 Our components or services may inject the `Store` in order to access
@@ -288,9 +281,10 @@ package for NgRx that adds **Side Effects**. Until now we had some actions
 defined, and reducers that acted on them. Reducers focused on state
 "modifications". They should not contain any logic other than that.
 
-However, our state actions are often associated with some additional logic that
-we need to execute - sending some network request, storing some data in local
-storage, etc. This is what effects are for.
+Our state actions are often associated with some additional logic that we need
+to execute - sending some network request, storing some data in local storage,
+etc. Reducers shouldn't execute these, because they are pure functions.
+However, *effects* can do all those things.
 
 Each feature in our app can have its own `store/*.effects.ts` file. Here's an
 example:
@@ -333,9 +327,8 @@ export class RecipesEffects {
 Effects for a given domain is a class with properties representing different
 effects.
 
-Effects typically return observable of NgRx actions. That's because
-effect is a kind of an in-between step that happens when we invoke some action.
-Example of that could be an effect that:
+Effects typically return observable of NgRx actions. Example of that could be an
+effect that:
 
 1. Listens for the *[Auth] Login Start* actions
 2. Wehever such action comes in, it sends a login request to some authentication server
@@ -351,6 +344,10 @@ To do that, the `Effect` decorator needs to be provided with an argument:
 ```ts
 @Effect({ dispatch: false })
 ```
+
+::: warning
+Reducer for a given action is ALWAYS executed before effect(s).
+:::
 
 ### Accessing State
 
@@ -378,3 +375,76 @@ addition that emits [actions](#actions) based on [Router](./routing.md)'s
 activity. Whenever some navigation happens, etc., a specific action type is
 emitted with some payload, allowing us to react to it in our actions or
 reducers. 
+
+## Legacy API
+
+### Actions
+
+```ts
+// action types - there's a convention of prefixing string with the name of feature
+// in square brackets to avoid potential conflicts with other features
+export const ADD_PRODUCT = '[Products Catalog] Add Product';
+export const ADD_PRODUCTS = '[Products Catalog] Add Products';
+
+// actions
+export class AddProduct implements Action {
+  readonly type = ADD_INGREDIENT; // comes with the Action interface
+
+  // optional data
+  constructor(public payload: Product) {}
+}
+
+export class AddProducts implements Action {
+  readonly type = ADD_INGREDIENTS;
+
+  constructor(public payload: Product[]) {}
+}
+
+// such a union type makes the reducer's code more succinct
+export type ProductsActions = AddIngredient | AddIngredients;
+```
+
+### Reducer
+
+```ts
+// a typical import grouping all actions under one object
+import * as ProductsCatalogActions from "./products.actions";
+
+// a type of ProductsCatalog state.
+export interface State {
+  products: Product[];
+  selectedProduct?: Product
+}
+
+// optional initial state
+const initialState: State = {
+  products: [
+    new Product(1, 'Book'),
+    new Ingredient(2, 'Steam Deck'),
+  ],
+  selectedProduct: null
+}
+
+// the actual reducer is a function
+export function productsCatalogReducer(
+  state: State = initialState, // reducer will be called by Angular on init with null state, so initialStae will jump in
+  action: ProductsCatalogActions.ProductsActions // our action union type
+) {
+  // handles each action
+  switch(action.type) {
+    case ProductsActions.ADD_PRODUCT:
+      return {
+        ...state, // a typicl pattern of copying the rest of the previous state
+        products: [...state.products, action.payload ] // products field of the state gets replaced
+      }
+    case ProductsActions.ADD_PRODUCTS:
+      return {
+        ...state,
+        products: [...state.products, ...action.payload]
+      }
+    default:
+      // the initial call (invoked by Angular) will not have any action.type, we return the initialState here
+      return state;
+  }
+}
+```
