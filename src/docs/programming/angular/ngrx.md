@@ -10,12 +10,13 @@ lang: en-US
 NgRx is a framework for managing application state. Without it, our apps would
 typically:
 
-- manage app state via services;
+- manage app state via (stateful) services;
 - services would be accessed from various components;
 - there would be no control over state mutations.
 
 NgRx is an Angular version of Redux - React's state management framework. It
-makes use of RxJS making the state observable.
+makes use of RxJS making the state observable. It makes our components less
+dependent on services, and it makes services simpler and stateless.
 
 ::: tip
 NgRx is an overkill for smaller applications.
@@ -64,14 +65,29 @@ feature). Here's an example:
 import { props } from "@ngrx/store";
 import { createAction } from '@ngrx/store';
 
-
+// no params
 export const logout = createAction('[Auth] Logout');
 
+// with params
 export const loginStart = createAction(
   '[Auth] Login Start',
   props<{ email: string, password: string }>()
 )
 ```
+
+Alternatively, we can use this syntax:
+
+```ts
+export const AuthActions = createActionGroup({
+  source: 'Auth',
+  events: {
+    'Logout': emptyProps(),
+    'Login Start': props<{ email: string, password: string }>()
+  }
+})
+```
+
+The [Legacy Syntax](#legacy-api) works as well.
 
 Actions are **dispatched**, as we will see a bit later. Actions are a bit
 similar to DTO objects. Some actor wants to do something with the store, so it
@@ -130,6 +146,14 @@ export const authReducer = createReducer(
   })
 );
 ```
+
+::: tip Multiple actions
+A single reducer may be "assigned" to multiple actions:
+
+```ts
+on(actionOne, actionTwo, (state) => ({ ...state }))
+```
+:::
 
 ::: tip Invocation
 Reducers are not invoked by our app components directly. Instead, it is handled by
@@ -291,36 +315,38 @@ example:
 
 ```ts
 @Injectable()
-export class RecipesEffects {
+export class AuthEffects {
   constructor(
-    private actions$: Actions, 
-    private httpClient: HttpClient, 
-    private store: Store<fromApp.AppState>) {
-  }
+    private actions$: Actions,
+    private httpClient: HttpClient,
+    private router: Router,
+    private authService: AuthService) { }
 
-  @Effect()
-  fetchRecipes = this.actions$.pipe(
-    ofType(RecipesActions.FETCH_RECIPES),
-    switchMap(() => this.httpClient.get<Recipe[]>("https://my-api.com")),
-    map(recipes => {
-      return recipes.map(recipe => {
-        return {
-          ...recipe,
-          ingredients: recipe.ingredients ? recipe.ingredients : []
-        };
-      })
-    }),
-    map(recipes => new SetRecipes(recipes)));
-
-  @Effect()
-  storeRecipes = this.actions$.pipe(
-    ofType(RecipesActions.STORE_RECIPES),
-    withLatestFrom(this.store.select('recipes')),
-    switchMap(([_, { recipes }]) => {
-      return this.httpClient.put("https://angular-max-tutorial-default-rtdb.europe-west1.firebasedatabase.app/recipes.json",
-        recipes)
+ // dispatches another action
+  authSignUp$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.signUpStart),
+    switchMap(({ email, password }) => {
+      return this.httpClient.post<AuthResponseData>(
+        "https://identity-provider.com",
+        {
+          email,
+          password
+        }).pipe(,
+        map(handleAuthentication),
+        catchError(handleError)
+      )
     })
-  )
+  ))
+
+  // does not dispatch any actions
+  authLogout$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.logout),
+    tap(() => {
+      this.authService.clearLogoutTimer();
+      localStorage.removeItem('userData');
+      this.router.navigate(['/auth']);
+    })
+  ), { dispatch: false })
 }
 ```
 
@@ -330,30 +356,38 @@ effects.
 Effects typically return observable of NgRx actions. Example of that could be an
 effect that:
 
-1. Listens for the *[Auth] Login Start* actions
-2. Wehever such action comes in, it sends a login request to some authentication server
-3. When the response comes back, it either issues *[Auth] Logic Success* or *[Auth] Login Fail* action.
-4. The reducer sets up the state properly for all 3 kinds of actions mentioned above.
+1. Listens for the *[Auth] Login Start* actions.
+2. Wehever such action comes in, it sends a login request to some authentication
+   server.
+3. When the response comes back, it either issues *[Auth] Logic Success* or
+   *[Auth] Login Fail* action.
+4. The reducer sets up the state properly for all 3 kinds of actions mentioned
+   above (it handles them before their effects are executed!).
 5. Some UI component subscribes to state changes and reacts properly to each
    state change.
 
-In some cases though, effects do not emit any actions. Instead, an effect
-could use a [Router](./routing.md) to redirect the user somewhere else.
-To do that, the `Effect` decorator needs to be provided with an argument:
+In some cases though, effects do not emit any actions. Instead, an effect could
+use a [Router](./routing.md) to redirect the user somewhere else. To do that,
+the `createEffect` function needs to be provided with a second argument:
 
 ```ts
-@Effect({ dispatch: false })
+{ dispatch: false }
 ```
 
 ::: warning
 Reducer for a given action is ALWAYS executed before effect(s).
 :::
 
+With effects, our components can be decoupled from the logic of how to do some
+external activity (like, how to get some data). All component does is it invokes
+some action like `FetchBooks`. It also subscribes to the `books` slice of the
+store to receive the books as soon as they arrive.
+
 ### Accessing State
 
 Accessing state within an action is possible with the `withLatestFrom`
-[RxJs](./observables.md) operator. It joins the original observable with data from 
-some another observable (like some state selector).
+[RxJs](./observables.md) operator. It joins the original observable with data
+from some another observable (like some state selector).
 
 The `storeRecipes` effect from up above made use of that operator.
 
@@ -361,7 +395,10 @@ The `storeRecipes` effect from up above made use of that operator.
 
 ### Redux Dev Tools
 
-[Redux Dev Tools](https://github.com/reduxjs/redux-devtools) is a browser extension (or standalone app) that is similar to browser DevTools. It requires the app to be extended with DevTools module, which is not ideal, but allows us to see in detail what happens with the store:
+[Redux Dev Tools](https://github.com/reduxjs/redux-devtools) is a browser
+extension (or standalone app) that is similar to browser DevTools. It requires
+the app to be extended with DevTools module, which is not ideal, but allows us
+to see in detail what happens with the store:
 
 - actions being emited
 - shape of the store after each action
@@ -376,7 +413,10 @@ activity. Whenever some navigation happens, etc., a specific action type is
 emitted with some payload, allowing us to react to it in our actions or
 reducers. 
 
-## Legacy API
+## The Old API
+
+Many projects still use the older API exposed by NgRx. Some of the below
+code would generate warnings, because the classes/methods are obsolete.
 
 ### Actions
 
@@ -446,5 +486,42 @@ export function productsCatalogReducer(
       // the initial call (invoked by Angular) will not have any action.type, we return the initialState here
       return state;
   }
+}
+```
+
+### Effects
+
+```ts
+@Injectable()
+export class RecipesEffects {
+  constructor(
+    private actions$: Actions, 
+    private httpClient: HttpClient, 
+    private store: Store<fromApp.AppState>) {
+  }
+
+  @Effect()
+  fetchRecipes = this.actions$.pipe(
+    ofType(RecipesActions.FETCH_RECIPES),
+    switchMap(() => this.httpClient.get<Recipe[]>("https://my-api.com")),
+    map(recipes => {
+      return recipes.map(recipe => {
+        return {
+          ...recipe,
+          ingredients: recipe.ingredients ? recipe.ingredients : []
+        };
+      })
+    }),
+    map(recipes => new SetRecipes(recipes)));
+
+  @Effect()
+  storeRecipes = this.actions$.pipe(
+    ofType(RecipesActions.STORE_RECIPES),
+    withLatestFrom(this.store.select('recipes')),
+    switchMap(([_, { recipes }]) => {
+      return this.httpClient.put("https://recipes.api.com",
+        recipes)
+    })
+  )
 }
 ```
