@@ -185,6 +185,7 @@ module.exports = {
             "angular/http",
             "angular/modules",
             "angular/ngrx",
+            "angular/angular-universal",
             "angular/tips",
             "angular/standalone-components"
           ]

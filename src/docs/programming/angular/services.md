@@ -140,3 +140,68 @@ In order for a service to be injectable, it has to be `provided` in some module
 or the decorator should be used like this: `@Injectable(provideIn: 'root')`
 (there are other `provideIn` options as well).
 :::
+
+## Provide Strategies
+
+Until now, in the module's `providers` array, we'd just list names of the
+services. By default, the class's name acts as a token that represents that
+class. Angular's injector is more flexible and we can define a token and
+dependency to be different things. It's a bit similar to how in .NET there's an
+interface that classes depend on and a class that actually implements that
+interface and gets injected.
+
+Providers can be also defined like this:
+
+```ts
+...
+providers: [
+    // Create MyClass and inject in place of SomeToken
+    { provide: SomeToken, useClass: MyClass }, 
+
+    // Inject whatever AnotherToken resolves to in place of SomeToken
+    { provide: SomeToken, useExisting: AnotherToken }, 
+
+    // Returns a static value in place of SomeToken
+    { provide: SomeToken, useValue: "abc" }, 
+
+    // Define a function that returns something in place of SomeToken
+    { 
+        provide: SomeToken, 
+        useFactory: () => something,
+        deps: [ ] // tokens to be used by the factory if it has some parameters to be injected
+    },
+],
+```
+
+The factory injection function can be defined in a separate file, often called
+`<service>.service.provider.ts`.
+
+::: tip Default
+The default `providers: [SomeService]` shorthand can be treated as:
+
+```ts
+providers: [
+    { provide: SomeService, useClass: SomeService }
+],
+```
+:::
+
+### Tokens
+
+The injection tokens are recommended to be created like this:
+
+```ts
+import { InjectionToken } from '@angular/core';
+
+export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
+
+// and provide...
+
+providers: [{ provide: APP_CONFIG, useValue: { a: 'b' } }]
+```
+
+::: warning Interfaces
+Even though TypeScript has interfaces, and it would seem that they could be the
+perfect injection tokens, we can't use them, because interfaces disappear during
+the transpilation process.
+:::

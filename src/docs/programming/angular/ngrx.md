@@ -415,8 +415,8 @@ reducers.
 
 ## The Old API
 
-Many projects still use the older API exposed by NgRx. Some of the below
-code would generate warnings, because the classes/methods are obsolete.
+Many projects still use the older API exposed by NgRx. Some of the below code
+would generate warnings, because the classes/methods are obsolete.
 
 ### Actions
 
