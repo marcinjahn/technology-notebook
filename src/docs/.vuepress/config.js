@@ -166,6 +166,7 @@ module.exports = {
                 "dotnet/functional/error-handling",
                 "dotnet/functional/partial-application",
                 "dotnet/functional/modularity",
+                "dotnet/functional/category-theory"
               ],
             },
           ],
