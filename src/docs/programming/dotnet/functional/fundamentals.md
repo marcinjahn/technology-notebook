@@ -1,7 +1,7 @@
 ---
 title: Fundamentals of Functional Programming
 description: Fundamentals of Functional Programming, like Higher-Order Functions (HOF), or purity, in C#
-tags: .net, asp.net, c#, functional, programming, fp
+tags: .net, asp.net, c#, functional, programming, fp, turing, lambda
 lang: en-US
 ---
 
@@ -15,7 +15,43 @@ In FP (opposed to OOP), separating functions from data is natural. Functions
 encode logic, and data represent inputs and outputs of functions.
 
 In FP, instead of defining steps how to compute something, we define what the
-result is.
+result is (imperative vs declarative way).
+
+## Other Approaches
+
+First, we had programs written in machine code, or later **assembly**. They were
+very explicit and quite difficult to debug, understand, reuse.
+
+Then, **Procedural Programming** came in giving us a way to abstract some
+operations into named pieces of code.
+
+Next, the **Object-Oriented Programming** extended the idea further putting code
+into objects that hid a lot of implementation details within them. We could
+treat these objects like black boxes, not caring too much about what they're
+doing inside.
+
+It turns out that what objects are doing inside is quite crucial sometimes,
+especially when parallel programming is introduced. Objects may have some
+internal state, or they may share some data with other objects. The lack of
+knowledge about such things leads to bugs in concurrent scenarios. Invoking some
+method might cause state mutation and we might not even know about it. When
+running code parallelly we always need to make sure that the classes we use are
+thread-safe.
+
+The next step that is supposed to make everything sound again, is **Functional
+Programming**.
+
+## Lambda
+
+The functional approach has its origin in the works of Alonzo Church and his
+**lambda calculus**. Church defined a syntax to write (pure) functions. In his
+approach, a function takes some inputs that are applied into some expression.
+Any computable problem can be presented using lambda calculus. With that, Lambda
+calculus is Turing complete, it is actually a different way of expressing the
+Turing Machine itself, both approaches are equivalent.
+
+A great intoduction to lambda calculus may be found
+[here](https://personal.utdallas.edu/~gupta/courses/apl/lambda.pdf).
 
 ## Higher-Order Functions
 
@@ -275,3 +311,6 @@ public static Validator<T> CombineValidators(IEnumerable<Validator<T>> validator
 - [https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html](https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
 - [http://learnyouahaskell.com/chapters](http://learnyouahaskell.com/chapters)
 - Functional Programming in C# by Enrico Buonanno
+- [Turing Machines - Computer Science Was Created By Accident
+  (YT)](https://www.youtube.com/watch?v=PLVCscCY4xI)
+- [Lambda Calculus](https://personal.utdallas.edu/~gupta/courses/apl/lambda.pdf)
