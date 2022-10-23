@@ -197,7 +197,23 @@ DB data is stored in pages, sorted by clustered index. Then, these pages are put
 into a B-Tree. All apges are in leaves. Then, a top row of each page is taken to
 build higher layers of the tree (intermediary layers + a root).
 
-![](./assets/index-b-tree.png)
+Here's an example of a **seek** for *(C, 54.22)*:
+
+```mermaid
+flowchart TD
+  a[A, 13.25\nB, 54.98] --- b[A, 13.25\nA, 57.87\nA, 77.98\nB, 39.63]
+  a ==> c[B, 19.01\nC, 28.03\nC, 225.78\nD, 39.63]
+
+  b --- d[A, 13.25\nA, 16.53\nA, 26.54\nA, 32.98\nA, 33.65]
+  b --- e[A, 57.87\nA, 62.90\nA, 66.43\nA, 71.09\nA, 73.68]
+  b --- f[A, 77.98\nA, 102.64\nA, 109.56\nA, 112.12\nB, 11.23]
+  b --- g[B, 39.63\nB, 26.34\nB, 28.43\nB, 12.34\nB, 16.23]
+
+  c --- h[B, 19.01\nB, 75.90\nB, 95.31\nB, 189.67\nC, 21.98]
+  c ==> i[C, 28.03\n<b>C, 54.22</b>\nC, 89.05\nC, 189.06\nC, 221.86]
+  c --- j[C, 225.78\nC, 256.45\nC, 275.08\nC, 298.11\nC, 305.48]
+  c --- k[D, 39.63\nD, 75.66\nD, 87.90\nD, 111.43\nD, 145.44]
+```
 
 ::: tip Pages
 Data is stored in pages. A single page is 8kb in size and contains multiple
@@ -258,19 +274,41 @@ CREATE NONCLUSTERED INDEX inx_TransactionTypes ON dbo.Transactions (TransactionT
 ```
 
 The order of columns in the index matters. If our index contains columns
-"Amount" and "TransactionType", the index will be created in a way that rows are
-sorted by "Amount". We can quickly query data by the "Amount" column. However,
-querying on "TransactionType" will require the DB to scan throught the entire
-index data structure to find appropriate rows.
+"TransactionType" and "Amount", the index will be created in a way that rows are
+sorted by "TransactionType". We can quickly query data by the "TransactionType"
+column. However, querying on "Amount" will require the DB to scan throught the
+entire index data structure to find appropriate rows.
 
 Here's an example:
 
-![](./assets/non-clustered-index-columns-order.png)
+```sql
+# Query I
+WHERE TransactionType = 'B'
+
+# Query II
+WHERE Amount = 75.66 AND TransactionType = 'D'
+```
+
+```mermaid
+flowchart TD
+  a[A, 13.25\nB, 54.98] == Query I ==> b[A, 13.25\nA, 57.87\nA, 77.98\nB, 39.63]
+  a == Query II ==> c[B, 19.01\nC, 28.03\nC, 225.78\nD, 39.63]
+
+  b --- d[A, 13.25\nA, 16.53\nA, 26.54\nA, 32.98\nA, 33.65]
+  b --- e[A, 57.87\nA, 62.90\nA, 66.43\nA, 71.09\nA, 73.68]
+  b == Query I ==> f[A, 77.98\nA, 102.64\nA, 109.56\nA, 112.12\nB, 11.23]
+  b --- g[B, 39.63\nB, 26.34\nB, 28.43\nB, 12.34\nB, 16.23]
+
+  c --- h[B, 19.01\nB, 75.90\nB, 95.31\nB, 189.67\nC, 21.98]
+  c --- i[C, 28.03\nC, 54.22\nC, 89.05\nC, 189.06\nC, 221.86]
+  c --- j[C, 225.78\nC, 256.45\nC, 275.08\nC, 298.11\nC, 305.48]
+  c == Query II ==> k[D, 39.63\nD, 75.66\nD, 87.90\nD, 111.43\nD, 145.44]
+```
 
 Our index has been created optimally for the queries that we want to use. The
 order of the columns is: "TransactionType", "Amount". If we used a reversed
-order, the green query would still work fine, however, the purple one would need
-to scan all the rows.
+order, *Query II* would still work fine, however, *Query I* would need to scan
+all the rows.
 
 ::: tip Ideal Design
 Ideally, we want to have as few indexes as possible supporting as many queries
@@ -299,11 +337,30 @@ The difference comes from the fact that each condition in the AND builds on top
 of the previous result. In the OR case, each condition has to work on the entire
 dataset, and they are joined in the end.
 
-![](./assets/or-predicate-needs-multiple-indexes.png)
+```sql
+WHERE Amount > 200
+   OR TransactionType  = `B`
+```
 
-The green part is served well by the index, the purple part needs to scan the
-whole index. If there was a separate index for "TransactionType", it would be
-faster.
+```mermaid
+flowchart TD
+  a[A, 13.25\nB, 54.98] ==> b[A, 13.25\nA, 57.87\nA, 77.98\nB, 39.63]
+  a == Query II --- c[B, 19.01\nC, 28.03\nC, 225.78\nD, 39.63]
+
+  b --- d[A, 13.25\nA, 16.53\nA, 26.54\nA, 32.98\nA, 33.65]
+  b --- e[A, 57.87\nA, 62.90\nA, 66.43\nA, 71.09\nA, 73.68]
+  b ==> f[A, 77.98\nA, 102.64\nA, 109.56\nA, 112.12\nB, 11.23]
+  b --- g[B, 39.63\nB, 26.34\nB, 28.43\nB, 12.34\nB, 16.23]
+
+  c --- h[B, 19.01\nB, 75.90\nB, 95.31\nB, 189.67\nC, 21.98]
+  c --- i[C, 28.03\nC, 54.22\nC, 89.05\nC, 189.06\nC, 221.86]
+  c --- j[C, 225.78\nC, 256.45\nC, 275.08\nC, 298.11\nC, 305.48]
+  c --- k[D, 39.63\nD, 75.66\nD, 87.90\nD, 111.43\nD, 145.44]
+```
+
+The "TransactionType" part is served well by the index, the "Amount" part needs
+to scan the whole index. If there was a separate index for "Amount", it
+would be faster.
 :::
 
 #### Tips
