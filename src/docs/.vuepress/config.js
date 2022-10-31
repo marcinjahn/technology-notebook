@@ -155,20 +155,7 @@ module.exports = {
                 "dotnet/entity-framework-core/testing",
                 "dotnet/entity-framework-core/tips",
               ],
-            },
-            {
-              title: "Functional Programming",
-              children: [
-                "dotnet/functional/fundamentals",
-                "dotnet/functional/dotnet-features",
-                "dotnet/functional/signatures",
-                "dotnet/functional/composition",
-                "dotnet/functional/error-handling",
-                "dotnet/functional/partial-application",
-                "dotnet/functional/modularity",
-                "dotnet/functional/category-theory"
-              ],
-            },
+            }
           ],
         },
         {
@@ -260,6 +247,20 @@ module.exports = {
           title: "Unity",
           img: "unity.webp",
           children: ["unity/"],
+        },
+        {
+          title: "Functional Programming",
+          img: "lambda.webp",
+          children: [
+            "functional-programming/fundamentals",
+            "functional-programming/dotnet-features",
+            "functional-programming/signatures",
+            "functional-programming/composition",
+            "functional-programming/error-handling",
+            "functional-programming/partial-application",
+            "functional-programming/modularity",
+            "functional-programming/category-theory"
+          ],
         },
         {
           title: "Algorithms",
