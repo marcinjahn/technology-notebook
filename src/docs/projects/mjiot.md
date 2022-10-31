@@ -6,9 +6,10 @@ lang: en-US
 
 # MJ IoT
 
-MJ IoT was a result of my work on a thesis titled "Design and implementation of
+MJ IoT was a result of my work on the thesis titled "Design and implementation of
 Internet of Things System based on cloud computing model". It is an IoT system
-build using the microservices architecture.
+built on Azure, consisting of a few applications that work together to deliver a
+platform for devices to connect with.
 
 ## Technologies
 
