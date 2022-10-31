@@ -118,7 +118,7 @@ id_b ○ f = f
 
 That's the *right identity*.
 
-We can also reverse the order of the morphisms morphisms:
+We can also reverse the order of the morphisms:
 
 ```mermaid
 flowchart LR
@@ -220,7 +220,7 @@ theory. It's an abstraction making it possible to look at a set (a "low-level
 thing") from a higher level of abstraction. It's kinda like moving from
 assembler to some high-level language. Instead of a set consisting of some
 elements, we have a table of morphisms that define our new category. They define
-the interface of this category. The sets itself have been "shrunk" down to
+the interface of this category. The sets themselves have been "shrunk" down to
 points A and B.
 
 ::: tip Programming
@@ -230,12 +230,13 @@ functions can be seen as functions mapping one set to another.
 
 ## Functions
 
-In maths, functions are defined as kind of relations. We have two sets:
+In set theory, functions are defined as relations. Relation is a set of tuples
+*(a,b)*, where *a ∈ A* and *b ∈ B*. We have sets:
 
-- domain
-- codomain
+- *domain*
+- *codomain* (which is a superset of a *range*)
 
-A function takes elements from a *domain* and maps it to some element from a
+A function takes elements from a *domain* and **maps** it to some element from a
 *codomain*.
 
 ```mermaid
@@ -257,7 +258,82 @@ flowchart LR
   end
 ```
 
+::: tip
+A relation is a subset of `A x B`. The domain is the set of elements in `A` and
+the codomain is the set of elements in `B`.
+:::
 
+### Isomorphism
+
+A function may be invertible. A function `y = f(x)` is invertible when there is
+a way to transform it into `x = g(y)`. Such a function `f` has to be
+*one-to-one* (which is a synonym of *injection*) and *onto* (which is a synonym
+of *surjection*).
+
+- **one-to-one**- there are no two arguments that have the same result. 
+- **surjective** - the range and the codomain are the same
+
+In other words, `g` is a reverse of `f`, if `g ○ f = id` (and `f ○ g = id`). A
+function that is invertible is called an **isomorphism**. Here is an example of
+an isomorphic mapping (it's the same illustration as up above):
+
+```mermaid
+flowchart LR
+  a1 --> b2
+  a2 --> b1
+  a3 --> b3
+
+  subgraph A
+    a1
+    a2
+    a3
+  end
+
+  subgraph B
+    b1
+    b2
+    b3
+  end
+```
+
+This is not an isomorphic function:
+
+```mermaid
+flowchart LR
+  a1 --> b2
+  a2 --> b1
+  a3 --> b2
+
+  subgraph A
+    a1
+    a2
+    a3
+  end
+
+  subgraph B
+    b1
+    b2
+    b3
+  end
+```
+
+Given `b2`, we cannot resolve it to a single element from `A` since both `a1`
+and `a3` map to `b2`.
+
+---
+
+Getting back to Category Theory, ismorphism cannot be defined in terms of
+injective or surjective functions, because these terms have different names in
+that context.
+
+*Injection* (one-to-one) becomes **epimorphism** (epic).
+
+*Surjection* (onto) becomes **monomorphism** (monic).
+
+::: warning
+In Category Theory, if a given morphism is both an epimorphism and monomorphism,
+it doesn't necessarily constitute an isomorphism!
+:::
 
 ## Constructs
 
@@ -292,3 +368,9 @@ The above triplet must satisfy the aforementioned rules.
 - AND on boolean numbers, 1 is the identity
 - OR on boolean numbers, 0 is the identity
 - Concatenation on a collection, empty collection is the identity
+
+## Resources
+
+- [A realy good Set Theory guide on
+  libretexts.org](https://math.libretexts.org/Courses/Monroe_Community_College/MTH_220_Discrete_Math/4%3A_Sets/4.1%3A_An_Introduction_to_Sets)
+- [Set Theory Primer](https://jeremykun.com/2011/07/09/set-theory-a-primer/)
