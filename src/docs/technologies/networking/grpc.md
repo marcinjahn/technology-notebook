@@ -87,3 +87,5 @@ ASP.NET Core supports it via an additional NuGet package.
 ## References
 
 [Pluralsight](https://app.pluralsight.com/library/courses/aspdotnet-core-6-using-grpc/)
+[A nice intro to
+protobuf](https://grapeup.com/blog/protobuf-how-to-serialize-data-effectively-with-protocol-buffers/#)

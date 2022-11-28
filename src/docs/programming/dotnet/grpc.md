@@ -62,6 +62,14 @@ There's a type that represents empty content - `google.protobuf.Empty`. We could
 use that if our rpc(s) did not return any data.
 :::
 
+::: warning Reserved
+The `reserved` keyword in `ReadingMessage` message type means that in the past,
+this protobuf message used to have some additional values. To not break
+compatibility with existing clients, we do not just remove the fields, but we make
+them `reserved`. The numbers that were assigned to them should not be reused for
+any other field that we could potentially add in the future!
+:::
+
 ### Service
 
 Under `service`, the endpoints are listed that the server will be offering, and
@@ -70,7 +78,8 @@ the client will be able to hit. The endpoints can make use of `message` types.
 ### Message
 
 The `message` is used to define our structs. The numbers are used for ordering
-of the fields.
+of the fields, and more importantly, for naming of the fields in transfer. The
+full fields names will not be transfered.
 
 The types that we can use are either built-in ones, defined by us, or defined by
 3rd party. Above, we're using `google.protobuf.Timestamp` that comes from an
@@ -219,3 +228,5 @@ similarly to the HTTP Controllers (what about individual rpc methods?).
 ## References
 
 [Pluralsight](https://app.pluralsight.com/library/courses/aspdotnet-core-6-using-grpc/)
+[A nice intro to
+protobuf](https://grapeup.com/blog/protobuf-how-to-serialize-data-effectively-with-protocol-buffers/#)
