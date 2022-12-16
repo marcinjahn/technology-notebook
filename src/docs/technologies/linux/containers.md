@@ -1,26 +1,24 @@
 ---
-title: Containerization
-description: Information about containers in linux, how they work
-tags: linux, containers
+title: Containers
+description: Information about containers in Linux, how they work
+tags: linux, containers, oci, docker, podman
 lang: en-US
 ---
 
-# Containerization
-
-## Sources
-
-- "Kubernetes in Action (Second Edition)" book
+# Containers
 
 ## Namespaces
 
-Containers rely on namespaces in Linux. There are 7 kinds of namespaces:
+Containers rely on namespaces in Linux. There are 8 kinds of namespaces:
 
+- cgroups
 - mount
 - process ID
 - network
 - IPC
 - UNIX time-sharing system (UTS) - hostname, domain name
 - users, groups
+- time
 
 Each container is assigned with new namespaces of these types, creating an
 illusion for the process that it runs on a separate machine.
@@ -37,13 +35,13 @@ receives a set of interfaces that are placed in new namespace:
 
 ![](https://i.imgur.com/emBNfbw.png)
 
-## cgroups
+### cgroups
 
-Another feature of Linux kernel. It allows to limit system resources assigned to
-a process (CPU time, CPU cores, RAM, disk, network bandwidth).
+cgroups are another feature of Linux kernel. It allows to limit system resources
+assigned to a process (CPU time, CPU cores, RAM, disk, network bandwidth).
 
-When we're setting restrictions for Docker continers (e.g. `--memeory="100m"`),
-Docker really uses cgroups to limit the process.
+When we're setting restrictions for containers (e.g. `--memory="100m"`),
+container engine actualy uses cgroups to limit the process.
 
 ## Capabilities
 
@@ -61,7 +59,53 @@ file) can be applied to a containers listing sys-calls that it can make.
 
 Further hardening may be achieved with AppArmor or SELinux (MAC).
 
+## Rootless Containers
+
+Podman popularized the idea of using rootless containers. Previously, it was
+common to run containers with Docker with root privileges, which translated to
+root access on the host as well (although Docker does support rootless
+containers as well!).
+
+Rootless containers make use of user namespaces. It gives us access to user
+mapping and allows us to run the container with any UID, even UID = 0, while on
+the host system that UID would be mapped to a "normal", non-root user.
+
+An easy way to test that is to run `podman unshare id`. It's going to run `id`
+program in a user namespace. It will print "0" as a result. A non-root user on a
+host (typically 1000) translates to a root in the namespace.
+We can see the mapping offsets in the `/etc/subuid` file:
+
+```
+mnj:100000:65536
+```
+
+The output means, that the user 1 in a container will be mapped to user 100000
+on a host. User 2 would be mapped to 100001, and so on. A maximum of 65536 users
+may be mapped (that value may be modified, it's not a hard limit).
+
+### Volumes
+
+Mounting volumes in rootles context is different than it is with rootful
+environments. In the latter case, whatever you mount, it will probably just work
+without any further tinkering. In rootless podman, you will most likely
+experience issues with SELinux. One of the ways to get around that is to apply
+the `:z` or `:Z` (private, additionally uses MCS) to volume definition. That
+will apply the right SELinux labeling to the files being shared as a volume
+(only if we're attaching host dir, it is not needed when creating a volume
+entity).
+
+Another issue could be due to traditional DAC permissions. The user mapping also
+works for volumes, so a UID 0 in a container will map to UID 1000 on a host. So,
+a container will be able to access files of UID 1000 on the host.
+
 ## Standarization
 
 Docker was the first container platform to make them popular. There's **CRI**
 (Container Runtime Interface) that containers platform adhere to.
+
+## References
+
+- "Kubernetes in Action (Second Edition)" book
+- [man namespaces](https://man7.org/linux/man-pages/man7/namespaces.7.html)
+- [Rootless
+  Containers](https://blog.christophersmart.com/2021/01/26/user-ids-and-rootless-containers-with-podman/)
