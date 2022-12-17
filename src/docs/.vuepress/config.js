@@ -337,6 +337,7 @@ module.exports = {
           children: [
             "linux/gist",
             "linux/system-calls",
+            "linux/selinux",
             "linux/containers",
             "linux/bash-scripting",
             "linux/lfs",

@@ -19,10 +19,10 @@ technology enthusiast. Welcome to my notebook!
 
 This website is a place for various IT topics that I felt the need to write
 down. If you find any of the contents useful, that's great! You can find
-out more about how this website was built (and why)
+out more about how this website was built
 [here](/about/this-website.md).
 
-Some of the publications:
+Some of my publications:
 
 - [ASP.NET
 Core
