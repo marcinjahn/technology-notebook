@@ -83,16 +83,20 @@ The output means, that the user 1 in a container will be mapped to user 100000
 on a host. User 2 would be mapped to 100001, and so on. A maximum of 65536 users
 may be mapped (that value may be modified, it's not a hard limit).
 
-### Volumes
+### Volumes and SELinux
 
 Mounting volumes in rootles context is different than it is with rootful
 environments. In the latter case, whatever you mount, it will probably just work
 without any further tinkering. In rootless podman, you will most likely
-experience issues with SELinux. One of the ways to get around that is to apply
-the `:z` or `:Z` (private, additionally uses MCS) to volume definition. That
-will apply the right SELinux labeling to the files being shared as a volume
-(only if we're attaching host dir, it is not needed when creating a volume
-entity).
+experience issues with [SELinux](./selinux.md) (if your system uses SELinux
+MAC). One of the ways to get around that is to apply the `:z` or `:Z` (private,
+additionally uses MCS) to volume definition. That will apply the right SELinux
+labeling to the files being shared as a volume (only if we're attaching host
+dir, it is not needed when creating a volume entity).
+
+Containers run with the `container_t` SELinux domain. They are allowed to access
+the `container_file_t` and `container_ro_file_t` typed files. The `:z`/`:Z`
+parameters apply the `container_file_t` to the mounted files.
 
 Another issue could be due to traditional DAC permissions. The user mapping also
 works for volumes, so a UID 0 in a container will map to UID 1000 on a host. So,
@@ -109,3 +113,4 @@ Docker was the first container platform to make them popular. There's **CRI**
 - [man namespaces](https://man7.org/linux/man-pages/man7/namespaces.7.html)
 - [Rootless
   Containers](https://blog.christophersmart.com/2021/01/26/user-ids-and-rootless-containers-with-podman/)
+- [container_selinux](https://www.mankier.com/8/container_selinux)
