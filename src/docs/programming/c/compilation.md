@@ -57,6 +57,12 @@ g++ main.cpp add.cpp -o program
 
 The result is an executable file `a.out`.
 
+::: tip Make
+With our projects growing in size, more source files will be present.
+The listing of these files need to be provided to the compiler.
+To simplify the process, `Makefile` and `make` should be used.
+:::
+
 ## Header Files
 
 First, it's good to understand the purpose of the header files. These files
@@ -275,3 +281,7 @@ The `.so` files are Linux dynamic libraries. Windows uses `.dll`, and macOS uses
 
 When compiling programs, we can specify explicitly the dynamic libraries that we
 want to link, with the `-l` flag in g++.
+
+## Resources
+
+[make and g++](https://earthly.dev/blog/g++-makefile/)
