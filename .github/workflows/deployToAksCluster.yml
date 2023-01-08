@@ -37,7 +37,7 @@ jobs:
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/src" -f  "src/Dockerfile" -t mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }} --label dockerfile-path=src/Dockerfile
+        docker build "$GITHUB_WORKSPACE/src" -f  "src/Containerfile" -t mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }} --label dockerfile-path=src/Containerfile
         docker push mjimages.azurecr.io/marcinjahn-vuepress:${{ github.sha }}
     
     - uses: azure/k8s-set-context@v1

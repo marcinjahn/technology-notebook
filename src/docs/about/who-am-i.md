@@ -59,7 +59,7 @@ expertise in:
     in some IoT projects.
 - **containerization**:
   - [OCI containers](https://opencontainers.org/about/overview/) - using
-    [Docker](https://www.docker.com/) or [Podman](https://podman.io/) is
+    [Podman](https://podman.io/) or [Docker](https://www.docker.com/) is
     nowadays a standard way to build and run applications, especially in the
     cloud. Most of the applications I build end up as container images.
   - [Kubernetes](https://kubernetes.io/) - an amazing initiative to standardize

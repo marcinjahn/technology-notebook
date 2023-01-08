@@ -79,7 +79,7 @@ https://{VERSION_ID}-dot-{SERVICE_ID}-dot-{PROJECT_ID}.{REGION_ID}.r.appspot.com
 Support for .NET seems to be really bad. The [provided
 examples](https://github.com/GoogleCloudPlatform/dotnet-docs-samples) are for
 .NET Core 2.1. The best option for .NET apps seems to be the "custom" runtime,
-which is basically Docker containers.
+which is basically containers.
 
 Any app running on App Engine requires the `app.yaml` file. Here's an example of
 it for the "custom" runtime:

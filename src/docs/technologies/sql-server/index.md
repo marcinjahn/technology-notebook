@@ -9,7 +9,7 @@ lang: en-US
 
 ## Running in a Container
 
-On AMD64 PCs just use the sql-server docker image.
+On AMD64 PCs just use the sql-server container image.
 
 On M1 macs, use the following:
 
