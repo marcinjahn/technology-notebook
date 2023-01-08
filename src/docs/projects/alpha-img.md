@@ -2,6 +2,7 @@
 title: Alpha Img
 description: A small side-project that helps finding transparent images
 lang: en-US
+tags: web app, project, alpha image, transparent
 ---
 
 # Alpha Img

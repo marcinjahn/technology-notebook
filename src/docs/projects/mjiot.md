@@ -2,6 +2,7 @@
 title: MJ IoT
 description: A master thesis project - MJ IoT
 lang: en-US
+tags: iot, thesis, internet of things, cloud, devices
 ---
 
 # MJ IoT
