@@ -4,4 +4,4 @@ isIntro: true
 
 Some of the **projects** that I have been working on.
 
-Let's start with [Puff](./puff).
+The latest one would be the [Ope Multiple Links browser extension](./open-multiple-links-browser-extension.md).

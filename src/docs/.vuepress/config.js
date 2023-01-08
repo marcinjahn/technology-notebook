@@ -403,6 +403,7 @@ module.exports = {
       "/about/": ["./", "who-am-i", "cv", "this-website"],
       "/projects/": [
         "./",
+        "open-multiple-links-browser-extension",
         "feedback-panel-vuepress-plugin",
         "puff",
         "nand2tetris-implementation",

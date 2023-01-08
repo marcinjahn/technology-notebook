@@ -24,14 +24,16 @@ The solution consists of (the code is available on GitHub):
 - [Vue.js SPA](https://github.com/marcinjahn/alpha-img.spa-vue)
 - [.NET C# Web API](https://github.com/marcinjahn/alpha-img.webapi-dotnet)
 
-A public instance of the solution is deployed to Heroku at
-[https://alpha-imgs-spa.herokuapp.com/](https://alpha-imgs-spa.herokuapp.com/).
+~~A public instance of the solution is deployed to Heroku at
+[https://alpha-imgs-spa.herokuapp.com/](https://alpha-imgs-spa.herokuapp.com/).~~
+Heroku no longer offers free hosting, I'll be looking for some alternative
+solutions.
 
 The web-api backend uses Google Search API to retrieve the results.
 
 ::: tip Cold Run
 Heroku apps are not running all the time, but rather on demand. You can expect
-some seconds of delay for your first request
+some seconds of delay for your first request.
 :::
 
 ::: warning Styling

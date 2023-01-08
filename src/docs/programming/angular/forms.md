@@ -236,6 +236,14 @@ export class MyComponent implements OnInit {
 }
 ```
 
+::: tip FormControl is a generic
+The `FormControl` is actually a generic class. It will often infer the type, but
+we could also specify it by ourselves. There is also an `UntypedFormControl`, which
+is basically `FormControl<any>`. We should try to have all our controls typed,
+that way when accessing the `value` of a control, a proper TypeScript validation
+can occur. 
+:::
+
 ::: tip
 The object passed to `FormGroup`'s constructor has keys wrapped in quotation
 marks to protect us from minification that would potentially change these names.
@@ -545,3 +553,7 @@ With that code, the `value` of our `myForm` variable will contain:
 
 - `username` key with a single value;
 - `hobbies` key, being an **array** of languages that user added.
+
+## References
+
+- [Typed Form Classes](https://blog.ninja-squad.com/2022/04/21/strictly-typed-forms-angular/)
