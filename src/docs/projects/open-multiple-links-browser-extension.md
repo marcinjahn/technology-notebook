@@ -19,3 +19,4 @@ It uses TypeScript and webpack.
 
 - [GitHub](https://github.com/marcinjahn/open-multiple-links-browser-extension)
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/open-multiple-links/aihgofmdijjhegajmdomlafeiklofndl)
+- [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/open-multiple-links/edibnioojbnicoocokdokbmgblbnnbpe)
