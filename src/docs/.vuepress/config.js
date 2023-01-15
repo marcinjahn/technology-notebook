@@ -322,16 +322,6 @@ module.exports = {
           ],
         },
         {
-          title: "Blockchain",
-          img: "blockchain.webp",
-          children: [
-            "blockchain/intro",
-            "blockchain/smart-contracts",
-            "blockchain/solidity",
-            "blockchain/dapps",
-          ],
-        },
-        {
           title: "Linux",
           img: "linux.webp",
           children: [
@@ -363,6 +353,10 @@ module.exports = {
             "kubernetes/ingress",
             "kubernetes/helm",
           ],
+        },
+        {
+          title: "Observability",
+          children: ["observability/tracing"]
         },
         {
           title: "SQL Server",
@@ -398,6 +392,16 @@ module.exports = {
           title: "Google Cloud",
           img: "gcp.webp",
           children: ["google-cloud/overview"],
+        },
+        {
+          title: "Blockchain",
+          img: "blockchain.webp",
+          children: [
+            "blockchain/intro",
+            "blockchain/smart-contracts",
+            "blockchain/solidity",
+            "blockchain/dapps",
+          ],
         },
       ],
       "/about/": ["./", "who-am-i", "cv", "this-website"],
