@@ -239,6 +239,11 @@ module.exports = {
           ],
         },
         {
+          title: "GTK",
+          img: "gtk.webp",
+          children: ["gtk/", "gtk/gjs"],
+        },
+        {
           title: "CSS",
           img: "css.webp",
           children: ["css/responsive-design", "css/tips", "css/pixels"],
