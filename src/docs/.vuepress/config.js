@@ -356,6 +356,7 @@ module.exports = {
         },
         {
           title: "Observability",
+          img: "observability.webp",
           children: ["observability/tracing"]
         },
         {

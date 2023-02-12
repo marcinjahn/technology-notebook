@@ -128,17 +128,48 @@ used for batching. Out-of-the-box, the following processors are available:
 - NoOpProcessor - drops every span, nothing will be sent
 - MultipleProcessor - allows to compose multiple processors in a single pipeline
 
-#### Propagators
+#### Propagation
 
 In some cases, it is difficult to attach tracing metadata in the messaging with
 other services. WebSockets could be an example of such messaging. WebSockets do
 not support any way of sending metadata, like headers in HTTP. Because of that,
 data like `traceId` needs to be sent as part of application message. The SDK
 comes with a propagator that can both inject and extract that metadata from the
-messages. Both the sender and the receiver need to be aware of this metadat
+messages. Both the sender and the receiver need to be aware of this metadata
 being there.
 
 Another example could be Redis - it also does not support metadata.
+
+##### Formats
+
+There are a bunch of formats of tracing that have emerged since tracing was
+born. The one used by default by the OpenTelemetry SDK is the [W3C Trace
+Context](https://www.w3.org/TR/trace-context/). In short, it includes tracing
+information (like trace ID) in an HTTP header called `traceparent`.
+
+There are also other standards, like Jaeger and B3. These are considered legacy,
+and shouldn't be used by new projects. However, there are cases where we want to
+integrate with older systems that still use the proprietary format. The
+OpenTelemetry SDK supports us with that via propagators. By default, the W3C propagator is used. A propagator basically does two things:
+
+- **extracts** tracing metadata from the incoming communication (like an HTTP request)
+- **injects** tracing metadata into the messages going out
+
+A propagator really needs to implement just these 2 methods, and it can be used in tracing initialization.
+
+::: tip
+It might happen that only one side of propagation is needed, e.g. extraction. We
+might be integrating with some system that sends us tracing headers in Jaeger
+fomat, but we might not want to propagate tracing in that format further on,
+since W3C is the format we want to use.
+
+OpenTelemetry does not have any APIs to enable/disable specific side of
+propagation. Instead, we'd need to implement some kind of "wrapper" that blocks
+the functionality we don't need.
+
+More on that
+[here](https://github.com/open-telemetry/opentelemetry-specification/issues/3153).
+:::
 
 ## Traces
 
