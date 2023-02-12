@@ -52,7 +52,7 @@ group of developers. Examples of supported languages include:
 - and more...
 
 Since there is a lot of GObject-based libraries, there is an established way of
-generating binding for them - [GObject
+generating bindings for them - [GObject
 Introspection](https://gi.readthedocs.io/en/latest/). The bindings, under the
 hood, call the C libraries code via mechanisms similar to
 [PInvoke](../dotnet/platform-invoke.md).

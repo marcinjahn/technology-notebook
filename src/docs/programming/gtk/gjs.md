@@ -18,7 +18,7 @@ latest ECMAScript features in our GTK apps.
 ## App Dependencies
 
 JS developers are used to pulling dependencies from
-[npm](https://www.npmjs.com/). The bad news is that many of tha packages there
+[npm](https://www.npmjs.com/). The bad news is that many of packages there
 will not work, simply because they rely on Node.js APIs, which are not there in
 GJS. However, there are also a bunch of libraries that do work, as long as they
 do not call any Node.js functions.
@@ -72,7 +72,7 @@ import 'gi://Gtk?version=4.0'; // GTK 4.0
 import GLib from 'gi://GLib'; // latest version available?
 ```
 
-### This
+### Global Object
 
 There is a global object called `globalThis`, which is similar to `window` in
 the browsers. We can assign values to it and access them from anywhere else.
@@ -92,7 +92,7 @@ Our app will consist of:
 
         import GLib from 'gi://GLib';
 
-        // package is GJS module for initializing and running the app
+        // package is a GJS module for initializing and running the app
         imports.package.init({
             name: '@PACKAGE_NAME@',
             version: '@PACKAGE_VERSION@',
@@ -123,7 +123,7 @@ Our app will consist of:
             Template: 'resource:///com/marcinjahn/my-app/ui/Window.ui',
             InternalChildren: ['viewStack'],
         }, class extends Gtk.ApplicationWindow {
-            constructor(params={}) {
+            constructor(params = {}) {
                 super(params);
             }
             
@@ -141,7 +141,7 @@ Our app will consist of:
         GTypeName: 'MyApplication'
     }, class extends Gtk.Application {
         vfunc_activate() {
-            const window = new Window({ application: this });
+            const window = new MyWindow({ application: this });
             window.present();
         }
 
@@ -168,7 +168,7 @@ Our app will consist of:
     });
     ```
     
-    - `main.js` - most likely, you will instantaite the app here:
+    - `main.js` - most likely, you will instantiate the app here:
 
         ```js
         import 'gi://Gdk?version=4.0';
@@ -183,7 +183,7 @@ Our app will consist of:
 
 - [GResource](https://docs.gtk.org/gio/struct.Resource.html) - an XML listing of
   files that will be included in the final binary. Usually, there are separate
-  GResource file for the source code, and for the other data (images, CSS, UI,
+  GResource files for the source code, and for the other data (images, CSS, UI,
   icons, etc.). There are APIs to access GResources (like icons) from the JS
   code.
 
@@ -202,7 +202,7 @@ Our app will consist of:
     ```
 
 - assets like icons, images
-- CSS - GTK apps may be styles with CSS, similar to HTML. The difference is that
+- CSS - GTK apps may be styled with CSS, similar to HTML. The difference is that
   GTK CSS does not support positioning (e.g. with flexbox). That is done via
   specific widget containers, similarly to how WPF does it in the .NET Platform.
 - UI files - XML describing the layout of various views, very similar to WPF.
@@ -358,14 +358,14 @@ widgets. For example, the `.keycap` class makes label look like a keyboard key.
 
 ### Signals
 
-`GObject` brings over the concept of *Signals*, which analogical to events from
-the .NET world. Various widgets have their own signals defined (like a `clicked`
-signal of a button), which we can subscribe and react to. Custom widgets also
-can have custom signals defined.
+`GObject` brings over the concept of *Signals*, which is analogical to events
+from the .NET world. Various widgets have their own signals defined (like a
+`clicked` signal of a button), which we can subscribe and react to. Custom
+widgets also can have custom signals defined.
 
 Her's how to use a signal:
 
-Connecting to a signal
+#### Connecting to a signal
 
 ```xml
 <object class="GtkButton">
@@ -374,7 +374,7 @@ Connecting to a signal
 </object>
 ```
 
-Defining the handler:
+#### Defining the handler:
 
 ```js
 class MyWidget extends Gtk.Widget {
@@ -533,7 +533,7 @@ Settings of our app should have a predefined schema, in XML:
 ```
 
 This should be defined in a file named like
-`com.marcinjahn.filebrowser.gschema.xml`.
+`com.marcinjahn.my-app.gschema.xml`.
 
 Now, we can use settings in various ways:
 

@@ -21,6 +21,7 @@ module.exports = {
       "meta",
       { name: "apple-mobile-web-app-status-bar-style", content: "black" },
     ],
+    ["meta", {name: "google-site-verification", content: "uRhO2txNLDLyS2hZuK4JD4n-rPcdGJ0KMRSwvhSGzog"}],
     [
       "link",
       {
