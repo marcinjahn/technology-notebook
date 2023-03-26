@@ -1,0 +1,35 @@
+---
+tags: ["networking"]
+title: Server Name Indication
+description: "SNI Server Name Indication Overview in terms of HTTP, HTTPS, and TLS"
+---
+
+# Server Name Indication (SNI)
+
+Domain names are associated with IP addresses. Since IP addresses are limited in
+their number, there's a need to host multiple websites (multiple domains) under
+a single IP address.
+
+## HTTP
+
+With just HTTP (without TLS), we can solve this issue with the *Host* header
+sent in the request. The server can read that header and serve the right
+content.
+
+## HTTPS
+
+The issue comes when we switch to HTTPS. During the TLS handshake, the server is
+supposed to send the client the certificate of the website. Since the *Host*
+header I mentioned above is part of HTTP (layer 7 of OSI), there is no access to
+it during the TLS handshake. SNI comes with an alternative solution.
+
+### TLS
+
+During the client-hello of TLS 1.3, SNI is sent - a domain name that we're
+trying to reach. This way, the server can send server-hello with the right
+certificate.
+
+::: warning Plain Text
+The SNI information (domain name) is unencrypted. The **Encrypted Client Hello
+(ECH)** (previously ESNI) resolves that problem (TLS 1.3 only).
+:::

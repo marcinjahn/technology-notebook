@@ -1,0 +1,667 @@
+---
+title: Routing
+description: Routing in Angular SPA framework. It discussed basics of Router, how to use guards, how to access router from HTML and from code programmatically
+tags: ["angular", "spa", "routing", "router", "guard"]
+lang: en-US
+---
+
+# Routing in Angular
+
+Angular has a built-in router. When initializing a new project, the CLI asks if
+it should be included or not. If we opted for "No" initially, we can add routing
+module manually:
+
+```sh
+ng generate module app-routing --flat --module=app
+```
+
+We can also configure routing in the `AppModule` file:
+
+```ts
+const routes: Routes = [
+  { path: '', component: MainPageComponent, pathMatch: 'full' }, // match only if path is literally ''
+  { path: 'home', redirectTo: '/' } // reusing a route under a different URL
+  { path: 'users', component: UsersComponent },
+  { path: 'movies', component: MoviesComponent },
+  { path: 'movies/:movieId', component: MovieComponent },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' } // catch all undefined cases
+];
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    // ...
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    RouterModule.forRoot(routes)
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+The selected component will be rendered as a child of `AppComponent`. We need to
+specify the exact placement of that component:
+
+```html
+<router-outlet></router-outlet>
+```
+
+The routes array should generally contain a wildcard route that handles all bad
+links. Usually, it would redirect the user to some 404 page.
+
+::: danger Order of Routes
+The order of the routes matters! We should always place the wildcard route at
+the end, otherwise some meaningful route could be handled as 404.
+:::
+
+Paths of routes defined in the array are **prefix paths** by default. It means
+that Angular will match it whenever the beginning of browser's URL matches the
+route's path. If we want the route to be selected only when the whole URL is
+matched (without the host though), we should add the `pathMatch: 'full'` option.
+
+## External File
+
+Usually, we do not define routes directly in `app.module.ts`. Instead, we'd
+create a separate module file `app-routing.module.ts` with the routing setup
+inside of it.
+
+```ts
+const routes: Routes = [
+  { path: '', component: MainPageComponent, pathMatch: 'full' },
+  // other routes...
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [ RouterModule ],
+})
+export class AppRoutingModule { }
+```
+
+Then, the `app.module` file gets simplified:
+
+```ts{9}
+@NgModule({
+  declarations: [
+    AppComponent,
+    // ...
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+We can also [split routes per feature](./modules.md#routes).
+
+## Navigation in HTML
+
+With routing in place, we don't want to navigate between different pages in our
+app with traditional `<a href="/whatever">Whatever</a>`. Clicking such a link
+will work and the user will be taken to the right component (if the `/whatever/`
+route was configured), but it comes with a huge issue - the whole application
+will actually be reloaded from the server again. The app's state will be lost,
+and it will be slow. Instead of that, we want the Angular Router to handle the
+navigation, making it an in-app navigation rather than a browser-based
+navigation. Here's how `<a>` elements should look like:
+
+```html
+<a routerLink="/home">Home</a>
+```
+
+The link above is applied to the host of the page. If we didn't include the `/`,
+the `home` segment would be applied to the currently open page. It works
+differently in [Programmatic Navigation](#navigation-in-code)!
+
+::: tip Array
+We can also split our link into segments, and use it like this:
+
+```html
+<a [routerLink]="['/home', userId]">Home 3</a>
+```
+
+`userId` would be some component's property. The array syntax makes it easy to
+construct the URL dynamically.
+:::
+
+### Styling
+
+In order to have visual indication on the currently visited menu element, we
+would normally attach some CSS class to that active element. Angular comes with
+a helper directive that does that automatically - `routerLinkActive`.
+
+```html
+<div routerLinkActive="active">
+    <a routerLink="/">Home</a>
+</div>
+```
+
+The element that has the directive on it will have the "active" class attached
+to it when the link is active. The directive can be attached on the `<a>` or on
+some element that wraps it, like in the example above.
+
+::: warning Exact
+By default, the `routerLinkActive` directive applies the active class to
+any link that is part of the current URL. For examle, a link to "/" would
+always be marked as active, because it's always going to be a part of URL. In
+order to fix that, we would have to specify additional configuration:
+
+```html
+<div 
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    <a routerLink="/" >Home</a>
+</div>
+```
+
+With that, the Home link will be marked as active only when the URL is exactly
+"{domain}/".
+:::
+
+## Navigation in TypeScript
+
+Router is accessible via TS as well.
+
+```ts
+export class SomeComponent {
+  constructor(private router: Router) { }
+
+  onButtonClick() {
+    this.router.navigate(['/somewhere']);
+  }
+}
+```
+
+::: tip Dependency Injection
+Router can be injected into classes, just like any other service.
+:::
+
+The path that we navigate to is (by default) relative to the root.
+Having or not having slash in the beginning does not change anything (it does
+matter with [routerLink](#navigation))! We can change the path that `navigate`
+will be executed in relation to with `relativeTo`. For example, we could pass to
+it the currently activated route (`ActivatedRoute`).
+
+## Route Inputs
+
+### Path Parameters
+
+Route's path can have parameters. In the code example at the top of this page,
+`movies/:movieId` is an example of that. `movieId` is a parameter, and the
+`MovieComponent` will receive it.
+
+#### ActivatedRoute
+
+We can get information about currently loaded route by injecting
+`ActivatedRoute`. It contains various metadata about the loaded path, e.g. the
+parameters.
+
+```ts{4,7}
+export class MovieComponent implements OnInit {
+  movieId: string;
+
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.movieId = this.route.snapshot.params['movieId'];
+  }
+}
+```
+
+The parameters may also be subscribed to via an `Observable` -
+`this.route.params`. It might be useful when we plan to link from some site to
+itself with different parameters. In such a case, Angular will not reload the
+whole component for optimization. Instead, only the `ActivatedRoute` will
+change.
+
+### Query Parameters
+
+We can also make use of query parameters. To attach them to links on our page,
+we do it as follows:
+
+```html{3}
+<a 
+  [routerLink]="['/home', '3']"
+  [queryParams]="{ darkMode: true }">
+  Home 3
+</a>
+```
+
+Here's how we add query params from TS:
+
+```ts{3-5}
+this.router.navigate(
+  ['/somewhere'], 
+  {
+    queryParams: { darkMode: true }
+  });
+```
+
+Here's how we can read query params from TS by injecting `ActivatedRoute`
+(`route` variable):
+
+```ts
+const { darkMode } = this.route.snapshot.queryParams;
+```
+
+Similarly to path parameters, we can also subscribe to `this.route.queryParams`.
+
+#### Preserving Query Params
+
+When we're on some page with some query params in the URL, by default these
+query params will be removed when we navigate to another page. If we don't want
+that, we can do it the following way:
+
+```ts
+this.router.navigate(
+  ['/somewhere'], 
+  {
+    queryParamsHandling: 'merge'
+  });
+```
+
+The `merge` handling merges together existing query params and those that we
+might want to add (by having `queryParams` defined).
+
+### Fragment
+
+Similarly, we can attach fragment (`#fragment`) to link we navigate to:
+
+```html{3}
+<a 
+  [routerLink]="['/home', '3']"
+  fragment="something">
+  Home 3
+</a>
+```
+
+Here's how we add fragment from TS:
+
+```ts{3-5}
+this.router.navigate(
+  ['/somewhere'], 
+  {
+    fragment: 'something'
+  });
+```
+
+Here's how we can read fragment from TS by injecting `ActivatedRoute` (`route`
+variable):
+
+```ts
+const fragment = this.route.snapshot.fragment;
+```
+
+Similarly to path parameters, we can also subscribe to `this.route.fragment`.
+
+### Static Data
+
+Routes can have some static data defined. This way, the same route can be reused
+multiple times. For example, we could have a generic `ErrorComponent` which
+displays different message depending on the kind of error. Such a component
+could look like this:
+
+```ts
+@Component({
+  selector: 'app-error',
+  template: '<h2> {{ errorMessage }} </h2>'
+})
+export class ErrorComponent implements OnInit {
+  errorMessage: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.errorMessage = this.route.snapshot.data['message'];
+  }
+}
+```
+
+We can set the static value(s) in the routes collection:
+
+```ts{7-8}
+const routes: Routes = [
+  { path: '', component: MainPageComponent, pathMatch: 'full' },
+  { path: 'home', redirectTo: '/' }
+  { path: 'users', component: UsersComponent },
+  { path: 'movies', component: MoviesComponent },
+  { path: 'movies/:movieId', component: MovieComponent },
+  { path: 'not-found', component: ErrorComponent, data: { message: 'Page not found' } },
+  { path: 'not-ready', component: ErrorComponent, data: { message: 'This page is under construction' } },
+  { path: '**', redirectTo: '/not-found' }
+];
+```
+
+## Nested Routing
+
+Nested Routing allows us to have multiple routing outlets, one within another.
+We could have a main menu with each entry of it loading a different submenu.
+Then, each submenu would have a list of links that load a different content.
+
+First, we need to set up our routes properly:
+
+```ts{7}
+const routes: Routes = [
+  { path: '', component: MainPageComponent },
+  { path: 'users', component: UsersComponent },
+  { 
+    path: 'movies', 
+    component: MoviesComponent, 
+    children: [
+      { 
+        path: '/:movieId', 
+        component: MovieComponent 
+      }
+    ] 
+  }
+]
+```
+
+In the example above, `/:movieId` is a nested route. The full path (without
+host) to it is `/movies/:moviesId`.
+
+The next thing to do is to place an outlet where the `MovieComponent` will be
+rendered. We should place it somewhere within `MoviesComponent`:
+
+```html
+<router-outlet></router-outlet>
+```
+
+With this setup, when navigating to `/movies/<id>`, the following will happen:
+
+- the `MoviesComponent` will be rendered in the `router-outlet` within the
+  `AppComponent`
+- the `MovieComponent` will be rendered in the `router-outlet` within the
+  `MoviesComponent`
+
+The setup could be more complex, having multiple children under the `movies`
+path, or by having more levels of nesting.
+
+## Guards
+
+Routes can be protected by **Guards**. The user may be either allowed or
+disallowed to enter some content. It could be due to them being (un)authorized
+in some way.
+
+Guards are services and we normally store them in `*.service.ts` files.
+
+::: tip Provide
+A guard, like any service, needs to be `provided` somewhere.
+:::
+
+Here's a simple example:
+
+```ts
+@Injectable() // for Router to be injected
+export class AuthGuard implements CanActivate {
+  constructor(private router: Router)
+
+  isAuthorized = true; // just for the sake of this example
+
+  canActivate(
+    route: ActivatedRoute, 
+    state: RouterStateSnapshot)
+     : bool {
+
+      if (this.isAuthorized) {
+        return true;
+      } else {
+        this.router.navigate('/unauthorized'); // take user somewhere
+        return false; // not necessary since not returning anything also counts as negative result
+      }
+  }
+}
+```
+
+The guard needs to implement `CanActivate`. Its `canActivate` method should
+return one of:
+
+- `bool | UrlTree`
+- `Observable<bool | UrlTree>`
+- `Promise<bool | UrlTree>`
+
+::: tip
+The actual logic of checking whether the user is authorized would probably be
+put in some other service.
+:::
+
+::: warning
+If we try to naviagate to the same page that we're currently in, guard for that
+page will not be executed by default. This might be a problem when we want to
+log the user out and navigate them to the same page, which normally should be
+guarded.
+
+The default behavior may be changed in the route configuration with
+`runGuardsAndResolvers: 'always',`.
+:::
+
+### UrlTree
+
+We can route users to some other page in the guard, most likely when the
+condition is not satisfied. We use the `UrlTree` for that - it's one of the
+types that may be returned from guards. Here's how we'd return it:
+
+```ts
+if (notAuthorized) {
+  return this.router.createUrlTree(['/login']);
+}
+```
+
+The `router` is an instance of a `Router`.
+
+::: tip
+It's OK to return either a boolean `true` or an `UrlTree` in the same guard
+depending on the success/failure of the checked condition.
+:::
+
+---
+
+The route should be enabled for selected endpoints in the routes definition:
+
+```ts{6}
+const routes: Routes = [
+  { path: '', component: MainPageComponent },
+  { 
+    path: 'users', 
+    component: UsersComponen,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'movies', 
+    component: MoviesComponent, 
+    children: [
+      { 
+        path: '/:movieId', 
+        component: MovieComponent
+      }
+    ] 
+  }
+]
+```
+
+The `/users` endpoint is protected by our guard. If we applied the guard to the
+`/movies` route, the child of it would also use it.
+
+::: tip Guarding Children
+If we just want to protect all the children of some route, and not the "parent"
+route, our guard can implement `CanActivateChildren`. Then, we apply the guard
+to the "parent" route, and the guard will be executed only on children.
+:::
+
+### CanDeactivate Guard
+
+Similarly to checking if a user can enter some route, we can also check if they
+should be able to leave it. This is to protect users from unintentionally
+leaving half-done form, forgetting to save their work, etc.
+
+Setting this up is a little bit more involved than using `CanActivate` guard.
+That's because the guard will most likely need some input from the component
+that we're leaving to know if the user should be able to leave. The component
+could have some `isWorkSaved` variable, but the guard cannot reach it - it's a
+separate class after all. We can solve this problem using generics.
+
+Here's an example:
+
+```ts
+// the component protected by our guard should implement it
+export interface DeactivatableComponent {
+
+  // the logic to check whether the user can leave, e.g. isWorkSaved === true
+  canDeactivate: () => Observable<bool> | Promise<bool> | bool;
+}
+
+// the guard
+export class CanDeactivateGuard implements CanDeactivate<DeactivatableComponent> {  
+  // ...
+  
+  // one of the params is our interface - DeactivatableComponent - it will be 
+  // the protected component
+  canDeactivate(
+    component: DeactivatableComponent,
+    currentRoute: ActivatedRoute,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot)
+    : Observable<bool> | Promise<bool> | bool {
+
+      // here's how we ask the component itself if user is allowed to leave.
+      return component.canDeactivate();
+  }
+}
+```
+
+::: tip DeactivatableComponent
+`DeactivatableComponent` is not part of Angular. It's a custom interface that
+was needed to somehow connect the guard to the protected component (with the
+help of generic class).
+
+The interface could be extended to include some outputs from the `canDeactivate`
+method. This way, the component could, for example, return some message
+informing the user why they shouldn't leave. The guard would then display it
+somehow (e.g. via `confirm()`).
+:::
+
+Next piece is the actual component's code. The component needs to
+implement `DeactivatableComponent`:
+
+```ts
+@Component({
+  selector: 'my-component'
+})
+export class MyComponent implements DeactivatableComponent {
+  isWorkSaved: bool = false;
+
+  // ...
+
+  canDeactivate() {
+    return isWorkSaved;
+  }
+}
+```
+
+To use the new guard, we need to enable it in the routes collection:
+
+```ts{6}
+const routes: Routes = [
+  { path: '', component: MainPageComponent },
+  { 
+    path: 'users', 
+    component: UsersComponen,
+    canDeactivate: [CanDeactivateGuard]
+  },
+  { 
+    path: 'movies', 
+    component: MoviesComponent, 
+    children: [
+      { 
+        path: '/:movieId', 
+        component: MovieComponent
+      }
+    ] 
+  }
+]
+```
+
+## Resolvers
+
+When a given component needs some external data to be loaded before it can be
+displayed, custom **Resolvers** can be used.
+
+::: tip Provide
+A resolver, like any service, needs to be `provided` somewhere.
+:::
+
+Here's an example of such a resolver:
+
+```ts
+interface Movie {
+  // some info about a movie
+}
+
+@Injectable()
+export class MovieResolver implements Resolve<Movie> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+    : Observable<Movie> | Promise<Movie> | Movie {
+      
+      // Get the movie from some external service...
+      // Probably the route's params/query params will be needed
+      // to get the ID of the requested movie.
+      return movie;
+  }
+}
+```
+
+To use the resolver, we attach it to the route that needs it:
+
+```ts{9}
+const routes: Routes = [
+  { path: '', component: MainPageComponent, pathMatch: 'full' },
+  { path: 'home', redirectTo: '/' }
+  { path: 'users', component: UsersComponent },
+  { path: 'movies', component: MoviesComponent },
+  { 
+    path: 'movies/:movieId', 
+    component: MovieComponent, 
+    resolve: { movie: MovieResolver }
+  },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' } 
+];
+```
+
+Here's how we can access the result of resolver's work in the `MovieComponent`:
+
+```ts
+export class MovieComponent implements OnInit {
+  movieDetails: Movie;
+  
+  ngOnInit() {
+    this.route.data.subscribe(data: Data => {
+      this.movieDetails = data['movie'];
+    });
+  }
+}
+```
+
+We subscribe to the result, because the resulting data could change when we
+reload the component (Angular will not reload the whole component for
+performance reasons).
+
+The result is placed in `this.route.data` object under the key that we used in
+the route definition's `resolve` section (`movie` in this case). The `data`
+object was also used in the [Static Data](#static-data).
+
+## Lazy Loading
+
+Lazy Loading is described in the [Modules](./modules.md#lazy-loading) section.

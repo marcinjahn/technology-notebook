@@ -1,0 +1,169 @@
+---
+title: ES Modules
+description: How ES Modules work and how to use them
+tags: ["javascript", "typescript"]
+lang: en-US
+---
+
+# ES Modules
+
+## IIFE
+
+A way to make file's data non-global is to use IIFE:
+
+```js
+(function () {
+    statements
+})();
+```
+
+This way, if we add some JS file to HTML, we'll not be able to access that JS's
+data from the HTML file (encapsulation).
+
+Modules are better for that.
+
+## ES6 Modules
+
+Modules characterics:
+
+- they are singletons - every file that imports the module gets the same thing.
+  If something gets modified in exported module by some client, all other
+  clients will see that
+- one module is one file
+
+### Exporting
+
+There are a few ways to export a module:
+
+#### Named Export
+
+Contents of `myModule.js`
+
+```js
+export function functionOne() {...}
+function functionTwo() {...}
+export someValue = 4
+```
+
+OR
+
+```js
+function functionOne() {...}
+function functionTwo() {...}
+someValue = 4
+
+export {functionOne, someValue}
+```
+
+Only `functionOne` and `someValue` get exported. The `functionTwo` is not
+visible to the clients of this module.
+
+To import it:
+
+```js
+import { functionOne } from './myModule.js'
+```
+
+We can skip `someValue` if we don't need it.
+
+We can change the name of the exported entity:
+
+```js
+export {functionOne as myFunction, someValue}
+```
+
+Then we'd import it like this:
+
+```js
+import { myFunction } from './myModule.js'
+```
+
+#### Export Default
+
+Contents of `myModule.js`
+
+```js
+export default function functionOne() {...}
+function functionTwo() {...}
+export someValue = 4
+```
+
+OR
+
+```js
+function functionOne() {...}
+function functionTwo() {...}
+someValue = 4
+
+export {functionOne as default, someValue}
+```
+
+Only one thing can be exported as default. The client:
+
+```js
+import someFunc from 'myModule.js'
+someFunc()
+```
+
+The client does not have to know the name of the thing he imports.
+
+#### Aggregate Exports
+
+One module can export another module, so that the consumer uses just one
+"import".
+
+```js
+export {functionOne as default, someValue}
+export {functionThree} from './anotherModule.js'
+```
+
+`functionThree` is not accessible to that aggreagate module, it just exports it
+for the consumers of it (however, it could improt it and make use of it also).
+
+### Importing
+
+#### HTML
+
+```html
+<script src="app.js" type="module"></script>
+```
+
+#### Default Import
+
+If module exports something as default, we can import it with any name:
+
+```js
+import something from 'myModule.js'
+```
+
+#### Named Import
+
+```js
+import { myFunction } from './myModule.js'
+```
+
+We can change name in the client:
+
+```js
+import { myFunction as func } from './myModule.js'
+```
+
+We can import all that was exported:
+
+```js
+import * as myModule from 'myModule.js'
+
+myModule.functionOne();
+```
+
+#### Mixed Import
+
+```js
+import something, {someValue} from 'myModule.js'
+```
+
+OR
+
+```js
+import something, * as stuff from 'myModule.js'
+```

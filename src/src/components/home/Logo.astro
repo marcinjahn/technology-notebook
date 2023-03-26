@@ -1,0 +1,63 @@
+---
+---
+
+<div class="logo">
+    <img class="my-photo" src="/img/me.webp" title="Marcin Jahn photo" />
+    <div class="text-container">
+      <h1>Marcin Jahn's</h1>
+      <h2>Dev Notebook</h2>
+    </div>
+</div>
+
+<style>
+.logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-photo {
+    max-width: 11rem;
+    max-height: 11rem;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-right: 2rem;
+}
+
+h1, h2 {
+    color: white;
+    text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+                0px 8px 13px rgba(0,0,0,0.1),
+                0px 18px 23px rgba(0,0,0,0.1);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 3rem;
+}
+
+h2 {
+    font-size: 2.4rem;
+    margin-top: 0;
+    text-decoration: none;
+    border-bottom: 0;
+    color: #CCC;
+}
+
+@media (max-width: 700px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .text-container {
+        align-items: center;
+    }
+}
+</style>

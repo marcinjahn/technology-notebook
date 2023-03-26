@@ -1,0 +1,65 @@
+---
+const items = [
+    {
+        text: "LinkedIn",
+        icon: "/img/linkedin.webp",
+        link: "https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US",
+    },
+    {
+        text: "GitHub",
+        icon: "/img/github.webp",
+        link: "https://github.com/marcinjahn",
+    },
+    { text: "cirro.services", link: "https://www.cirro.services" },
+];
+---
+
+<ul>
+    {
+        items.map((item) => (
+            <li>
+                <a target="_blank" href={item.link}>
+                    {item.icon ? (
+                        <img src={item.icon} />
+                    ) : (
+                        <span>{item.text}</span>
+                    )}
+                </a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+        gap: 1.5em;
+    }
+
+    li {
+        flex-shrink: 0;
+    }
+
+    img {
+        height: 1.2rem;
+        width: 1.2rem;
+        margin-bottom: -0.2rem;
+    }
+
+    img:hover {
+        filter: opacity(75%);
+    }
+
+    span {
+        color: var(--text-color);
+    }
+
+    span:hover {
+        color: var(--accent-color)
+    }
+</style>

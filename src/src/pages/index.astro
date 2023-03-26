@@ -1,5 +1,29 @@
-<script is:inline>
-	// Redirect your homepage to the first page of documentation.
-	// If you have a landing page, remove this script and add it here!
-	window.location.pathname = `/en/introduction`;
-</script>
+---
+import Logo from '../components/home/Logo.astro';
+import Text from '../components/home/Text.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {siteTitle} from '../static/navigation';
+---
+
+<BaseLayout pageTitle={siteTitle}>
+    <main>
+        <Logo />
+        <Text />
+    </main>
+
+</BaseLayout>
+
+<style>
+    main {
+        margin: 0 auto;
+
+        margin-top: 4rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        
+        max-width: 800px; 
+    }
+</style>

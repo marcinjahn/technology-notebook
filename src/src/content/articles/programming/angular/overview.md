@@ -1,0 +1,49 @@
+---
+title: Overview
+description: Overview of Angular SPA framework
+tags: ["angular", "spa", "js", "ts"]
+lang: en-US
+---
+
+# Angular Overview
+
+Angular is an SPA framework, once very popular, nowadays rather losing interest
+year by year. It has its legacy though, I think it did a pretty good job of
+popularizing TypeScript. Interestingly, it uses TypeScript's
+[Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
+feature, which is experiemntal since as long as I remember (and I started with
+Angular 2, and we're at Angular 14 at the moment I'm writing this).
+
+## Installation
+
+Go to [https://angular.io/cli](https://angular.io/cli) and follow the
+instructions.
+
+## Basic Commands
+
+-   `ng new my-app` - creates a new app (togethre with its directory)
+-   `ng serve -o` - local development server, `-o` opens the browser automatically
+    at `localhost:4200`
+-   `ng generate component whatever` - or simly `ng g c whatever` - generates a
+    new component.
+
+    ::: tip Subfolders
+    `ng g c somefolder/somecomponent` will create `Somecomponent` in the
+    `src/app/somefolder` directory.
+    :::
+
+## Modules
+
+By default, the app has the `AppModule` module. We can also create more of them.
+A module is like a package that bundles things together. With simple apps, the
+default `AppModule` is enough. Each component needs to be registered in some
+module (in the `declarations` array).
+
+::: tip ng generate
+`ng generate component` automatically adds the new component to the module's
+`declarations`.
+
+How does it know which module to add it to?
+:::
+
+More on modules can be found [here](./modules.md).

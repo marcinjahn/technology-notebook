@@ -1,0 +1,103 @@
+---
+title: GTK
+description: Building GTK 4 applications
+tags: ["gtk", "adwaita", "gjs", "linux"]
+lang: en-US
+---
+
+# GTK
+
+GTK is a tookit for creating GUI apps, mostly targeting Linux systems and the
+[Gnome Platform](https://www.gnome.org/). It uses the
+[GObject](https://docs.gtk.org/gobject/) (GLib Object System) base type system.
+
+## GLib and GObject
+
+GObject is a library that is a base for many other Gnome libraries (like GTK).
+It is a common base layer providing OOP paradigm to the C language. It may be
+seen as an alternative to C++ or ObjectiveC, since it enables developers to
+create classes, but in this case, directly in C (however, in a rather tedious
+way, since it's still "just" C)!
+
+GObject is a part of [GLib](https://wiki.gnome.org/Projects/GLib) and uses the
+same version numbers. GLib contains:
+
+- GObject - type system
+- GThread - threading
+- GIO - I/O operations
+- others...
+
+::: tip QT 
+A kind of similar thing to GLib in the KDE world is
+[QtCore](https://doc.qt.io/qt-6/qtcore-index.html).
+:::
+
+Some features of GObject that are often used in GTK apps are:
+
+- the `GObject` root base type
+- signals (like events in .NET)
+
+### Bindings
+
+The GObject libraries are written in the C language. However, there are a bunch
+of bindings for many other programming languages that open the toolkit to a vast
+group of developers. Examples of supported languages include:
+
+- C (obviously)
+- [JavaScript](https://gjs.guide/)
+- Python
+- [Rust](https://gtk-rs.org/)
+- [Vala](https://vala.dev/)
+- [C#](https://github.com/gircore/gir.core)
+- and more...
+
+Since there is a lot of GObject-based libraries, there is an established way of
+generating bindings for them - [GObject
+Introspection](https://gi.readthedocs.io/en/latest/). The bindings, under the
+hood, call the C libraries code via mechanisms similar to
+[PInvoke](../dotnet/platform-invoke.md).
+
+::: tip
+GTK is a base for many other GUI frameworks, often those that taget multiple
+operating systems (like [Avalonia UI](https://avaloniaui.net/) or
+[Tauri](https://github.com/tauri-apps/tauri)).
+These frameworks often rely on GTK 3, since GTK 4 is still relatively new.
+:::
+
+## Software Stack
+
+Nowadays, the applications developed in GTK use the following tooling/services:
+
+- [GTK](https://www.gtk.org/) as a base for the app and widgets library
+- [other GObject-based libs](https://gjs-docs.gnome.org) - lots of libraries,
+  like Soup for HTTP
+- [language bindings](https://www.gtk.org/docs/language-bindings/index)
+- [Libadwaita](https://gitlab.gnome.org/GNOME/libadwaita) as both the widgets
+  library and design system
+- [Gnome Builder](https://wiki.gnome.org/Apps/Builder) as an IDE
+- [Flatpak](https://flatpak.org/) for packaging the apps
+- [Flathub](https://flathub.org/) for distribution of the apps
+
+## Resources
+
+Popularity of GTK apps development would certainly benefit from more materials
+being available on the topic. These are the resources that I find the most
+valuable:
+
+- [Gnome Developer Portal](https://developer.gnome.org/) - a documentation and
+  guides for developing for the Gnome Platform.
+- [GJS Guide](https://gjs.guide/) - the Guide to [GJS](./gjs.md) with a bunch of
+  information about GObject itself.
+- [elementary Developer Docs](https://docs.elementary.io/develop/) - Elementary
+  OS encourages the use of Vala and Granite widgets library, which might not be
+  the most popular technologies out there, but the docs are a solid guide to
+  building GTK apps, which will be useful for any developer starting out with
+  GTK.
+- [Gtk Inspector](https://wiki.gnome.org/action/show/Projects/GTK/Inspector) -
+  an app that allows for live inspection of GTK apps, similar to dev tools in
+  web browsers.
+- [GTK API Documentation](https://docs.gtk.org/) - API reference for GTK, GDK,
+  Pango, and many other libs
+- [GJS API](https://gjs-docs.gnome.org) - all the APIs exposed by GJS
+- [Vala API](https://valadoc.org/index.htm) - same as above, but for
+  [Vala](https://vala.dev/)

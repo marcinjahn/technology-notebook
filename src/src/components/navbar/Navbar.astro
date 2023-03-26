@@ -1,0 +1,80 @@
+---
+import {siteTitle, mainNavigation} from '../../static/navigation';
+import ExternalLinks from './ExternalLinks.astro';
+
+---
+
+<nav>
+    <div class="title">
+        <a href="/">{siteTitle}</a>
+    </div>
+
+    <div class="right">
+        <ul>
+            {
+                mainNavigation.map(link => (
+                    <li><a href={link.path}>{link.name}</a></li>
+                ))
+            }
+        </ul>
+        <ExternalLinks/>
+    </div>
+</nav>
+
+<style>
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: #ACB2DC;
+        border-bottom: 1px solid grey;
+
+        padding: 1rem 1.3rem;
+    }
+
+    .title {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .title a {
+        color: var(--text-color)
+    }
+
+    .right {
+        margin-left: 2rem;
+
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .right ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        gap: 1.5rem;
+
+        border-right: 1px solid grey;
+        padding-right: 1.5rem;
+    }
+
+    .right a {
+        font-size: 0.95rem;
+        color: var(--text-color)
+    }
+
+    .right a:hover {
+        font-size: 0.95rem;
+        color: var(--accent-color)
+    }
+
+
+    @media only screen and (max-width: 920px) {
+        .right {
+            display: none;
+        }
+    }
+</style>

@@ -1,5 +1,5 @@
 {
-  "name": "shaky-spiral",
+  "name": "pale-parsec",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,20 +10,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^2.1.7",
-    "preact": "^10.7.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "@astrojs/react": "^2.1.0",
-    "@astrojs/preact": "^2.1.0",
-    "@algolia/client-search": "^4.13.1",
-    "@docsearch/css": "^3.1.0",
-    "@docsearch/react": "^3.1.0",
-    "@types/react": "^17.0.45",
-    "@types/node": "^18.0.0",
-    "@types/react-dom": "^18.0.0"
-  },
-  "devDependencies": {
-    "html-escaper": "^3.0.3"
+    "astro": "^2.1.7"
   }
 }

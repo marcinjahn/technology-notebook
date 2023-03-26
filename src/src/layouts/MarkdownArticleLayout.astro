@@ -1,0 +1,28 @@
+---
+import { siteTitle } from "../static/navigation";
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout pageTitle={`${frontmatter.title} | ${siteTitle}`}>
+    <main>
+        <slot />
+    </main>
+
+</BaseLayout>
+
+<style>
+    main {
+        margin: 0 auto;
+        margin-top: 2rem;
+        max-width: 850px;
+
+        background: white;
+        padding: 3rem;
+    }
+
+    h1 {
+        
+    }
+</style>

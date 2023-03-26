@@ -1,0 +1,196 @@
+---
+title: Generic Host
+description: How to use Generic Host in console apps
+tags: [".net"]
+lang: en-US
+---
+
+# Generic Host
+
+Console apps or ASP.NET Core background tasks can use `IHostedService` to run.
+Such apps are also perfect to run in:
+
+- containers
+- system services (e.g. via systemd)
+
+::: tip Kestrel
+Kestrel itself uses `IHostedService` to run!
+:::
+
+## IHostedService
+
+### StartAsync
+
+The `StartAsync` method of the `IHostedService` interface is async, but it's run
+inline during startup. If the hosted service is a long-running one, it should
+return a `Task` immediately and schedule the work on a separate thread. Using
+`await` is also not recommended.
+
+### BackgroundService
+
+The `BackgroundService` is a convenient base class. It's designed to be used
+with long-running tasks. It has just one method to override - `ExecuteAsync()`.
+We can freely use `await` and never-ending loops (although we should be checking
+`CancellationToken`).
+
+### HttpClient and other non-singleton services
+
+If our `IHostedService` implementation is long-lived we shouldn't inject HTTP
+services there (e.g. typed HttpClients). `HttpClient` should be short-lived. We
+could either use `IServiceProvider` to get new typed client in some interval
+(service locator - not ideal) or use `IHttpClientFactory`.
+
+::: tip Singleton
+In general, `IHosterService`s are singletons. If we need to use some service
+that is not a singleton from within, we shouldn't inject them directly. Instead,
+we need to use some factory or `IServiceProvider` (to create scope for example)
+to create the service repeatedly (usually the hosted service will run in some
+loop with a delay).
+:::
+
+### Terminating the app
+
+The hosted service can terminate the app when finished the execution. An
+instance of `IHostApplicationLifetime` needs to be injected and used:
+
+```csharpharp
+_logger?.LogInformation("Terminating Application");
+_applicationLifetime.StopApplication();
+```
+
+## Worker Service
+
+Worker Service is a console app without the ASP.NET Core stuff.
+
+We can easily create a Worker Service project with `dotnet new worker`. It
+creates a simple `Worker` class that inherits from `BackgroundService` and
+`Program.cs` that sets up `IHost`.
+
+To get access to `IHttpCLientFactory` we need to add the
+`Microsoft.Extensions.Http` NuGet package.
+
+### Systemd
+
+To turn an app into a systemd service, we'd install the
+`Microsoft.Extensions.Hosting.Systemd` package. Then we'd call the
+`UseSystemd()` method on `IHostBuilder`.
+
+::: tip
+Runing as a Windows service is similar, but different package/method combo is
+used.
+:::
+
+::: tip ASP.NET Core
+ASP.NET Core apps can be installed as services as well.
+:::
+
+### Quartz.NET
+
+Quartz.NET is a scheduler library that enable some more advanced features of background services, like:
+
+- CRON
+- running multiple instances of it, with options to control concurrency (similar
+  to RedLock)
+
+It acts as a
+
+## Manual Creation
+
+We can also create the boilerplate manually.
+
+### Imports
+
+```csharpharp
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading.Tasks;
+```
+
+### Creating an `IHostBuilder`
+
+Simple:
+
+```csharpharp
+private static IHostBuilder GetHostBuilder(string[] args)
+{
+    return Host.CreateDefaultBuilder(args)
+        .ConfigureServices((hostContext, services) =>
+        {
+            services.AddSingleton(hostContext.Configuration.GetSection("AppConfiguration").Get<AppConfiguration>());
+            services.AddHostedService<InfluxCompleteSetupService>();
+        });
+}
+```
+
+With configuration:
+
+```csharpharp
+private static IHostBuilder GetHostBuilder()
+{
+    var builder = new HostBuilder()
+        .ConfigureAppConfiguration((hostBuilderContext, configBuilder) =>
+        {
+            configBuilder.AddJsonFile("appsettings.json", optional: true);
+            configBuilder.AddEnvironmentVariables();
+        })
+        .ConfigureServices((hostBuilderContext, services) =>
+        {
+            services.AddAllServices(hostBuilderContext.Configuration.GetSection("AppConfiguration").Get<AppConfiguration>());
+        })
+        .ConfigureLogging((hostBuilderContext, loggingBuilder) =>
+        {
+            loggingBuilder.AddConfiguration(hostBuilderContext.Configuration.GetSection("Logging"));
+            loggingBuilder.AddConsole();
+        });
+
+    return builder;
+}
+```
+
+### Running the application
+
+```csharpharp
+static async Task Main(string[] args)
+{
+    try
+    {
+        var builder = GetHostBuilder(args);
+        await builder.RunConsoleAsync(options => options.SuppressStatusMessages = true);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Program run into an exception");
+        Console.WriteLine(e.Message);
+        Console.WriteLine("Press any key to exit");
+        Console.ReadKey();
+    }
+}
+```
+
+.NET 6:
+
+```csharpharp
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+
+try {
+    using var host = Host.CreateDefaultBuilder(args)
+        .ConfigureServices((_, services) =>
+            services
+                .AddSingleton<InputReader>()
+                .AddSingleton<BmiCalculator>()
+                .AddHostedService<App>())
+        .Build();
+    
+    await host.RunAsync();  
+}
+catch (Exception e)
+{
+    Console.WriteLine("Program run into an exception");
+    Console.WriteLine(e.Message);
+    Console.WriteLine("Press any key to exit");
+    Console.ReadKey();
+}
+```

@@ -1,0 +1,72 @@
+a {
+    text-decoration: none;
+    color: var(--accent-color);
+}
+
+html {
+    color: rgb(11, 11, 11);
+    font-family: system-ui, sans-serif;
+    background-color: #7D84B2;
+}
+
+code {
+    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+        DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+:root {
+    --accent-color: rgb(203, 38, 38);
+    --text-color: black;
+}
+
+h2 {
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.7rem;
+}
+
+h3 {
+    margin: 1.5rem 0 0.8rem 0;
+    font-size: 1.5rem;
+}
+
+h4 {
+    margin: 1.5rem 0 0.7rem 0;
+    font-size: 1.3rem;
+}
+
+h5 {
+    margin: 1.5rem 0 0.7rem 0;
+    font-size: 1.2rem;
+}
+
+/* Code inline in paragraphs */
+:not(pre) > code {
+  background: rgb(125, 125, 125) !important;
+  color: white !important;
+  border-radius: 4px !important;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.3rem;
+}
+
+/* Code blocks */
+pre.astro-code {
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+table, th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+    padding: 0.8rem;
+}
+
+table {
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-spacing: 0;
+}
+
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
