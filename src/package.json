@@ -1,30 +1,29 @@
 {
-  "name": "marcin-jahn-com-knowledge",
+  "name": "shaky-spiral",
+  "type": "module",
   "version": "0.0.1",
-  "description": "My personal knowledge base for all the IT-related topics",
-  "main": "index.js",
-  "authors": {
-    "name": "Marcin Jahn",
-    "email": "jahnmarcin@outlook.com"
-  },
-  "repository": "/marcin-jahn-com-knowledge",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "start": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "license": "MIT",
   "dependencies": {
-    "@vuepress/plugin-back-to-top": "^1.8.2",
-    "@vuepress/plugin-medium-zoom": "^1.8.2",
-    "vue-tabs-component": "^1.5.0",
-    "vuepress": "^1.5.3",
-    "vuepress-plugin-sitemap": "^2.3.1",
-    "vuepress-plugin-tabs": "^0.3.0"
+    "astro": "^2.1.7",
+    "preact": "^10.7.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "@astrojs/react": "^2.1.0",
+    "@astrojs/preact": "^2.1.0",
+    "@algolia/client-search": "^4.13.1",
+    "@docsearch/css": "^3.1.0",
+    "@docsearch/react": "^3.1.0",
+    "@types/react": "^17.0.45",
+    "@types/node": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@mr-hope/vuepress-plugin-seo": "^1.26.0",
-    "@vuepress/plugin-blog": "^1.9.4",
-    "vuepress-plugin-mermaidjs": "^1.9.1"
+    "html-escaper": "^3.0.3"
   }
 }
