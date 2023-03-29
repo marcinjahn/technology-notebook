@@ -126,7 +126,7 @@ For classes it compares the references (memory addresses), unless overriden.
 
 ### Overloading
 
-```csharpharp
+```csharp
 public static bool operator ==(MyClass left, MyClass right) 
 {
     // Equality logic

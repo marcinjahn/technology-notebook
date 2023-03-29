@@ -21,7 +21,7 @@ layer. It allows accessing Tables, Stored Procedures, Views, and more.
 
 ## DbContext
 
-```csharpharp
+```csharp
 public class SamuraiContext : DbContext
 {
     public DbSet<Samurai> Samurais { get; set; }
@@ -40,7 +40,7 @@ pointing to it. `DbSet` is a convenience that:
 
 Without a `DbSet` defined in the `DbContext`, we can retrieve it as follows:
 
-```csharpharp
+```csharp
 var set = context.Set<BattleSamurai>();
 ```
 :::
@@ -65,13 +65,13 @@ We can do that in a few ways:
 - in queries - useful when we normally want tracking, but for some specific
   query we don't:
 
-    ```csharpharp
+    ```csharp
     var samurai = _context.Samurais.AsNoTracking().FirstOrDefault();
     ```
 
 - on `DbContext` - makes all queries NoTracking by default:
 
-    ```csharpharp{5}
+    ```csharp{5}
     public class MyContext: DbContext
     {
         public MyContext()
@@ -83,7 +83,7 @@ We can do that in a few ways:
 
 - in Dependency Injection registration:
 
-    ```csharpharp{5}
+    ```csharp{5}
     builder.Services.AddDbContext<SamuraiContext>(options =>
     {
         options
@@ -104,7 +104,7 @@ explicitly every time.
 In EF Core we need to explicitly provide info on which provider to use and what
 is the connection string. Here's the simplest way to do it:
 
-```csharpharp
+```csharp
 public class SamuraiContext : DbContext
 {
     public DbSet<Samurai> Samurais { get; set; }
@@ -133,7 +133,7 @@ them:
 - DB tables names come from `DbSet`'s name or, if `DbSet` was not defined, from
   a class's name.
 
-    ```csharpharp
+    ```csharp
     // We can also name the table whatever we want
     modelBuilder.Entity<Horse>().ToTable("MyHorses");
     ```
@@ -263,7 +263,7 @@ The child entity can optionally have a property of a type of a parent - it
 will be a reference. The child may also have an ID property that would be a
 Foreign Key to the parent. EF Core will initialize these properties for us.
 
-```csharpharp
+```csharp
 public class Quote
 {
     public int Id { get; set; }
@@ -285,7 +285,7 @@ EF Core. We could also configure our own conventions.
 To create many-to-many, we just need two entities referring to each other via
 collections:
 
-```csharpharp{5,12}
+```csharp{5,12}
 public class Samurai
 {
     public int Id { get; set; }
@@ -329,7 +329,7 @@ many-to-many relationship.
 
 Here's an example of a class joining two entites (with some metadata):
 
-```csharpharp
+```csharp
 public class BattleSamurai
 {
     public int SamuraiId { get; set; }
@@ -346,7 +346,7 @@ similar to the SQL table that EF Core creates behind the sceness. We've added a
 Additionally, we have to update the `DbContext` to explicitly specify the
 relationship:
 
-```csharpharp
+```csharp
 public class SamuraiContext : DbContext
 {
     public DbSet<Samurai> Samurais { get; set; }
@@ -381,7 +381,7 @@ not have FK to the "dependant".
 
 Example:
 
-```csharpharp
+```csharp
 // Principal
 public class Samurai
 {
@@ -439,7 +439,7 @@ When invoking queries on the DB, the parameters that we provide may be
 parametrized or not. If we use a variable to provide some parameter, SQL will be
 parametrized. If we provide a hardcoded string, it will not be parametrized.
 
-```csharpharp
+```csharp
 // Parametrized
 var name = "Sampson";
 var samurais = _context.Samurais.Where(s => s.Name == name).ToList();
@@ -459,7 +459,7 @@ for the samurai, the list of quotes will be empty.
 With Eager Loading and its `Include` method, we can specify Navigation
 Properties that should be populated with the query:
 
-```csharpharp
+```csharp
 var samuraiWithQuotes = _context.Samurais
     .Include(s => s.Quotes).ToList();
 ```
@@ -474,7 +474,7 @@ well (`AsSplitQuery()`).
 
 When including some child, we can filter it as well:
 
-```csharpharp
+```csharp
 var samuraiWithQuotes = _context.Samurais
     .Include(s => s.Quotes.Where(q => q.Text.Contains("abc")))
     .ToList();
@@ -486,7 +486,7 @@ Here are some other sceanarios for Eager Loading:
 
 - Include children and grandchildren:
 
-    ```csharpharp
+    ```csharp
     context.Samurais
         .Include(s => s.Quotes) // many-to-many
         .ThenInclude(q => q.Translations); // one-to-many
@@ -494,14 +494,14 @@ Here are some other sceanarios for Eager Loading:
 
 - Include just grandchildren:
 
-    ```csharpharp
+    ```csharp
     context.Samurais
         .Include(s => s.Quotes.Translations);
     ```
 
 - Include different children:
 
-    ```csharpharp
+    ```csharp
     context.Samurais
         .Include(s => s.Quotes)
         .Include(s => s.Clan);
@@ -512,7 +512,7 @@ Here are some other sceanarios for Eager Loading:
 Explicit Loading allows to load related data when the "base" entity is already
 loaded:
 
-```csharpharp
+```csharp
 var samurai = context.Samurais.Find(13);
 context.Entry(samurai).Collection(s => s.Quotes).Load(); // one-to-many
 context.Entry(samurai).Reference(s => s.Horse).Load(); //one-to-one
@@ -531,7 +531,7 @@ Lazy Loading is disabled by default due to its performance overhead.
 
 We can limit the properties to be returned with `Select`:
 
-```csharpharp
+```csharp
 var someProps = context.Samurais.Select(s => new { s.Id, s.Name }).ToList();
 ```
 
@@ -545,7 +545,7 @@ We can use `Select` to bring in related data as well and use it instead of
 
 An interesting usecase of that is to bring in just the count of some related data:
 
-```csharpharp
+```csharp
 var someProps = context.Samurais
     .Select(s =>
         new { s.Id, s.Name, QuotesCount = s.Quotes.Count })
@@ -561,7 +561,7 @@ able to track the pulled entities.
 
 We can use SQL's `LIKE` with the `EF.Functions.Like` function:
 
-```csharpharp
+```csharp
 var samurais = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
 ```
 
@@ -569,7 +569,7 @@ var samurais = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToL
 
 Here's how to remove some entity
 
-```csharpharp
+```csharp
 var samurai = _context.Samurais.Find(4);
 _context.Samurais.Remove(samurai);
 _context.SaveChanges();
@@ -579,7 +579,7 @@ _context.SaveChanges();
 
 Here's how to remove a Many-to-Many relationship:
 
-```csharpharp
+```csharp
 var battle = _context.Battles.Include(n => n.Samurais).FirstOrDefault();
 battle.Samurais.RemoveAll(s => true); // remove all samurais from a battle
 // battle.Samurais.Remove(battle.Samurais.First()); // remove a single samurai from a battle
@@ -593,7 +593,7 @@ The `Include` above is crucial. If we fetched battles without samurais,
 In case when we're using a more explicit Many-to-Many relationship, with a Join
 table class defined, we can remove an association as follows:
 
-```csharpharp
+```csharp
 var bs = _context.Set<BattleSamurai>()
     .SingleOrDefault(bs => bs.BattleId == 1 && bs.SamuraiId == 10);
 if (bs is not null)
@@ -612,7 +612,7 @@ to modify the join class object, similarly to the code above.
 
 We can add new rows:
 
-```csharpharp
+```csharp
 context.Samurais.Add(newSamurai);
 
 // or
@@ -623,7 +623,7 @@ context.Add(newSamurai);
 
 We can update the entities as follows:
 
-```csharpharp
+```csharp
 var samurai = _context.Samurais.FirstOrDefault();
 samurai.Name += "San";
 _context.SaveChanges();
@@ -637,7 +637,7 @@ In disconnected scenarios, the case is that we have to update some entity
 without retrieving it first (e.g., in some Web API). Then, we can do that as
 follows:
 
-```csharpharp{4}
+```csharp{4}
 // 'data' could be delivered in the body of a PUT request
 
 using var context = new SamuraiContext();
@@ -654,7 +654,7 @@ entity to be updated.
 When using `Update` in the disconnected scenarios with related data, EF Core is
 going to send unneeded requests to the DB. Here's an example:
 
-```csharpharp
+```csharp
 var samurai = _context.Samurais.Find(samuraiId);
 samurai.Quotes.Add(
     new Quote
@@ -677,7 +677,7 @@ that DB is in proper state it will send to it everything.
 
 We can use `Attach` to circumvent that.
 
-```csharpharp{4}
+```csharp{4}
 // Disconnected
 using (var newContext = new SamuraiContext())
 {
@@ -696,7 +696,7 @@ Another approach would be to add the `Quote` to the DB directly, instead of
 doing that via a samurai. For this to work, we need to have a FK property of
 `Quote`:
 
-```csharpharp
+```csharp
 var quote = new Quote { Text = "Some text", SamuraiId = samuraiId };
 using var newContext = new SamuraiContext();
 newContext.Quotes.Add(quote);
@@ -708,7 +708,7 @@ newContext.SaveChanges();
 A similar issue that we had with a single entity when updating it in a
 Disconnected scenario occurs if we want to update some entity with relations:
 
-```csharpharp{10}
+```csharp{10}
 var quote = context.Samurais
     .Include(s => s.Quotes)
     .First(s => s.Id == 2)
@@ -733,7 +733,7 @@ will just mark all entities as "Unmodified" and EF Core will not issue any
 updates at all. The modified quote already has `Id` and `SamuraiId`, so the
 previous solution doesn't work. We should use the following approach:
 
-```csharpharp
+```csharp
 newContext.Entry(quote).State = EntityState.Modified;
 newContext.SaveChanges();
 ```
@@ -749,7 +749,7 @@ Here's how we can use it:
 
 Create an entity:
 
-```csharpharp
+```csharp
 public class SamuraiBattleStat
 {
     public string Name { get; set; }
@@ -760,13 +760,13 @@ public class SamuraiBattleStat
 
 Add a `DbSet` to the `DbContext`:
 
-```csharpharp
+```csharp
 public DbSet<SamuraiBattleStat> SamuraiBattleStats { get; set; }
 ```
 
 Configure the entity to be keyless in `OnModelCreating` of the `DbContext`:
 
-```csharpharp
+```csharp
 modelBuilder.Entity<SamuraiBattleStat>().HasNoKey();
 ```
 
@@ -785,7 +785,7 @@ exception will be thrown in the runtime.
 In case the `SamuraiBattleStat` is supposed to be a View in the DB, we need
 to configure it as follows:
 
-```csharpharp
+```csharp
 modelBuilder.Entity<SamuraiBattleStat>().HasNoKey().ToView("SamuraiBattleStats");
 ```
 
@@ -808,7 +808,7 @@ For example, we might want to have a View or a Stored Procedure in our DB. To
 create that, we'd create an empty migration and add SQL to that migration.
 Here's an example:
 
-```csharpharp
+```csharp
 public partial class AddStoredProcedures : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -832,7 +832,7 @@ public partial class AddStoredProcedures : Migration
 
 Here's an example of how we can invoke raw SQL with a `DbContext`:
 
-```csharpharp
+```csharp
 var samurais = context.Samurais.FromSqlRaw("SELECT * FROM Samurais").ToList();
 ```
 
@@ -854,7 +854,7 @@ safer with `FromSqlInterpolated()`. The SQL query will be parametrized.
 
 ### Stored Procedures
 
-```csharpharp
+```csharp
 var samurais = _context.Samurais.FromSqlInterpolated(
     $"EXEC dbo.HomesWithNRooms {rooms}").ToList();
 ```
@@ -863,7 +863,7 @@ var samurais = _context.Samurais.FromSqlInterpolated(
 
 There is also another way to invoke SQL commands:
 
-```csharpharp
+```csharp
 context.Database.ExecutrSqlRaw("some SQL");
 ```
 
@@ -879,7 +879,7 @@ We can configure logging in multiple ways.
 Every interaction with the `DbContext` may be tagged with a comment that will be
 visible on the SQL Server side.
 
-```csharpharp
+```csharp
 var data = _context.Samurais.TagWith("Some comment").ToList();
 ```
 
@@ -887,7 +887,7 @@ var data = _context.Samurais.TagWith("Some comment").ToList();
 
 A `DbContext` class may be configured with a `LogTo` call:
 
-```csharpharp
+```csharp
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
     optionsBuilder.LogTo(Console.WriteLine);
@@ -899,7 +899,7 @@ We'll see logs generated by EF Core in the console.
 By default, all values are hidden, since they might be sensitive. We can disable
 that hiding with:
 
-```csharpharp
+```csharp
 optionsBuilder.LogTo(Console.WriteLine)
     .EnableSensitiveDataLogging();
 ```

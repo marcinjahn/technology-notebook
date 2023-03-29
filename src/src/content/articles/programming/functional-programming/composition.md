@@ -19,7 +19,7 @@ We apply function `f(x)` on a result of `g(x)`.
 
 This is also a popular approach in functional programming.
 
-```csharpharp
+```csharp
 var person = new Person("John", "Smith");
 var email = AppendDomain(GenerateUsername(person));
 ```
@@ -27,7 +27,7 @@ var email = AppendDomain(GenerateUsername(person));
 This syntax is not the most readable since the operations are reversed in code.
 Another way is to use extension methods:
 
-```csharpharp
+```csharp
 var email = person.GenerateUsername().AppendDomain();
 ```
 
@@ -44,7 +44,7 @@ data.
 
 When dealing with the higher abstraction of elevated values, `Map` should be used:
 
-```csharpharp
+```csharp
 var opt = Some(new Person("John", "Smith"));
 var emailOpt = opt.Map(GenerateUsername)
                   .Map(AppendDomain);
@@ -54,7 +54,7 @@ var emailOpt = opt.Map(GenerateUsername)
 
 Function should be generic, to be reusable. Here's an example:
 
-```csharpharp
+```csharp
 // SPECIFIC
 static decimal AverageEarningsOfRichestQuartile(this IEnumerable<Person> people) =>
     people

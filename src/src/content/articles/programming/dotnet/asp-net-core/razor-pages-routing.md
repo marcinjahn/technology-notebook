@@ -45,7 +45,7 @@ endpoint.
 
 The routing middleware comes with a set of conventions, which may be changed. It can be done as follows:
 
-```csharpharp
+```csharp
 services.Configure<RouteOptions>(options => 
 {
   options.AppendTrailingSlash = true,
@@ -138,7 +138,7 @@ valid.
 The framework has a helper for generating URLs to other parts of our app.
 An example:
 
-```csharpharp
+```csharp
 var url = Url.Page("Products/Winter", new { id = "273" });
 ```
 
@@ -162,7 +162,7 @@ It's very similar to Razor Pages. We also have the `Url` object. However, we'd
 use the `Action` method on it, together with the inputs: action name, controller
 name, and optional parameters.
 
-```csharpharp
+```csharp
 var url = Url.Action(nameof(Winter), nameof(Products), new { id = "273" });
 ```
 
@@ -183,6 +183,6 @@ URLs in code.
 There is also a `LinkGenerator` class, which may be used in a code outside of
 Razor Pages or MVC controllers (such as middleware, or any other code).
 
-```csharpharp
+```csharp
 var url = _linkGenerator.GetPathByPage("/Products/Winter", values: new { id: "273" });
 ```

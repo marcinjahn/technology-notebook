@@ -32,7 +32,7 @@ Some advantages:
 
 Registration:
 
-```csharpharp
+```csharp
 services.AddValidatorsFromAssemblyContaining<SomeDataValidator>();
 services.AddFluentValidationAutoValidation(options => 
 { 
@@ -42,7 +42,7 @@ services.AddFluentValidationAutoValidation(options =>
 
 Usage:
 
-```csharpharp
+```csharp
 public class CommandValidator : AbstractValidator<Command>
 {
     public CommandValidator()

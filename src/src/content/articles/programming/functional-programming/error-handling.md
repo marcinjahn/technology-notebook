@@ -29,7 +29,7 @@ predicate that returns a boolean. It is unable to create a proper `Left<L>`. A
 workaround is to use `Bind` with a function that either returns `Right<R>` or
 `Left<L>`
 
-```csharpharp
+```csharp
 Right(person)
     .Bind(CheckAge) // with Option<T> it'd be .Where(HasRightAge)
     .Bind(Greet)
@@ -48,7 +48,7 @@ Either<Rejection, Person> CheckAge(Person p)
 Typically, `Either`-based flows follow a track where each function may either
 succeed or fail. At the end of the flow, the failure scenario should be checked.
 
-```csharpharp
+```csharp
 Right(person)
     .Bind(CheckAge) // with Option<T> it'd be .Where(HasRightAge)
     .Bind(Greet)
@@ -74,7 +74,7 @@ simple base `Error` with all necessary properties (like `string Message`) and,
 when needed, we could create derived error types. Such error types could contain
 predefined error messages for convenience.
 
-```csharpharp
+```csharp
 record UserDoesntExist() 
     : Error("The provided username does not exist");
 ```

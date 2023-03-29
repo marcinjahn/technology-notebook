@@ -21,7 +21,7 @@ behavior on all platforms.
 Don't use `TaskCreationOptions.LongRunning` with async code as this will create
 a new thread which will be destroyed after first await
 
-```csharpharp
+```csharp
 public void StartProcessing()
 {
     var thread = new Thread(ProcessQueue) 
@@ -43,7 +43,7 @@ understand that calling code can resume directly on your thread. This is
 extremely dangerous and can result in deadlocks, thread-pool starvation,
 corruption of state (if code runs unexpectedly) and more.
 
-```csharpharp
+```csharp
 var tcs = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
 ```
 
@@ -51,7 +51,7 @@ var tcs = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsyn
 
 Always dispose CancellationTokenSource(s) used for timeouts
 
-```csharpharp
+```csharp
 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10))
 ```
 
@@ -61,7 +61,7 @@ using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10))
 
 Good implementation should dispose `CancellationTokenRegistration`.
 
-```csharpharp
+```csharp
 public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationToken cancellationToken)
 {
     var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -89,7 +89,7 @@ public static async Task<T> WithCancellation<T>(this Task<T> task, CancellationT
 
 Good implementation cancels the timer if operation successfully completes.
 
-```csharpharp
+```csharp
 public static async Task<T> TimeoutAfter<T>(this Task<T> task, TimeSpan timeout)
 {
     using (var cts = new CancellationTokenSource())
@@ -118,7 +118,7 @@ public static async Task<T> TimeoutAfter<T>(this Task<T> task, TimeSpan timeout)
 Always call `FlushAsync()` on `StreamWriter` or `Stream` before calling
 `Dispose()`
 
-```csharpharp
+```csharp
 using (var streamWriter = new StreamWriter(context.Response.Body))
 {
     await streamWriter.WriteAsync("Hello World");
@@ -141,7 +141,7 @@ returning the `Task`:
 
 GOOD:
 
-```csharpharp
+```csharp
 public async Task<int> DoSomethingAsync()
 {
     return await CallDependencyAsync();
@@ -150,7 +150,7 @@ public async Task<int> DoSomethingAsync()
 
 BAD:
 
-```csharpharp
+```csharp
 public Task<int> DoSomethingAsync()
 {
     return CallDependencyAsync();
@@ -163,7 +163,7 @@ public Task<int> DoSomethingAsync()
 `DenyChildAttach`. It means that it will ignore children tasks being attached.
 If we want the attachment, we can use `Task.Factory.StartNew`:
 
-```csharpharp
+```csharp
 await Task.Factory.StartNew(() -> {
     Task.Factory.StartNew(() -> {
         Thread.Sleep(1000);
@@ -183,7 +183,7 @@ The parent `Task` will be completed only when its 2 children are finished.
 `Task.Run` automatically unwraps the result of async operations inside.
 `Task.Factory.StartNew` does not do that. Example:
 
-```csharpharp
+```csharp
 var task = Task.Factory.StartNew(async () => 5);
 
 var result = await await task; //Unwrapping
@@ -191,7 +191,7 @@ var result = await await task; //Unwrapping
 
 The way around that is:
 
-```csharpharp
+```csharp
 var task = Task.Factory.StartNew(async () => 5).Unwrap();
 
 var result = await task; //Already unwrapped

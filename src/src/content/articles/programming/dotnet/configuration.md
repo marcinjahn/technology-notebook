@@ -12,7 +12,7 @@ configuration data.
 
 ## Options
 
-```csharpharp
+```csharp
 services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
 ```
 
@@ -39,7 +39,7 @@ becasue `IEnumerable<T>` does not have the `Add` method.
 
 We are able to customize Options in runtime:
 
-```csharpharp
+```csharp
 services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
 services.Configure<MyOptions>(options => 
 {
@@ -60,7 +60,7 @@ is read and then `Mode` property is overwritten.
 
 ### Building
 
-```csharpharp
+```csharp
 private static AppConfiguration GetConfiguration()
 {
     var rawConfig = new ConfigurationBuilder()

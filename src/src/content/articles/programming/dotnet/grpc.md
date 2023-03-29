@@ -195,7 +195,7 @@ uni-drectional stream:
 
 The auto-generated base class will have a method that we'll need to override:
 
-```csharpharp
+```csharp
 public async override Task AddReadingStream(
     IAsyncStreamReader<ReadingMessage> requestStream,
     IServerStreamWriter<ErrorMessage> responseStream,

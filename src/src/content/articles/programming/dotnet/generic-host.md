@@ -53,7 +53,7 @@ loop with a delay).
 The hosted service can terminate the app when finished the execution. An
 instance of `IHostApplicationLifetime` needs to be injected and used:
 
-```csharpharp
+```csharp
 _logger?.LogInformation("Terminating Application");
 _applicationLifetime.StopApplication();
 ```
@@ -100,7 +100,7 @@ We can also create the boilerplate manually.
 
 ### Imports
 
-```csharpharp
+```csharp
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -112,7 +112,7 @@ using System.Threading.Tasks;
 
 Simple:
 
-```csharpharp
+```csharp
 private static IHostBuilder GetHostBuilder(string[] args)
 {
     return Host.CreateDefaultBuilder(args)
@@ -126,7 +126,7 @@ private static IHostBuilder GetHostBuilder(string[] args)
 
 With configuration:
 
-```csharpharp
+```csharp
 private static IHostBuilder GetHostBuilder()
 {
     var builder = new HostBuilder()
@@ -151,7 +151,7 @@ private static IHostBuilder GetHostBuilder()
 
 ### Running the application
 
-```csharpharp
+```csharp
 static async Task Main(string[] args)
 {
     try
@@ -171,7 +171,7 @@ static async Task Main(string[] args)
 
 .NET 6:
 
-```csharpharp
+```csharp
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

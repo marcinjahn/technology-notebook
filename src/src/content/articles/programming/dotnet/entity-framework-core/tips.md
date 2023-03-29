@@ -13,7 +13,7 @@ A class inheriting `DbContext` is needed.
 
 One way is to override `OnModelCreating` method of `DbContext`:
 
-```csharpharp
+```csharp
 protected override void OnModelCreating(ModelBuilder builder)
 {
     builder.Entity<Value>()
@@ -28,7 +28,7 @@ protected override void OnModelCreating(ModelBuilder builder)
 Downside of this is that we need to manually type the ids. Another way is to
 create seperate class for seeding:
 
-```csharpharp
+```csharp
 public class Seed
 {
     public static void SeedData(DataContext dbContext)
@@ -45,7 +45,7 @@ public class Seed
 
 Then, we can run it from `Program` of our application:
 
-```csharpharp
+```csharp
 public static void Main(string[] args)
 {
     var host = CreateHostBuilder(args).Build();
@@ -77,7 +77,7 @@ migrations on every application startup**.
 It's good idea to use Sqlite in a prototype. It's files based DB. Registering
 DbContext:
 
-```csharpharp
+```csharp
 services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
@@ -109,7 +109,7 @@ section in `appsettings.json`. Exemplary `appsettings.json`:
 
 It's a good idea to get data using async methods, i.e.:
 
-```csharpharp
+```csharp
 public async Task<ActionResult<IEnumerable<Value>>> Get()
 {
     var values = await _dbContext.Values.ToListAsync();
@@ -128,7 +128,7 @@ method) in other cases.
 It's a good idea to use the following strategy for finding out if saving changes
 in DB was successful:
 
-```csharpharp
+```csharp
 _dbContext.Activities.Add(activity);
 var success = await _dbContext.SaveChangesAsync() > 0;
 

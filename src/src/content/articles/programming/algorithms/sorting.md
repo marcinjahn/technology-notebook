@@ -12,7 +12,7 @@ lang: en-US
 - **Time Complexity: O(n^2)**
 - **Space Complexity: O(1)**
 
-```csharpharp
+```csharp
 static void BubbleSort(IList<int> nums)
 {
   var swapped = false;
@@ -55,7 +55,7 @@ It's slow, but it comes useful when:
 - **Time Complexity: O(n^2)**
 - **Space Complexity: O(1)**
 
-```csharpharp
+```csharp
 void InsertionSort(int[] numbers)
 {
   for (var i = 0; i < numbers.Length - 1; i++)
@@ -98,7 +98,7 @@ arrays and then join them together, sorting in the process.
 - **Time Complexity: O(n log(n))**
 - **Space Complexity: O(n)**
 
-```csharpharp
+```csharp
 void MergeSort(int[] numbers)
 {
   if (numbers.Length <= 1) return;
@@ -155,7 +155,7 @@ It's the default sorting algorithm in many programming languages (including
   is the smallest or the greatest element)
 - **Space Complexity: O(log n)**
 
-```csharpharp
+```csharp
 static void QuickSort(IList<int> nums)
 {
   QuickSortInternal(nums, 0, nums.Count() - 1);

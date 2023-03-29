@@ -79,7 +79,7 @@ Normally, middleware pipeline is a single line of components that execute one
 after another. We can change that and create branches where some requests go one
 way, while others go another way. We use `Map` for that.
 
-```csharpharp
+```csharp
 app.UseDeveloperExceptionPage(); // always runs
 
 app.Map("/branch", builder => 
@@ -97,7 +97,7 @@ app.MapRazorPages();
 
 We can create simple endpoints in middleware with the `Run` extension method:
 
-```csharpharp
+```csharp
 app.Run(async context => 
 {
     context.Response.ContentType = "text/plain";

@@ -11,7 +11,7 @@ tags: [".net", "asp.net", "c#", functional programming]
 
 In a typical C# program, we'd have something like this:
 
-```csharpharp
+```csharp
 public interface ITimeProvider
 {
     DateTime GetTime();
@@ -49,7 +49,7 @@ not the purpose of interfaces. It brings much boiler-plate code.
 
 We could use function-injection to achieve the same behavior:
 
-```csharpharp
+```csharp
 public delegate DateTime Clock();
 
 public class DateValidator
@@ -73,7 +73,7 @@ services.AddSingleton<DateValidator>();
 ::: tip Records
 We could make the code even shorter with a record.
 
-```csharpharp
+```csharp
 public record DateValidator(Clock Clock)
 {
     public bool Validate(Order order) =>
@@ -105,7 +105,7 @@ Here's a practical example:
 
 OOP:
 
-```csharpharp
+```csharp
 public class MakeTransferController : ControllerBase
 {
     IValidator<MakeRequest> _validator;
@@ -124,7 +124,7 @@ public class MakeTransferController : ControllerBase
 
 FP:
 
-```csharpharp
+```csharp
 public delegate Validation<T> Validator(T t);
 
 // Returns handler
@@ -148,7 +148,7 @@ static Func<MakeRequest, IResult> ConfgureSaveTransferHandler(IConfiguration con
 }
 ```
 
-```csharpharp
+```csharp
 var app = WebApplication.Create();
 var handleSaveTransfer(ConfgureSaveTransferHandler(app.Configuration));
 

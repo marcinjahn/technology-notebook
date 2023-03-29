@@ -25,7 +25,7 @@ There are two ways to create a function within another function:
 - lambdas
 - function definitions (since C# 7)
   
-  ```csharpharp
+  ```csharp
   void F1()
   {
     double Square(double a) => Math.Pow(a, 2);
@@ -38,7 +38,7 @@ Both these ways result in separate classes being created by the compiler.
 Local functions might mitigate some performance hit if they're not using any data
 from the scope where they're defined, with the `static` keyword.
 
-```csharpharp
+```csharp
 static double Square(double a) => Math.Pow(a, 2);
 ```
 
@@ -59,7 +59,7 @@ Tuple's items can be named:
 
 Example:
 
-```csharpharp
+```csharp
 public static (string Base, string Quote) AsPair(ths string ccyPair) =>
     ccyPair.SplitAt(3);
 
@@ -72,7 +72,7 @@ WriteLine($"{pair.Base} - {pair.Quote}");
 Since the C# 8, `switch` works similarly to Rust's `switch` thanks to pattern
 matching.
 
-```csharpharp
+```csharp
 record Address(string Country);
 
 address switch
@@ -85,7 +85,7 @@ address switch
 ::: tip
 Property mathching might be useful if the `address` container more properties:
 
-```csharpharp
+```csharp
 address switch
 {
     { Country: "cz" } => DoSomethingCzechSpecific(),

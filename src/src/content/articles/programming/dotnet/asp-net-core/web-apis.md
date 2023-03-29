@@ -15,7 +15,7 @@ Before the Core, ASP.NET's MVC and Web APIs stacks were separate.
 
 The default `Program.cs` looks like this:
 
-```csharpharp
+```csharp
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +37,7 @@ app.Run();
 
 A controller example:
 
-```csharpharp
+```csharp
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
@@ -74,7 +74,7 @@ We can use exactly the same templates as in the [Razor Pages
 routing](./razor-pages-routing.md#route-templates). However, we speify those in
 a different place - in the action's `Route` attribute.
 
-```csharpharp
+```csharp
 public class WeatherForecastController : ControllerBase
 {
    [Route("")]
@@ -141,7 +141,7 @@ returning an `OkResult` with the `Ok()` helper.
 By default, ASP.NET Core returns data in JSON format. We can change that by
 adding additional providers. For example, to add `text/xml` support:
 
-```csharpharp
+```csharp
 builder.Services.AddControllers().AddXmlSerializerFormatters();
 ```
 

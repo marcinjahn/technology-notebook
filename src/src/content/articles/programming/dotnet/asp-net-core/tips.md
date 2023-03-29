@@ -45,7 +45,7 @@ Every API endpoint can have `CancellationToken` as one of its parameters. It's
 cancelled when client cancells request. We can use this token when handling
 request. Example:
 
-```csharpharp
+```csharp
 [HttpGet]
 public async Task<ActionResult<List<Activity>>> List(CancellationToken ct)
 {
@@ -63,7 +63,7 @@ controller quite simple and also encourages CQRS. It requires
 the project where business logic is (asp.net seems to have it by default
 already). Then, controllers do this:
 
-```csharpharp
+```csharp
 private readonly IMediator _mediator;
 
 public ActivitiesController(IMediator mediator)
@@ -80,7 +80,7 @@ public async Task<ActionResult<List<Activity>>> List(CancellationToken ct)
 
 Example of a request handler:
 
-```csharpharp
+```csharp
 public class Details
 {
     public class Query : IRequest<Activity>
@@ -111,7 +111,7 @@ What's needed is an implementation of `IRequest` and `IRequestHandler`.
 In order to registers handler with MediatR, we need to do this in
 `ConfigureServices`:
 
-```csharpharp
+```csharp
 services.AddMediatR(typeof(Details.Handler).Assembly);
 ```
 
@@ -122,7 +122,7 @@ find its assembly where all other handlers reside.
 
 Middleware:
 
-```csharpharp
+```csharp
 public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -179,7 +179,7 @@ public class ErrorHandlingMiddleware
 
 In `Startup`:
 
-```csharpharp
+```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     app.UseMiddleware<ErrorHandlingMiddleware>();

@@ -61,7 +61,7 @@ Options:
 
 The policies are defined in the `Program.cs`/`Startup.cs` file:
 
-```csharpharp
+```csharp
 services.AddAuthorization(options => 
 {
     options.AddPolicy("Admin", policyBuilder => 

@@ -202,7 +202,7 @@ Data is bound from:
 By default, the framework looks through all of these sources for each parameter
 to bind. We can also specify the source explicitly:
 
-```csharpharp
+```csharp
 [BindProperty]
 [FromHeader]
 public string Id { get; set; }
@@ -226,7 +226,7 @@ compared to the name in our code.
 If our Page has a few properties to bind from a request, we can introduce a
 separate class that encompasses that data:
 
-```csharpharp
+```csharp
 class MyPage : PageModel
 {
   [BindProperty]
@@ -294,7 +294,7 @@ Razor Page can access "external" data in the following ways:
 
 It can also be set in the `PageModel`:
 
-```csharpharp
+```csharp
 public class MyModel : PageModel
 {
   // A property of a `PageModel` may be defined as a `ViewData`:

@@ -9,7 +9,7 @@ lang: en-US
 
 Records can be stored on a heap or a stack:
 
-```csharpharp
+```csharp
 // heap, like a class
 record Person(string Name);
 
@@ -31,7 +31,7 @@ and do not have any logic/methods.
 Printing an instance of a record by default prints its content. An instance of a
 class would print its type.
 
-```csharpharp
+```csharp
 Console.WriteLine(recordInstance); // Person { Name = "Marcin" }
 
 Console.WriteLine(classInstance); // Namespace.ClassName
@@ -50,7 +50,7 @@ In the case of records, an equality check compares the values of the properties.
 
 Records may be copied (by value) with some changes to original values like this:
 
-```csharpharp
+```csharp
 var rec1 = new Person("Marcin", 25);
 var rec2 = rec1 with { Age = 20 }; // only age gets modified in the new record instance 
 ```
@@ -63,7 +63,7 @@ The `with` operator can also be applied to anonymous types in C#.
 
 A bit similarly to JS, we can extract some values from records:
 
-```csharpharp
+```csharp
 (var name, var age) = rec1;
 ```
 

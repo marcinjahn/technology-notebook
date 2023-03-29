@@ -13,7 +13,7 @@ A O(log n) algorithm that looks for a specified element in a sorted (!) array.
 
 ### Recurcive Algorithm
 
-```csharpharp
+```csharp
 int RecursiveBinarySearch(int[] sortedNumbers, int target)
 {
   if (!sortedNumbers.Any()) return -1;
@@ -36,7 +36,7 @@ int RecursiveBinarySearch(int[] sortedNumbers, int target)
 
 ### Iterative Algorithm
 
-```csharpharp
+```csharp
 int IterativeBinarySearch(int[] sortedNumbers, int target)
 {
   if (!sortedNumbers.Any()) return -1;
@@ -94,7 +94,7 @@ know that we need to shift our search window 3 characters to the right).
 - **Time Complexity: O(mn)** (average - O(n))
 
 
-```csharpharp
+```csharp
 public record Match(int Index, int Length);
 
 static IEnumerable<Match> BoyerMooreHorspool(string input, string pattern) 

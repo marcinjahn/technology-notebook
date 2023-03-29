@@ -89,7 +89,7 @@ request/response operations.
 
 Here's an example of a synchronous filter:
 
-```csharpharp
+```csharp
 public class LogResourceFilter : Attribute, IResourceFilter
 {
     // Request
@@ -108,7 +108,7 @@ public class LogResourceFilter : Attribute, IResourceFilter
 
 Here's an example of an asynchronous filter: 
 
-```csharpharp
+```csharp
 public class AsyncLogResourceFilter : Attribute, IAsyncResourceFilter
 {
     public async Task OnResourceExecutionAsync(
@@ -149,7 +149,7 @@ Filters can be applied:
 
 Both MVC and Razor Pages:
 
-```csharpharp
+```csharp
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<LogResourceFilter>();
@@ -158,7 +158,7 @@ builder.Services.AddControllers(options =>
 
 Just the Razor Pages:
 
-```csharpharp
+```csharp
 builder.Services.AddRazorPages()
     .AddMvcOptions(options =>
     {
@@ -168,7 +168,7 @@ builder.Services.AddRazorPages()
 
 ### MVC
 
-```csharpharp
+```csharp
 [ApiController]
 [LogResourceFilter]
 [Route("[controller]")]
@@ -191,7 +191,7 @@ public class WeatherForecastController : ControllerBase
 
 ### Page Model
 
-```csharpharp
+```csharp
 [LogResourceFilter]
 public class PrivacyModel : PageModel
 {

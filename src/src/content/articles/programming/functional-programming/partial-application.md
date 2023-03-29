@@ -16,7 +16,7 @@ configuration once. Later, we could use the function without providing the
 configuration every time. An example could be some function that retrieves data
 from a database. The connection string will probably not change during runtime.
 
-```csharpharp
+```csharp
 var greet = (string greeting, string name) => $"{greeting}, {name}";
 
 greet("Hello", "Kelly");
@@ -27,7 +27,7 @@ greet("Hello", "Mary");
 The function above requires us to provide both parameters at once. We could
 change it to a HOF, like this:
 
-```csharpharp
+```csharp
 var greet = (string greeting) => (string name) => $"{greeting}, {name}";
 
 var greetWith = greet("Hello");
@@ -61,7 +61,7 @@ consists of three partial functions.
 There is a way to turn multi-parameter functions into partial functions, with
 the help of an implementation of the `Apply` function which relies on closures:
 
-```csharpharp
+```csharp
 public static Func<T2, R> Apply<T1, T2, R>(this Func<T1, T2, R> func, T1 parameter) =>
     t2 => func(t1, t2);
 ```
@@ -76,7 +76,7 @@ should also be provided.
 
 Usage:
 
-```csharpharp
+```csharp
 var greet = (string greeting, string name) => $"{greeting}, {name}";
 
 var greetWith = greet.Apply("Hello");
@@ -94,7 +94,7 @@ The `Apply` example above would not look that nice if `greet` was a method (and
 not a delegate). In such a case, the compiler does not infer the method as a
 `Func` automatically.
 
-```csharpharp
+```csharp
 string Greet(string greeting, string name) => $"{greeting}, {name}";
 
 var greetWith = new Func<string, string, string>(Greet).Apply("Hello");
@@ -108,7 +108,7 @@ Workarounds:
 
 An example of the last approach:
 
-```csharpharp
+```csharp
 public Func<string, string, string> GreetFactory() =>
     (greeting, name) => $"{greeting}, {name}";
 
@@ -133,7 +133,7 @@ Currying is similar to *partial application*. The difference is:
 
 Here' an example of an implementation of a `Curry` function:
 
-```csharpharp
+```csharp
 Func<T1, Func<T2, R>> Curry<T1, T2, R>(this Func<T1, T2, R> func) =>
     t1 => t2 => func(t1, t2);
 
@@ -150,7 +150,7 @@ that turn other functions into specialized forms.
 
 Example:
 
-```csharpharp
+```csharp
 // a function factory
 Func<string, IEnumerable<T>> CreateRetriever<T>(
     this string connectionString, string sqlTemplate) => 

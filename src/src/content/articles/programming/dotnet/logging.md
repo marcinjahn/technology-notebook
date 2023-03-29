@@ -12,7 +12,7 @@ lang: en-US
 When logging and using a provider that supports structured/semantic logging, we
 should provide parameters the following way:
 
-```csharpharp
+```csharp
 // GOOD
 _logger.LogInformation("User {userId} logged in", userId);
 
@@ -60,7 +60,7 @@ Using Serilog:
 
 2. Use Serilog with DI
 
-    ```csharpharp
+    ```csharp
     var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((host, services) =>
     {
@@ -104,7 +104,7 @@ Colors" and change "Bright White" color to **#FFFFFF**.
 
 ### Usage without Dependency Injection
 
-```csharpharp
+```csharp
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
@@ -125,7 +125,7 @@ finally
 
 ### Logging to files with Serilog
 
-```csharpharp
+```csharp
 public static void AddLogging(this IServiceCollection services, AppConfiguration appConfiguration)
 {
     services.AddLogging(services, builder => {

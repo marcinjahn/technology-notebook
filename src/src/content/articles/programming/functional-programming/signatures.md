@@ -35,7 +35,7 @@ For the functions to be usable with [Patrial
 Application](./partial-application.md), it makes sense to order the arguments
 from the most generic ones to the most specific ones.
 
-```csharpharp
+```csharp
 // GOOD - Apply can be easily used
 Person Query(string connectionString, string sql);
 
@@ -74,7 +74,7 @@ duplication and it sucks.
 .NET provides its own "Unit" type - `System.ValueTuple` (which makes it even
 more similar to Rust, since an empty tuple would look like this - `()`).
 
-```csharpharp
+```csharp
 ValueTuple DoSomething()
 {
   // ...
@@ -95,7 +95,7 @@ In FP we never use `null`. Instead, `Option<T>` is used. It makes signatures
 
 .NET does not have a standard `Option<T>` type. Here's a simple implementation:
 
-```csharpharp
+```csharp
 interface IOption<T> {}
 record None<T> : Option<T>; // None shouldn't need a T, but the compiler requires it
 record Some<T>(T value) : Option<T>;
@@ -135,14 +135,14 @@ Rust-like `Match` function can be implemented for consuming `Option<T>`.
 
 Additionally, it's useful to have a `Map` (C#'s `Select`) function on `Option<T>`. That way, we can do the following:
 
-```csharpharp
+```csharp
 var someOption = FnThatReturnsOption();
 someOption.Map(CalculateData);
 ```
 
 Without option, we'd do:
 
-```csharpharp
+```csharp
 var someValue = FnThatReturnsValue();
 if (someValue is not null) {
   CalculateData(someValue);

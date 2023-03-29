@@ -88,7 +88,7 @@ An algorith requires:
 
 It just selects the next index (circularly):
 
-```csharpharp
+```csharp
 public int GetNextIndex(int index, int arrayCapacity, int key)
 {
     return (index + 1) % arrayCapacity;
@@ -102,7 +102,7 @@ probings in the clustered area will be slow.
 
 ##### Quadratic
 
-```csharpharp
+```csharp
 public int GetNextIndex(int index, int arrayCapacity, int key)
 {
     return (int)Math.Pow((index + 1), 2) % arrayCapacity;
@@ -117,7 +117,7 @@ looping over the same indexes never finding a free spot, although it is there.
 It solves the clustering and the issue of never finidng a free spot of
 quadratic method.
 
-```csharpharp
+```csharp
 private IProbingFunction _linearProbing = new LinearProbingFunction();
 
 public int GetNextIndex(int index, int arrayCapacity, int key)

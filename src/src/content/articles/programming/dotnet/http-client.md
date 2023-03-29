@@ -16,7 +16,7 @@ decide not to pass message down and return a response earlier (i.e. caching).
 
 ## HttpClient configuration
 
-```csharpharp
+```csharp
 _httpClient.BaseAddress = "http://www..google.pl";
 _httpClient.Timeout = new TimeSpan(0, 0, 30);
 
@@ -41,7 +41,7 @@ but if more customization is required (like custom headers) an
 
 ### Headers
 
-```csharpharp
+```csharp
 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 ```
 
@@ -57,7 +57,7 @@ The base type of content is `HttpContent`. It is abstract. Derived types:
 
 Example:
 
-```csharpharp
+```csharp
 request.Content = new StringContent("abc");
 request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 ```
@@ -75,7 +75,7 @@ unnecessary memory allocation for the whole content string, which we need only
 for deserialization in most cases. It's a better idea to use
 `ReadAsStreamAsync()` and deserialize the data from the stream directly.
 
-```csharpharp
+```csharp
 //using will dispose the stream. When not using streams, it doesn't do anything
 using var response = await _httpClient.GetAsync("url");
 var stream = await response.Content.ReadAsStreamAsync();
@@ -86,7 +86,7 @@ There is additional perfmance improvement. By default, `HttpClient` will return
 the response only after the whole content is fetched from the server. We can
 instead get the stream while it's still being fetched:
 
-```csharpharp
+```csharp
 var request new HttpRequestMessage(...);
 //return as soon as the response headers arrive, instead of the whole content
 using var response = await _httpClient.SendAsync(request, HttpCompletionOptions.ResponseHeadersRead);
@@ -110,7 +110,7 @@ decompressed automatically when it is received.
 To implement *delegating handlers* pattern, we should create a class inheriting
 from `DelegatingHandler`. Example
 
-```csharpharp
+```csharp
 public class RetryPolicyDelegatingHandler : DelegatingHandler 
 {
     private readonly int _maxRetries = 3;
@@ -146,7 +146,7 @@ public class RetryPolicyDelegatingHandler : DelegatingHandler
 
 Registration of custom handler:
 
-```csharpharp
+```csharp
 services.AddHttpClient<MyService>()
     .AddHttpMessageHandler(handler => new RetryPolicyDelegatingHandler(2));
 ```
@@ -155,7 +155,7 @@ We added just our custom handler, but there is always a default
 `HttpClientHandler` in the end of the pipeline. If we want, we can configure it
 additionally:
 
-```csharpharp
+```csharp
 services.AddHttpClient<MyService>()
     .AddHttpMessageHandler(handler => new RetryPolicyDelegatingHandler(2))
     .ConfigurePrimaryHttpMessageHandler(handler => {

@@ -112,14 +112,14 @@ Pure functions should be implemented as static methods.
 When a value is wrapped in some container (like an `Option` or `IEnumerable`) we
 can't apply functions to it:
 
-```csharpharp
+```csharp
 Increment(Some(3)) //doesn't work
 ```
 
 This is where `Map` comes in. It allows us to extract the value from a container
 and apply a function to it. It returns a functor a well.
 
-```csharpharp
+```csharp
 Some(3).Map(Increment); //Some(4)
 ```
 
@@ -145,7 +145,7 @@ Functions are functors as well!
 `Map` is to be used with functions that have no side-effects, while `ForEach` is
 to be used with side-effect function. Example:
 
-```csharpharp
+```csharp
 var names = new string[] { "Andy", "John", "Jules" };
 names
   .Map(n => $"Hello {n}") // pure function
@@ -181,7 +181,7 @@ A type that has a `Bind` method is a **monad**.
 
 Example:
 
-```csharpharp
+```csharp
 record Pet(string Name);
 record Person(string Name, IEnumerable<Pet> Pets);
 
@@ -286,7 +286,7 @@ Some of the LINQ functions simplify the pattern: `Sum`, `Average`, etc.
 
 Here's how `Sum` could look like:
 
-```csharpharp
+```csharp
 list.Aggregate(0, (acc, item) => acc + item);
 ```
 :::
@@ -296,7 +296,7 @@ functions into one function. A good example is validation. We could have
 multiple functions that validate a request, but we'd want to have just one entry
 point to execute them.
 
-```csharpharp
+```csharp
 public static Validator<T> CombineValidators(IEnumerable<Validator<T>> validators) =>
   t => validators.Aggreagate(Valid(t), (acc, validator) => acc.Bind(_ => validator(t)));
 ```
