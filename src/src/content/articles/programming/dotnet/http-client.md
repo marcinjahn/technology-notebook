@@ -8,7 +8,8 @@ lang: en-US
 # HttpClient
 
 `HttpClient` uses implementations of `HttpMessageHandler` to do its job. The
-default handler is `HttpClientHandler`.
+default handler is
+[SocketsHttpHandler](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.socketshttphandler?view=net-8.0).
 
 There may be a chain of handlers (*delegating handler pattern*). Messages go
 down throug handlers and responses go up to the `HttpClient`. Any handler can
