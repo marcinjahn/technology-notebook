@@ -70,7 +70,7 @@ services.AddSingleton<Clock>(_ => () => DateTime.UtcNow);
 services.AddSingleton<DateValidator>();
 ```
 
-::: tip Records
+:::tip[Records]
 We could make the code even shorter with a record.
 
 ```csharp
@@ -82,7 +82,7 @@ public record DateValidator(Clock Clock)
 ```
 :::
 
-::: tip Delegate
+:::tip[Delegate]
 Usage of a new delegate type was not necessary. We could just use
 `Func<DateTime>`. A `Clock` type makes it a bit more readable.
 :::
@@ -160,7 +160,7 @@ await app.RunAsync();
 Dependecies are not stored in any fields, they are passed as parameters to the
 function.
 
-::: tip Partial Application
+:::tip[Partial Application]
 The code above is an example of [Partial Application](./partial-application.md).
 In order to save the transfer, three parameters are required:
 - validator
@@ -171,7 +171,7 @@ We Have a HOF that accepts the first two parameters to create a function which
 only needs the last remaining parameter.
 :::
 
-::: warning .NET 6
+:::caution[.NET 6]
 The last code block uses .NET 6's Minimal APIs feature that enables functional
 approach. Older SDKs may use the [Feather HTTP
 framework](https://github.com/featherhttp/framework).

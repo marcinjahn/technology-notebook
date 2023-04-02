@@ -22,7 +22,7 @@ the observer(s) will be notified about that (HTTP request is an example of such
 an Observable). Observables might also be inifinite and the completion will
 never occur.
 
-::: tip $ Postfix
+:::tip[$ Postfix]
 In Angular, there is an unofficial convention to postfix variables representing
 `Observable<T>` with a **$** sign. Additionally, often the last value of the
 observable is stored in a variable called the same as the one holding the
@@ -84,7 +84,7 @@ component is no longer displayed. In such case, the component should implement
 `OnDestroy`, which comes with the `ngOnDestroy` lifecycle hook. We should remove
 subscription there.
 
-::: tip Router
+:::tip[Router]
 Angular's [Router](./routing.md) allows us to subscribe to various observables (e.g. `params`).
 Exceptionally, we don't need to unsubscribe from them, because Angular will do
 that for us in the background. Using `unsubscribe()` does not cause any harm
@@ -170,7 +170,7 @@ const sub = someObservable.subsctibe(
 
 We don't need to `unsubscribe()` from completed subscriptions.
 
-::: warning Error
+:::caution[Error]
 In cases when subscription throws an error, completion will never occur.
 :::
 
@@ -204,7 +204,7 @@ are lots more in the `rxjs/operators` import. For example:
   of some `Observable` (like the `BehaviorSubject` described down below).
 - `exhaustMap` similar to `map`, but accepts function that crosses boundaries (more on that in the *tip* below)
 
-::: tip exhaustMap
+:::tip[exhaustMap]
 An `Observable<T>` could be treated as a
 [functor](../dotnet/functional/fundamentals.md#functors) and a
 [monad](../dotnet/functional/fundamentals.md#monads).
@@ -218,7 +218,7 @@ into `Observable<U>` by accepting a function that turns a regular value `T`
 into an *elevated value* - `Observable<U>`.
 :::
 
-::: tip Chaining
+:::tip[Chaining]
 To chain a few operators sequentially, we can call `pipe()` multiple times, or
 we can provide more operators as next arguments to `pipe()`.
 :::
@@ -229,7 +229,7 @@ rxjs comes with a special type of Observable - **Subject**. It is functionally
 very similar to Angular's `EventEmitter<T>`. Reportedly, it's more performant
 though and it's recommended to always use **Subject**.
 
-::: warning @Output
+:::caution[@Output]
 `EventEmitter<T>` is still needed when we're dealing with `@Outputs`! `Subjects`
 are usable only when we control both the producer and the consumer sides.
 :::
@@ -249,12 +249,12 @@ const sub = mySubject.subscribe(value => {
 sub.unsubscribe();
 ```
 
-::: tip Operators
+:::tip[Operators]
 We can use [operators](#operators) on `Subjects`, we can't do that with
 `EventEmitter`.
 :::
 
-::: tip BehaviorSubject
+:::tip[BehaviorSubject]
 There's also another variant of `Subject` called `BehaviorSubject`. It comes
 with an additional feature - the subscriber is always able to read the last
 value of the Subject, even if it subscribes after that value was published.

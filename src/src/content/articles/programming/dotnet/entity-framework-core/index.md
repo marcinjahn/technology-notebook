@@ -31,7 +31,7 @@ public class SamuraiContext : DbContext
 
 The tables names are inferred from the `DbSet<>` names. 
 
-::: tip Optional DbSet
+:::tip[Optional DbSet]
 The `DbSet` properties are not required. We can have a table without a `DbSet`
 pointing to it. `DbSet` is a convenience that:
 
@@ -92,7 +92,7 @@ We can do that in a few ways:
     });
     ```
 
-::: tip Only Queries
+:::tip[Only Queries]
 The above methods only impact the tracking of entities that are being queried
 via EF Core. Entities being added or updated are still being tracked, which is a
 good thing. Otherwise, we'd have to set any entity as "Modified" or "Added"
@@ -157,7 +157,7 @@ table.
 Command: `dotnet ef migrations add <NAME>`. It should be invoked from a
 directory of a .NET project containig `DbContext`.
 
-::: tip DbContext Initialization
+:::tip[DbContext Initialization]
 The command tries to instantiate `DbContext`. By default it looks for that logic
 in the project in the current directory. If a different .NET project has this
 logic (e.g. some ASP.NET Core project), we need to point to it. Here's an
@@ -172,7 +172,7 @@ When adding a migration, the file `Migrations/*ModelSnapshot.cs` is loaded and
 compared with the current `DbContext`. Based on the difference between these, a
 new migration file is generated.
 
-::: tip First Migration
+:::tip[First Migration]
 When the first migration is being created, the `*ModelSnapshot.cs` file will be
 created as well.
 :::
@@ -183,14 +183,14 @@ class with 2 methods:
 - `Up` - work to do when the migration is applied
 - `Down` - work to do when the particular migration is revoked
 
-::: danger DROP
+:::danger[DROP]
 In cases when we have data in the DB, we should always look at the migration file
 to make sure that it's going to do only what we expected. In some cases, after
 changing various names, it might happen that the migration will `DROP` a table
 and recreate it, which would be a loss of existing data.
 :::
 
-::: tip Empty Migrations
+:::tip[Empty Migrations]
 If we have a specific case we can create an empty migration and code the logic
 of that migration directly in its file. E.g., we could use
 `migrationBuilder.Sql()` method to provide some [SQL to be executed](#raw-sql).
@@ -206,7 +206,7 @@ Generating a script: `dotnet ef migrations script <FROM> <TO>` - the SQL is
 printed to stdout. We can specify the migration to start from and the one we
 want to get to. By default it would generate SQL for all the migrations.
 
-::: warning Creating database
+:::caution[Creating database]
 When applying migration with EF tool directly, it makes sure that the database
 exists and creates it if needed. When using the SQL script, it's our
 responsibility to provide an existing database.
@@ -228,7 +228,7 @@ Executed DbCommand (461ms) [Parameters=[], CommandType='Text', CommandTimeout='6
 ```
 :::
 
-::: tip DbContext initialization
+:::tip[DbContext initialization]
 Just like with migration creation, we need to point the EF Tool to the project
 that contains `DbContext` creation logic:
 
@@ -275,7 +275,7 @@ public class Quote
 }
 ```
 
-::: tip Naming
+:::tip[Naming]
 Names of the optional properties should follow conventions to be recognized by
 EF Core. We could also configure our own conventions.
 :::
@@ -311,7 +311,7 @@ EF Core has a convention that understands it and it will create three tables:
 It's called **Skip Navigation**, because in code we can forget about the
 intermediary table and just work with the two entities being related.
 
-::: tip Join class name
+:::tip[Join class name]
 The join class (e.g., BattleSamurai) was named by following EF Core's
 convention: class names are placed alphabetically. That's why it's
 "BattleSamurai" and not "SamuraiBattle".
@@ -322,7 +322,7 @@ convention: class names are placed alphabetically. That's why it's
 For simplest cases, the above is enough. For some more advanced scenarios, we
 need to create additional class that joins our entities together.
 
-::: tip EF Core < 5.0
+:::tip[EF Core < 5.0]
 In older versions of EF Core, it was mandatory to create such a class for every
 many-to-many relationship.
 :::
@@ -399,7 +399,7 @@ public class Horse
 }
 ```
 
-::: tip Single Table
+:::tip[Single Table]
 With some configuration, we can make the one-to-one relationship to be stored in
 a single table (of the "principal"). By default, two tables are used.
 :::
@@ -429,7 +429,7 @@ The following methods allow us to query on `DbSet`s:
 - `Find(PK_value)` - not LINQ, it's `DbSet`'s method that looks for a row with a
   specified key
 
-::: tip Async
+:::tip[Async]
 All these methods also have the async counterparts.
 :::
 
@@ -464,7 +464,7 @@ var samuraiWithQuotes = _context.Samurais
     .Include(s => s.Quotes).ToList();
 ```
 
-::: tip
+:::tip
 The resulting query will make use of `OUTER JOIN` to get data from both the
 "Samurais" and "Quotes" tables. There's an option to send separate queries as
 well (`AsSplitQuery()`).
@@ -523,7 +523,7 @@ context.Entry(samurai).Reference(s => s.Horse).Load(); //one-to-one
 Lazy Loading fetches the data from the DB as soon as we try to access some
 related data via a Navigation Property.
 
-::: tip OFF
+:::tip[OFF]
 Lazy Loading is disabled by default due to its performance overhead.
 :::
 
@@ -538,7 +538,7 @@ var someProps = context.Samurais.Select(s => new { s.Id, s.Name }).ToList();
 In this case a list of anoymous objects will be returned, but we could use some
 known type as well.
 
-::: tip Related Data 
+:::tip[Related Data ]
 We can use `Select` to bring in related data as well and use it instead of
 [Eager Loading](#eager-loading). 
 :::
@@ -552,7 +552,7 @@ var someProps = context.Samurais
     .ToList();
 ```
 
-::: warning Tracking
+:::caution[Tracking]
 When projecting entities to custom/anonymous types, EF Core's `DbContext` is not
 able to track the pulled entities.
 :::
@@ -603,7 +603,7 @@ if (bs is not null)
 }
 ```
 
-::: tip Modifying payload
+:::tip[Modifying payload]
 If we want to modify some payload data of a many-to-many relationship, we'd have
 to modify the join class object, similarly to the code above.
 :::
@@ -770,11 +770,11 @@ Configure the entity to be keyless in `OnModelCreating` of the `DbContext`:
 modelBuilder.Entity<SamuraiBattleStat>().HasNoKey();
 ```
 
-::: tip Tracking
+:::tip[Tracking]
 Keyless entities are not tracked by `DbContext` and it cannot be enabled.
 :::
 
-::: warning Find() Method
+:::caution[Find() Method]
 Even though a keyless entity may be a `DbSet` we cannot use `DbSet`'s `Find()`
 method on it - there's no key after all! The code will compile just fine, but an
 exception will be thrown in the runtime.
@@ -791,7 +791,7 @@ modelBuilder.Entity<SamuraiBattleStat>().HasNoKey().ToView("SamuraiBattleStats")
 
 Without that, EF Core would create a new table.
 
-::: warning Creating Views
+:::caution[Creating Views]
 EF Core cannot create Views. They need to be created externally (e.g., with some
 migration executing raw SQL). Even the migration generated after the above
 change will be empty!
@@ -839,7 +839,7 @@ var samurais = context.Samurais.FromSqlRaw("SELECT * FROM Samurais").ToList();
 Since we used a `DbSet`, the result will be mapped to the entity of that
 `DbSet`. The entities will be tracked as well.
 
-::: warning Mapping
+:::caution[Mapping]
 There are some rules that we need to follow for the mapping to succeed:
 
 - The result must contain ALL the properties of the entity - not more, not less.
@@ -847,7 +847,7 @@ There are some rules that we need to follow for the mapping to succeed:
 `Include()` after the `FromSqlRaw()`.
 :::
 
-::: tip Parametrized Strings
+:::tip[Parametrized Strings]
 We can use interpolation (e.g., `SELECT * FROM {tableName}`). Doing that is
 safer with `FromSqlInterpolated()`. The SQL query will be parametrized.
 :::

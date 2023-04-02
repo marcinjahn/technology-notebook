@@ -61,7 +61,7 @@ The documentation should appear just before the documented element.
 We generate the docs with `cargo doc`. It runs `rustdoc` internally.
 The HTML docs are placed in `target/doc`.
 
-::: tip
+:::tip
 Running `cargo doc --open` generates and opens the docs automatically.
 :::
 

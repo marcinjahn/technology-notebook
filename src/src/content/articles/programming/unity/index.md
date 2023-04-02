@@ -11,7 +11,7 @@ To run Unity, you need to install Unity Hub, which is a manager of Unity
 installations. Through the Unity Hub, install the lateset release of Unity, and
 run.
 
-::: tip Apple Silicon 
+:::tip[Apple Silicon ]
 On Apple Silicon macs, for some reason, Intel binary is being downloaded by
 default. You should manually select the Apple Silicon version instead.
 :::
@@ -36,7 +36,7 @@ To modify script's (class's) fields in the Unity Editor UI, one of these should 
 The first approach is the recommended one, since a `public` field makes it
 accessible to any other script as well.
 
-::: tip Headers
+:::tip[Headers]
 If we have many `SerializeFields` fields, we can group them into categories with
 `Header`:
 
@@ -52,7 +52,7 @@ If we have many `SerializeFields` fields, we can group them into categories with
 ```
 :::
 
-![](./assets/serializefield-in-ui.png)
+![](../../../assets/serializefield-in-ui.png)
 
 ### External Access
 
@@ -63,7 +63,7 @@ scripts (classes) as follows:
 FindObjectOfType<PlayerController>().DoSomething();
 ```
 
-::: warning Service Locator
+:::caution[Service Locator]
 It's a bit like a Service Locator pattern, which I don't like. It's worth
 investigating if Dependency Injection is used in the Unity ecosystem.
 :::
@@ -76,12 +76,12 @@ be many instances of some script.
 The C# `public` keyword should be assigned to those components of our classes
 that we want to be accessible from the outside, by other scripts.
 
-::: tip
+:::tip
 The `FindObjectOfType<>()` method may also be used to find components
 placed on other game objects.
 :::
 
-::: danger Awake()
+:::danger[Awake()]
 The `FindObjectOfType` should not be used in `Start`, but rather in the `Awake`
 lifecycle method. Otherwise we might encounter some `NullReferenceException`s
 being thrown.
@@ -127,9 +127,9 @@ public class QuestionSO : ScriptableObject
 The `[CreateAssetMenu]` attribute makes our Scriptable Object available in the
 context menu of Unity's *Create*:
 
-![](./assets/scriptable-object-in-context-menu.png)
+![](../../../assets/scriptable-object-in-context-menu.png)
 
-::: tip Customization
+:::tip[Customization]
 We can customize the text of the extry in the context menu and the name of the
 file being created when it's clicked with:
 
@@ -141,7 +141,7 @@ file being created when it's clicked with:
 When we create an "object" based on our Scriptable Object, Unity's Editor will
 display the fields that we've configured:
 
-![](./assets/scriptable-object-in-editor.png)  
+![](../../../assets/scriptable-object-in-editor.png)  
 
 ## Physics
 
@@ -162,13 +162,13 @@ If we want to collide with some object, both objects should have a **Collider**.
 Additionally, to make the objects move on collision, they need to have
 **Rigidbody**.
 
-::: tip Physics Sprite
+:::tip[Physics Sprite]
 Instead of creating a Sprite, attaching a Collider and Rigidbody, we can create
 a Physics Dynamic Sprite, which out-of-the box is a Circle with a Collider and
 Rigidbody.
 :::
 
-::: warning Falling Through
+:::caution[Falling Through]
 The default Rigidbody's Collision Detection is **Discrete**. It's better for
 performance, but it might cause the collision detection to fail sometimes
 (when?). A fix for that is to change the detection to **Continuous**.
@@ -180,7 +180,7 @@ Game objects may be placed on different layers (different than Sorting Layers).
 Then, we can define how objects from different layers collide with each other
 (or not) in the Project Settings (2D Physics section):
 
-![](./assets/layers-collisions-settings.png)
+![](../../../assets/layers-collisions-settings.png)
 
 In this cases, all layers collide with all the other layers.
 
@@ -188,7 +188,7 @@ With layering we could have a setup where a player is able to go through some
 objects (of some specific layer), while enemies (being on a different layer that
 the player) will not be able to go through these objects.
 
-::: tip
+:::tip
 Layers can also be used for other things, like excluding some objects from being displayed by the camera.
 :::
 
@@ -198,7 +198,7 @@ Sometimes we don't need physics to be involved in a collision. All we might want
 is to know that some object touched another. An example of that is a player
 reaching the finish line
 
-![](./assets/player-and-finish-line.png)
+![](../../../assets/player-and-finish-line.png)
 
 For such cases, a Collider has the **isTrigger** property. A proper script
 behind object with such a collider will fire anytime another collider touches
@@ -214,7 +214,7 @@ public class FinishLine : MonoBehaviour
 }
 ```
 
-::: warning Physical Collision
+:::caution[Physical Collision]
 When **isTrigger** is selected, the Collider no longer works as "collision
 barrier", meaning that objects will not physically hit each other. Instead, the
 objects will just pass through each other.
@@ -247,7 +247,7 @@ an **Edge Collider** to it, and it will automatically follow the Sprite Shape's
 shape. Sometimes it's necessary to adjust the offset of the Shape Controller to
 have the collision exactly where we want it to be.
 
-![](./assets/sprite-shape-collision.png)
+![](../../../assets/sprite-shape-collision.png)
 
 ## Camera
 
@@ -274,19 +274,19 @@ Cinemachine is much more than just auto-follow. It allows us to:
   condition, like the current state of some object in its Animator. A
   **State-Driven Camera** is needed for that.
 
-    ![](./assets/state-camera.png)
+    ![](../../../assets/state-camera.png)
 
 - We can define the borders (confinement) that restricts the camera's movement.
 Here's an example:
 
-    ![](./assets/cinemachine-confinement-result.png)
+    ![](../../../assets/cinemachine-confinement-result.png)
 
     Even though the player should be in the center, due to confinement settings,
     the camera does not move past the collision area of the confinement object.
     The confinement is an extension that needs to be added to the virtual
     camera:
 
-    ![](./assets/cinemachine-confinement-extension.png)
+    ![](../../../assets/cinemachine-confinement-extension.png)
 
 ## Tagging
 
@@ -309,7 +309,7 @@ public class FinishLine : MonoBehaviour
 }
 ```
 
-::: tip Hierarchy
+:::tip[Hierarchy]
 If a top-level object in some hierarchy has a tag, but some other, lower-level
 object has a Collider, the tag will still be readable.
 :::
@@ -354,7 +354,7 @@ The process is usually as follows:
 1. Create/Get some assets with these tiles. Usually the tiles belonging to one
     "theme" are packaged all together in one file. Here's an example:
     
-    ![](./assets/tile-asset-pack.png)
+    ![](../../../assets/tile-asset-pack.png)
 
 2. Add this file (or files) to the project.
 3. Adjust the **Pixels Per Unit** setting so that the size of the inidividual
@@ -364,7 +364,7 @@ The process is usually as follows:
 5. Open the Sprite Editor and split the file so that each tile has its own box.
    Click **Apply** and close the editor.
 
-    ::: tip
+    :::tip
     Usually, the tiles should have the same size.
     :::
 
@@ -379,7 +379,7 @@ At this point, we can start placing the tiles into our Tilemap. When there are
 multiple Tilemaps, make sure that the right one is selected before you start to
 place the tiles.
 
-::: tip Erasing
+:::tip[Erasing]
 There is an Eraser tool in the palette. If we want to erase more than one
 element at a tile, we can draw a bigger rectangle in the palette in some empty
 space. That empty rectangle will be "copied" and we will be able to place it
@@ -393,7 +393,7 @@ levels. It might make sense to create a **Rule Tile**. Rule tile is a
 combination of multiple tiles, where each of them has rules defined regarding
 its placement. Here's an example of a rule:
 
-![](./assets/rule-tile.png)
+![](../../../assets/rule-tile.png)
 
 For the specified tile, there shouldn't be any other tile placed where the red
 "X"s are placed. On the other hand, this kind of tile requires some other tiles
@@ -410,7 +410,7 @@ With the Rule Tile defined, creating the world is greatly simplified, we just
 have to paint a single Rule Tile all over the place, and the proper sprites will
 be painted in its place. Here's an example:
 
-![](./assets/rule-tile-result.png)
+![](../../../assets/rule-tile-result.png)
 
 It seems that a separate Rule Tile should be created for separate "themes" of
 our tiles. For example, the tiles for the forest would be different than the
@@ -466,12 +466,12 @@ Unity has two ways of controlling the game:
   is a panel where we can configure all possible actions in the game and bind it
   to various sources (keyboards, gamepads, etc.). 
   
-  ![](./assets/new-input-system-panel.png)
+  ![](../../../assets/new-input-system-panel.png)
   
   There are many ways to invoke
   our scripts on input - via special methods, events, and others.
 
-::: warning
+:::caution
 You can't use both systems at the same time. When the "new" Input System gets
 installed, the older APIs get disabled.
 :::
@@ -494,7 +494,7 @@ Game objects may be animated. Here's what is needed:
 
 Here's an example of some Animation Controller setup:
 
-![](./assets/animator-setup.png)
+![](../../../assets/animator-setup.png)
 
 There are a few states, the transitions are defined based on the values of the
 parameters.

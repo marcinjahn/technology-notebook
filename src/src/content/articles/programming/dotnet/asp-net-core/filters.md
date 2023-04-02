@@ -26,7 +26,7 @@ Differences:
 Middleware is more general and it's designed to solve concerns that are
 cross-cutting throughout the app.
 
-::: tip
+:::tip
 Use the middleware if the code we want to write is happy with the information
 provided by the `HttpContext` and if the code should apply to all requests.
 :::
@@ -47,7 +47,7 @@ There are 5 types of filters, each one running at a different stage (MVC):
 - **Result** (2-way) - run before and after `IActionResult` is executed, we can
     control that execution within a filter.
 
-::: tip Razor Pages
+:::tip[Razor Pages]
 The difference in Razor Pages is that the **Action Filter** is called
 **Page Filter**. The Page Filters run 3 times:
 
@@ -59,12 +59,12 @@ short-circuit at this point
 
 Filters registered globally will be executed for both MVC and Razor Pages.
 
-::: tip Result
+:::tip[Result]
 If we short-circuit the Action/Page filter, the Result filter will still be
 executed!
 :::
 
-![](./assets/filter-pipeline.png)
+![](../../../assets/filter-pipeline.png)
 
 ## Implementation
 
@@ -77,7 +77,7 @@ For example, the Authorization filter has:
 - `IAuthorizationFilter`
 - `IAsyncAuthorizationFilter`
 
-::: warning
+:::caution
 Only one of the interfaces should get implemented. If we implement both, the
 *async* one will be executed anyway.
 :::
@@ -123,12 +123,12 @@ public class AsyncLogResourceFilter : Attribute, IAsyncResourceFilter
 }
 ```
 
-::: tip Short-circuiting
+:::tip[Short-circuiting]
 To short-circuit a request we need to set the `context.Result` property with
 some `IActionResult`.
 :::
 
-::: tip ControllerBase
+:::tip[ControllerBase]
 The `ControllerBase` class implements `IActionFilter` and `IAsyncActionFilter`.
 If we need an Action filter for a single controller we can just override
 controller's methods of that filter and they will be executed for every action.
@@ -210,12 +210,12 @@ Filters are executed in the following order for a request:
 3. base controller filters
 4. action filters
 
-::: warning Request and Response
+:::caution[Request and Response]
 The list above is reversed when the RESPONSE travels through the pipeline
 (`*Executed` methods).
 :::
 
-::: tip Atributes Order
+:::tip[Atributes Order]
 The order of attributes application on an entity is respected in execution.
 :::
 
@@ -226,7 +226,7 @@ interface, which has just one property - `int Order`. Lower value of `Order`
 moves filter up in the queue. Filters with the same `Order` execute using the
 framework's ordering rules, presented before.
 
-::: tip
+:::tip
 Filters that do not implement `IOrderFilter` are assumer to have `Order = 0`.
 :::
 

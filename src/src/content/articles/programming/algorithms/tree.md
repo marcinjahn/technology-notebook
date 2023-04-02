@@ -50,7 +50,7 @@ unbalanced)
 AVL trees are binary search trees that are self-balancing, keeping the **Balance
 Factor** at maximum 1 at all times.
 
-::: tip Balance Factor
+:::tip[Balance Factor]
 The **Balance Factor** is the difference between the right and left children on
 the root node.
 :::
@@ -84,7 +84,7 @@ Use-cases:
 
 ## B-Tree
 
-![](./assets/b-tree.png)
+![](../../../assets/b-tree.png)
 
 Characteristics:
 
@@ -103,7 +103,7 @@ Characteristics:
 
 An example of a tree that is not B-Tree:
 
-![](./assets/wrong-b-tree.png)
+![](../../../assets/wrong-b-tree.png)
 
 The node "1" does not have enough values (should have at least 2).
 

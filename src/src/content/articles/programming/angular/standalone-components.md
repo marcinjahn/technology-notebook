@@ -7,7 +7,7 @@ lang: en-US
 
 # Standalone Components in Angular
 
-::: warning Preview
+:::caution[Preview]
 Standalone Components, as of version 14 of Angular, are in **PREVIEW**.
 In the future though, they might be the default way of developing
 Angular apps.
@@ -20,7 +20,7 @@ declarations, imports, and so on. We can actually get rid of modules entirely,
 even the `AppModule`! That makes Angular a bit more similar to React or Vue.js,
  which do not use the module system and are much leaner to work with.
 
-::: tip Not Just Components
+:::tip[Not Just Components]
 Standalone Components is not only about components. It's also Standalone ...
 
 - ... Pipes
@@ -82,7 +82,7 @@ First, we need to import the standalone component in our parent component's modu
 export class AppModule {}
 ```
 
-::: tip
+:::tip
 Previously, we'd have to put `MyComponent` in the declarations instead of
 imports (assuming we had just one module in our app).
 :::

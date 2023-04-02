@@ -16,7 +16,7 @@ A queue may be implemented using:
 - **two stacks** - items are added to one stack. When dequeuing, the all items are
   moved to another stack, and then read from it.
 
-::: tip Stack
+:::tip[Stack]
 Similarly, a stack may be implemented with two queues.
 :::
 

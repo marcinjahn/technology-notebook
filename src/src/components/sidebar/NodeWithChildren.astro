@@ -17,7 +17,7 @@ const { item, isTopLevel } = Astro.props;
         <span>{item.title}</span>
         <div class="arrow"><Arrow /></div>
     </div>
-    <ul class="hidden">
+    <ul class="sidebar-list hidden">
         <slot />
     </ul>
 </li>
@@ -82,7 +82,7 @@ const { item, isTopLevel } = Astro.props;
         opacity: 1;
     }
 
-    ul.hidden {
+    .sidebar-list.hidden {
         display: none;
     }
 

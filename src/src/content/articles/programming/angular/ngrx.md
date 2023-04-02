@@ -18,7 +18,7 @@ NgRx is an Angular version of Redux - React's state management framework. It
 makes use of RxJS making the state observable. It makes our components less
 dependent on services, and it makes services simpler and stateless.
 
-::: tip
+:::tip
 NgRx is an overkill for smaller applications.
 :::
 
@@ -147,7 +147,7 @@ export const authReducer = createReducer(
 );
 ```
 
-::: tip Multiple actions
+:::tip[Multiple actions]
 A single reducer may be "assigned" to multiple actions:
 
 ```ts
@@ -155,20 +155,20 @@ on(actionOne, actionTwo, (state) => ({ ...state }))
 ```
 :::
 
-::: tip Invocation
+:::tip[Invocation]
 Reducers are not invoked by our app components directly. Instead, it is handled by
 NgRx when we [dispatch some action](#dispatch) or on init (with action type set
 to *@ngrx/store/init*).
 :::
 
-::: warning State Modifications 
+:::caution[State Modifications ]
 Reducer should always return new object(s). Modifications of existing state are
 forbidden! That's why we use the spread operator. If our state is more complex,
 we need to deal with that properly, since the spread operator only does a
 shallow copy.
 :::
 
-::: warning
+:::caution
 When any action is dispatched in our app, ALL the reducers will get invoked.
 Whether they handle the action though is determined by the `on` functions within
 it.
@@ -235,7 +235,7 @@ export class AppModule { }
 This is the place where we inform the framework of any reducers that we have
 defined. In the end, the reducers build up the store in the app.
 
-::: tip Features
+:::tip[Features]
 We can also register different parts of our state in feature modules.
 
 ```ts
@@ -273,7 +273,7 @@ That dispatch will go through NgRx's internals, which will invoke our reducer.
 Based on the action (`AddProduct`) it will update the store with the new
 `product`.
 
-::: warning 
+:::caution[]
 Whenever we dispatch some action, it's not just the corresponding reducer that
 gets invoked. All the reducers get invoked! Only one of them will have proper
 handler for the supplied action type, other reducers will just execute their
@@ -294,7 +294,7 @@ this.products$ = this.store.select('productsCatalog');
 
 Any `dispatch` that "modifies" the store, would bring data via the subscription.
 
-::: warning Unsibscribe
+:::caution[Unsibscribe]
 Like with any subscription, we need to rememebr to `unsubscribe` on destroy.
 :::
 
@@ -374,7 +374,7 @@ the `createEffect` function needs to be provided with a second argument:
 { dispatch: false }
 ```
 
-::: warning
+:::caution
 Reducer for a given action is ALWAYS executed before effect(s).
 :::
 

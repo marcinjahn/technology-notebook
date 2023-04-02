@@ -44,7 +44,7 @@ The highlighted lines show, in order:
 2. Constructor injection
 3. Using the injected service.
 
-::: tip File Naming
+:::tip[File Naming]
 Just like other kinds of entities in Angular, files containing services
 are usually named following the template of `<name>.service.ts`.
 :::
@@ -87,7 +87,7 @@ that service available in entities declared within that module only. If some
 service is provided both globally and in lazy-loaded module, the lazy-loaded
 module (and its entities) will get its own instance of that service.
 
-::: tip
+:::tip
 We can also decide that some service should be a singleton on this service's
 level via the `@Injectable({provideIn: 'root'})` decorator. Then, we don't have
 to put it in any `providers` array.
@@ -103,7 +103,7 @@ In .NET we decide whether the service should be a singleton or not at the
 aplication root level. In Angular, each class/component may decide whether it
 wants to reuse some service instance or to get a new one.
 
-::: warning Overriding
+:::caution[Overriding]
 An instance of the service being injected (according to the rules above) may be
 overridden by a different instance of that service if we decide to `provide` it
 again.
@@ -135,7 +135,7 @@ export class DataService {
 Angular will try to match all the arguments that are required by the
 constructor with DI. In this case, `Logger` would be injected.
 
-::: warning
+:::caution
 In order for a service to be injectable, it has to be `provided` in some module
 or the decorator should be used like this: `@Injectable(provideIn: 'root')`
 (there are other `provideIn` options as well).
@@ -176,7 +176,7 @@ providers: [
 The factory injection function can be defined in a separate file, often called
 `<service>.service.provider.ts`.
 
-::: tip Default
+:::tip[Default]
 The default `providers: [SomeService]` shorthand can be treated as:
 
 ```ts
@@ -200,7 +200,7 @@ export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 providers: [{ provide: APP_CONFIG, useValue: { a: 'b' } }]
 ```
 
-::: warning Interfaces
+:::caution[Interfaces]
 Even though TypeScript has interfaces, and it would seem that they could be the
 perfect injection tokens, we can't use them, because interfaces disappear during
 the transpilation process.

@@ -45,7 +45,7 @@ We can either design our sites mobile-first or desktop-first. Usually, the
 latter is chosen (although the first option makes more sense nowadays). Then,
 the media queries are created for mobile.
 
-::: tip Mobile-first
+:::tip[Mobile-first]
 The argument for the mobile-first design is that webpages are responsive by
 default (images are an exception). Mobile websites look very similar to what we
 get without layout styling. The elements are usually displayed as blocks, one
@@ -72,7 +72,7 @@ What that means is that probably it doesn't make sense to invest time into
 making the site look great on every possible screen size. Just focus on the
 realistic ones.
 
-::: tip Common tresholds
+:::tip[Common tresholds]
 Often poeple use **600px** as a treshold between mobile and above, and then
 **900px** between tablet and above. Additionally, if needed, **1200px** and
 **1800px** could be good choices for large monitors, if we want to display
@@ -82,7 +82,7 @@ things in special ways on those.
 Here's a nice article with some reasoning:
 [freeCodeCamp](https://www.freecodecamp.org/news/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862/).
 
-::: danger Viewport
+:::danger[Viewport]
 Don't forget to use the viewport `meta` tag, otherwise the media queries will
 not work properly. Without, the website will zoom-out instead of being
 responsive on mobile.

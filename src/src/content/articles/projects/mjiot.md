@@ -35,7 +35,7 @@ data in the system is achieved by the means of IoT Hub service. Users’ data ar
 stored in two database systems: Azure SQL and CosmosDB. The platform’s logic is
 hosted in a serverless architecture, delivered by Azure Functions.
 
-![](./assets/mjiot-architecture.png)
+![](../../../assets/mjiot-architecture.png)
 
 Another crucial part of the thesis is modelling approach. Every “thing” that is
 connected with the platform has a corresponding model, which defines its
@@ -67,15 +67,15 @@ telemetry data in a form of a chart or a list, with corresponding timestamps.
 An essential part of the project was a web application allowing users to manage
 their devices. The app was created in Agular.
 
-![](./assets/mjiot-webapp1.png)
+![](../../../assets/mjiot-webapp1.png)
 
-![](./assets/mjiot-webapp2.png)
+![](../../../assets/mjiot-webapp2.png)
 
-![](./assets/mjiot-webapp3.png)
+![](../../../assets/mjiot-webapp3.png)
 
-![](./assets/mjiot-webapp4.png)
+![](../../../assets/mjiot-webapp4.png)
 
-![](./assets/mjiot-webapp5.png)
+![](../../../assets/mjiot-webapp5.png)
 
 ## Devices
 
@@ -88,15 +88,15 @@ were purely software-based.
 I've purchased a generic heater and modified it by including a controlled relay
 in its electrical circuit.
 
-![](./assets/mjiot-heater.png)
+![](../../../assets/mjiot-heater.png)
 
-![](./assets/mjiot-heater-electric.png)
+![](../../../assets/mjiot-heater-electric.png)
 
 ### Temperature and Humidity sensor
 
 One of my sensors was a simple temperature and humidity sensor that I've connected with a microcontroller.
 
-![](./assets/mjiot-humidity-sensor.png)
+![](../../../assets/mjiot-humidity-sensor.png)
 
 ### Display
 
@@ -104,21 +104,21 @@ A purely software-based device - a display. It could be connected to other
 devices to display their outputs (e.g. when connected to the temperature output
 of the temperature and humidity sensor we could observe the temperature).
 
-![](./assets/mjiot-display.png)
+![](../../../assets/mjiot-display.png)
 
 ### Hysteresis Controller
 
 Another software-based device was a hysteresis controller that allows for an
 automated control of other appliances based on configuration parameters.
 
-![](./assets/mjiot-hysteresis-controller.png)
+![](../../../assets/mjiot-hysteresis-controller.png)
 
 ### Chat App
 
 One of the most interesting "devices" that I designed was the chat application.
 Its input was an incoming message. The output was an outgoing message.
 
-![](./assets/mjiot-chat.png)
+![](../../../assets/mjiot-chat.png)
 
 ## Applications
 
@@ -131,11 +131,11 @@ Connecting a few of my devices together and using the capabilities of MJIoT
 Platform I was able to have a working room temperature control system. This
 system uses some basic automation principles like the feedback loop.
 
-![](./assets/temp-control-loop.png)
+![](../../../assets/temp-control-loop.png)
 
 Here's how I've connected various devices together to get a working system:
 
-![](./assets/mjiot-temp-control-devices.png)
+![](../../../assets/mjiot-temp-control-devices.png)
 
 The Heater was obviously responsible to heat the room. Depending on the input
 from the Hysteresis Control, it was either ON or OFF. In order to change the
@@ -149,12 +149,12 @@ the output of the Temperature Sensor.
 
 All of the connections were configured via the MJ IoT Control Panel as follows:
 
-![](./assets/mjiot-temp-control-connections.png)
+![](../../../assets/mjiot-temp-control-connections.png)
 
 With all that, I achieved typical temperature control characteristics with a
 hysteresis controller:
 
-![](./assets/mjiot-temp-control-graph.png)
+![](../../../assets/mjiot-temp-control-graph.png)
 
 The blue color represents the controller output (commands for the heater to be
 on or off); the yellow color represents the desired temperature; the green color
@@ -167,9 +167,9 @@ A really fun application of MJIoT was to use it as a chat platform. I have
 connected two instances of my Chat app together (output of one goes as
 an input to another) and got a simple chat system.
 
-![](./assets/mjiot-chat-sysem-connections.png)
+![](../../../assets/mjiot-chat-sysem-connections.png)
 
-![](./assets/mjiot-chat-world.png)
+![](../../../assets/mjiot-chat-world.png)
 
 The image shows an example of how I've been testing the solution. The PC on the
 left was in Poland (me), while the one on the right was in Tunisia (my

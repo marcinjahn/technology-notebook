@@ -17,12 +17,12 @@ A VuePress 1.x plugin that adds a global feedback widget to your website.
 
 When enabled, the plugin adds a button in the bottom-right corner of your site:
 
-![](./assets/button-on-page.png)
+![](../../../assets/button-on-page.png)
 
 When clicked, a panel shows up where your users can provide feedback about the
 website:
 
-![](./assets/star-question.png)
+![](../../../assets/star-question.png)
 
 The questions list is configurable. The answers will be sent to the webhook URL
 that you have to provide in the configuration.
@@ -138,7 +138,7 @@ Other than that, the object contains:
 
 This setting controls the text being displayed on the feedback button
 
-![](./assets/press-me.png)
+![](../../../assets/press-me.png)
 
 ### disableOnLocalhost
 
@@ -205,7 +205,7 @@ The following question types are available:
   }
   ```
 
-  ![](./assets/star-question.png)
+  ![](../../../assets/star-question.png)
 
 - `BinaryQuestion`
 
@@ -226,7 +226,7 @@ The following question types are available:
   }
   ```
 
-  ![](./assets/binary-question.png)
+  ![](../../../assets/binary-question.png)
 
 - `OpenQuestion`
 
@@ -247,7 +247,7 @@ The following question types are available:
   }
   ```
 
-  ![](./assets/open-question.png)
+  ![](../../../assets/open-question.png)
 
 ## Contributing
 

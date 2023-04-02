@@ -54,7 +54,7 @@ my-chart
 |  values.schema.json
 ```
 
-::: tip
+:::tip
 Files in `/templates` prefixed with `_`  are not rendered as manifests.
 :::
 
@@ -76,7 +76,7 @@ K8s-ready YAMLs if customization is not needed).
   Helm during templates processing
 - the `_helpers.tpl` file is often used to store user-defined functions/snippets
 
-::: warning requirements.yaml
+:::caution[requirements.yaml]
 The `requirements.yaml` file is supported, but it's not a recommended way of
 adding dependencies. They should be listed in the `Chart.yaml` file nowadays.
 :::
@@ -104,7 +104,7 @@ separate part of the application, with its own set of YAMLs. We can define them
 as separate charts, and then place them inside of the `charts` directory of the
 "umbrella" chart - a chart that brings the sub-components together.
 
-![](./assets/umbrella-chart.png)
+![](../../../assets/umbrella-chart.png)
 
 Each sub-chart may contain its own `values.yaml` file. The umbrella chart's
 `value.yaml` may overwrite the sub-chart's values.
@@ -172,7 +172,7 @@ The placeholders in templates are wrapped in `{{}}`.
 The placeholders in the templates are replaced with values when running Helm CLI
 commands (like `install` or `upgrade`).
 
-::: tip
+:::tip
 Helm's template engine is based on the Go Template engine.
 :::
 
@@ -223,7 +223,7 @@ Values for the templates can be supplied from various sources:
 - Cluster metadata - template starts from `.Capabilities` (e.g.
   `Capabilities.KubeVersion`)
 
-::: tip PascalCase
+:::tip[PascalCase]
 Even though the properties in the files could be in camelCase, in the templates
 we have to refer to them in the PascalCase.
 :::
@@ -234,7 +234,7 @@ In the templates we can refer to these values. Examples:
 - `.Values.service.name`
 - `.Values.service.names[0].displayName`
 
-::: tip Globals
+:::tip[Globals]
 If we define some data within the `global` key of `values.yaml`, the data will
 be available in any sub-chart under `.Values.global`.
 :::
@@ -260,13 +260,13 @@ spec:
   {{ end }}
 ```
 
-::: warning New Lines
+:::caution[New Lines]
 The "with" and `end` cause the resulting manifests to have
 additional newlines added in their place, which might be an issue. It can be
 solved with `-`, which removes new lines.
 :::
 
-::: warning
+:::caution
 Inside of the "with" scope, we cannot refer to anything outside of that scope.
 We have to use [Variables](#variables).
 :::
@@ -373,7 +373,7 @@ ingress:
       paths: []
 ```
 
-::: warning
+:::caution
 Inside of the loop, we cannot refer to anything outside of the range's scope.
 We have to use [Variables](#variables).
 :::
@@ -396,7 +396,7 @@ spec:
   {{ end }}
 ```
 
-::: tip
+:::tip
 Variables may also point to some scope of the source and we can
 traverse that scope when using the variable.
 
@@ -415,7 +415,7 @@ snippets that we want to reuse (like some conditionals, loops, or just manifest
 parts). The contents should be wrapped in the `define` function which allows us
 to name the function.
 
-::: tip
+:::tip
 Global Names The names of named templates are global. It's a good practice to
 prefix the name with chart's name. This way we can skip potential conflicts in
 sub-charts.
@@ -425,7 +425,7 @@ To use these named templates we need to `include` them in other templates. We
 could also use Go's `template` instead to include it, but it is not as
 functional (we can't pipe the output to another function).
 
-::: tip Libraries
+:::tip[Libraries]
 A chart of type "library" would contain functions only, without any templates.
 :::
 
@@ -443,7 +443,7 @@ The `helm dependency update {chart-name}` fetches latest versions of
 dependencies matching ranges defined in the `Chart.yaml`. Helm downloads
 dependencies as `tgz` archives and places them in the `/charts` directory.
 
-::: tip Chart.lock
+:::tip[Chart.lock]
 Similarly as in npm, Helm has the `Chart.lock` file, which lists the exact
 versions of dependencies that have been pulled. Running `helm dependency build
 {chart-name}` downloads dependencies as defined in that file.
@@ -468,7 +468,7 @@ Another way is to tag dependencies with `tag` and set that tag to `true/false`
 in the `values.yaml`. It's useful if multiple dependencies shoud be
 enabled/disabled at once.
 
-::: tip Priority
+:::tip[Priority]
 Condition overwrite tags
 :::
 
@@ -485,7 +485,7 @@ Repos can be added with `helm repo add repo-name repo-url`.
 A repository is just an HTTP server containing the charts and the `index.yaml`
 file describing charts.
 
-::: tip Chartmuseum
+:::tip[Chartmuseum]
 There's an HTTP server implementation dedicated for hosting Helm chart
 repositories - [Chartmuseum](https://chartmuseum.com/)
 :::
@@ -501,7 +501,7 @@ archive being created.
 Helm stores details of releases in the K8s cluster itself - as secrets. They are
 stored in the same namespace as the application/release.
 
-::: tip Helm 2
+:::tip[Helm 2]
 In Helm 2, there was also a server-side component running on the cluster - Tiller.
 Helm CLI would communicate with Tiller.
 

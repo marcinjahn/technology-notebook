@@ -13,14 +13,14 @@ Generics may be used in:
 - enums
 - methods
 
-::: tip Monomorphization
+:::tip[Monomorphization]
 Generics are not slower than non-generic code. Rust generates concrete types for
 the generics during compilation. It looks at all the usages of generics in our
 code and creates types for all the ways that we use them. It's called
 **monomorphization**. E.g. `Option<i32>` becomes `Option_i32`.
 :::
 
-::: danger Limitation of generics
+:::danger[Limitation of generics]
 An instance of a generic type `T` with some trait bounds may only be used with
 one type in place of `T`. For example, a `Vec<T: SomeTrait>` is not able to
 store multiple different types that implement `SomeTrait`. All of the values it
@@ -48,7 +48,7 @@ fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
 
 The function `largest` is generic over some type `T`.
 
-::: tip Traits
+:::tip[Traits]
 The function `largest` works only with types `T` that implement the `PartialOrd`
 [trait](./traits.md) (it provides comparing functionality (`>` operator)) and
 the `Copy` trait (to support only the types stored on the stack?).
@@ -117,7 +117,7 @@ impl Point<f32> {
 }
 ```
 
-::: tip
+:::tip
 In the code above, there is no type after `impl`, since this method is
 not generic! Only `Point<f32>` instances will have this method.
 :::

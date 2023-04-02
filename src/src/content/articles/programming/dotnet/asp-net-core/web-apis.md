@@ -9,7 +9,7 @@ lang: en-US
 
 Web APIs use the MVC framework of ASP.NET Core.
 
-::: tip APS.NET
+:::tip[APS.NET]
 Before the Core, ASP.NET's MVC and Web APIs stacks were separate.
 :::
 
@@ -62,7 +62,7 @@ different kinds of `IActionResult`.
 The `ApiController` attribute applies some useful conventions to the controller
 (e.g. the usage of **ProblemDetails**).
 
-::: tip Controller
+:::tip[Controller]
 There is also a `Controller` base class, but it's more useful for MVC
 controllers that return Razor views (btw, [Razor Pages](./razor-pages.md) are a
 better alternative).
@@ -90,7 +90,7 @@ controller and the actions. In such a case, the action's URL is a combination of
 these two. We can sign out of that by prefixing action's `Route` with a `/`.
 Then, the action's `Route` is the URL.
 
-::: tip Token Replacement
+:::tip[Token Replacement]
 We can also include tokens `[controller]` and `[action]` in the routing
 templates to include the name of controller/action in the URL.
 :::
@@ -105,7 +105,7 @@ Oura actions may also be marked with HTTP method to be used. We do that with att
 - `HttpDelete`
 - etc.
 
-::: tip
+:::tip
 These attributes can be used instead of `Route` since they also accept the route
 template.
 :::
@@ -121,7 +121,7 @@ The following features are introduced with the `ApiController` attribute:
 - The error status code are automatically converte to the *ProblemDetails*
   convention.
 
-::: warning ProblemDetails
+:::caution[ProblemDetails]
 ProblemDetails payloads will be returned only if the request exection actually
 goes into some controller's action. If an error is found earlier (or exception
 is thrown in the action), the HTTP response will not follow the ProblemDetails
@@ -145,7 +145,7 @@ adding additional providers. For example, to add `text/xml` support:
 builder.Services.AddControllers().AddXmlSerializerFormatters();
 ```
 
-::: tip
+:::tip
 The same way, we can also add input providers to support different kinds of
 formats in requests.
 :::

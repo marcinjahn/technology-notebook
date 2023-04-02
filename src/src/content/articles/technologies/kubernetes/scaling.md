@@ -19,7 +19,7 @@ The pods managed by the ReplicaSet are selected using an immutable label
 which defines the pod(s) that will be created under ReplicaSet. Such a pod has
 to conform to the *selector* specified by the ReplicaSet. 
 
-::: tip Existing Pods
+:::tip[Existing Pods]
 If some pods matching the selector already existed prior to the creation of the
 ReplicaSet, they're counted as part of the ReplicaSet.
 
@@ -30,7 +30,7 @@ controller will delete some pods to reach the *replicas* count.
 Pod names are generated based on the ReplicaSet's name, but it can be changed
 with the `generateName` setting.
 
-::: tip ReplicationController
+:::tip[ReplicationController]
 In the past, ReplicationController was used instead of ReplicaSet. It behaved
 the same as ReplicaSet does. It is now deprecated.
 :::
@@ -79,7 +79,7 @@ flowchart LR
     B --> |manages| D[Pod]
 ```
 
-::: tip ReplicaSet Updates
+:::tip[ReplicaSet Updates]
 If we try to edit ReplicaSet managed by a Deployment, our updates will be
 replaced with Deployment's config soon after. ReplicaSet is controlled by the
 Deployment and we should modify its settings throught the Deployment.
@@ -88,13 +88,13 @@ Deployment and we should modify its settings throught the Deployment.
 In addition to settings available to ReplicaSets, Deployments also contain the
 `strategy` configuration. It dictates how Pods are replaced during updates.
 
-::: tip Existing Pods
+:::tip[Existing Pods]
 If some pods already exist that match the Deployment's selector, most likely
 they will not be reused in the Deployment's replicas. The ReplicaSet managed by
 the Deployment adds additional (based on `template` hash) label selector to
 the pods it manages.
 
-![](./assets/deployment-replicaset-selector.png)
+![](../../../assets/deployment-replicaset-selector.png)
 :::
 
 ### Updates
@@ -121,7 +121,7 @@ There are two update strategies supported by the Deployment:
       may be unavailable during the update.It's an absolute number or
       percentage. The default is **25%**.
     
-    ::: warning
+    :::caution
     We can't set both **maxSurge** and **maxUnavailable** to 0.
     :::
 
@@ -152,7 +152,7 @@ k rollout undo deployment my-deployment
 
 If the deployment is paused, rollback will also be paused.
 
-::: warning Only template
+:::caution[Only template]
 Rollback reverts only changes made to the `template` section of the Deployment.
 All other changes, such as `strategy` or `replicas` are preserved.
 
@@ -174,7 +174,7 @@ k rollout history deploy my-deployment --revision 2
 k rollout undo deploy my-deployment --to-revision=2
 ```
 
-::: tip ReplicaSet
+:::tip[ReplicaSet]
 The history of deployments is persisted thanks to the fact that ReplicaSets of
 the Deployment are preserved after updates. The amount of old ReplicaSets to
 keep is configable with the `spec.revisionHistoryLimit` setting of the
@@ -283,7 +283,7 @@ any traffic at these. All the traffic still hits the old deployment (Blue). When
 we're ready, we'd change the `selector` of the Service to match the label
 configured in the Green deployment. Then, we delete the Blue deployment.
 
-::: tip
+:::tip
 We could use label values "green" and "blue" and switch from one to another in
 consecutive updates. So, first we'd start with "blue" and swith to "green". With
 some next update we'd switch from "green" to "blue". And so on.

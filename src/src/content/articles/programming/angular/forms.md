@@ -54,7 +54,7 @@ This is the easiest approach. It requires the `AppModule` to import
     </form>
     ```
 
-    ::: tip ([ngModel])
+    :::tip[([ngModel])]
     We could use `([ngModel])` instead of `ngModel` to additionally get two-way
     data binding to some variable on our component.
     :::
@@ -84,7 +84,7 @@ of the simple form above, `value` would look someting like this:
 Among the other included properties are: `touched`, `dirty`, `valid`,
 `controls` (holds references to controls of the form).
 
-::: tip @ViewChild
+:::tip[@ViewChild]
 We could also access the form via `@ViewChild('f')`. It would be of type
 `NgForm` containing the same properties as mentioned before.
 
@@ -121,7 +121,7 @@ Angular adds various classes to inputs in specific states. Examples:
 We can make use of these classes to apply styling to various states of
 our form.
 
-::: warning form
+:::caution[form]
 The overall `<form>` tag also has these classes applied. We could get around
 that by specifying `input` explicitly:
 
@@ -205,7 +205,7 @@ Similarly, we can also mark input groups with `ngModelGroup`:
 </div>
 ```
 
-::: tip Form Context
+:::tip[Form Context]
 When we apply just `#something` to some HTML tag, we can get access to the
 tagged element from the outside (either HTML or TS with `@ViewChild`). However,
 this access is not in the context of the form. The syntax of
@@ -236,7 +236,7 @@ export class MyComponent implements OnInit {
 }
 ```
 
-::: tip FormControl is a generic
+:::tip[FormControl is a generic]
 The `FormControl` is actually a generic class. It will often infer the type, but
 we could also specify it by ourselves. There is also an `UntypedFormControl`, which
 is basically `FormControl<any>`. We should try to have all our controls typed,
@@ -244,7 +244,7 @@ that way when accessing the `value` of a control, a proper TypeScript validation
 can occur. 
 :::
 
-::: tip
+:::tip
 The object passed to `FormGroup`'s constructor has keys wrapped in quotation
 marks to protect us from minification that would potentially change these names.
 Since we reference these names from the HTML code, we don't want the names to
@@ -341,7 +341,7 @@ this.myForm = new FormGroup({
 });
 ```
 
-::: warning this
+:::caution[this]
 If we plan to access any member of the component in the validator with `this`,
 we need to bind the validator to the component's instance:
 
@@ -356,7 +356,7 @@ individual errors. In our custom validator, the key would be called
 "hobbyIsInvalid", becuase that's the property that we set in the object we
 return. The default validators define their own keys. For example, the `required` validator just outputs `{ required: true }` in its logic and that's the property that would appear in the `errors` object.
 
-::: tip
+:::tip
 The `errors` property on the root `FormGroup` does not aggregate all of the
 errors. They need to be checked on the individual controls.
 :::
@@ -389,7 +389,7 @@ this.myForm = new FormGroup({
 });
 ```
 
-::: tip Pending
+:::tip[Pending]
 While the asynchronous validator is being executed, the control that the
 validation is done upon is assigned the `ng-pending` class. This way we can
 style the control to indicate that something is happening in the background.
@@ -445,7 +445,7 @@ Resetting all inputs:
 this.myForm.reset();
 ```
 
-::: tip Template-driven
+:::tip[Template-driven]
 In the template-driven approach, the same methods were available.
 :::
 

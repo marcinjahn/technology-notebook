@@ -51,7 +51,7 @@ Now, whenever we call the Resource Server, we have to include in the request:
 - access token
 - a new DPoP proof (different than the one sent to the Authorization Server)
 
-::: tip DPoP proof contents
+:::tip[DPoP proof contents]
 Other than the public key, DPoP also contains the resource being accesses. When
 attaching the proof to the call to the Authorization Server, the resource would
 be the Authorization Server itself.
@@ -69,7 +69,7 @@ There are also some other information.
 The Resource Server can check whether the `cnf` claim is the public key that
 matches the private key that was used to sign the DPoP proof.
 
-::: tip Replay
+:::tip[Replay]
 DPoP does not protect against the "replay attack". If an attacker gets a hold of
 Access Token and DPoP proof, they can use these to send requests until the
 access token is valid. However, compared to the past, with DPoP the attacker is

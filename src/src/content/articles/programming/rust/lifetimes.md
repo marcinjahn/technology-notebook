@@ -10,7 +10,7 @@ References have their lifetimes, which define a scope for when a reference is
 valid. Lifetimes can be implicitly infered but sometimes we need to specify them
 explicitly. The main aim of lifetimes is to **prevent dangling references**.
 
-::: tip
+:::tip
 Validity of lifetimes is checked during compilation by the **borrow checker**.
 :::
 
@@ -64,7 +64,7 @@ references to each other without affecting the lifetimes.
 &'a mut i32 // a mutable reference with an explicit lifetime
 ```
 
-::: tip
+:::tip
 `'a` is a common naming convention for lifetimes. It could be some word too.
 :::
 
@@ -89,7 +89,7 @@ fn longest(x: &str, y: &str) -> &str {
 The compiler needs to know how the returned reference is related to the parameters
 of the function.
 
-::: tip
+:::tip
 When returning a reference from a function, it has to be one of the references
 passed as arguments of the function. Otherwise, the reference would have to be
 created from some local function's variable. The returned value would be a
@@ -110,7 +110,7 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
 }
 ```
 
-::: tip Generics
+:::tip[Generics]
 Lifetimes are defined similarly to generic types.
 :::
 
@@ -123,7 +123,7 @@ author of that function, change this implementation one day to always return
 code of clients of this function. That's why Rust requires us to specify the
 lifetime information explicitly.
 
-::: tip
+:::tip
 When returning a reference from a function, the lifetime parameter for the
 return type needs to match the lifetime parameter for one of the parameters.
 :::
@@ -143,7 +143,7 @@ Because we’ve annotated the returned reference with the same lifetime paramete
 `'a`, the returned reference will also be valid for the length of the smaller of
 the lifetimes of `x` and `y`.
 
-::: tip
+:::tip
 When we specify the lifetime parameters in the function signature, **we’re not
 changing the lifetimes** of any values passed in or returned. Rather, we’re
 specifying that the borrow checker should reject any values that don’t adhere to
@@ -229,7 +229,7 @@ of the object (`&self`).
 There is a special lifetime - `'static` - which marks a value pointed by a
 reference to be "alive" during the entire execution of the program.
 
-::: tip String Literals
+:::tip[String Literals]
 All string literals have `'static` lifetime. We can annotate them explicitly:
 
 ```rust

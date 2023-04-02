@@ -8,11 +8,11 @@ lang: en-US
 
 Rust has built-in capabilities to write tests.
 
-::: tip
+:::tip
 Library projects have test module added by default.
 :::
 
-::: tip Documentation code
+:::tip[Documentation code]
 Rust can also test code that is a part of our API documentation.
 These tests are run as part of `cargo test`.
 :::
@@ -34,11 +34,11 @@ mod tests {
 A function fails when it panics. Otherwise, it passes.
 Each test is run in a new thread.
 
-::: tip Result alternative
+:::tip[Result alternative]
 Test functions might also return `Result<T, E>` instead of panic!ing.
 :::
 
-::: tip Private methods
+:::tip[Private methods]
 Rust allows to run tests on private methods
 :::
 
@@ -58,7 +58,7 @@ Some useful testing macros:
 - `#[ignore]` - test will not run. We can still force `cargo` to run it using
   `cargo test -- --ignored`. It'll run only the ignored tests.
 
-::: tip Failure Message
+:::tip[Failure Message]
 These macros optionally accept a failure message that will be displayed in case
 of failure. The message will be parsed by the `foramt!` macro, so it can contain
 variables. Such a message might inform what the test was actually testing in more
@@ -89,14 +89,14 @@ Integration tests should be separate from the tested code. There should be a
 `tests` directory next to `src`. Each file in that directory will become a separate
 crate.
 
-::: tip
+:::tip
 We don't need to annotate integration tests with `#[cfg(test)]`. Cargo knows that
 files in the `tests` directory are tests.
 :::
 
 These tests will be run with `cargo test`.
 
-::: tip Helper Functions
+:::tip[Helper Functions]
 Integration tests can use some helper functions defined in a separate file. Such
 fuctions should be placed under `tests/{some_subdirectory}` directory. Then,
 `cargo test` will not treat these files as tests and will not try to run them as

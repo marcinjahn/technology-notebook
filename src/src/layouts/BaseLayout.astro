@@ -3,6 +3,7 @@ import "../styles/reset.css";
 import "../styles/global.css";
 import Navbar from "../components/navbar/Navbar.astro";
 import Panel from "../components/hamburger/Panel.astro";
+import Footer from "../components/Footer.astro";
 
 export interface Props {
     pageTitle: string;
@@ -21,18 +22,35 @@ const { pageTitle } = Astro.props;
         <title>{pageTitle}</title>
     </head>
     <body>
-        <Navbar />
-        <aside>
-            <Panel >
-                <slot name="hamburger-panel-content"/>
-            </Panel>
-        </aside>
+        <div class="non-footer">
+            <Navbar />
+            <aside>
+                <Panel>
+                    <slot name="hamburger-panel-content" />
+                </Panel>
+            </aside>
 
-        <slot />
+            <div class="slot">
+                <slot />
+            </div>
+        </div>
+
+        <Footer />
     </body>
 </html>
 
 <style>
+
+    .non-footer {
+        min-height: calc(100% - 5.5rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slot {
+        flex: 1;
+    }
+
     aside {
         display: none;
     }

@@ -10,7 +10,7 @@ lang: en-US
 It's a framework for building multiple-pages based websites generated on the
 server-side.
 
-::: tip Origin
+:::tip[Origin]
 Razor Pages model was introduced in ASP.NET Core 2.0
 :::
 
@@ -77,7 +77,7 @@ The following components take up roles in the MVC paradigm:
   with the *Model* and invokes the *View* (or returns redirect/error)
 
 
-::: warning ASP.NET Core MVC
+:::caution[ASP.NET Core MVC]
 **MVC** is a generic pattern used in many languages/frameworks. **ASP.NET Core
 MVC** is an example of an implementation of the MVC pattern that uses actions
 and controllers.
@@ -122,7 +122,7 @@ are:
 
 Both approaches are pretty similar. Razor Pages should be the preference though.
 
-::: tip Mix
+:::tip[Mix]
 Razor Pages and MVC approaches can be used together in one application.
 :::
 
@@ -134,7 +134,7 @@ behind" file, similar to WPF.
 
 The model to use for a Page is specified with the `@model` directive.
 
-::: tip Controller
+:::tip[Controller]
 `PageModel` name is unfortunate. It's a *Controller* in the MVC paradigm.
 :::
 
@@ -178,7 +178,7 @@ public class PrivacyModel : PageModel //base class
 }
 ```
 
-::: warning Overloading
+:::caution[Overloading]
 A `PageModel` cannot have multiple methods with the same names (like `OnGet`).
 :::
 
@@ -186,7 +186,7 @@ The properties of the model are accessible to the `.cshtml` view making it
 possible to render dynamic data from the model. That data, exposed by the
 `PageModel` may be called a *View Model*.
 
-::: warning
+:::caution
 Views shouldn't call methods on the `PageModel`.
 :::
 
@@ -210,12 +210,12 @@ public string Id { get; set; }
 
 We can also use it on the method parameters.
 
-::: tip JSON
+:::tip[JSON]
 To bind the JSON data from body, we have to use `FromBody`. Without it, data
 will not be bound!
 :::
 
-::: tip ModelBinder
+:::tip[ModelBinder]
 The `ModelBinderAttribute` may be used to have a total control over binding. In
 example, we can change the name of value to be looked for in the request
 compared to the name in our code.
@@ -265,7 +265,7 @@ Method name template: `On{verb}{handler}[Async]`.
 
 The `handler` should be included in the URL template for our Page.
 
-::: tip Uncovered Cases
+:::tip[Uncovered Cases]
 If a request comes in that doesn't match any method on `PageModel`, the view is
 generated, but no logic is invoked on the `PageModel`.
 
@@ -323,7 +323,7 @@ C#-y.
 The HTML elements that have tag helpers attached to them are modified by the
 framework. No other element can be modified.
 
-::: tip NuGet
+:::tip[NuGet]
 Tag Helpers are included as part of the framework. Additionally, we can get more
 of them from NuGet, or even create our own.
 :::
@@ -407,7 +407,7 @@ For example, layouts could define:
 - a general page structure - navbar, sidebar, footer, and a place to put content
 - multiple-column layout with separate sections to put content in these columns
 
-::: tip "_" Prefix
+:::tip["_" Prefix]
 Bot the Layouts and the Partial Views file names should be prefixed with `_`.
 :::
 
@@ -417,7 +417,7 @@ The base layout should be named `_Layout.cshtml`. This layout is selected for
 every Page by default. A different layout may be selected by setting the
 `Layout` property in a view (e.g. `Layout = "_MyLayout"`).
 
-::: tip Nesting
+:::tip[Nesting]
 Layouts can reference other layouts.
 :::
 
@@ -437,7 +437,7 @@ associated with them.
 <partial name="_MyPartial" model="someData">
 ```
 
-::: tip Tag Helper
+:::tip[Tag Helper]
 `<partial>` is a tag helper.
 :::
 
@@ -459,7 +459,7 @@ The `_ViewStart.cshtml` allows us to run some common code BEFORE the view itself
 executes. It's often used to set the `Layout`. This way we don't have to do it
 repeatedly in every page.
 
-::: warning _ViewStart
+:::caution[_ViewStart]
 Partial Views and Layouts do not run the `_ViewStart.cshtml` when they execute.
 :::
 

@@ -20,7 +20,7 @@ that the key has an accompanying certificate signed by the trusted CA. This
 certificate is stored in the TPM's NVDATA. It can be read and verified any time.
 The NV indices for the certs are reserved.
 
-![](./assets/certified-key.png)
+![](../../../assets/certified-key.png)
 
 If EK is trusted, all keys under it can be trusted as well (chain of trust).
 
@@ -103,7 +103,7 @@ and `TPMA_OBJECT_FIXEDPARENT` in the `objectAttributes` field in their
 templates. At this point we have two trusted keys we can use: one for storage
 (protecting other TPM keys) (SRK?) and one for signing TPM statements (AIK).
 
-::: tip
+:::tip
 A common practice is to set the owner hierarchy's auth value to a random string
 during provisioning. It protects keys on this hierarchy against unwanted use.
 :::
@@ -114,7 +114,7 @@ It's a standardized technology supported by modern firmware. Before executing an
 element in the boot sequence, it's measured to make sure that it is the expected
 executable. If the result is unexpected, it's not executed.
 
-![](./assets/pcr-measured-boot.png)
+![](../../../assets/pcr-measured-boot.png)
 
 Each element is measured by its predecessor in the sequence.
 Each measurement is stored in a different PCR.

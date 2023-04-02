@@ -44,7 +44,7 @@ or
 char c[] = "HELLO"; // array will have a size of 6 implicitly
 ```
 
-::: tip
+:::tip
 `string.h` contains some string helper functions (like `strlen`, which uses the
 NULL character to find the end of a string).
 :::

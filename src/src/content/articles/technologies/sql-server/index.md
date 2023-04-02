@@ -20,7 +20,7 @@ docker run --cap-add SYS_PTRACE -e 'ACCEPT_EULA=1' -e 'MSSQL_SA_PASSWORD=Qwerty1
 It's the SQL Server Edge - at this moment it's the only SQL Server variant
 compiled for ARM64.
 
-::: tip Password
+:::tip[Password]
 Password needs to be min 8 chars long, 1 capital letter, 1 digit, 1 symbol.
 :::
 
@@ -38,7 +38,7 @@ Password needs to be min 8 chars long, 1 capital letter, 1 digit, 1 symbol.
 Every object in the database has its fully qualified name in the format:
 `{Instace}.{Database}.{Schema}.{Object}`.
 
-::: tip Instance
+:::tip[Instance]
 The `{Instance}` part comes from the fact that a single OS can host multiple
 instances of SQL Server.
 :::
@@ -76,7 +76,7 @@ There also other Normal Forms.
 
 Constraints specify additional rules for the columns in our tables.
 
-::: warning Overwriting
+:::caution[Overwriting]
 We can't just overwrite existing constraint. First, we need to remove existing
 constraint, and then we can create a new one.
 :::
@@ -116,7 +116,7 @@ The INSERT statement conflicted with the FOREIGN KEY constraint
 database "BobsShoes", table "Orders.Orders", column 'OrderID'.
 ```
 
-::: tip Index
+:::tip[Index]
 There is no automatic backing index created for foreign keys. It is recommended
 to create it though.
 :::
@@ -137,7 +137,7 @@ CREATE TABLE Orders.OrderItems(
 )
 ```
 
-::: tip SET NULL
+:::tip[SET NULL]
 We could also use the `SET NULL` option instead of `CASCADE`. That would set the
 value of a foreign key to NULL, instead of deleting the whole row.
 :::
@@ -147,7 +147,7 @@ value of a foreign key to NULL, instead of deleting the whole row.
 This constraint allows to define declarative various conditions on the
 table-level or on the column-level. The conditions are boolean expressions.
 
-::: tip SELECT
+:::tip[SELECT]
 Conditions cannot contain `SELECT`. However, we can call a function that
 executes `SELECT`.
 :::
@@ -159,7 +159,7 @@ Examples:
   values
 - `CHECK (Currency IN ('PLN', 'EUR'))`
 
-::: tip Namig
+:::tip[Namig]
 It's quite useful to provide custom names for the `CHECK` constraints. In case
 if some condition is not satisfied, the error message will contain the name of
 the constraint. System-generated names are not very informative.
@@ -215,7 +215,7 @@ flowchart TD
   c --- k[D, 39.63\nD, 75.66\nD, 87.90\nD, 111.43\nD, 145.44]
 ```
 
-::: tip Pages
+:::tip[Pages]
 Data is stored in pages. A single page is 8kb in size and contains multiple
 rows.
 :::
@@ -225,12 +225,12 @@ rows.
 The data (rows) in the table is sorted using the index column. It's the default
 backing index for Primary Keys. There is no separate storage of index.
 
-::: warning
+:::caution
 There can be max one clustered index in a table, because there can be only one
 way of sorting the data.
 :::
 
-::: tip Heap
+:::tip[Heap]
 A table without clustered index is a **heap** (why?)
 :::
 
@@ -253,7 +253,7 @@ When querying data, first DB checks the index, and then it goes to retrieve the
 data at the specified address. Clustered Index uses the data directly, so it's
 faster.
 
-::: tip Clustered Index Comparison
+:::tip[Clustered Index Comparison]
 Opposed to clustered index, there can be many non-clustered indexes per table
 (max 999).
 
@@ -310,7 +310,7 @@ order of the columns is: "TransactionType", "Amount". If we used a reversed
 order, *Query II* would still work fine, however, *Query I* would need to scan
 all the rows.
 
-::: tip Ideal Design
+:::tip[Ideal Design]
 Ideally, we want to have as few indexes as possible supporting as many queries
 as possible.
 :::
@@ -321,14 +321,14 @@ For queries that include inequality predicates, the following applies:
   index
 - multiple inquality columns are hard to index well
 
-::: tip Merge Join
+:::tip[Merge Join]
 If we have multiple single-columns indexes, DB can use them both for a single
 query (if it involves multiple columns) and merge-join the results.
 
 It's still better to use an index that includes multiple columns.
 :::
 
-::: tip AND vs OR
+:::tip[AND vs OR]
 The AND queries can often be satisfied with a single index on multiple columns.
 The OR queries run optimally when there are multiple indexes, for each of the
 queried columns.

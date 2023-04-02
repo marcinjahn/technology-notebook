@@ -90,7 +90,7 @@ Angular transforms the `*ngIf` into something like this:
 This is the "raw" version of `ngIf`. It would actually work if we placed it in
 an app.
 
-::: tip Star
+:::tip[Star]
 The star prefixing `ngIf` is an information that this directive is *structural*.
 The star turns the element that the directive is applied to into a child of
 `<ng-template>`.
@@ -164,7 +164,7 @@ Usage:
 
 The background of the paragraph will be blue.
 
-::: warning Registration
+:::caution[Registration]
 Our directive has to be registered in a module, just like any component that we
 create. Similarly to components, we place the directives in the `declarations`
 array.
@@ -184,7 +184,7 @@ A few highlights:
 - we can do something with our element. `ngOnInit` lifecycle hook is a good
   place to do it.
 
-::: tip Angular CLI
+:::tip[Angular CLI]
 We can generate directives quickly with `ng g d <name>`.
 :::
 
@@ -240,7 +240,7 @@ Another example shows how we can toggle a class on some element:
 
 Setting `isOpen` to `true` adds the class `open` to the element.
 
-::: tip Renderer2
+:::tip[Renderer2]
 There's nothing wrong with using [Renderer2](./tips.md#renderer2). It's just
 another convenient way to access the DOM.
 :::
@@ -319,14 +319,14 @@ Angular allows us to use the shorthand of including the `appMyDirective` in
 square brackets to communicate to the framework both of the meanings listed
 above.
 
-::: tip Other Inputs
+:::tip[Other Inputs]
 We can use the technique described above together with other inputs that have
 their own individual names.
 :::
 
 ---
 
-::: tip @Output
+:::tip[@Output]
 Other than `@Input`s, directives can also have `@Output`s. That makes them even
 more similar to [Components](./components.md).
 :::

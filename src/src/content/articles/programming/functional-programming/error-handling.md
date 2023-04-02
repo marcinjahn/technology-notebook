@@ -22,7 +22,7 @@ information on why `None` was returned.
 - `Left<L>` - failure
 - `Right<R>` - success
 
-::: tip Where
+:::tip[Where]
 Among the typical FP functions (`Map`, `Bind`, `Where`, etc.), the `Where`
 function is not applicable to `Either`. That's because `Where` only accepts a
 predicate that returns a boolean. It is unable to create a proper `Left<L>`. A
@@ -62,7 +62,7 @@ Right(person)
     );
 ```
 
-::: tip Left track
+:::tip[Left track]
 Once any of the functions returns `Left<T>` there is no way back to the "right"
 track.
 :::
@@ -79,7 +79,7 @@ record UserDoesntExist()
     : Error("The provided username does not exist");
 ```
 
-::: tip
+:::tip
 Custom error types help to establish a domain, they give a good overview of
 possible errors.
 :::

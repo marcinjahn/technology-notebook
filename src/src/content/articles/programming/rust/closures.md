@@ -36,12 +36,12 @@ let closure = |num: i32| -> i32 {
 };
 ```
 
-::: tip
+:::tip
 Unannotated closures have to be called for the program to compile. The compiler
 cannot infer the types without seeing how a closure is used
 :::
 
-::: danger
+:::danger
 An unannotated closure cannot be used with different types, such a program will
 not compile.
 
@@ -118,7 +118,7 @@ Functions cannot do that. Captures can be done in three ways, depending on the
 - `FnMut` - it mutably borrows external values. Sutrait of `FnOnce`.
 - `Fn` - it immutably borrows external values. Sutrait of `FnOnce`.
 
-::: tip Closure traits
+:::tip[Closure traits]
 - Closure can implement one, two, or all of these traits.
 - By default, all closures implement `FnOnce`.
 - We can force closure to take ownership by using the `move` keyword in front of

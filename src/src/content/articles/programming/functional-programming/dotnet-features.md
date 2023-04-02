@@ -14,7 +14,7 @@ C# is a multi-paradigm language. It allows writing code in a functional style.
 Records allow easily to define immutable structures, which is something
 very important in pure functional languages.
 
-::: tip Records
+:::tip[Records]
 More on records [here](/programming/dotnet/records.md)
 :::
 
@@ -34,7 +34,7 @@ There are two ways to create a function within another function:
 
 Both these ways result in separate classes being created by the compiler.
 
-::: tip Performance
+:::tip[Performance]
 Local functions might mitigate some performance hit if they're not using any data
 from the scope where they're defined, with the `static` keyword.
 
@@ -82,7 +82,7 @@ address switch
 }
 ```
 
-::: tip
+:::tip
 Property mathching might be useful if the `address` container more properties:
 
 ```csharp

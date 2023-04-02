@@ -18,7 +18,7 @@ Alpha Img is a simple search engine that returns ONLY images that are
 transparent. It also allows you to quickly save/copy/preview the image with a
 single click.
 
-![](./assets/alpha-img-spa.png)
+![](../../../assets/alpha-img-spa.png)
 
 The solution consists of (the code is available on GitHub):
 
@@ -32,12 +32,12 @@ solutions.
 
 The web-api backend uses Google Search API to retrieve the results.
 
-::: tip Cold Run
+:::tip[Cold Run]
 Heroku apps are not running all the time, but rather on demand. You can expect
 some seconds of delay for your first request.
 :::
 
-::: warning Styling
+:::caution[Styling]
 The app is in a rather raw state in regards to its styling. I plan to improve
 that if I find some time for it.
 :::

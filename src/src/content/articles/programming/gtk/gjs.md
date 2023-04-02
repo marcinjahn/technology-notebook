@@ -35,7 +35,7 @@ To build GJS apps we need:
 - Flatpak Builder - `flatpak install org.flatpak.Builder`
 - Gnome Builder IDE - `flatpak install flathub org.gnome.Builder`
 
-::: tip App ID
+:::tip[App ID]
 Flatpak and Gnome Platform both make use of reverse DNS naming
 system. More on that
 [here](https://developer.gnome.org/documentation/tutorials/application-id.html).
@@ -427,7 +427,7 @@ widget.emit('user-added');
 widget.disconnect(handlerId);
 ```
 
-::: tip Advanced Options 
+:::tip[Advanced Options ]
 There's a bunch of configuration that can be applied to signals, all of it is
 described in the [GJS
 Guide](https://gjs.guide/guides/gobject/subclassing.html#signals).
@@ -489,13 +489,13 @@ any widget, or in the UI file, with a button:
 </object>
 ```
 
-::: tip Actionable interface
+:::tip[Actionable interface]
 The `GtkButton` can invoke actions directly, because it implements the
 [Actionable](https://docs.gtk.org/gtk4/iface.Actionable.html) interface. Other
 kinds of button also do.
 :::
 
-::: tip Action Group
+:::tip[Action Group]
 During invocation, the action is prefixed with the name of its group. For Window
 actions, it's "win", for Application it's "app".
 :::
@@ -506,7 +506,7 @@ The [Gio.Settings](https://docs.gtk.org/gio/class.Settings.html) (*GSettings*)
 may be used to
 store the app's settings.
 
-::: danger User Data
+:::danger[User Data]
 Don't store users' data with `Gio.Settings`. There are better options for it.
 :::
 
@@ -544,7 +544,7 @@ Now, we can use settings in various ways:
     settings.bind('window-height', this, 'default-height', Gio.SettingsBindFlags.DEFAULT);
     ```
 
-    ::: tip Global Settings
+    :::tip[Global Settings]
     In this case, we can access GSettings via `settings`, because this variable
     was added to global object in the Application class with:
     

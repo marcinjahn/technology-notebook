@@ -27,7 +27,7 @@ same version numbers. GLib contains:
 - GIO - I/O operations
 - others...
 
-::: tip QT 
+:::tip[QT ]
 A kind of similar thing to GLib in the KDE world is
 [QtCore](https://doc.qt.io/qt-6/qtcore-index.html).
 :::
@@ -57,7 +57,7 @@ Introspection](https://gi.readthedocs.io/en/latest/). The bindings, under the
 hood, call the C libraries code via mechanisms similar to
 [PInvoke](../dotnet/platform-invoke.md).
 
-::: tip
+:::tip
 GTK is a base for many other GUI frameworks, often those that taget multiple
 operating systems (like [Avalonia UI](https://avaloniaui.net/) or
 [Tauri](https://github.com/tauri-apps/tauri)).

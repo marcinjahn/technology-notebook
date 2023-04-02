@@ -95,7 +95,7 @@ db.{collection}.getIndexes()
 
 Mongo Shell is a CLI interface for accessing MongoDB. It uses JS-like syntax.
 
-::: tip Mongosh
+:::tip[Mongosh]
 There is a new version of CLI shell called **mongosh**. Currently, it's in the
 Beta stage.
 :::
@@ -122,13 +122,13 @@ db.{collection}.find() // Gets all documents in a collection
 
 ```
 
-::: tip Formatting
+:::tip[Formatting]
 When using the older CLI - *mongo* - the output is in one line. To format it for
 readability, we can use the `pretty()` function. E.g.,
 `db.mycollection.find().pretty()`.
 :::
 
-::: warning Casing
+:::caution[Casing]
 Casing matters in the commands
 :::
 

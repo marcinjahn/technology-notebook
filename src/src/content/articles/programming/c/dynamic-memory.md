@@ -20,7 +20,7 @@ The following functions are used for heap management:
   `malloc` or `free` with the right arguments passed in
 - `free` - deallocates memory
 
-::: tip C++
+:::tip[C++]
 C++ additionally uses `new` (can be used instead  of `malloc`) and `delete` (can
 be used instead of `free`) operators for heap management.
 :::
@@ -49,7 +49,7 @@ int *p = (int*)malloc(20 * sizeof(int));
 In the example above the result of `malloc` is casted to `int*`, because
 `malloc` returns a `void*` pointer.
 
-::: tip calloc
+:::tip[calloc]
 `calloc` is a good alternative for `malloc` in the case of arrays.
 It accepts two arguments:
 
@@ -61,7 +61,7 @@ Additionally, `calloc` initializes the memory with zeros automatically.
 `malloc(n * sizeof(int))` ~= `calloc(n, sizeof(int))`
 :::
 
-::: tip Void pointer
+:::tip[Void pointer]
 `void*` is a generic pointer type that needs to be casted to a proper pointer
 type. It's there because `malloc`/`calloc`/`realloc` are "universal" methods
 that can allocate memory for any type. Without `void*` we'd need separate sets
@@ -69,7 +69,7 @@ of these functions for all the different types. Additionally we'd need some way
 to deal with custom types defined by the programmer.
 :::
 
-::: warning Not enough memory
+:::caution[Not enough memory]
 If memory cannot be allocated, `malloc` will return `NULL`.
 :::
 

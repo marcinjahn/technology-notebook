@@ -57,12 +57,12 @@ enum ReadingStatus {
 }
 ```
 
-::: tip Empty Response
+:::tip[Empty Response]
 There's a type that represents empty content - `google.protobuf.Empty`. We could
 use that if our rpc(s) did not return any data.
 :::
 
-::: warning Reserved
+:::caution[Reserved]
 The `reserved` keyword in `ReadingMessage` message type means that in the past,
 this protobuf message used to have some additional values. To not break
 compatibility with existing clients, we do not just remove the fields, but we make

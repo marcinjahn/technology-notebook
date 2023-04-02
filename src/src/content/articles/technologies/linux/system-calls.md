@@ -20,7 +20,7 @@ For example, to execute a binary file, the `execve` syscall should be used.
 We can see what system calls are invoked by any program by running `strace`. For
 example, `strace ls` will show the system calls invoked by the `ls` program.
 
-::: tip ptrace
+:::tip[ptrace]
 `strace` uses a [ptrace](https://linux.die.net/man/2/ptrace) system call to work.
 :::
 
@@ -39,7 +39,7 @@ spectrum of syscalls that the kernel supports.
 
 We can see which libc functions are being used by a program by using `ltrace`. Example: `ltrace ls`.
 
-::: tip syscall function
+:::tip[syscall function]
 libc implementations have a function `syscall` which allows us to invoke the
 syscall explicitly, without any additional "overhead". It could be useful if our
 kernel supports some system call not covered by our version of libc.

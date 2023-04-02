@@ -148,7 +148,7 @@ set of information representing something in our domain.
 It's recommended to first consider Value Object when deciding whether to use
 [Entity](#entities) or Value Object for a given thing.
 
-::: tip Identifiers
+:::tip[Identifiers]
 In some projects identifiers of Entities are value objects. These are custom
 types that contain just an identifier (for example as a `Guid`). So, we could
 have a type called `CustomerIdValueObject`. Some argue that it makes the
@@ -163,7 +163,7 @@ public void CreateAppointment(ClientId clientId, DoctorId doctorId);
 
 Date types are a great example of value objects.
 
-::: tip
+:::tip
 It is OK for Value Objects to reference Entities!
 
 A quote from Eric Evans:
@@ -188,7 +188,7 @@ considered to be in the Doman Services area.
 Before creating a service, we should make sure that the logic we're adding
 doesn't fit into any of the existing domain elements (entities/value objects).
 
-::: warning
+:::caution
 Overuse of domain services might lead to anemic models.
 :::
 
@@ -204,12 +204,12 @@ Citing [Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html):
 > objects, but it's useful to treat the order (together with its line items) as
 > a single aggregate.
 
-::: tip
+:::tip
 One Entity should only belong to one Aggregate. One Value Object can belong to
 many Aggregates.
 :::
 
-::: warning
+:::caution
 Just the fact that one entity refers to another (via some property) does not
 mean that they are a part of the same Aggregate! It could be that some entity
 belonging to one Aggregate refers to some other entity that is an Aggregate Root
@@ -237,7 +237,7 @@ allow us to keep the whole object in a valid state (enforcing invariants). We
 should access/modify the aggregate only throught the Aggregate Root. The root
 will make sure that the invariants are satisfied.
 
-::: tip 
+:::tip[]
 There will also be entities that do not include other entities or value objects.
 The convention is to call these Aggregates as well.
 :::
@@ -255,7 +255,7 @@ only when necessary.
 It still is OK to keep an identifier of the other entity (like a foreign key) in
 the "child" entity.
 
-::: warning
+:::caution
 One aggregate should only reference external entities that are aggregate roots.
 For example, if a *Customer* has some *Address*, other aggregates (e.g.,
 *Order*) should not reference the *Address* directly. Instead, they should get
@@ -350,7 +350,7 @@ will always inform about something that has already happened. Some examples:
 - Client Registered
 - Appointment Scheduled
 
-::: tip YAGNI
+:::tip[YAGNI]
 Create events only when there is some use case for it. Don't create them "just
 in case".
 :::
@@ -376,7 +376,7 @@ The events could be dispatched in the **Repository**, right after the entities
 emitting the events are saved. The generic repository base class is a good place
 to handle that.
 
-::: tip MediatR
+:::tip[MediatR]
 MediatR could be used to dispatch and handle events.
 :::
 
@@ -394,7 +394,7 @@ It could also happen that the event handler would have to get back to the source
 service to ask for more details. We don't really want that, especially if
 there'll be a lot of events, or a lot of handlers.
 
-::: tip Domain and Integration Events
+:::tip[Domain and Integration Events]
 We could have cases where some event has both Domain and Integration Events
 defined. The entity would publish a Domain Event and one of the handlers would
 publish an Integration Event, knowing that there might be some handlers
@@ -417,7 +417,7 @@ introduce the new concepts into legacy codebase, we could create an ACL layer
 (like some set of services) that will communicate with our DDD system properly
 and return the data as the legacy system expects.
 
-![](./assets/acl-legacy-to-ddd.png)
+![](../../../assets/acl-legacy-to-ddd.png)
 
 ## Sources
 

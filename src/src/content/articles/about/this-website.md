@@ -81,7 +81,7 @@ For TLS needs, I installed [cert-manager](https://cert-manager.io/) (using
 Encrypt](https://letsencrypt.org/) certificate for my site and it renews it
 periodically.
 
-::: tip Overkill? 
+:::tip[Overkill? ]
 Going with Kubernetes is definitely an overkill for a website
 like this one. It would be much more logical to go with something like [Azure
 Static Web Apps](https://azure.microsoft.com/en-us/services/app-service/static/)

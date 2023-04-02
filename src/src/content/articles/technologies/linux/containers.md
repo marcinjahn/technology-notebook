@@ -83,7 +83,7 @@ The output means, that the user 1 in a container will be mapped to user 100000
 on a host. User 2 would be mapped to 100001, and so on. A maximum of 65536 users
 may be mapped (that value may be modified, it's not a hard limit).
 
-::: tip unshare
+:::tip[unshare]
 The `podman unshare` command is great help in translating host UIDs to container
 UIDs. If, for example, some container runs with UID 1002, and we want to to give
 that UID access to some files on the host, we could run `podman unshare chown
@@ -105,7 +105,7 @@ Containers run with the `container_t` SELinux domain. They are allowed to access
 the `container_file_t` and `container_ro_file_t` typed files. The `:z`/`:Z`
 parameters apply the `container_file_t` to the mounted files.
 
-::: danger
+:::danger
 It's important to note that `:z` and `:Z` relabel the resource, which could
 impact some other processes that require the original labels to be there! After
 finishing the work with containers, it's probably a good idea to reset the
@@ -116,7 +116,7 @@ Another issue could be due to traditional DAC permissions. The user mapping also
 works for volumes, so a UID 0 in a container will map to UID 1000 on a host. So,
 a container will be able to access files of UID 1000 on the host.
 
-::: tip Disable Labeling
+:::tip[Disable Labeling]
 Labeling is a security feature that keeps processes within containers from doing
 harm to files on the host. When the container is trusted though, we can relax
 the security by disabling SELinux label separation for containers. 

@@ -45,7 +45,7 @@ Most often, documents are JSONs.
 In case of a network partition, the system can be either Consistent or
 Available, not both. Without a partition, both C and A can be delivered.
 
-::: tip MongoDB
+:::tip[MongoDB]
 MongoDB is a CP system.
 :::
 

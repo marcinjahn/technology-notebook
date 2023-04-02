@@ -49,7 +49,7 @@ When configuring in-memory database, we need to provide a name for it. This way,
 we can use the same in-memory DB from multiple testse (or different ones, with
 different names).
 
-::: warning SaveChanges
+:::caution[SaveChanges]
 `SaveChanges` method doesn't do anything when using in-memory DB. The ID gets
 assigned to the entity as soon as we add it to the `DbSet`.
 :::

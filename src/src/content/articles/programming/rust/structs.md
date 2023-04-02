@@ -38,7 +38,7 @@ let mut user2 = User {
 user2.active = false;
 ```
 
-::: tip Stack
+:::tip[Stack]
 By default, Rust stores all data on the stack (like C/C++). Struct instances
 also are stored on the stack. [Smart pointers](./smart-pointers.md) allow
 changing that.
@@ -70,7 +70,7 @@ let user3 = User {
 };
 ```
 
-::: warning Move
+:::caution[Move]
 `user2` was **moved** in the example above. Since `username` is a `String`, it
 was moved to `user3`. If the only values that were copied from `user2` were
 `active` and `age`, there would be no move. They'd be just copied.
@@ -129,7 +129,7 @@ because it would take ownership. It could be useful if a method is supposed to
 transform an object info something else end the original object would not be
 needed anymore.
 
-::: tip Impl blocks
+:::tip[Impl blocks]
 There may be more than one `impl` blocks per type.
 :::
 

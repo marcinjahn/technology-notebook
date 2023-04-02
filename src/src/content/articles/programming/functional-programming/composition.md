@@ -34,7 +34,7 @@ var email = person.GenerateUsername().AppendDomain();
 The order of operations is in the correct order.
 Our program is an implementation of some data flow.
 
-::: tip Extension Methods
+:::tip[Extension Methods]
 In FP, it's popular to use extension methods instead of class methods (OOP). It
 is due to the desire to separate data from the functions that operate on that
 data.
@@ -83,11 +83,11 @@ var averageEarningsOfRichestQuartile = people.RichestQuarter().AverageEarnings()
 
 Often, our programs look as follows:
 
-![](./assets/layered-code.png)
+![](../../../assets/layered-code.png)
 
 In FP, it should look more like this:
 
-![](./assets/non-layered-code.png)
+![](../../../assets/non-layered-code.png)
 
 This way, the entire workflow is available in the top-level component and it's
 more clear what the code actually does.

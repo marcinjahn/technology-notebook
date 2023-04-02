@@ -12,7 +12,7 @@ lang: en-US
 - `db.{collection}.insertOne()`
 - `db.{collection}.insertMany()`
 
-::: tip insert
+:::tip[insert]
 There's also the `insert()` command, but it's deprecated.
 :::
 
@@ -104,7 +104,7 @@ ObjectId (BSON), but we can set it ourselves as any type.
 - `db.{collection}.find()`
 - `db.{collection}.findOne()`
 
-::: tip Cursor
+:::tip[Cursor]
 `find` returns a cursor object, which exposes a few methods on it (like `sort`,
 `count`, `limit`, `skip`, etc.).
 
@@ -167,13 +167,13 @@ Examples:
 
 A full example: `db.{collection}.find({name: 'Marcin'})`.
 
-::: tip $not vs $ne
+:::tip[$not vs $ne]
 `{ amount: { $ne: 5 } }` and `{ amount: { $not: 5 } }` are different. `$not`
 will also return documents that do not even have the "amount" field. `$ne` will
 only return documents that have this field.
 :::
 
-::: tip Regular Expressions
+:::tip[Regular Expressions]
 The `$in` operator can be used with regular expressions:
 
 ```js
@@ -184,17 +184,17 @@ db.cars.find({ model: { $in: [/^F/] } })
 There's also a `$regex$` filter.
 :::
 
-::: tip Conversions
+:::tip[Conversions]
 Implicit number conversions may occur in our filters. For example, if a value is
 an int, but we pass it as a float, it will still work.
 :::
 
-::: tip Arrays and Objects
+:::tip[Arrays and Objects]
 When comparing objects and arrays we need to provide them in full. The internal
 elements have to be provided in the same orded as they were stored in the DB.
 :::
 
-::: tip Comments
+:::tip[Comments]
 As part of a filter, we can also include the `$comment` field, which is a string
 that explains the filter. These commends end up in the tracing logs.
 :::
@@ -243,7 +243,7 @@ There are operators to be used with arrays:
     db.players.find({ skills: { $elemMatch: { name: "flying", lvl: { $gt: 7 }}}})
     ```
 
-::: warning $eg 
+:::caution[$eg ]
 The `$eq` operator can be used as well, but it requires the elements to match
 exactly (even order needs to be the same).
 :::
@@ -275,7 +275,7 @@ Here are some special cases for queries;
     db.cars.find({ model: { $type: "string" }}) // { $type: 2 } would also work
     ```
 
-    ::: tip NULL
+    :::tip[NULL]
     "null" is also a type.
     :::
 
@@ -284,7 +284,7 @@ Here are some special cases for queries;
 Projections are used to specify the fields to return from the source documents.
 It's a bit like a `SELECT` in SQL.
 
-::: tip _id
+:::tip[_id]
 The "_id" field is always included unless explicitly disabled with `_id: 0`.
 :::
 
@@ -305,7 +305,7 @@ We can also use projections to exlude just the specified fields:
 
 Everything but "title" and "runtime" will be returned.
 
-::: warning No mixing
+:::caution[No mixing]
 We can't mix inclusions/exclusions in one query, unless we're excluding "_id"
 while including other fields. In other words, if "_id" is not involved we can
 use only "1"s or "0"s in a projection.
@@ -377,7 +377,7 @@ Arrays have their own projection operators:
     ]
     ```
 
-    ::: tip Filter vs Projection
+    :::tip[Filter vs Projection]
     The filter's `$elemMatch` is different from the projection's `$elemMatch`.
     The first one affects the number of documents being returned. The latter one
     only impacts the content of array field of a document.
@@ -462,7 +462,7 @@ language is used, casing, and many more.
 
 Documents in the DB can be updated.
 
-::: warning _id
+:::caution[_id]
 The `_id` field cannot be updated.
 :::
 
@@ -487,7 +487,7 @@ The update commands are:
 - `db.{collection}.updateMany()`
 - `db.{collection}.replaceOne()` - the whole document is replaced
 
-::: tip Atomicity
+:::tip[Atomicity]
 Atomicity is at the level of a single document.
 :::
 
@@ -543,7 +543,7 @@ db.movies.replaceOne(
 )
 ```
 
-::: tip updateOne
+:::tip[updateOne]
 `updateOne` will work on the first of the documents returned by the supplied
 filter.
 :::
@@ -575,7 +575,7 @@ If there were no movies with `year` equal to "1994", no documents will be
 updated. However, a single new document will be addded with `{year: 2222}` as
 its content.
 
-::: tip $set
+:::tip[$set]
 If we specify some field that did not exist in the original documented, that
 field will be added.
 :::
@@ -656,6 +656,6 @@ Deleting multiple documents:
 db.movies.deleteMany({ rating: 2 })
 ```
 
-::: danger Remove all
+:::danger[Remove all]
 `db.{collection}.deleteMany({})` will remove all the documents in a collection.
 :::

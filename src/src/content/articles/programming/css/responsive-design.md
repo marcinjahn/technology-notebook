@@ -7,7 +7,7 @@ lang: en-US
 
 # Resonsive Design
 
-::: tip
+:::tip
 The webpages are responsive by default. As soon as we start to constrain sizes
 of elements, the pages stop being responsive.
 :::
@@ -48,7 +48,7 @@ The unit applied on some element is in relation to:
 </div>
 ```
 
-::: warning
+:::caution
 **em** is in relation to either the parent's font size or to current element's
 font size.
 :::
@@ -62,7 +62,7 @@ will have 64px (assuming that it was the default, base size).
 **rem** is similar to em, but it's relative to the root element of the page
 (`<html>`) instead of the parent.
 
-::: warning
+:::caution
 Opposed to **em**, **rem** is ALWAYS relative to the root.
 :::
 
@@ -78,7 +78,7 @@ use rem predictably.
 Ems, with their compounding characteristic, can get out of control, as the
 elements might grow uncontrollably.
 
-::: tip
+:::tip
 Use **rem** for font-sizes. It's just easier to deal with.
 
 Use **em** for `margin` and `padding`. Usually, it makes sense to scale
@@ -92,7 +92,7 @@ For example, the `100vh` will take up the whole height of the browser
 (responsively). It is used on some pages where we scroll and discover different
 sections, each one taking the `100vh`.
 
-::: tip Viewport vs percentage
+:::tip[Viewport vs percentage]
 Viewport units are based on browser window size, while the percentage unit is
 based on the HTML parent size.
 :::

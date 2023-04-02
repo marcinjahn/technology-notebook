@@ -20,7 +20,7 @@ In order to be onboarded on the list, one should follow the steps enlisted on
 [https://hstspreload.org/](https://hstspreload.org/). Basically, particular headers
 should be included in the response from your server.
 
-::: warning Removal
+:::caution[Removal]
 Before doing the submission you should understand all the requirements of HSTS.
 If you fail to support them, your website might become unreachable. Removal from
 the HSTS list takes time since certain users don't update their browsers too

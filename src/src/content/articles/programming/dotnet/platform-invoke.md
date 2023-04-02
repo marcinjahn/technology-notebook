@@ -31,7 +31,7 @@ What Platform Invoke does is:
 3. It arranges arguments of that function on the stack and executes it
 4. It returns the result
 
-::: tip Unmanaged Code
+:::tip[Unmanaged Code]
 In the .NET world, it would be an example of Unmanaged Code, which is code
 that runs outside the runtime.
 :::

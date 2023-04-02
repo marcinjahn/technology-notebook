@@ -31,7 +31,7 @@ int* pointer2;
 int*pointer3;
 ```
 
-::: tip Smart Pointers in C++
+:::tip[Smart Pointers in C++]
 C++ additionally has **Smart Pointers**, which are like pointers with added
 reference counting. When the data pointed to by the pointer goes out of scope,
 the value gets deleted automatically. Depending who you ask you might hear that
@@ -53,13 +53,13 @@ Pointers are useful for:
 
 Memory is organized as follows:
 
-![](./assets/memory.png)
+![](../../../assets/memory.png)
 
 Each slot is addressed.
 
 A pointer stores an address to some value in memory:
 
-![](./assets/pointer-in-memory.png)
+![](../../../assets/pointer-in-memory.png)
 
 Pointer itself also has an address in memory, it also is some variable.
 In the case above, `&p` is `64`.
@@ -113,7 +113,7 @@ Simply:
 - address: `&array[i]` = `array + i` = `pointer + i`;
 - value: `array[i]` = `*(array + i)` = `*(pointer + i)`
 
-::: danger Array and pointer are not the same thing
+:::danger[Array and pointer are not the same thing]
 An array variable cannot have its value set to some pointer!
 
 ```c
@@ -133,7 +133,7 @@ int (*p)[3] = B; // OK; 3 is needed, because pointer arithmetics needs to "know"
                  // how many bytes to add in operations like p++
 ```
 
-![](./assets/multi-dimensional-arrays.png)
+![](../../../assets/multi-dimensional-arrays.png)
 
 Pointer arithmetic examples:
 
@@ -148,13 +148,13 @@ Pointer arithmetic examples:
 - Printing `*(*B+1)` (or `B[0][1]`) would return `3`.
 - `p++` would move from `400` to `412`
 
-::: tip
+:::tip
 `B` is an address of the first sub-array.
 `*B` is an address of the first element of the first sub-array.
 `**B` is the value of the first sub-array.
 :::
 
-::: tip 
+:::tip[]
 In general, `array + i` moves us to the next element within the array. That way,
 `B` being an array of arrays, `B + i` moves us to the next sub-array.
 :::
@@ -169,7 +169,7 @@ int **q = &p;
 
 A `p` points to `x`. `q` points to `p`.
 
-![](./assets/pointer-to-pointer.png)
+![](../../../assets/pointer-to-pointer.png)
 
 In this exmple we have even `int ***` pointer (a pointer to pointer to pointer).
 
@@ -179,7 +179,7 @@ We can also dereference such "deep" pointers. For example:
 printf("%d", **q); // prints 6
 ```
 
-::: tip Arrays
+:::tip[Arrays]
 Pointers to pointers are analogical to multi-dimensional arrays. `int **pointer`
 is analogical to `int array[][]`. `pointer` points to a pointer that points to
 the first element of the inner array.
@@ -195,18 +195,18 @@ understanding pointers.
 When a function accepts an array as an argument, a pointer to an array is
 passed:
 
-![](./assets/array-in-argument.png)
+![](../../../assets/array-in-argument.png)
 
 This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
 `SumOfElements()` (4 bytes - just the size of a pointer to integer!).
 
-::: tip 
+:::tip[]
 `Function(int[] A)` is treated the same as `Function(int *A)`. A typical C
 `main` function has both `char *argv` and `int argc` as arguments - a pointer to
 arguments and a count of arguments.
 :::
 
-::: tip Multi-dimensional Arrays
+:::tip[Multi-dimensional Arrays]
 A function that accepts a multi-dimensional array has to specify the count of
 elements in sub-arrays.
 
@@ -261,7 +261,7 @@ int main()
 
 A pointer `p` points to a function `Add`.
 
-::: tip Ampersand and Start
+:::tip[Ampersand and Start]
 Address of a function can be retrieved just by function's name (e.g. `Add`) or
 with `&` (e.g. `&Add`).
 

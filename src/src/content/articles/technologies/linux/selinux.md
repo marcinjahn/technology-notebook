@@ -30,7 +30,7 @@ SELinux can be in one of the modes:
   declined by policies, it will be logged, but access will still be granted.
   It's good for troubleshooting.
 
-::: tip Types
+:::tip[Types]
 We can also mark some [types](#types) to use permissive mode, while the rest
 of the system will stick with the enforcing mode.
 :::
@@ -69,7 +69,7 @@ have the following fields:
 The "ends with..." part above is just a convention. SELinux does not require
 such naming convention to be applied.
 
-::: tip ls
+:::tip[ls]
 We can see labels on files with the `-Z` flag of `ls`. Here's an example of an
 output of `ls -laZ` in `$HOME`:
 
@@ -91,7 +91,7 @@ drwxr-xr-x. 1 mnj  mnj  unconfined_u:object_r:home_cert_t:s0        20 Dec 15 20
 Similarly, users labels can be viewed with `id -Z`.
 :::
 
-::: tip Domain
+:::tip[Domain]
 A security context's type attached to a process is sometimes called a
 **domain**.
 :::
@@ -177,7 +177,7 @@ A user can switch its role with `newrole -r somerole_r`. The supported roles are
 
 ### Users
 
-::: warning
+:::caution
 SELinux user != Linux user. Instead, Linux users are mapped to SELInux users.
 Many Linux users may use the same SELinux user. That makes SELinux users more
 like roles that can be assigne to Linux users.
@@ -241,7 +241,7 @@ these apps could lead to the host system getting hijacked.
 
 That's why in a typical Linux distro most entities will be unconfined.
 
-::: tip Distros
+:::tip[Distros]
 The fact that users are unconfined by default depends from distribution's setup.
 For example, Fedora does exactly that and places typical users in unconfined
 domain. Some other, more hardened distros, might do something else.

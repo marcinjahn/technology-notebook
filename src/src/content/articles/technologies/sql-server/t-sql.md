@@ -41,7 +41,7 @@ SQL is strongly typed.
 - boolean
     - *bit*
 
-::: tip money
+:::tip[money]
 The *money* and *smallmoney* sizes are unique to SQL Server, so potentially it's
 not the best choice.
 :::
@@ -186,7 +186,7 @@ FROM Orders
 -- ... -- as many 'ABC's as many rows the Orders table has
 ```
 
-::: tip Just SELECT
+:::tip[Just SELECT]
 SQL Server allows execution of queries that have only the `SELECT` clause, such
 as `SELECT 2*2;`.
 :::
@@ -279,7 +279,7 @@ as `SELECT 2*2;`.
   The customers which did not make any orders are present as well. The columns
   of the Orders table are NULLed for them.
 
-::: tip Default
+:::tip[Default]
 If we just use the `JOIN` keyword in the query, the `INNER JOIN` will be used.
 
 If we use `LEFT/RIGHT JOIN`, the `LEFT/RIGHT OUTER JOIN` will be used.
@@ -291,7 +291,7 @@ Due to the fact that SQL includes NULLs, we have to deal with **Ternary Logic**.
 On top of `true`/`false` there is a possibllity of an `unknown` result. To test
 for `unknown` we use the `IS NULL`/`IS NOT NULL` operators.
 
-::: tip Not Equal
+:::tip[Not Equal]
 Both the `!=` and `<>` are inequality operators. It's better to use the `<>`
 though since it follows the ISO standard.
 :::
@@ -316,12 +316,12 @@ GROUP BY Country;
 |India|	1|
 |USA|	2|
 
-::: tip SELECT *
+:::tip[SELECT *]
 When using `GROUP BY`, we can no longer use `SELECT *`. `GROUP BY` returns an
 aggreagation on some colums, the other columns are not included.
 :::
 
-::: tip NULL
+:::tip[NULL]
 When using `GROUP BY` on some column, the rows with the NULL value on that
 column fall into the same group (NULL).
 :::
@@ -356,7 +356,7 @@ Some remarks:
     FROM Customers;
      ```
 
-    ::: tip ALL
+    :::tip[ALL]
     Without `DISTINCT`, every `SELECT` is actually a `SELECT ALL` - it returns
     all the rows that were retrieved.
     :::

@@ -26,7 +26,7 @@ access tokens (and they are not the *audience*)! However, they are allowed and
 expected to read the ID Tokens to learn who the user is. The actual *audience*
 of the ID Token is the app that is supposed to display user's name.
 
-::: tip
+:::tip
 Microsoft Identity implements OAuth2 and OpenID Connect standards.
 :::
 
@@ -106,7 +106,7 @@ with. These roles can then be assigned to the users of the app (potenaitally
 other apps). This way, we can create our own RBAC rules for the app, limiting
 what different users can access.
 
-::: tip
+:::tip
 An App Role may be restricted to be usable with:
 - only users and groups
 - only aps
@@ -120,7 +120,7 @@ principles (my app in their tenant).
 
 Compared to groups, App Roles are a better choice. They are app-specific.
 
-::: tip Required Roles
+:::tip[Required Roles]
 We may restrict our app principals to only be accessible to users that have some
 role assigned. If someone without a role tries to get an access token to my app,
 they will not get it, authentication will fail. It's done in the Properties pane
@@ -168,7 +168,7 @@ When defining a scope, we can specify if that scope requires a consent of an
 admin of a tenant. If not, just the user's consent will be enough for client
 apps to acquire that permission.
 
-::: warning Client Credentials
+:::caution[Client Credentials]
 Scopes are for user flows only. Daemon apps should use [App
 Roles](#app-roles).
 The roles may be assigned to users in the *API permissions* panel. Since dameon
@@ -182,12 +182,12 @@ assigned to the app in the AAD portal.
 Assigned app roles have to be granted consent by an admin.
 :::
 
-::: tip Scopes vs App Roles
+:::tip[Scopes vs App Roles]
 When assigning scopes/app roles to our apps, the scopes we defined in *Expose an
 API* can be found under "Delegated permissions", while the App Roles can be
 found under "Application Permissions
 
-![](./assets/identity-delegated-application-permissions.png)
+![](../../../assets/identity-delegated-application-permissions.png)
 :::
 
 ## AAD Groups
@@ -211,7 +211,7 @@ Connect-synchronized groups, the names will be delivered.
 - Groups are not app-specific, they are global. The token will be huge with
   lots of unneeded information
 
-::: tip Groups as Roles
+:::tip[Groups as Roles]
 An app registration may be configured (via its Manifest) to include groups as
 roles in the ID Token (and access token?).
 :::

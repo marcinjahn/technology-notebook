@@ -91,7 +91,7 @@ fn change(some_string: &mut String) {
 Both the `s` variable and the `some_string` reference need to use the `mut`
 keyword to allow mutations of the value.
 
-::: danger
+:::danger
 At any given time, you can have either:
 
 - one **mutable** reference
@@ -123,7 +123,7 @@ That's because if one function would get an immutable reference, it will expect
 that the value should not change suddenly.
 :::
 
-::: tip
+:::tip
 A reference’s scope starts from where it is introduced and continues through the
 last time that reference is used.
 This is OK:
@@ -162,7 +162,7 @@ let y = &x;
 assert_eq!(5, *y); // OK
 ```
 
-::: tip Smart Pointers
+:::tip[Smart Pointers]
 [Smart pointers](./smart-pointers.md) might be dereferenced as well.
 :::
 
@@ -193,7 +193,7 @@ let slice = &s[1..3];
 of the slice. Additionally, the slice has a reference to `s` (?), so `s` cannot
 be mutated while `slice` is still in use.
 
-::: tip
+:::tip
 All string literals are slices!
 
 ```rust

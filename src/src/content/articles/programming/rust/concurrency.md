@@ -98,7 +98,7 @@ for received in rx {
 }
 ```
 
-::: tip mpsc
+:::tip[mpsc]
 `mpsc` module stands for *Multiple Producers, Single Consumer*.
 We coulc clone tx and have another transmitter connected to `rx`.
 
@@ -108,7 +108,7 @@ Multiple receivers are not allowed in this model.
 The `send()` method takes ownership of the value being sent and transfers
 ownership to the receiving thread.    d
 
-::: tip Receiving
+:::tip[Receiving]
 Receiver can use the following way to receive messages:
 
 - iterator (as shown) - blocking, receives all messages.
@@ -144,18 +144,18 @@ This is a blocking call, execution will continue as soon as either:
 - lock is free
 - other thread that had the lock panics
 
-::: tip Smart Pointer
+:::tip[Smart Pointer]
 `lock()` returns a `MutexGuard` smart pointer.
 :::
 
 The lock is released as soon as `MutexGuard` goes out of scope.
 
-::: tip Interior Mutability
+:::tip[Interior Mutability]
 `Mutex<T>` is a bit similar to `RefCell<T>`. Even though the `Mutex` instance is
 defined as immutable, we can change the value inside of it.
 :::
 
-::: danger Deadlock
+:::danger[Deadlock]
 Threads using `Mutex` can suffer from deadlocks!
 :::
 
@@ -208,6 +208,6 @@ The `Sync` marker trait indicates that it is safe for the type implementing
 `Sync` to be referenced from multiple threads. Similar to `Send`, types composed
 entirely of types that are `Sync` are also `Sync`.
 
-::: warning
+:::caution
 Manually implementing `Send` and `Sync` is unsafe.
 :::

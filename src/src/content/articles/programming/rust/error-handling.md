@@ -11,7 +11,7 @@ Rust does not have exceptions. Instead, it uses:
 - `Result<T, E>` type for recoverable errors
 - `panic!` macro for unrecoverable errors
 
-::: tip .NET Analogy
+:::tip[.NET Analogy]
 `panic!`s are like unhandled exceptions in .NET, while `Result` allows us
 to act similarly to `try-catch` in .NET.
 :::
@@ -27,7 +27,7 @@ fn main() {
 }
 ```
 
-::: tip Unwind or abort
+:::tip[Unwind or abort]
 When a panic occurs Rust *unwinds* the stack - cleans data from all stack
 frames. It takes time. We can set our app to just abruptly abort execution in
 case of panic (in the TOML file).
@@ -86,7 +86,7 @@ The `?` placed after a `Result` value works as follows:
 - if it's `Ok(value)`, the `value` gets returned
 - if there's an error, the containing function returns that error
 
-::: danger
+:::danger
 `?` can only be used in functions that return `Result` or `Option`,
 or any type that implements `Try`.
 :::
@@ -105,7 +105,7 @@ fn read_username_from_file() -> Result<String, io::Error> {
 }
 ```
 
-::: tip
+:::tip
 It could be even shorter with chaining calls:
 
 ```rust

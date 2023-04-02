@@ -80,7 +80,7 @@ Similarly to some .NET libraries (like
 [Optional](https://github.com/nlkl/Optional)) Rust provides an `Option` enum to
 be used instead of `null`.
 
-::: tip Null
+:::tip[Null]
 Rust doesn not have NULL! It uses `Option<T>` monad instead.
 :::
 
@@ -91,7 +91,7 @@ let some_string = Some("a string");
 let absent_number: Option<i32> = None; // same as Option<i32>::None
 ```
 
-::: tip Prelude 
+:::tip[Prelude ]
 `Option<T>`, `None`, and `Some` are available "automatically" in every file.
 :::
 
@@ -137,7 +137,7 @@ let f = match f {
 };
 ```
 
-::: tip
+:::tip
 Alternatively, we could use `unwrap_or_else()` method on `Result`.
 :::
 

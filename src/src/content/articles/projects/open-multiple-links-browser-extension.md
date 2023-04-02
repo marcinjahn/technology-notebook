@@ -11,7 +11,7 @@ A web browser extension that makes it easy to open many links from web pages.
 Just select/highlight some text containing links, right-click it, and select
 "Open links in new tabs".
 
-![](./assets/open-multiple-links-logo.png)
+![](../../../assets/open-multiple-links-logo.png)
 
 It uses TypeScript and webpack.
 

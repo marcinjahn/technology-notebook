@@ -53,7 +53,7 @@ flowchart LR
   b -- l --> b
 ```
 
-::: tip Objects
+:::tip[Objects]
 The only reasons why objects exists is to be able to mark the beginnings and
 the ends of morphisms' arrows.
 :::
@@ -82,11 +82,11 @@ flowchart LR
 The `g ○ f` arrow is a **composition** of arrows `f` and `g`.
 It's sometimes called **multiplication**.
 
-::: tip
+:::tip
 There can also be other arrows going from `a` to `c`.
 :::
 
-::: tip
+:::tip
 The whole category can be defined by a table of all compositions (not
 morphisms?) within that category.
 :::
@@ -133,7 +133,7 @@ g ○ id_b = g
 
 That's the *left identity*.
 
-::: tip
+:::tip
 Identity is then like a `1` in multiplication: `a * 1 = a`.
 :::
 
@@ -223,7 +223,7 @@ elements, we have a table of morphisms that define our new category. They define
 the interface of this category. The sets themselves have been "shrunk" down to
 points A and B.
 
-::: tip Programming
+:::tip[Programming]
 In programming, we have types and functions. Types can be seen as sets, and
 functions can be seen as functions mapping one set to another.
 :::
@@ -258,7 +258,7 @@ flowchart LR
   end
 ```
 
-::: tip
+:::tip
 A relation is a subset of `A x B`. The domain is the set of elements in `A` and
 the codomain is the set of elements in `B`.
 :::
@@ -330,7 +330,7 @@ that context.
 
 *Surjection* (onto) becomes **monomorphism** (monic).
 
-::: warning
+:::caution
 In Category Theory, if a given morphism is both an epimorphism and monomorphism,
 it doesn't necessarily constitute an isomorphism!
 :::

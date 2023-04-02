@@ -71,7 +71,7 @@ Functions might be **pure** or **impure**. Pure functions are similar to the
 mathematical functions. They do not rely on or modify any state. Their outputs
 depend solely on the inputs.
 
-::: tip Impurity will always be there
+:::tip[Impurity will always be there]
 Some of the code has to be impure. Otherwise, the program wouldn't be able to
 communicate the result to the outside world (communicating outside world implies
 impurity).
@@ -81,7 +81,7 @@ Impure functions can modify (or just read) an external state, and their outputs
 can depend on some external state as well. They are much harder to reason about,
 test and they might now work as expected in concurrent scenarios.
 
-::: tip Impurity cases
+:::tip[Impurity cases]
 If a function modifies its inputs (and the modification is visible
 outside of the function), it's an impure function.
 
@@ -103,7 +103,7 @@ programs may be optimized with:
 
 These techniques are not straightforward with impure functions.
 
-::: tip Static Methods
+:::tip[Static Methods]
 Pure functions should be implemented as static methods.
 :::
 
@@ -136,7 +136,7 @@ A map can be represented as follows:
 
 `C<T>` is a functor.
 
-::: tip Functions
+:::tip[Functions]
 Functions are functors as well!
 :::
 
@@ -162,7 +162,7 @@ supposed to be used whenever we need to do some side-effect in the middle of a
 data flow. We could use `Map` for that as well, but `Map` shouldn't be used when
 side effects are involved.
 
-![](./assets/do-fcn.png)
+![](../../../assets/do-fcn.png)
 
 `Do` invokes some provided action and returns the provided value; the flow may
 be continued.
@@ -209,7 +209,7 @@ A monad must also have a `Return` function defined. It's a function that wraps a
 An example of a `Return` function could be a function that turns items into a
 list, or a `Some` method of `Option`.
 
-::: tip
+:::tip
 `IEnumerable` and `Option` are both **functors** and **monads**.
 
 Every monad is also a functor.
@@ -221,7 +221,7 @@ Not every functor is a monad.
 In general, in our programs, we're dealing with either *regular values* or
 *elevated values*.
 
-![](./assets/elevated-vs-regular.jpeg)
+![](../../../assets/elevated-vs-regular.jpeg)
 
 **NOTE:** The image above has regular/elevated naming reversed. Sorry, my bad! 
 
@@ -236,7 +236,7 @@ We can look at various functions that operate on data as either:
 - returning the same level of abstraction
 - crossing abstraction
 
-![](./assets/crossing-abstraction.png)
+![](../../../assets/crossing-abstraction.png)
 
 Examples:
 
@@ -249,20 +249,20 @@ Examples:
 
 Using this classification, we can look see the following relations:
 
-![](./assets/map.png)
+![](../../../assets/map.png)
 
-![](./assets/bind.png)
+![](../../../assets/bind.png)
 
 The functions accepted by these two functions differ in the fact that `Bind`
 requires a function that crosses the abstraction upwards.
 
-::: tip
+:::tip
 Working with *regular values* only is inefficient and requires things such as
 checking for `null`, using loops, etc. Working on the *elevated values*
 abstraction level makes it possible to fluently chain function calls.
 :::
 
-![](./assets/typical-fp-functions-in-abstractions.png)
+![](../../../assets/typical-fp-functions-in-abstractions.png)
 
 ### Reducing a list to a single value
 
@@ -273,7 +273,7 @@ In FP speak, reducing a list of values into a single value is called **fold** or
 **reduce**. In .NET we have LINQ's `Aggregate`. Such function takes an
 *accumulator* and a *reducer* function.
 
-::: tip Lemon Juice Analogy
+:::tip[Lemon Juice Analogy]
 A real-world analogy of *reduce* is turning lemons into juice. In that analogy,
 lemons constitute a list that will be reduced. Glass in an *accumulator*. If 0
 lemons are provided, an empty glass is returned. If there are some lemons, the
@@ -281,7 +281,7 @@ state of the glass will be modified with each lemon being squeezed (by a reducer
 function).
 :::
 
-::: tip LINQ
+:::tip[LINQ]
 Some of the LINQ functions simplify the pattern: `Sum`, `Average`, etc.
 
 Here's how `Sum` could look like:
@@ -301,7 +301,7 @@ public static Validator<T> CombineValidators(IEnumerable<Validator<T>> validator
   t => validators.Aggreagate(Valid(t), (acc, validator) => acc.Bind(_ => validator(t)));
 ```
 
-::: tip
+:::tip
 `Aggregate` is so generic that it could be used to implement `Map`, `Bind`, or
 `Where`!
 :::

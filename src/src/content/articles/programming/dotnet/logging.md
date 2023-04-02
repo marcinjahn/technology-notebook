@@ -24,7 +24,7 @@ The first way stores both the value of the parameter (the actual user
 identifier) and the name of this parameter. In the second approach, the name is
 lost, so we are not able to filter based on the named parameter (`userId`).
 
-::: tip JSON
+:::tip[JSON]
 The structured logging information is stored as JSON. For example:
 
 ```json
@@ -96,7 +96,7 @@ Using Serilog:
     More information can be found
     [here](https://github.com/serilog/serilog-settings-configuration).
 
-::: tip Rider
+:::tip[Rider]
 Sometimes Rider may display logs in black font color on the dark background. To
 change that, got to the "Preferences -> Editor -> Color Scheme -> Console
 Colors" and change "Bright White" color to **#FFFFFF**.

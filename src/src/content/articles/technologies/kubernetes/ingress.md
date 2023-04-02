@@ -32,7 +32,7 @@ object. Some others share the IP address for many ingress objects.
 Most ingress implementations send requests to pods directly, skipping services
 (for performance?).
 
-::: tip Nginx
+:::tip[Nginx]
 Some of the most popular implementations of ingress use nginx. There are two
 implementations that use nginx: made by the K8s team, and another one made by
 the nginx team.
@@ -65,7 +65,7 @@ ingress objects.
 We are able to specify the default ingress class to be used by our ingress
 objects by setting an appropriate annotation on the selected class.
 
-::: tip Custom ignress classes
+:::tip[Custom ignress classes]
 We can create our own ingress classes that could refer to any installed ingress
 controllers. Some controllers allow specifying various parametes, and we could
 use our custom classes to provide these parameters.

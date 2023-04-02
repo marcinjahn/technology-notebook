@@ -18,7 +18,7 @@ services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
 
 The `IOptions<T>` instance is registered as a singleton.
 
-::: tip Reloading
+:::tip[Reloading]
 To support configuration providers that can be reloaded during runtime, we can
 inject `IOptionsSnapshot<T>` instead of `IOptions<T>`.
 :::
@@ -30,7 +30,7 @@ The class for out options needs to have properties that:
 - have setters (or non-null value if complex type)
 - are not indexers
 
-::: tip IEnumerable
+:::tip[IEnumerable]
 An `IEnumerable<T>` property that is initialized cannot be bound to. That's
 becasue `IEnumerable<T>` does not have the `Add` method.
 :::

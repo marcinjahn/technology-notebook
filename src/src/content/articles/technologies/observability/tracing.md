@@ -25,7 +25,7 @@ in a trace.
 Here's an illustration that represents tracing, found in the [Jaeger
 Docs](https://www.jaegertracing.io/docs/1.41/architecture/)
 
-![Jaeger Example](./assets/jaeger-example.png)
+![Jaeger Example](../../../assets/jaeger-example.png)
 
 ## Architecture
 
@@ -110,7 +110,7 @@ some framework or library does not have any available instrumentations.
 Auto-intrumentation helps in keeping the code clean of tracing logic. Manual
 instrumentation on the other hand, "pollutes" the code with non-business logic.
 
-::: tip
+:::tip
 Sometimes, manual instrumentation is the right choice! It's only the cases that
 are non-seldom and well-defined that benefit the most from auto-instrumentation.
 
@@ -157,7 +157,7 @@ OpenTelemetry SDK supports us with that via propagators. By default, the W3C pro
 
 A propagator really needs to implement just these 2 methods, and it can be used in tracing initialization.
 
-::: tip
+:::tip
 It might happen that only one side of propagation is needed, e.g. extraction. We
 might be integrating with some system that sends us tracing headers in Jaeger
 fomat, but we might not want to propagate tracing in that format further on,
@@ -252,7 +252,7 @@ that did not want to trace).
 Service that makes the sampling decision makes it *before* a potential issue
 occurs. It's non-ideal.
 
-::: tip 0%
+:::tip[0%]
 In tail-sampling, even with 0% sampling configured, services will still transfer
 tracing header between each other - that's needed for downstream services
 to know that they should not send traces to the collector!
@@ -270,7 +270,7 @@ factors:
 - rate limiting (e.g. max 50/s)
 - probabilistic (e.g. 50%)
 
-::: tip Decision time
+:::tip[Decision time]
 Spans arrive at the collector asynchronously. The collector cannot really tell
 if at some point in time all the spans composing a given trace were already
 collected. This is why one of the parameters affecting sampling is *decision
@@ -280,7 +280,7 @@ decision is made.
 Before making the decision to sample, spans are stored in-memory.
 :::
 
-::: warning Load Balancing
+:::caution[Load Balancing]
 In bigger systems, with multiple collector replicas, it's important to configure
 trace affinity, so that one collector wil receive all the spans belonging to a
 single trace. That way, sampling decisions may be better informed.

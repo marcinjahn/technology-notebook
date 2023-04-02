@@ -19,14 +19,14 @@ There is middleware for:
 - **Authorization** - checks if the endpoint's requirements are fulfilled. If not,
   the request is short-circuited.
 
-::: warning Middleware Order
+:::caution[Middleware Order]
 The Authorization middleware has to be executed after Routing and
 Authentication. Thanks to Routing, the Authorizatin middleware knows what are
 the requirements of the endpoint (the `[Authorize]` attributes). Thanks to
 Authentication, the `User` property of `HttpContext` is set.
 :::
 
-::: tip Authorization Filter
+:::tip[Authorization Filter]
 Prior to ASP.NET Core 3.0, there was no `AuthorizationMiddleware`. Instead, an
 Authorization filter was used.
 :::
@@ -71,7 +71,7 @@ services.AddAuthorization(options =>
 });
 ```
 
-::: tip
+:::tip
 Some other solutions, like Open Policy Agent, store policies and execute them
 externally from the app's code being protected (e.g. in a sidecar).
 :::
@@ -108,7 +108,7 @@ success or fail result, which we can use to either continue execution or return
 To define such custom policies, we need `IAuthorizationRequirement`(s) and
 `AuthorizationHandler<T,U>`. We also need to registed the policy in bootstrap.
 
-::: tip Business Logic
+:::tip[Business Logic]
 It might be undesirable to depend on ASP.NET Core's components (like
 `IAuthorizationService`) in our business logic. In such case we could create the
 authorization logic entirely on our own.

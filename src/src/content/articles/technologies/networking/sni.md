@@ -29,7 +29,7 @@ During the client-hello of TLS 1.3, SNI is sent - a domain name that we're
 trying to reach. This way, the server can send server-hello with the right
 certificate.
 
-::: warning Plain Text
+:::caution[Plain Text]
 The SNI information (domain name) is unencrypted. The **Encrypted Client Hello
 (ECH)** (previously ESNI) resolves that problem (TLS 1.3 only).
 :::

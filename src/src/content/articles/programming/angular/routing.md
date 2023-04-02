@@ -54,7 +54,7 @@ specify the exact placement of that component:
 The routes array should generally contain a wildcard route that handles all bad
 links. Usually, it would redirect the user to some 404 page.
 
-::: danger Order of Routes
+:::danger[Order of Routes]
 The order of the routes matters! We should always place the wildcard route at
 the end, otherwise some meaningful route could be handled as 404.
 :::
@@ -125,7 +125,7 @@ The link above is applied to the host of the page. If we didn't include the `/`,
 the `home` segment would be applied to the currently open page. It works
 differently in [Programmatic Navigation](#navigation-in-code)!
 
-::: tip Array
+:::tip[Array]
 We can also split our link into segments, and use it like this:
 
 ```html
@@ -152,7 +152,7 @@ The element that has the directive on it will have the "active" class attached
 to it when the link is active. The directive can be attached on the `<a>` or on
 some element that wraps it, like in the example above.
 
-::: warning Exact
+:::caution[Exact]
 By default, the `routerLinkActive` directive applies the active class to
 any link that is part of the current URL. For examle, a link to "/" would
 always be marked as active, because it's always going to be a part of URL. In
@@ -184,7 +184,7 @@ export class SomeComponent {
 }
 ```
 
-::: tip Dependency Injection
+:::tip[Dependency Injection]
 Router can be injected into classes, just like any other service.
 :::
 
@@ -397,7 +397,7 @@ in some way.
 
 Guards are services and we normally store them in `*.service.ts` files.
 
-::: tip Provide
+:::tip[Provide]
 A guard, like any service, needs to be `provided` somewhere.
 :::
 
@@ -432,12 +432,12 @@ return one of:
 - `Observable<bool | UrlTree>`
 - `Promise<bool | UrlTree>`
 
-::: tip
+:::tip
 The actual logic of checking whether the user is authorized would probably be
 put in some other service.
 :::
 
-::: warning
+:::caution
 If we try to naviagate to the same page that we're currently in, guard for that
 page will not be executed by default. This might be a problem when we want to
 log the user out and navigate them to the same page, which normally should be
@@ -461,7 +461,7 @@ if (notAuthorized) {
 
 The `router` is an instance of a `Router`.
 
-::: tip
+:::tip
 It's OK to return either a boolean `true` or an `UrlTree` in the same guard
 depending on the success/failure of the checked condition.
 :::
@@ -494,7 +494,7 @@ const routes: Routes = [
 The `/users` endpoint is protected by our guard. If we applied the guard to the
 `/movies` route, the child of it would also use it.
 
-::: tip Guarding Children
+:::tip[Guarding Children]
 If we just want to protect all the children of some route, and not the "parent"
 route, our guard can implement `CanActivateChildren`. Then, we apply the guard
 to the "parent" route, and the guard will be executed only on children.
@@ -541,7 +541,7 @@ export class CanDeactivateGuard implements CanDeactivate<DeactivatableComponent>
 }
 ```
 
-::: tip DeactivatableComponent
+:::tip[DeactivatableComponent]
 `DeactivatableComponent` is not part of Angular. It's a custom interface that
 was needed to somehow connect the guard to the protected component (with the
 help of generic class).
@@ -598,7 +598,7 @@ const routes: Routes = [
 When a given component needs some external data to be loaded before it can be
 displayed, custom **Resolvers** can be used.
 
-::: tip Provide
+:::tip[Provide]
 A resolver, like any service, needs to be `provided` somewhere.
 :::
 

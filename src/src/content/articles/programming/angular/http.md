@@ -39,7 +39,7 @@ By default, all these methods return an `Observable`. We can use
 [operators](./observables.md#operators) on them. [Error
 handling](./observables.md#error-handling) is also the same as in `Observables`.
 
-::: warning
+:::caution
 The requests will actually NOT be sent out if nothing subscribes to 
 the returned `Observable`!
 
@@ -47,7 +47,7 @@ We do not have to `unsubscribe()` from the observable, it's managed
 by Angular.
 :::
 
-::: tip Body
+:::tip[Body]
 Angular will serialize objects that should be sent as a body of the request
 behind the scenes.
 :::
@@ -68,7 +68,7 @@ let sub = httpClient.get("api.com", {
 })
 ```
 
-::: tip Events
+:::tip[Events]
 We can also observe `'events'` This one will bring multiple messages to
 subscribers, informing about the stages that the request is at (e.g. `Sent`,
 `Response`, etc.).
@@ -134,7 +134,7 @@ What we're doing above is just the [DI](./services.md). We treat
 `HTTP_INTERCEPTORS` as a placeholder for actual interceptors. Angular's inner
 code asks for `HTTP_INTERCEPTORS` and it is given whatever we register.
 
-::: tip Multiple Interceptors
+:::tip[Multiple Interceptors]
 Here's how we'd register multiple interceptors:
 
 ```ts
@@ -156,7 +156,7 @@ The order of execution of the interceptors pipeline is the same as the order of
 their registration.
 :::
 
-::: warning
+:::caution
 In order to restrict the interceptor only to some sub-group of requests, we need
 to filter requests out in the interceptor itself. All the interceptors are
 invoked for any HTTP request.

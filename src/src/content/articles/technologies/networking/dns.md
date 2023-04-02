@@ -9,7 +9,7 @@ lang: en-US
 
 Here's a diagram of how DNS works:
 
-![](./assets/dns.png)
+![](../../../assets/dns.png)
 
 We assume that there is some internal DNS server that we're reaching out to
 first. It could be a DNS server hosted on our gateway.

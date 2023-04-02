@@ -11,7 +11,7 @@ We can use the default method of adding `DataAnnotations` attributes (like
 `[Required]`), build custom `DataAnnotations` or use *FluentValidation* package.
 For ASP.NET Core we need to install *FluentValidation.AspNetCore*.
 
-::: danger
+:::danger
 The validation status has to be checked explicitly with `ModelState.IsValid`,
 unless we use `[ApiController]` that does it automatically.
 :::

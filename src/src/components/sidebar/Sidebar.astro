@@ -25,11 +25,11 @@ function getArticleTitle(endOfPath: string) {
         .find(a => a.slug === articleSlug || a.slug + '/' === articleSlug)
         ?.data.title;
 
-    return title ?? "UNKNOWN"
+    return title ?? "Unknown"
 }
 ---
 
-<ul>
+<ul class="sidebar-list">
     {
         items.map((item) =>
             typeof item === "string" ? (
@@ -66,7 +66,7 @@ function getArticleTitle(endOfPath: string) {
 </ul>
 
 <style>
-    ul {
+    .container {
         margin-top: 0;
         padding-left: 0;
     }

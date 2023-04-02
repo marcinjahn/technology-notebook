@@ -34,7 +34,7 @@ The `NgModule` decorator has the following options:
 - **declarations** - here, we register all the **components**, **directives**, and
   **pipes**.
 
-  ::: warning
+  :::caution
   A single entity may only be declared once! Two or more modules can't declare the same thing.
   :::
 
@@ -82,13 +82,13 @@ different components. For example, if both `AppModule` and `MyModule` have
 some declared components that make use of `<ng-outlet>`, we should import
 `RouterModule` into both of them.
 
-::: tip Services
+:::tip[Services]
 The `HttpClientModule` is a bit "special". Since it does not expose anything
 other than services (provides them), it does not need to be imported into every
 module that needs `HttpClient`. Services can be injected without that.
 :::
 
-::: warning BrowserModule
+:::caution[BrowserModule]
 The `BrowserModule` is even more "special". It should be imported only once into
 the `AppModule` and nowhere else. Since features like `ngIf` and `ngFor` come
 from that module, that would be a bit limiting. Because of that, the other
@@ -125,7 +125,7 @@ const routes: Routes = [
 export class ProductsRoutingModule { }
 ```
 
-::: tip forChild
+:::tip[forChild]
 In the main `AppRoutingModule` we usually use `RouterModule.forRoot()` method. In
 these feature-specific route modules, we use `RouterModule.forChild`. In the
 end, all these routes will be merged together. `forChild` is also needed to
@@ -155,7 +155,7 @@ Lazy loading makes sense especially if our users are not going to typically
 visit all the views during their session. If they're not going to even see
 `/products`, why would they download it.
 
-::: tip
+:::tip
 Not all modules should be lazy loaded. If our app has some "core" feature
 areas that are always visited by the users, it probably doesn't make sense
 to lazy load them.
@@ -226,14 +226,14 @@ array would eagerly load the module.
 
 With that, the code is split into bundles, each one fetched as needed.
 
-::: danger Imports
+:::danger[Imports]
 With lazy loading, it becomes quite important to properly define ES imports.
 Anything that we import in our files gets added to our bundle. Make sure to
 import only the stuff you need. It's common to forget about cleaning up
 the imports after some refactoring.
 :::
 
-::: tip Angular Modules
+:::tip[Angular Modules]
 With lazy loading, also the Angular's `vendor.js` bundle may get decreased.
 For example, if we'r using forms only in some feature area, after introducing
 lazy loading, `FormsModule` will be fetched together with that feature area

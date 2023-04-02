@@ -12,7 +12,7 @@ like reference counting. There are a few types of smart pointers in Rust.
 
 References borrow data, while smart pointers often own the data.
 
-::: tip 
+:::tip[]
 `String` and `Vec<T>` are smart pointers! They own some memory and can
 manipulate it. They have metadata (like capacity).
 :::
@@ -58,7 +58,7 @@ as many times as needed until the proper type is found. E.g., if we had
 
 > `&Box<String>` -> `&String` -> `&str`
 
-::: tip DerefMut
+:::tip[DerefMut]
 Similar to `Deref` is the `DerefMut` trait. It enables resolving of mutable
 references `mut&`.
 :::
@@ -73,7 +73,7 @@ will deallocate the memory on the heap.
 The `Drop` trait has one method - `drop()`. Compiler will call it automatically
 when the value goes out of scope.
 
-::: tip Dropping manually
+:::tip[Dropping manually]
 If we need to destruct an instance before its end of scope, we can call
 `drop(instance)`. It's not the same `drop()` as the one implemented via the
 `Drop` trait! Calling that one explicitly is not allowed.
@@ -113,7 +113,7 @@ let list = Cons(1, Cons(2, Cons(3, Nil)));
 
 This enum does not compile; its size is unknown.
 
-![](./assets/inifinite-struct-size.png)
+![](../../../assets/inifinite-struct-size.png)
 
 Here's a version with a `Box<T>`:
 
@@ -129,7 +129,7 @@ let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
 Only the `i32` 1 and the first `Box<T>` are stored on the stack. The rest is on
 the heap:
 
-![](./assets/struct-of-known-size.png)
+![](../../../assets/struct-of-known-size.png)
 
 ## Rc
 
@@ -141,11 +141,11 @@ data, but we don't know which one will be the last to do that. Otherwise, we
 could use the "normal" ownership concepts. `Rc` allows to have multiple
 **immutable references**. Mutable references would bring chaos.
 
-::: danger Multi-threading
+:::danger[Multi-threading]
 `Rc<T>` is only for single-threaded scenarios!
 :::
 
-::: tip Graphs
+:::tip[Graphs]
 `Rc<T>` is useful in graph-like structures where nodes may be pointed at by
 multiple other nodes.
 :::
@@ -166,17 +166,17 @@ fn main() {
 }
 ```
 
-]![](./assets/graph-with-rc.png)
+]![](../../../assets/graph-with-rc.png)
 
 There are 3 references to `a`, all of them encapsulated within `Rc`.
 The value will "live" as long as any `Rc` instance still points to it.
 
-::: tip Performance
+:::tip[Performance]
 `clone()` on `Rc` is cheap. It just increments reference count. It's cheaper to
 clone `Rc` than to clone the actual value that `Rc` points to.
 :::
 
-::: tip Check count
+:::tip[Check count]
 We can check the current reference count of `Rc` with `Rc::strong_count(&a)`,
 where `&a` is a reference to an actual instance of `Rc`.
 :::
@@ -195,7 +195,7 @@ referred to to be dropped.
 Since the value begind `Weak<T>` is uncertain it needs to be retrieved using 
 the `upgrade()` method that returns `Option<T>`.
 
-::: tip Reference Cycles
+:::tip[Reference Cycles]
 `Weak` is useful for protection agains reference cycles. If some node referes to
 another via `Rc`, it's a strong connection. If the other node needs to have a
 reference to the first one as well, it would use `Weak`. That way, the
@@ -218,12 +218,12 @@ With `RefCell<T>`, these invariants are enforced at runtime. With references, if
 you break these rules, you’ll get a compiler error. With `RefCell<T>,` if you
 break these rules, your program will panic and exit.
 
-::: tip Why?
+:::tip[Why?]
 The `RefCell<T>` type is useful when you’re sure your code follows the borrowing
 rules but the compiler is unable to understand and guarantee that.
 :::
 
-::: danger Multi-threading
+:::danger[Multi-threading]
 `Rc<T>` is only for single-threaded scenarios!
 :::
 
@@ -265,7 +265,7 @@ mock that is supposed to keep every call to `send()` for verification later on.
 stores the invocations. We can get a mutable reference to that vector with
 `borrow_mut()`.
 
-::: tip
+:::tip
 `RefCell` also allows to get an immutable reference using `borrow()`.
 :::
 
@@ -274,7 +274,7 @@ out of it. `RefCell`, following the borrowing rules still allows multiple
 immutable references or only one mutable reference at a time! Breaking these
 rules results in a panic (at runtime).
 
-::: tip
+:::tip
 We can combine the capabilities of `Rc` and `RefCell` to be able to get
 **multiple owners** of **mutable** data. An example is
 [here](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html#having-multiple-owners-of-mutable-data-by-combining-rct-and-refcellt).

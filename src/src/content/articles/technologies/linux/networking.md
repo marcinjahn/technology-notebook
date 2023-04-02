@@ -56,20 +56,20 @@ The rules have one of the following outcomes:
 - switch to another chain
 
 
-::: warning Persistance
+:::caution[Persistance]
 The rules are stored in memory. We need to explicitly persist them to have them
 working after a restart.
 :::
 
 There are some default tables: filter, NAT, Mangle.
 
-::: danger IPv6
+:::danger[IPv6]
 iptables does not handle IPv6. There is a separate package for that: ip6tables.
 :::
 
 #### Filter Table
 
-::: tip Default
+:::tip[Default]
 Filter table is the default one.
 :::
 
@@ -85,7 +85,7 @@ The order of the rules matters, since they are examined from top to bottom. We
 should put the rules that are to be the most relevant in our scenario close to
 the top, for better performance.
 
-::: tip Accept
+:::tip[Accept]
 By default, if a packets goes through all of the rules and none is matched, it
 will be ACCEPTed.
 
@@ -106,7 +106,7 @@ iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 The MASQUERADE target will use the IP address of eth1 for all traffic that
 leaves eth1.
 
-![](./assets/nat.png)
+![](../../../assets/nat.png)
 
 
 #### Mangle Table

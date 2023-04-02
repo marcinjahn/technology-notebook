@@ -10,7 +10,7 @@ Pods can communicate with each other using private IP address space. They can be
 on different nodes, but K8s handles appropriate routing. For a pod, all other
 pods are on the same LAN.
 
-![](./assets/pods-network-flat.png)
+![](../../../assets/pods-network-flat.png)
 
 Problems:
 
@@ -23,11 +23,11 @@ single IP address regardless of how many replicas are deployed.
 Service's IP never changes, it's static, unlike the IPs of pods (pods die, and
 new ones get created).
 
-::: tip
+:::tip
 Services make the pods accessible at one static entry point (IP), no matter how
 many replicas there are.
 
-![](./assets/k8s-service.png)
+![](../../../assets/k8s-service.png)
 :::
 
 Services operate at the Layer 4 of the [OSI
@@ -50,7 +50,7 @@ pod, the namespace must be appended to the URL. Examples:
 - `http://quiz.kiada` - when the `quiz` service is in another namespace (called
   `kiada`)
 
-::: tip Other URLs
+:::tip[Other URLs]
 Services are resolvable with:
 
 - `<service-name>` - same NS
@@ -69,7 +69,7 @@ pod.
 
 Services use **label selectors** to find pods that belong to a Service.
 
-![](./assets/service-binding-to-pods.png)
+![](../../../assets/service-binding-to-pods.png)
 
 ## Services types
 
@@ -85,7 +85,7 @@ K8s supports the following Service types:
   extension of NodePort. The pods will be accessible via a new IP address
   belonging to the load balancer.
 
-![](./assets/load-balancer-service.png)
+![](../../../assets/load-balancer-service.png)
 
 - **ExternalName** - creates CNAME records in K8s DNS. They have no clusterIP.
   The client gets the IP of the CNAMEd service.
@@ -120,7 +120,7 @@ balancer -> node -> potentially another node if first one didn't have a pod ->
 pod).
 Additionally, original client's IP is lost due to these hops.
 
-::: warning
+:::caution
 The Load Balancer service allows to exposes just one service outside under a
 single IP address. [Ingresses](./ingress.md) remove that limitation.
 :::
@@ -169,7 +169,7 @@ use the service as normal, it can. The DNS will randomly return any pod's IP and
 the client will talk directly to a pod. DNS-aware clients can make use of the
 advantages listed above though.
 
-![](./assets/headless-services.png)
+![](../../../assets/headless-services.png)
 
 Headless services are created by placing `clusterIP: None` in the YAML definition.
 

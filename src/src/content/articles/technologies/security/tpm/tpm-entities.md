@@ -66,7 +66,7 @@ Since the result is deterministic if we always supply the same "M" (measurement)
 values in the same sequence, it can be used to verify if the sequence is as
 expected.
 
-::: warning Reading PCRs
+:::caution[Reading PCRs]
 The result of `TPM2_CC_PCR_Read` cannot be trusted. It returns PCR values, but
 with no security guarantees. An attacker can MITM your communication with the
 TPM, and forge arbitrary `TPM2_CC_PCR_Read` responses.

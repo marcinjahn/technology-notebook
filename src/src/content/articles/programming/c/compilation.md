@@ -57,7 +57,7 @@ g++ main.cpp add.cpp -o program
 
 The result is an executable file `a.out`.
 
-::: tip Make
+:::tip[Make]
 With our projects growing in size, more source files will be present.
 The listing of these files need to be provided to the compiler.
 To simplify the process, `Makefile` and `make` should be used.
@@ -175,7 +175,7 @@ _Z3addii:
 	.section	.note.GNU-stack,"",@progbits
 ```
 
-::: tip
+:::tip
 This code was generated on an ARM64 machine.
 :::
 
@@ -237,7 +237,7 @@ Linker "glues" together the `.o` files. It also can link dynamic libraries
 (`.so` files) that may come form the "outside" of our solution (like some
 standard libraries). An example of it could be "iostream".
 
-::: tip .so files
+:::tip[.so files]
 The `.so` shared library might be generated with `gcc -shared -fPIC lib.c -o
 lib.so`.
 
@@ -274,7 +274,7 @@ libm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffff8fb54000)
 libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffff8fb30000)
 ```
 
-::: tip Other OSs
+:::tip[Other OSs]
 The `.so` files are Linux dynamic libraries. Windows uses `.dll`, and macOS uses
 `.dylib`.
 :::

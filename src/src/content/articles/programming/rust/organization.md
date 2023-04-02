@@ -153,7 +153,7 @@ pub fn eat_at_restaurant() {
 
 Relative paths can be used with `use` as well.
 
-::: tip 
+:::tip[]
 There's a "best practice" to bring functions via their containing
 module, and not the function name directly. That makes it more clear that the
 function is not local when we call it. Other items should be brought in

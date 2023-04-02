@@ -118,7 +118,7 @@ public Task<decimal> GetStockPriceForAsync(string companyId)
 }
 ```
 
-::: tip Debug vs Release
+:::tip[Debug vs Release]
 In the Debug mode, the generated state machine is a class. In the Release mode,
 it's a struct.
 :::

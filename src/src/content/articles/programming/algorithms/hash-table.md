@@ -17,7 +17,7 @@ They are really fast when looking up items.
 - Insert - O(1)
 - Delete - O(1)
 
-::: warning O(n)
+:::caution[O(n)]
 In worst case scenario, all these operations run in O(n) when hash collision
 occurs. However, that's a rare situtation, so we still consider all the above
 operations to have O(1) complexity.

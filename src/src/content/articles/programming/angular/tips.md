@@ -22,7 +22,7 @@ it gets loaded.
 We can mark any HTML element with a reference to be able to access it easily
 from somewhere else.
 
-::: tip Renderer2
+:::tip[Renderer2]
 It's recommened to use [Renderer2](#renderer2) instead of accessing the DOM
 directly.
 :::
@@ -37,7 +37,7 @@ Here's an example:
 
 We're able to pass a reference to a `<p>` element when clicking a button.
 
-::: warning Only Template
+:::caution[Only Template]
 This way, we can access references only from the template!
 We can't access them from the TS code. Read on to learn how
 to achieve the latter.
@@ -57,7 +57,7 @@ someMethod() {
 }
 ```
 
-::: warning
+:::caution
 If we're about to access the reference from `ngOnInit` [lifecycle
 hook](./components.md#component-lifecycle), the `@ViewChild` decorator requires
 the `{ static: true }` argument as well:
@@ -70,7 +70,7 @@ the `{ static: true }` argument as well:
 yet...)
 :::
 
-::: tip
+:::tip
 We can also access other components or directives this way with:
 
 ```ts
@@ -146,7 +146,7 @@ const sub = this.someService.someEvent.subscribe((data) => {
 sub.unsubscribe();
 ```
 
-::: warning
+:::caution
 The problem with this approach is that now everyone who has access to
 `someService` can produce/consume events.
 :::

@@ -24,7 +24,7 @@ Middleware can short-circuit the request causing it not to be passed to the
 middleware parts behind it. If some middleware receives a request, it will also
 receive a response going back.
 
-::: tip 404
+:::tip[404]
 ASP.NET Core adds a middleware returning `404` in the end of the pipeline.
 If none of our middleware handles the requests, that `404` one handles it.
 :::
@@ -44,7 +44,7 @@ Often, middleware comess with extension methods that are more readable:
 app.UseWelcomePage(); // calls the above behind the scenes
 ```
 
-::: tip Use
+:::tip[Use]
 Methods starting with `Use` are a convention for adding middleware.
 :::
 
@@ -62,7 +62,7 @@ handle all errors. Useful middleware:
   together with the `ExceptionHandlerMiddleware`.
 
 
-::: tip Error Loop
+:::tip[Error Loop]
 In case of an exception, the `ExceptionHandlerMiddleware` reexecutes the
 middleware pipeline by redirecting to `/Error` (redirecting internally, not with
 30X). If during that redirection another exeption is thrown, a raw error will be

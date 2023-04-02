@@ -39,7 +39,7 @@ greetWith("Mary");
 The `"Hello"` is captured in a closure. The function is now in a **curried**
 form.
 
-::: tip Haskell
+:::tip[Haskell]
 In Haskell, the above behavior is a normal behavior of any function. Whenever we
 define a function with multiple parameters, in reality, we're creating partial
 functions. The syntax of Haskell makes it very natural.
@@ -66,7 +66,7 @@ public static Func<T2, R> Apply<T1, T2, R>(this Func<T1, T2, R> func, T1 paramet
     t2 => func(t1, t2);
 ```
 
-::: tip
+:::tip
 `T1` and `T2` are the types of `func`'s parameters. `R` is the type of the
 `func`'s output.
 
@@ -89,7 +89,7 @@ Partial function application allows us to create very generic functions that may
 be turned into more specific ones. The consuming code does not need to know that
 it's invoking a partial function.
 
-::: danger
+:::danger
 The `Apply` example above would not look that nice if `greet` was a method (and
 not a delegate). In such a case, the compiler does not infer the method as a
 `Func` automatically.
@@ -116,7 +116,7 @@ var greetWith = SomeClass.GreetFactory().Apply("Hello");
 ```
 :::
 
-::: danger Generic Functions
+:::danger[Generic Functions]
 Unfortunately C# does not allow us to defer the resolution of generic types. The
 first time we execute the `Apply` function, the specific type `T` needs to be
 provided.
@@ -144,7 +144,7 @@ var greetWith = curriedGreet("Hello");
 It's very similar to `Apply`. However, `Curry` does not expect any `t1`. It just
 transforms the original function into a curried one.
 
-::: tip
+:::tip
 `Apply` and `Curry` are very generic. It is OK to create our own custom functions
 that turn other functions into specialized forms.
 

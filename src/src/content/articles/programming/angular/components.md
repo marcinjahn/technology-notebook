@@ -79,7 +79,7 @@ export class AppComponent {
 s;
 ```
 
-::: tip
+:::tip
 Inside of `{{}}` you can actually have any JS/TS expression, like a call to some
 method.
 
@@ -106,7 +106,7 @@ export class ServersComponent implements OnInit {
 }
 ```
 
-::: tip innerText
+:::tip[innerText]
 Every tag has `innerText` property, which sets the content of the tag, e.g.:
 
 ```html
@@ -122,7 +122,7 @@ produces
 The `{{}}` would also work.
 :::
 
-::: warning Brackets vs. no brackets
+:::caution[Brackets vs. no brackets]
 We don't always have to provide square brackets when binding to some `@Input`.
 
 If brackets are there, the value is treated as an expression.
@@ -187,7 +187,7 @@ The parent comonent would attach to that event like this:
 The `onUserCreated` would be some method defined on that parent. The `$event`
 would be the instance of `User` the `MyComponent` passed to the event.
 
-::: tip
+:::tip
 `EventEmitter<>` and `Output` must be imported from `@angular/core`.
 :::
 
@@ -212,7 +212,7 @@ The parent component would pass data into `MyComponent` like this:
 <app-my-component [name]="Steve"></app-my-component>
 ```
 
-::: tip Aliasing
+:::tip[Aliasing]
 We can change the property's name that the parent sees with:
 
 ```ts
@@ -273,7 +273,7 @@ From the `SomeComponent` (that received the paragraph into its `<ng-content>`):
 @ViewContent('paragraph') paragraph: ElementRef;
 ```
 
-::: warning
+:::caution
 If you're about to use the `ElementRef` from the `ngOnInit` hook, you should add
 `{ static: true }`:
 
@@ -311,7 +311,7 @@ would not be even initialized yet. It will be initialized in the
   checked by Angular.
 - `ngOnDestroy` - called once the component is about to be destroyed.
 
-::: tip Imports
+:::tip[Imports]
 Each lifecycle method implementation requires our component to implement a
 specific type. For example, `ngOnInit` requires `OnInit` to be implemented.
 :::

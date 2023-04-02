@@ -19,11 +19,11 @@ a **pipe**. It's built in Angular and it turns the input into an uppercase
 string. The source of the string (component's property) does not get modified,
 it's just displayed uppercase in the browser.
 
-::: tip Chaining
+:::tip[Chaining]
 We can chain multiple pipes together to apply some modifications sequentially.
 :::
 
-::: tip Not only strings
+:::tip[Not only strings]
 Pipes might work on any kind of data, not only strings. Additionally, they are
 not only applicable to `{{ }}` outputs, but also to `ngFor`. For example, we
 could use a pipe to filter some elements of the array.
@@ -43,7 +43,7 @@ Some pipes support configuration via parameters. Here's an example of how to use
 The `DatePipe` pipe accepts format parameter. In this case, we used the
 "shortTime" format.
 
-::: tip More parameters
+:::tip[More parameters]
 If there are more paremeters, we separate them with colons (`:`).
 :::
 
@@ -92,7 +92,7 @@ The custom pipe can be used just like any other pipe:
 <p>{{ description | truncate:50 }}</p>
 ```
 
-::: tip ng CLI
+:::tip[ng CLI]
 We can use ng CLI to generate a new pipe: `ng g p <name>`.
 :::
 

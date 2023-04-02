@@ -22,7 +22,7 @@ algorithm itself secret.
 
 Examples: MD5 (broken), SHA-1 (broken), SHA-2, SHA-3
 
-::: tip SHA-2 and SHA-3 variants
+:::tip[SHA-2 and SHA-3 variants]
 SHA-2/3 comes in different flavours: 224bit, 256bit, 384bit, 512bit.
 SHA-2 omits "2" (e.g. SHA-256).
 SHA-3 includes "3" (e.g. SHA-3-256)
@@ -31,7 +31,7 @@ SHA-3 includes "3" (e.g. SHA-3-256)
 Hash function turns some data into an irreversible **digest**. It's used mostly
 to check if data is correct - if it matches a known hash/digest (data integrity).
 
-::: tip Infinite inputs
+:::tip[Infinite inputs]
 In reality, the second and third properties of hash functions are not possible
 to hold. There are infinite possible inputs to hash functions and a finite
 amount of digests (hash result length is fixed).
@@ -47,12 +47,12 @@ Hash functions have the following properties:
 - collision resistance - there are no two different inputs that result in
   the same output.
 
-::: tip
+:::tip
 The third property implies the second one. They're quite similar. The difference
 is that *second pre-image resistance* requires the input 1 to be fixed.
 :::
 
-::: tip Hashing passwords
+:::tip[Hashing passwords]
 Argon2 hash function is the best choice for hashing passwords.
 :::
 

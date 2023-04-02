@@ -11,7 +11,7 @@ bi-directional communication between the client and the server under a single
 TCP connection. Instead of relying on the traditional request-response model,
 under WebSocket both parties can send messages freely.
 
-::: tip SignalR
+:::tip[SignalR]
 WebSocket is one of the ways how SignalR transfers data. There are also other
 transport protocols supported, but WebSocket is the preferred one.
 :::

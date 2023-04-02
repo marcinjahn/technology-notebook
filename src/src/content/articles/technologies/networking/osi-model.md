@@ -6,7 +6,7 @@ title: OSI Model
 
 # OSI Model
 
-![](https://i.imgur.com/NNcLwn7.png)
+![OSI Model](https://i.imgur.com/NNcLwn7.png)
 
 - Layer 7 - HTTP, SSH, FTP
 - Layer 6 - TLS

@@ -27,7 +27,7 @@ instructions.
 -   `ng generate component whatever` - or simly `ng g c whatever` - generates a
     new component.
 
-    ::: tip Subfolders
+    :::tip[Subfolders]
     `ng g c somefolder/somecomponent` will create `Somecomponent` in the
     `src/app/somefolder` directory.
     :::
@@ -39,7 +39,7 @@ A module is like a package that bundles things together. With simple apps, the
 default `AppModule` is enough. Each component needs to be registered in some
 module (in the `declarations` array).
 
-::: tip ng generate
+:::tip[ng generate]
 `ng generate component` automatically adds the new component to the module's
 `declarations`.
 

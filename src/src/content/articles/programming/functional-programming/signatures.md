@@ -22,7 +22,7 @@ More examples:
 - `(string, (IConnection -> T)) -> T` - one of the parameters is a function that
   takes `IConnection` and returns `T`.
 
-::: tip
+:::tip
 Signatures of functions (name + parameters + return type) are very important,
 they should be as expressive as possible.
 :::
@@ -30,7 +30,7 @@ they should be as expressive as possible.
 Functions that return `void` or `Task` (or "unit") are side-effect functions.
 They do something with the "outside world".
 
-::: tip Arguments order
+:::tip[Arguments order]
 For the functions to be usable with [Patrial
 Application](./partial-application.md), it makes sense to order the arguments
 from the most generic ones to the most specific ones.
@@ -82,7 +82,7 @@ ValueTuple DoSomething()
 }
 ```
 
-::: tip Aliasing
+:::tip[Aliasing]
 `using Unit = System.ValueType;` allows for `Unit` name to be used.
 :::
 
@@ -101,7 +101,7 @@ record None<T> : Option<T>; // None shouldn't need a T, but the compiler require
 record Some<T>(T value) : Option<T>;
 ```
 
-::: warning Maybe
+:::caution[Maybe]
 Sometimes the "Option" concept is referred to as "Maybe".
 :::
 
@@ -112,7 +112,7 @@ exception? Return `null`? Returning `None` is a better way. An example of such a
 function could be a function that parses a `string` into an `int`. Not every
 string is a valid integer.
 
-::: tip Implicit Type Conversions
+:::tip[Implicit Type Conversions]
 C# has a feature that allows one type to be converted to another implicitly. If
 a given `Option` implementation uses that, it allows `null` to be treated as
 `None` and `"data"` as `Option<string>`.
@@ -149,7 +149,7 @@ if (someValue is not null) {
 }
 ```
 
-::: tip
+:::tip
 `Option` can be seen as a specialized container and treated like an
 `IEnumerable`. That way we can use the `Map` (and `ForEach`) patterns with them
 the same way.

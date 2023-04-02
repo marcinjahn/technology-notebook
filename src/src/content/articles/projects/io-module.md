@@ -9,7 +9,7 @@ lang: en-US
 My BSc studies have been concluded with a thesis titled "Wireless analog/digital
 I/O module for mobile devices".
 
-![](./assets/io-module.png)
+![](../../../assets/io-module.png)
 
 ## Technologies
 
@@ -45,16 +45,16 @@ analog input, digital outputs, analog outputs. The user can freely switch
 between those and control the wirelessly connected device with the use of
 implemented virtual switches and sliders.
 
-![](./assets/io-module-uwp-1.png)
+![](../../../assets/io-module-uwp-1.png)
 
-![](./assets/io-module-uwp-2.png)
+![](../../../assets/io-module-uwp-2.png)
 
-![](./assets/io-module-uwp-3.png)
+![](../../../assets/io-module-uwp-3.png)
 
-![](./assets/io-module-uwp-4.png)
+![](../../../assets/io-module-uwp-4.png)
 
 The final device is built on the universal soldering board and it is powered
 from a 9V battery. The performance of the system fully covers the proposed
 goals, both read and set voltages are correct.
 
-![](./assets/io-module-inside.png)
+![](../../../assets/io-module-inside.png)

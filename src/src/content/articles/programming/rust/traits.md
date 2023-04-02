@@ -36,7 +36,7 @@ pub trait Summary {
 }
 ```
 
-::: tip 
+:::tip[]
 Default implementation can call other methods of the same trait (even if
 they don't have default implementations).
 :::
@@ -62,7 +62,7 @@ impl Summary for Tweet {
 }
 ```
 
-::: tip
+:::tip
 We can implement traits only if either the type or trait are local
 to our crate. We can implement traits on existing third-party types!
 :::
@@ -76,7 +76,7 @@ impl Summary for Tweet {}
 
 Or we could overwrite it, the same way as implementing a trait.
 
-::: warning
+:::caution
 Overriding implementation of a trait cannot call the default implementation.
 :::
 
@@ -115,7 +115,7 @@ pub fn notify<T: Summary>(item: &T) {
 }
 ```
 
-::: tip Multiple Traits
+:::tip[Multiple Traits]
 A function can also require more than one trait to be implemented on its parameter:
 
 ```rust
@@ -145,7 +145,7 @@ fn returns_summarizable() -> impl Summary {
 }
 ```
 
-::: warning
+:::caution
 A function defined as the one above can return only **one type**. It
 cannot return either one implementation or another.
 :::
@@ -234,7 +234,7 @@ impl Screen {
 }
 ```
 
-::: tip Pointer
+:::tip[Pointer]
 Trait objects must use some kind of pointer (reference or smart
 pointer).
 :::
@@ -275,7 +275,7 @@ impl Iterator for Counter {
 }
 ```
 
-::: tip Generics
+:::tip[Generics]
 Why not use generics then? According to the
 [book](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html), if we used
 generics, anytime we'd call `next`, we'd have to call it like this:

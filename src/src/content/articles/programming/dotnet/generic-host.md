@@ -13,7 +13,7 @@ Such apps are also perfect to run in:
 - containers
 - system services (e.g. via systemd)
 
-::: tip Kestrel
+:::tip[Kestrel]
 Kestrel itself uses `IHostedService` to run!
 :::
 
@@ -40,7 +40,7 @@ services there (e.g. typed HttpClients). `HttpClient` should be short-lived. We
 could either use `IServiceProvider` to get new typed client in some interval
 (service locator - not ideal) or use `IHttpClientFactory`.
 
-::: tip Singleton
+:::tip[Singleton]
 In general, `IHosterService`s are singletons. If we need to use some service
 that is not a singleton from within, we shouldn't inject them directly. Instead,
 we need to use some factory or `IServiceProvider` (to create scope for example)
@@ -75,12 +75,12 @@ To turn an app into a systemd service, we'd install the
 `Microsoft.Extensions.Hosting.Systemd` package. Then we'd call the
 `UseSystemd()` method on `IHostBuilder`.
 
-::: tip
+:::tip
 Runing as a Windows service is similar, but different package/method combo is
 used.
 :::
 
-::: tip ASP.NET Core
+:::tip[ASP.NET Core]
 ASP.NET Core apps can be installed as services as well.
 :::
 

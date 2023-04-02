@@ -19,7 +19,7 @@ executed. This makes the site appear slow.
 With SSR, the site gets rendered on the server, and the initial load of
 `index.html` brings this file with the actual content already there.
 
-::: tip Code Executed Twice
+:::tip[Code Executed Twice]
 The component logic is executed twice - once on the server, and then in the
 browser. For example, if out `app.component.ts` had a `console.log('Hello')` in
 its `ngOnInit()`, we'd see that log both in the server's logs and in the

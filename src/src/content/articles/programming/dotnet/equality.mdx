@@ -40,9 +40,25 @@ efficiently. If two objects are equal they should have the same hash codes (or
 dictionaries might not work)! Therefore `Equals` and `GetHashCode` should rely
 on the same set of properties to get the result.
 
+:::note[Title]
+abc
+:::
+
+:::tip[Title]
+abc
+:::
+
+:::caution[Title]
+abc
+:::
+
+:::danger[Title]
+abc
+:::
+
 It's recommended to implement hashcodes using XOR operator (`^`):
 
-```
+```csharp {1}
 public override int GetHashCode()
 {
     return prop1.GetHashCode() ^ prop2.GetHashCode()

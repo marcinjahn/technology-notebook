@@ -117,7 +117,7 @@ Examples:
   closure returning bool.
 - `skip()` - skips some items.
 
-::: tip
+:::tip
 `collect()` applied on top of iterator adaptor returns a new collection of
 values.
 :::

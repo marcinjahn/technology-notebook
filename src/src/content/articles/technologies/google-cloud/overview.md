@@ -63,7 +63,7 @@ flowchart TD
     v2.0-alpha --> i7[Instance 1]
 ```
 
-::: tip Default
+:::tip[Default]
 By default, when deploying an app to the project, a "default" service name is
 chosen.
 :::
@@ -94,7 +94,7 @@ Here's a full ASP.NET Core Web API project example:
 
 The app can be deployed with `gcloud app deploy app.yaml`
 
-::: tip Port
+:::tip[Port]
 Apps using runtimes other than "custom" are expected to listed on the port
 provided in the `PORT` environment variable. The "custom" Docker apps are
 expected to listed on port `8080`.

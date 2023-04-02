@@ -1,18 +1,18 @@
-ul {
+.sidebar-list {
     list-style: none;
     padding-left: 1rem;
 }
 
-li.top:not(:last-child) {
+.sidebar-list li.top:not(:last-child) {
     margin-bottom: 1rem;
 }
 
-li.top {
+.sidebar-list li.top {
     font-weight: 700;
     font-size: 1.1rem;
 }
 
-li:not(.top) {
+.sidebar-list li:not(.top) {
     font-weight: 400;
     font-size: 0.9rem;
 }

@@ -45,7 +45,7 @@ MetaMask is a wallet browser extension that allows to connect to the blockchain 
 browser. It can be used in combination with Ganache for local development, or with real
 Ethereum networks as well. 
 
-::: warning Ganache Network ID
+:::caution[Ganache Network ID]
 For some reason, MetaMask does not want to connect with the defaul Ganache
 networkId (5777). Changing Ganache's networkId to 1337 solves the problem.
 :::

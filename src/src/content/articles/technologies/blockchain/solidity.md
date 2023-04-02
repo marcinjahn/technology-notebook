@@ -163,7 +163,7 @@ modifier validPhase(Phase reqPhase) {
 }
 ```
 
-::: tip Parameters
+:::tip[Parameters]
 The modifier above accepts a parameter. A modifier might be defined without any
 parameters.
 :::
@@ -183,7 +183,7 @@ The function above will invoke the modifier with the value `Phase.Regs` (it's an
 enum) passed to it. Only if that modifier succeeds, the transaction may be
 registered.
 
-::: tip Multiple modifiers
+:::tip[Multiple modifiers]
 Multiple modifiers may be applied to a single function. They are executed in the
 same sequence as they are listed on a function.
 
@@ -209,7 +209,7 @@ Contract in case of runtime error.
 
 In case of a revert, all changes done during the execution are reverted.
 
-::: tip
+:::tip
 A reverted transaction is not recorded on the blockchain.
 :::
 
@@ -248,7 +248,7 @@ Emitting example:
 emit AuctionEnded(highestBidder, highestBid);
 ```
 
-::: warning Parameters limit
+:::caution[Parameters limit]
 Maximum three parameters may be used in an event.
 :::
 

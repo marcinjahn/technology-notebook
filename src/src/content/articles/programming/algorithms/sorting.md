@@ -146,7 +146,7 @@ could be:
 - random element
 - something else
 
-::: tip Popularity
+:::tip[Popularity]
 It's the default sorting algorithm in many programming languages (including
 .NET).
 :::
@@ -199,7 +199,7 @@ static void Swap(IList<int> nums, int i1, int i2)
 }
 ```
 
-::: tip Pivot
+:::tip[Pivot]
 In the code, I assumed that the `pivotIndex` is always the last element of the
 sub-array being sorted. Because of that, the loop does not take into account
 values on the right side of the pivot (since there are none). A diffeerent

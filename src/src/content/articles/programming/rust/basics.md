@@ -17,7 +17,7 @@ let a = "abc";
 An assignment like `a = 10` produces a blank type `()` called _unit_. Whenever
 there is no other meaningful response type, `()` is returned.
 
-::: tip Immutability
+:::tip[Immutability]
 Bindings are **immutable** by default.
 :::
 
@@ -243,7 +243,7 @@ it's executed, and `match` is exited.
 
 `match` is very useful with [enums](./enums.md).
 
-::: danger Dropping temporary values
+:::danger[Dropping temporary values]
 Some statements with `let` will not behave the same as statements without `let`.
 
 Here's an exmple with `Mutex`:

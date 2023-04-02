@@ -19,7 +19,7 @@ parameters. These are bound in the handler to parameters/properties.
 app.UseRouing();
 ```
 
-::: tip
+:::tip
 Routing is not case-sensitive
 :::
 
@@ -32,7 +32,7 @@ requests and makes a "note" about the selection in the `HttpContext` object.
 `EndpointMiddleware` looks at that "note" and executes the selected endpoint
 handler.
 
-::: tip Separation of routing and execution
+:::tip[Separation of routing and execution]
 The process of selecting an endpoint and executing it are separated into
 different middleware components. Thanks to it, we can add some other middleware
 between those. That middleware has access to the information which endpoint
@@ -59,7 +59,7 @@ services.Configure<RouteOptions>(options =>
 When defining routes, the template syntax is used making it possible to have
 some parts of the URLs dynamic.
 
-::: tip Binding
+:::tip[Binding]
 Placeholder values from a URL can be used during model binding.
 :::
 
@@ -86,7 +86,7 @@ To avoid weird binding issues we can constraint dynamic parts of the template:
   convertible to an integer
 - `/products/int:max(10)?`
 
-::: warning Binding Exceptions
+:::caution[Binding Exceptions]
 If we have an unconstrained template `/products/{id}` and our handler is
 `OnGet(int id)`, an exception would be thrown if we called "/products/test". The
 framework would try to bind "test" string to the `id` parameter that is an
@@ -112,7 +112,7 @@ routes are created by the `MapRazorPages()` extension method. All files in the
 `Pages` direcotry are analyzed and routes are created for them based on their
 placement.
 
-::: tip Index
+:::tip[Index]
 The `Index.cshtml` files are an exception from that rule. They are mapped to
 both `xyz/` and `xyz/Index` (we could have multiple `Index.cshtml` files in
 different directories).
@@ -146,12 +146,12 @@ The `Url` object is a property on `PageModel` base class. It has various methods
 for building URLs. We can provide some parameters, and the helper will fit this
 into the template of the taget page (either as path, or as query).
 
-::: tip Relative or Absolute
+:::tip[Relative or Absolute]
 We can proivde relative or absolute links. The example above was relative.
 Absolute link (starts from the `Pages` directory) should start from a `/`.
 :::
 
-::: tip Tag Helpers
+:::tip[Tag Helpers]
 To genrerate links in HTML, the Anchor [Tag
 Helper](./razor-pages.md#tag-helpers) is probably the best option.
 :::
@@ -166,13 +166,13 @@ name, and optional parameters.
 var url = Url.Action(nameof(Winter), nameof(Products), new { id = "273" });
 ```
 
-::: tip
+:::tip
 The `Page` and `Action` methods are availble from both the Razor Pages and MVC
 controllers. We can redirect from a Page to a controller and the other way
 around as well.
 :::
 
-::: tip ActionResult
+:::tip[ActionResult]
 Often it's more practical to use the `RedirectToPage` or `RedirectToAction`
 methods. They act similarly as the described methods, but they don't return the
 URLs in code.

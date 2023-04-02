@@ -12,7 +12,7 @@ lang: en-US
 Collections in .NET implement `IEnumerable`. This interface has just one method:
 `GetEnumerator()`. It returns an implementation of `IEnumerator()`.
 
-::: tip Generics
+:::tip[Generics]
 Normally, we don't use non-generic `IEnurable`/`IEnumerator` nowadays, but I'll
 be using these shorter interface names here for simplicity.
 :::
@@ -31,7 +31,7 @@ instance of it from two different services, because none of these services would
 get a full picture of the collection. Instead, each service should retrieve its
 own copy of `IEnumerator` (via `IEnumerable`) and use it.
 
-::: tip Length
+:::tip[Length]
 An important characteristic of the `IEnumerable` is that its length is unknown.
 This is quite useful in scenarios where the data source is huge and counting its
 length would be a huge overhead.
@@ -115,7 +115,7 @@ while(enumerator.MoveNext())
 }
 ```
 
-::: warning Simplification!
+:::caution[Simplification!]
 In reality the generated code is more convoluted, for example it calls
 `Dispose()` in the `finally` block.
 :::
@@ -202,7 +202,7 @@ Here's a quote from [MSDN](https://docs.microsoft.com/en-us/archive/blogs/mattwa
 > builds you a new IQueryable adding a method-call expression node on top of the
 > tree representing the call you just made to Queryable.Where.
 
-::: tip In-memory is OK
+:::tip[In-memory is OK]
 If we had a similar case with LINQ to Objects, `IEnumerable`s would be fine.
 Here's an example:
 

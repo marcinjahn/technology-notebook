@@ -90,7 +90,7 @@ separate TCP connection.
 
 ## Browser Storage
 
-![](https://i.imgur.com/UXLpHD2.png)
+![Browser Storage](https://i.imgur.com/UXLpHD2.png)
 
 The main diference is that cookies are sent to servers, while localStorage and
 sessionStorage stay on the client only. Also, localStorage stays in forever.
@@ -146,7 +146,7 @@ There are at least two ways to enforce HTTPS:
 - Use [HSTS](./hsts) - it's a header that informs the browser to ALWAYS use HTTPS when
   reaching the app.
 
-::: tip ASP.NET Core
+:::tip[ASP.NET Core]
 ASP.NET Core has built-in middleware for both of the points above.
 :::
 

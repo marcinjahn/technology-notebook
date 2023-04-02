@@ -6,7 +6,7 @@ a {
 html {
     color: rgb(11, 11, 11);
     font-family: system-ui, sans-serif;
-    background-color: #7D84B2;
+    background-color: #7d84b2;
 }
 
 code {
@@ -17,6 +17,15 @@ code {
 :root {
     --accent-color: rgb(203, 38, 38);
     --text-color: black;
+}
+
+ul {
+    list-style-type: initial;
+}
+
+h1 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
 }
 
 h2 {
