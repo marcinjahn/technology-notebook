@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import Post from "./Post.astro";
+import Container from "./Container.astro";
+
+const allPosts = await getCollection("posts");
+allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
+---
+
+<div class="container">
+    {
+        allPosts.map((post) => (
+            <div class="post">
+                <Post post={post} />{" "}
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    h2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .post {
+        margin-bottom: 2rem;
+    }
+</style>

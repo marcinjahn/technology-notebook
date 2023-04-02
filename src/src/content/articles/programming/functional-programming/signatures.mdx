@@ -32,7 +32,7 @@ They do something with the "outside world".
 
 :::tip[Arguments order]
 For the functions to be usable with [Patrial
-Application](./partial-application.md), it makes sense to order the arguments
+Application](./partial-application), it makes sense to order the arguments
 from the most generic ones to the most specific ones.
 
 ```csharp
@@ -63,7 +63,7 @@ and cannot be invalid, the function will work with any value of `Age`.
 ## Unit type
 
 The absence of data can be represented with `Unit` instead of `void`. It's
-similar to [Rust's `()` type](programming/rust/basics.md).
+similar to [Rust's `()` type](programming/rust/basics).
 
 A problem with `void` is that it makes it impossible to treat functions that do
 return data similarly as those that don't. If ther is some HOF like this one `T

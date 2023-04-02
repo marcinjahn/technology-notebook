@@ -38,7 +38,7 @@ the value gets deleted automatically. Depending who you ask you might hear that
 this is a form of garbage collection.
 
 Smart pointers might be *shared* or *unique* - the latter one is a bit similar
-to the concept of [Ownership in Rust](/programming/rust/ownership.md) (it even
+to the concept of [Ownership in Rust](/programming/rust/ownership) (it even
 has a *move* operation!).
 :::
 
@@ -53,13 +53,13 @@ Pointers are useful for:
 
 Memory is organized as follows:
 
-![](../../../assets/memory.png)
+![](../../../../assets/memory.png)
 
 Each slot is addressed.
 
 A pointer stores an address to some value in memory:
 
-![](../../../assets/pointer-in-memory.png)
+![](../../../../assets/pointer-in-memory.png)
 
 Pointer itself also has an address in memory, it also is some variable.
 In the case above, `&p` is `64`.
@@ -133,7 +133,7 @@ int (*p)[3] = B; // OK; 3 is needed, because pointer arithmetics needs to "know"
                  // how many bytes to add in operations like p++
 ```
 
-![](../../../assets/multi-dimensional-arrays.png)
+![](../../../../assets/multi-dimensional-arrays.png)
 
 Pointer arithmetic examples:
 
@@ -154,7 +154,7 @@ Pointer arithmetic examples:
 `**B` is the value of the first sub-array.
 :::
 
-:::tip[]
+:::tip
 In general, `array + i` moves us to the next element within the array. That way,
 `B` being an array of arrays, `B + i` moves us to the next sub-array.
 :::
@@ -169,7 +169,7 @@ int **q = &p;
 
 A `p` points to `x`. `q` points to `p`.
 
-![](../../../assets/pointer-to-pointer.png)
+![](../../../../assets/pointer-to-pointer.png)
 
 In this exmple we have even `int ***` pointer (a pointer to pointer to pointer).
 
@@ -195,12 +195,12 @@ understanding pointers.
 When a function accepts an array as an argument, a pointer to an array is
 passed:
 
-![](../../../assets/array-in-argument.png)
+![](../../../../assets/array-in-argument.png)
 
 This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
 `SumOfElements()` (4 bytes - just the size of a pointer to integer!).
 
-:::tip[]
+:::tip
 `Function(int[] A)` is treated the same as `Function(int *A)`. A typical C
 `main` function has both `char *argv` and `int argc` as arguments - a pointer to
 arguments and a count of arguments.
@@ -241,7 +241,7 @@ int main()
 }
 ```
 
-Instead, we should allocate the result on the [heap](./dynamic-memory.md) and
+Instead, we should allocate the result on the [heap](./dynamic-memory) and
 return a pointer to it.
 
 ## Function Pointers

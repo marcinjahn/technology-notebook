@@ -73,7 +73,7 @@ information attached to the input of the chosen rpc.
 
 ### .NET
 
-Read [here](/programming/dotnet/grpc.md).
+Read [here](/programming/dotnet/grpc).
 
 ### gRPC-Web
 

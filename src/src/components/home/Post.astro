@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Container from "./Container.astro";
+
+interface Props {
+    post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+
+const { Content } = await post.render();
+---
+
+<Container>
+    <div class="content">
+        <h3>{post.data.title}</h3>
+        <h4>{post.data.publishDate.toDateString()}</h4>
+        <Content />
+    </div>
+</Container>
+
+<style></style>

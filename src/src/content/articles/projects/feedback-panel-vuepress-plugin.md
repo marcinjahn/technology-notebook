@@ -11,7 +11,7 @@ lang: en-US
 You can find the code at [GitHub](https://github.com/marcinjahn/vuepress-plugin-feedback-panel).
 
 This plugin is listed on [Awesome
-VuePress](https://github.com/vuepress/awesome-vuepress/blob/main/v1.md).
+VuePress](https://github.com/vuepress/awesome-vuepress/blob/main/v1).
 
 A VuePress 1.x plugin that adds a global feedback widget to your website.
 

@@ -54,8 +54,8 @@ They support only **Read** and **Extend** operations. They store system state.
 
 PCRs are extended as follows:
 
-1. PCR <- 0
-2. PCR <- Hash(PCR || M)
+1. PCR - 0
+2. PCR - Hash(PCR || M)
 3. ...
 
 PCR starts with value 0. Then it gets extended by a hash of current PCR
@@ -135,7 +135,7 @@ where it belongs can evict it. TPM has limited amount of persistent memory.
 It's a collection of entities that are related and managed as a group. Those
 entities include permanent objects (the hierarchy handles), primary objects at
 the root of a tree, and other objects such as keys in the tree. NV indexes
-belong to a hierarchy but aren’t in a tree. Entities, other than permanent
+belong to a hierarchy but aren't in a tree. Entities, other than permanent
 entities, can be erased as a group.
 
 The cryptographic root of each hierarchy is a seed: a large random number that

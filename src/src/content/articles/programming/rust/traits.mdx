@@ -36,7 +36,7 @@ pub trait Summary {
 }
 ```
 
-:::tip[]
+:::tip
 Default implementation can call other methods of the same trait (even if
 they don't have default implementations).
 :::
@@ -45,7 +45,7 @@ they don't have default implementations).
 
 A type may implement a trait as follows:
 
-"`rust
+```rust
 // type itself
 pub struct Tweet {
   pub username: String,
@@ -70,7 +70,7 @@ to our crate. We can implement traits on existing third-party types!
 To use a trait that has some default implementation (without overwriting it), we
 can do it as follows:
 
-"`rust
+```rust
 impl Summary for Tweet {}
 ```
 
@@ -87,7 +87,7 @@ to **extensions in C#**.
 
 Rust does it with the `ToString` method, like this:
 
-"`rust
+```rust
 impl<T: Display> ToString for T {
   // ...
 }
@@ -171,7 +171,7 @@ Another way to debug print is with the use of `dbg!(&instance)`.
 Underneath there's just the `eq` method. The default implementation checks all
 fields of a struct if they're equal.
 
-The `Eq` trait has no methods. ?
+The `Eq` trait has no methods.
 
 ### PartialOrd and Ord
 

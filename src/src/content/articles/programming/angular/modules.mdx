@@ -39,7 +39,7 @@ The `NgModule` decorator has the following options:
   :::
 
 - **imports** - here, we pull in other modules (or other things if [Standalone
-  Components](./standalone-components.md) are being used), either provided by
+  Components](./standalone-components) are being used), either provided by
   external parties (e.g. Angular itself) or our own modules.
 - **exports** - a way to expose some entities to the other modules (those that
   will import the current module). E.g., if I export `RouterModule` from
@@ -73,8 +73,8 @@ throughout different domains into their own module.
 The entities declared in a module (e.g. components) have access ONLY to entities
 that this module declares or imports (services are an exception, more on that
 [later](#dependency-injection)). For example, if I create a `MyModule` module
-with some declared component, I can use `routerLink` in that component only if I
-import `RouterModule` into `MyModule` first. **I think this rule applies only to
+with some declared component, I can use `routerLink` in that component only if I icmport 
+`RouterModule` into `MyModule` first. **I think this rule applies only to
 templates and the components, directives or pipes that we use within them (?)**
 
 It's important to note that we can import the same module multiple times into
@@ -228,8 +228,8 @@ With that, the code is split into bundles, each one fetched as needed.
 
 :::danger[Imports]
 With lazy loading, it becomes quite important to properly define ES imports.
-Anything that we import in our files gets added to our bundle. Make sure to
-import only the stuff you need. It's common to forget about cleaning up
+Anything that we import in our files gets added to our bundle. Make sure to import
+only the stuff you need. It's common to forget about cleaning up
 the imports after some refactoring.
 :::
 

@@ -12,7 +12,7 @@ like reference counting. There are a few types of smart pointers in Rust.
 
 References borrow data, while smart pointers often own the data.
 
-:::tip[]
+:::tip
 `String` and `Vec<T>` are smart pointers! They own some memory and can
 manipulate it. They have metadata (like capacity).
 :::
@@ -113,7 +113,7 @@ let list = Cons(1, Cons(2, Cons(3, Nil)));
 
 This enum does not compile; its size is unknown.
 
-![](../../../assets/inifinite-struct-size.png)
+![](../../../../assets/inifinite-struct-size.png)
 
 Here's a version with a `Box<T>`:
 
@@ -129,7 +129,7 @@ let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
 Only the `i32` 1 and the first `Box<T>` are stored on the stack. The rest is on
 the heap:
 
-![](../../../assets/struct-of-known-size.png)
+![](../../../../assets/struct-of-known-size.png)
 
 ## Rc
 
@@ -166,7 +166,7 @@ fn main() {
 }
 ```
 
-]![](../../../assets/graph-with-rc.png)
+]![](../../../../assets/graph-with-rc.png)
 
 There are 3 references to `a`, all of them encapsulated within `Rc`.
 The value will "live" as long as any `Rc` instance still points to it.

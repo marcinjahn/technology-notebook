@@ -95,7 +95,7 @@ that UID access to some files on the host, we could run `podman unshare chown
 Mounting volumes in rootles context is different than it is with rootful
 environments. In the latter case, whatever you mount, it will probably just work
 without any further tinkering. In rootless podman, you will often experience
-issues with [SELinux](./selinux.md) (if your system uses SELinux MAC). One of
+issues with [SELinux](./selinux) (if your system uses SELinux MAC). One of
 the ways to get around that is to apply the `:z` or `:Z` (private, additionally
 uses MCS) to volume definition. That will apply the right SELinux labeling to
 the files being shared as a volume (only if we're attaching host dir, it is not

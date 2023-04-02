@@ -52,7 +52,7 @@ There is one store, but there are many actions and reducers:
 ### Actions
 
 Actions are the atomic operations that we want to apply on our state. They
-represent the interactions of our users with the data ket in the store. Things
+represent the interactions of our users with the data kept in the store. Things
 such as adding, modifying, deleting data from our state is exposed via actions.
 An action can (optionally) carry some data. Additionally, each action has its
 own `type`. That type is used to inform a reducer about the kind of action that
@@ -161,7 +161,7 @@ NgRx when we [dispatch some action](#dispatch) or on init (with action type set
 to *@ngrx/store/init*).
 :::
 
-:::caution[State Modifications ]
+:::caution[State Modifications]
 Reducer should always return new object(s). Modifications of existing state are
 forbidden! That's why we use the spread operator. If our state is more complex,
 we need to deal with that properly, since the spread operator only does a
@@ -273,7 +273,7 @@ That dispatch will go through NgRx's internals, which will invoke our reducer.
 Based on the action (`AddProduct`) it will update the store with the new
 `product`.
 
-:::caution[]
+:::caution
 Whenever we dispatch some action, it's not just the corresponding reducer that
 gets invoked. All the reducers get invoked! Only one of them will have proper
 handler for the supplied action type, other reducers will just execute their
@@ -294,7 +294,7 @@ this.products$ = this.store.select('productsCatalog');
 
 Any `dispatch` that "modifies" the store, would bring data via the subscription.
 
-:::caution[Unsibscribe]
+:::caution[Unsubscribe]
 Like with any subscription, we need to rememebr to `unsubscribe` on destroy.
 :::
 
@@ -367,7 +367,7 @@ effect that:
    state change.
 
 In some cases though, effects do not emit any actions. Instead, an effect could
-use a [Router](./routing.md) to redirect the user somewhere else. To do that,
+use a [Router](./routing) to redirect the user somewhere else. To do that,
 the `createEffect` function needs to be provided with a second argument:
 
 ```ts
@@ -386,7 +386,7 @@ store to receive the books as soon as they arrive.
 ### Accessing State
 
 Accessing state within an action is possible with the `withLatestFrom`
-[RxJs](./observables.md) operator. It joins the original observable with data
+[RxJs](./observables) operator. It joins the original observable with data
 from some another observable (like some state selector).
 
 The `storeRecipes` effect from up above made use of that operator.
@@ -408,7 +408,7 @@ to see in detail what happens with the store:
 
 An offical package from NgRx
 [@ngrx/router-store](https://www.npmjs.com/package/@ngrx/router-store) is an
-addition that emits [actions](#actions) based on [Router](./routing.md)'s
+addition that emits [actions](#actions) based on [Router](./routing)'s
 activity. Whenever some navigation happens, etc., a specific action type is
 emitted with some payload, allowing us to react to it in our actions or
 reducers. 

@@ -1,5 +1,6 @@
 ---
 import Logo from "../components/home/Logo.astro";
+import Posts from "../components/home/Posts.astro";
 import Text from "../components/home/Text.astro";
 import { siteTitle } from "../static/navigation";
 import BaseLayout from "./BaseLayout.astro";
@@ -10,7 +11,7 @@ const { frontmatter } = Astro.props;
 <BaseLayout pageTitle={siteTitle}>
     <main>
         <Logo />
-        <Text />
+        <Posts />
     </main>
 </BaseLayout>
 

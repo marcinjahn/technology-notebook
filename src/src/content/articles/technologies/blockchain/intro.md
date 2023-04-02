@@ -40,7 +40,7 @@ the consensus of the peer participants.
 
 ### Decentralised vs Distributed
 
-![](../../../assets/distributed-decentralized-cetralized.png)
+![](../../../../assets/distributed-decentralized-cetralized.png)
 
 A **decentralised** system is a subset of a **distributed** system. The main
 difference comes down to where the decision is made and how the distribution of

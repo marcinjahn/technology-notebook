@@ -15,7 +15,7 @@ lang: en-US
 - Delete - O(n)
 
 In cases when lots of inserts/removals are needed, a [Linked
-List](./linked-lists.md) is a better option (unless we add/remove in the
+List](./linked-lists) is a better option (unless we add/remove in the
 middle).
 
 ## Binary Search

@@ -162,7 +162,7 @@ supposed to be used whenever we need to do some side-effect in the middle of a
 data flow. We could use `Map` for that as well, but `Map` shouldn't be used when
 side effects are involved.
 
-![](../../../assets/do-fcn.png)
+![](../../../../assets/do-fcn.png)
 
 `Do` invokes some provided action and returns the provided value; the flow may
 be continued.
@@ -221,7 +221,7 @@ Not every functor is a monad.
 In general, in our programs, we're dealing with either *regular values* or
 *elevated values*.
 
-![](../../../assets/elevated-vs-regular.jpeg)
+![](../../../../assets/elevated-vs-regular.jpeg)
 
 **NOTE:** The image above has regular/elevated naming reversed. Sorry, my bad! 
 
@@ -236,7 +236,7 @@ We can look at various functions that operate on data as either:
 - returning the same level of abstraction
 - crossing abstraction
 
-![](../../../assets/crossing-abstraction.png)
+![](../../../../assets/crossing-abstraction.png)
 
 Examples:
 
@@ -249,9 +249,9 @@ Examples:
 
 Using this classification, we can look see the following relations:
 
-![](../../../assets/map.png)
+![](../../../../assets/map.png)
 
-![](../../../assets/bind.png)
+![](../../../../assets/bind.png)
 
 The functions accepted by these two functions differ in the fact that `Bind`
 requires a function that crosses the abstraction upwards.
@@ -262,7 +262,7 @@ checking for `null`, using loops, etc. Working on the *elevated values*
 abstraction level makes it possible to fluently chain function calls.
 :::
 
-![](../../../assets/typical-fp-functions-in-abstractions.png)
+![](../../../../assets/typical-fp-functions-in-abstractions.png)
 
 ### Reducing a list to a single value
 

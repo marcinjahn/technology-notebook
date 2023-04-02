@@ -7,7 +7,7 @@ lang: en-US
 
 # Big O Notation
 
-![](../../../assets/big-o-graph.png)
+![](../../../../assets/big-o-graph.png)
 
 We can use the Big O notation to describe Runtime Complexity (time) and Space
 Complexity (memory).

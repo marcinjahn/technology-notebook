@@ -53,7 +53,7 @@ expertise in:
 - **IoT**:
   - [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) - I
     started using it while working on my master thesis to build [my own IoT
-    Platform](/projects/mjiot.md). I also use it extensively at work.
+    Platform](/projects/mjiot). I also use it extensively at work.
   - [Raspberry Pi](https://www.raspberrypi.org/) - this small PC is a perfect
     hardware for experimentation in various IT areas. I used it as an IoT device
     in some IoT projects.
@@ -69,7 +69,7 @@ expertise in:
     SaaS solutions that were my preferred choice in the past. Regarding the
     actual cloud offering, I rely on [Azure Kubernetes
     Service](https://azure.microsoft.com/en-us/services/kubernetes-service/).
-    Btw, [this website is hosted on K8s as well](./this-website.md)!
+    Btw, [this website is hosted on K8s as well](./this-website)!
 - **Linux**:
   - [Fedora Workstation](https://getfedora.org/en/workstation/) - the operating
     system that I use on my Linux PC. It's just perfect for software development

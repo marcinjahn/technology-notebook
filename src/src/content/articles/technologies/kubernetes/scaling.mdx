@@ -15,7 +15,7 @@ Additionally, we need a way to keep pods running in case some node fails.
 
 ReplicaSet allows us to create a group of pod replicas, instead of just one pod.
 The pods managed by the ReplicaSet are selected using an immutable label
-`selector` (similarly to [Services](./services.md)). There is also a `template`,
+`selector` (similarly to [Services](./services)). There is also a `template`,
 which defines the pod(s) that will be created under ReplicaSet. Such a pod has
 to conform to the *selector* specified by the ReplicaSet. 
 
@@ -94,7 +94,7 @@ they will not be reused in the Deployment's replicas. The ReplicaSet managed by
 the Deployment adds additional (based on `template` hash) label selector to
 the pods it manages.
 
-![](../../../assets/deployment-replicaset-selector.png)
+![](../../../../assets/deployment-replicaset-selector.png)
 :::
 
 ### Updates

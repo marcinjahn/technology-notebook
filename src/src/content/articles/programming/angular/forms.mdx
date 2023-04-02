@@ -54,7 +54,7 @@ This is the easiest approach. It requires the `AppModule` to import
     </form>
     ```
 
-    :::tip[([ngModel])]
+    :::tip[ngModel]
     We could use `([ngModel])` instead of `ngModel` to additionally get two-way
     data binding to some variable on our component.
     :::
@@ -100,7 +100,7 @@ them validated. Examples of such directives are:
 - `email`
 
 A full list can be found at [Angular
-Docs](https://angular.io/api?type=directive) <- this is a list of all directives
+Docs](https://angular.io/api?type=directive) - this is a list of all directives
 shipped with Angular. The ones with `Validator` suffix are for validation.
 
 In case of validation being unsuccessful, the `valid` property of `NgForm` will
@@ -125,7 +125,7 @@ our form.
 The overall `<form>` tag also has these classes applied. We could get around
 that by specifying `input` explicitly:
 
-```csharps
+```csharp
 input.ng-invalid {
     border: 1px solid red;
 }

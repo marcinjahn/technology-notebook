@@ -13,7 +13,7 @@ Vue.js or React, which do not provide such tooling.
 In order to use the built-in client, it needs to be imported into your module.
 You need to import the `HttpClientModule`. With that in place, we can inject the
 HTTP client into our classes, kind of similar to how we'd do in
-[.NET](../dotnet/http-client.md).
+[.NET](../dotnet/http-client).
 
 ```ts
 export class MyComponent {
@@ -130,7 +130,7 @@ Here's how we register interceptors. In the module, we'd do:
 export class AppModule {}
 ```
 
-What we're doing above is just the [DI](./services.md). We treat
+What we're doing above is just the [DI](./services). We treat
 `HTTP_INTERCEPTORS` as a placeholder for actual interceptors. Angular's inner
 code asks for `HTTP_INTERCEPTORS` and it is given whatever we register.
 

@@ -15,7 +15,7 @@ Angular apps.
 
 Standalone Components is a feature that deals with the boiletplate code that we
 have to currently write in a typical Angular app. Namely, it enables us to
-create components without dealing with the [modules](./modules.md) and all their
+create components without dealing with the [modules](./modules) and all their
 declarations, imports, and so on. We can actually get rid of modules entirely,
 even the `AppModule`! That makes Angular a bit more similar to React or Vue.js,
  which do not use the module system and are much leaner to work with.
@@ -83,8 +83,8 @@ export class AppModule {}
 ```
 
 :::tip
-Previously, we'd have to put `MyComponent` in the declarations instead of
-imports (assuming we had just one module in our app).
+Previously, we'd have to put `MyComponent` in the declarations instead of imports
+(assuming we had just one module in our app).
 :::
 
 Now, the legacy component can make use of `MyComponent` in its template, as it
@@ -94,8 +94,8 @@ typically would in "legacy" NgModule-based world.
 
 The standalone components may not only import other standalone components, but
 also whole modules! It is useful when our app uses some "legacy" entities that
-are exported by some module(s). To use these entities, our component has to
-import the module.
+are exported by some module(s). To use these entities, our component has toimport
+the module.
 
 If standalone component is the only thing that uses the imported module, that
 module does not need to be imported in any other module, as it would typiclaly

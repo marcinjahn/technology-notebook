@@ -18,7 +18,7 @@ Our code could be split into the following projects:
 - **Presentation** - controllers/pages
 - **Common** - cross-cutting concerns
 
-![](../../../assets/domain-focued-arch.png)
+![](../../../../assets/domain-focued-arch.png)
 
 The interfaces for various things like database accessshould be stored in the
 Application layer. The Persistence/Infrastructure should depend on Application

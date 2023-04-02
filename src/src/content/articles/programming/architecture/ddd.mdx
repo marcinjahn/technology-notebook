@@ -237,7 +237,7 @@ allow us to keep the whole object in a valid state (enforcing invariants). We
 should access/modify the aggregate only throught the Aggregate Root. The root
 will make sure that the invariants are satisfied.
 
-:::tip[]
+:::tip
 There will also be entities that do not include other entities or value objects.
 The convention is to call these Aggregates as well.
 :::
@@ -417,7 +417,7 @@ introduce the new concepts into legacy codebase, we could create an ACL layer
 (like some set of services) that will communicate with our DDD system properly
 and return the data as the legacy system expects.
 
-![](../../../assets/acl-legacy-to-ddd.png)
+![](../../../../assets/acl-legacy-to-ddd.png)
 
 ## Sources
 

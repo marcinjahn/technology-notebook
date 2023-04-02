@@ -115,4 +115,4 @@ I am proficient in the following technologies:
 - **git**
 - **Azure DevOps**
 
-You can read more about me [here](./who-am-i.md).
+You can read more about me [here](./who-am-i).
