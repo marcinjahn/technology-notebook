@@ -189,10 +189,10 @@ const structure: Sidebar = {
             title: "Networking",
             icon: "network.webp",
             children: [
+                "networking/http",
                 "networking/osi-model",
                 "networking/tcp",
                 "networking/udp",
-                "networking/http",
                 "networking/websocket",
                 "networking/hsts",
                 "networking/dns",

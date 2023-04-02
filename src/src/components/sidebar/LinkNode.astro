@@ -20,13 +20,16 @@ let { path, title } = Astro.props;
         line-height: 2rem;
     }
 
-    .active {
+    .active a {
         font-weight: bold;
         color: var(--accent-color) !important;
+        filter: brightness(70%);
+
     }
 
     a:hover {
         cursor: pointer;
         color: var(--accent-color) !important;
+        filter: brightness(70%);
     }
 </style>

@@ -77,16 +77,29 @@ function getArticleTitle(endOfPath: string) {
 
     function revealCurrentArticle() {
         const path = window.location.pathname;
-        const currentLi = document.querySelector(`[data-path="${path}"]`);
 
-        if (currentLi === null) {
+        // TODO: For now, it will retrieve all instance of sidebar on page.
+        // Ideally, it should work with just this current instance
+        // https://stackoverflow.com/questions/75912035/how-to-target-this-component-in-client-script
+        const currentLi = document.querySelectorAll(`[data-path="${path}"]`);
+
+        if (!currentLi?.length) {
             return;
         }
 
-        let parent: HTMLElement | null | undefined = currentLi.parentElement;
-        while(parent) {
-            parent.classList.remove('hidden');
-            parent = parent.parentElement?.parentElement;
-        }
+        currentLi.forEach(li => {
+
+            li.classList.add('active');
+
+            let parent: HTMLElement | null | undefined = li.parentElement;
+            while(parent) {
+                if (parent.nodeName.toLowerCase() !== "ul") {
+                    break;
+                }
+                
+                parent.classList.remove('hidden');
+                parent = parent.parentElement?.parentElement;
+            }
+        });
     }
 </script>
