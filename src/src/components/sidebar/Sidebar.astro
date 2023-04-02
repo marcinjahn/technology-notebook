@@ -1,7 +1,9 @@
 ---
+import './style.css';
 import sidebarStructure from "../../static/sidebar";
 import { getCollection } from "astro:content";
-import Arrow from "./arrow.astro";
+import LinkNode from "./LinkNode.astro";
+import NodeWithChildren from "./NodeWithChildren.astro";
 
 function getSectionItems(path: string) {
     const section = Object.keys(sidebarStructure).find((key) =>
@@ -27,78 +29,51 @@ function getArticleTitle(endOfPath: string) {
 }
 ---
 
-<ul class="sidebar-container">
+<ul>
     {
         items.map((item) =>
             typeof item === "string" ? (
-                <li data-path={slug(item)}>
-                    <a href={slug(item)}>{getArticleTitle(item)}</a>
-                </li>
+                <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
             ) : (
-                <li>
-                    <div class="section-title">
-                        <span>{item.title}</span>
-                        <div class="arrow"><Arrow /></div>
-                    </div>
-
-                    <ul class="hidden">
+            <NodeWithChildren item={item} isTopLevel={true}>
+                {item.children.map((item) =>
+                    typeof item === "string" ? (
+                    <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+                    ) : (
+                    <NodeWithChildren item={item}>
                         {item.children.map((item) =>
                             typeof item === "string" ? (
-                                <li data-path={slug(item)}>
-                                    <a href={slug(item)}>{getArticleTitle(item)}</a>
-                                </li>
+                            <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
                             ) : (
-                                <li>
-                                    <span>{item.title}</span>
-                                    <ul class="hidden">
-                                        {item.children.map((item) =>
+                                <NodeWithChildren item={item}>
+                                    {item.children.map(
+                                        (item) => (
                                             typeof item === "string" ? (
-                                                <li
-                                                    data-path={slug(item)}
-                                                >
-                                                    <a
-                                                        href={slug(item)}
-                                                    >
-                                                        {getArticleTitle(item)}
-                                                    </a>
-                                                </li>
-                                            ) : (
-                                                <li>
-                                                    <span>{item.title}</span>
-                                                    <ul class="hidden">
-                                                        {item.children.map(
-                                                            (item) => (
-                                                                typeof item === "string" ? (
-                                                                    <li
-                                                                        data-path={slug(item)}
-                                                                    >
-                                                                        <a
-                                                                            href={slug(item)}
-                                                                        >
-                                                                            {getArticleTitle(item)}
-                                                                        </a>
-                                                                    </li>
-                                                                ) : (<></>)
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
-                                </li>
+                                            <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+                                            ) : (<></>)
+                                        )
+                                    )}
+                                </NodeWithChildren>
                             )
                         )}
-                    </ul>
-                </li>
+                    </NodeWithChildren>
+                    )
+                )}
+            </NodeWithChildren>
             )
         )
     }
 </ul>
 
+<style>
+    ul {
+        margin-top: 0;
+        padding-left: 0;
+    }
+</style>
+
 <script>
     revealCurrentArticle();
-    addClickHandlerToUls();
 
     function revealCurrentArticle() {
         const path = window.location.pathname;
@@ -114,51 +89,4 @@ function getArticleTitle(endOfPath: string) {
             parent = parent.parentElement?.parentElement;
         }
     }
-
-    function addClickHandlerToUls() {
-        const allSpans = document.getElementsByTagName('span');
-        for (let span of allSpans) {
-            span.addEventListener('click', () => {
-                const ul = span.parentElement?.parentElement?.getElementsByTagName('ul')[0];
-                ul?.classList.toggle('hidden');
-            });
-        }
-    }
 </script>
-
-<style>
-    ul {
-        list-style: none;
-        padding-left: 1.8rem;
-    }
-
-    a,
-    span {
-        color: rgb(48, 48, 48) !important;
-        user-select: none;
-        line-height: 2rem;
-    }
-
-    a:hover,
-    span:hover {
-        cursor: pointer;
-        color: var(--accent-color) !important;
-    }
-
-    .active {
-        font-weight: bold;
-        color: var(--accent-color) !important;
-    }
-
-    ul.hidden {
-        display: none;
-    }
-
-    .section-title {
-        display: flex;
-    }
-
-    .arrow {
-        height: 1rem;
-    }
-</style>

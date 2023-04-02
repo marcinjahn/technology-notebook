@@ -4,7 +4,7 @@ description: WebSocket
 title: WebSocket
 ---
 
-# {{ $frontmatter.title }}
+# WebSocket
 
 WebSocket surfaced in the era of HTTP/1.1. The basic idea is to enable
 bi-directional communication between the client and the server under a single

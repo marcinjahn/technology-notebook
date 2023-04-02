@@ -5,7 +5,7 @@ tags: ["networking", "dns", "fqdn"]
 lang: en-US
 ---
 
-# {{ $frontmatter.title }}
+# DNS
 
 Here's a diagram of how DNS works:
 

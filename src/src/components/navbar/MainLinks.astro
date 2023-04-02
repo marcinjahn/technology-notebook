@@ -1,0 +1,51 @@
+---
+import { mainNavigation } from "../../static/navigation";
+---
+
+<ul>
+    {
+        mainNavigation.map((link) => (
+            <li>
+                <a href={link.path}>{link.name}</a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        gap: 1.5rem;
+
+        border-right: 1px solid grey;
+        padding-right: 1.5rem;
+    }
+
+    a {
+        color: var(--text-color);
+    }
+
+    a:hover {
+        color: var(--accent-color);
+    }
+
+    @media only screen and (max-width: 920px) {
+        ul {
+            flex-direction: column;
+            border-right: 0;
+            padding-right: 0;
+
+            gap: 1rem;
+
+            
+        }
+
+        a {
+            font-weight: 700;
+        }
+    }
+</style>

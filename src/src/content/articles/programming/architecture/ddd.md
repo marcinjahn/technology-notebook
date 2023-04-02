@@ -5,7 +5,7 @@ lang: en-US
 tags: [".net", "dotnet", "asp.net", "asp", "core", "architecture", "ddd", "domain driven design"]
 ---
 
-# {{ $frontmatter.title }}
+# Domain-Driven Design
 
 The Domain-Driven Design (DDD) is an architecture style for building
 microservices-based software systems. Some argue that microservices architecture

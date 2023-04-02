@@ -5,7 +5,7 @@ tags: ["css", "html", "web"]
 lang: en-US
 ---
 
-# {{$frontmatter.title}}
+# CSS Pixel
 
 One of the units that we can use in CSS is a `px`. The name is confiusing,
 because the CSS px does not represent the display pixel. Instead, it is a

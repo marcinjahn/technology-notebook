@@ -1,10 +1,11 @@
 ---
-import '../styles/reset.css';
-import '../styles/global.css';
-import Navbar from '../components/navbar/Navbar.astro';
+import "../styles/reset.css";
+import "../styles/global.css";
+import Navbar from "../components/navbar/Navbar.astro";
+import Panel from "../components/hamburger/Panel.astro";
 
 export interface Props {
-	pageTitle: string;
+    pageTitle: string;
 }
 
 const { pageTitle } = Astro.props;
@@ -12,15 +13,37 @@ const { pageTitle } = Astro.props;
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon-32x32.png" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<Navbar />
-		<slot />
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon-32x32.png" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{pageTitle}</title>
+    </head>
+    <body>
+        <Navbar />
+        <aside>
+            <Panel >
+                <slot name="hamburger-panel-content"/>
+            </Panel>
+        </aside>
+
+        <slot />
+    </body>
 </html>
+
+<style>
+    aside {
+        display: none;
+    }
+
+    @media only screen and (max-width: 920px) {
+        aside {
+            display: initial;
+        }
+    }
+</style>
+
+<script>
+    import "../scripts/hamburger.js";
+</script>

@@ -1,6 +1,6 @@
 export interface SidebarItem {
     title: string;
-    img?: string;
+    icon?: string;
     children: (string | SidebarItem)[];
 }
 
@@ -12,7 +12,7 @@ const structure: Sidebar = {
     "/programming/": [
         {
             title: ".NET",
-            img: "dotnet.webp",
+            icon: "dotnet.webp",
             children: [
                 "dotnet/http-client",
                 {
@@ -54,7 +54,7 @@ const structure: Sidebar = {
         },
         {
             title: "Angular",
-            img: "angular.webp",
+            icon: "angular.webp",
             children: [
                 "angular/overview",
                 "angular/components",
@@ -74,7 +74,7 @@ const structure: Sidebar = {
         },
         {
             title: "JavaScript",
-            img: "javascript.webp",
+            icon: "javascript.webp",
             children: [
                 "javascript/oop",
                 "javascript/weird-js",
@@ -101,7 +101,7 @@ const structure: Sidebar = {
         },
         {
             title: "Rust",
-            img: "rust.webp",
+            icon: "rust.webp",
             children: [
                 "rust/overview",
                 "rust/cargo",
@@ -125,7 +125,7 @@ const structure: Sidebar = {
         },
         {
             title: "C/C++",
-            img: "c.webp",
+            icon: "c.webp",
             children: [
                 "c/classes",
                 "c/compilation",
@@ -137,22 +137,22 @@ const structure: Sidebar = {
         },
         {
             title: "GTK",
-            img: "gtk.webp",
-            children: ["gtk/", "gtk/gjs"],
+            icon: "gtk.webp",
+            children: ["gtk/overview", "gtk/gjs"],
         },
         {
             title: "CSS",
-            img: "css.webp",
+            icon: "css.webp",
             children: ["css/responsive-design", "css/tips", "css/pixels"],
         },
         {
             title: "Unity",
-            img: "unity.webp",
+            icon: "unity.webp",
             children: ["unity/"],
         },
         {
             title: "Functional Programming",
-            img: "lambda.webp",
+            icon: "lambda.webp",
             children: [
                 "functional-programming/fundamentals",
                 "functional-programming/dotnet-features",
@@ -166,7 +166,7 @@ const structure: Sidebar = {
         },
         {
             title: "Algorithms",
-            img: "algorithms.webp",
+            icon: "algorithms.webp",
             children: [
                 "algorithms/big-o",
                 "algorithms/arrays",
@@ -180,14 +180,14 @@ const structure: Sidebar = {
         },
         {
             title: "Architecture",
-            img: "architecture.webp",
+            icon: "architecture.webp",
             children: ["architecture/asp-net-core", "architecture/ddd"],
         },
     ],
     "/technologies/": [
         {
             title: "Networking",
-            img: "network.webp",
+            icon: "network.webp",
             children: [
                 "networking/osi-model",
                 "networking/tcp",
@@ -202,7 +202,7 @@ const structure: Sidebar = {
         },
         {
             title: "Security",
-            img: "security.webp",
+            icon: "security.webp",
             children: [
                 {
                     title: "OAuth2",
@@ -224,7 +224,7 @@ const structure: Sidebar = {
         },
         {
             title: "Linux",
-            img: "linux.webp",
+            icon: "linux.webp",
             children: [
                 "linux/gist",
                 "linux/system-calls",
@@ -237,7 +237,7 @@ const structure: Sidebar = {
         },
         {
             title: "Kubernetes",
-            img: "kubernetes.webp",
+            icon: "kubernetes.webp",
             children: [
                 "kubernetes/meaning",
                 "kubernetes/cluster",
@@ -257,17 +257,17 @@ const structure: Sidebar = {
         },
         {
             title: "Observability",
-            img: "observability.webp",
+            icon: "observability.webp",
             children: ["observability/tracing"],
         },
         {
             title: "SQL Server",
-            img: "sql-server.webp",
+            icon: "sql-server.webp",
             children: ["sql-server/", "sql-server/t-sql"],
         },
         {
             title: "MongoDB",
-            img: "mongodb.webp",
+            icon: "mongodb.webp",
             children: [
                 "mongodb/nosql",
                 "mongodb/mongo-overview",
@@ -277,27 +277,27 @@ const structure: Sidebar = {
         },
         {
             title: "Git",
-            img: "git.webp",
+            icon: "git.webp",
             children: ["git/overview"],
         },
         {
             title: "Ansible",
-            img: "ansible.webp",
+            icon: "ansible.webp",
             children: ["ansible/ansible"],
         },
         {
             title: "Azure",
-            img: "azure.webp",
+            icon: "azure.webp",
             children: ["azure/azure-table-storage", "azure/identity"],
         },
         {
             title: "Google Cloud",
-            img: "gcp.webp",
+            icon: "gcp.webp",
             children: ["google-cloud/overview"],
         },
         {
             title: "Blockchain",
-            img: "blockchain.webp",
+            icon: "blockchain.webp",
             children: [
                 "blockchain/intro",
                 "blockchain/smart-contracts",

@@ -5,7 +5,7 @@ lang: en-US
 tags: ["c", "programming", "binding", ".net", "marshalling", "pinvoke"]
 ---
 
-# {{ $frontmatter.title }}
+# Platform Invoke
 
 C and C++ are/were often used for providing various code libraries. Examples include:
 

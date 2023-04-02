@@ -5,7 +5,7 @@ tags: ["networking", "grpc", "protobuf"]
 lang: en-US
 ---
 
-# {{ $frontmatter.title }}
+# gRPC
 
 gRPC - GRPC Remote Procedure Call. The "G" could also just stand for "Google"
 which is one of the main drive forces behind the protocol. It's a high

@@ -1,23 +1,21 @@
 ---
-import {siteTitle, mainNavigation} from '../../static/navigation';
-import ExternalLinks from './ExternalLinks.astro';
-
+import { siteTitle, mainNavigation } from "../../static/navigation";
+import Hamburger from "../hamburger/Hamburger.astro";
+import ExternalLinks from "./ExternalLinks.astro";
+import MainLinks from "./MainLinks.astro";
 ---
 
 <nav>
-    <div class="title">
-        <a href="/">{siteTitle}</a>
+    <div class="left">
+        <div class="hamburger"><Hamburger /></div>
+        <div class="title">
+            <a href="/">{siteTitle}</a>
+        </div>
     </div>
 
     <div class="right">
-        <ul>
-            {
-                mainNavigation.map(link => (
-                    <li><a href={link.path}>{link.name}</a></li>
-                ))
-            }
-        </ul>
-        <ExternalLinks/>
+        <MainLinks />
+        <ExternalLinks />
     </div>
 </nav>
 
@@ -27,23 +25,30 @@ import ExternalLinks from './ExternalLinks.astro';
         justify-content: space-between;
         align-items: center;
 
-        background-color: #ACB2DC;
+        background-color: #acb2dc;
         border-bottom: 1px solid grey;
 
-        padding: 1rem 1.3rem;
+        padding: 0.6rem 1.3rem;
     }
 
     .title {
-        font-size: 1.3rem;
-        font-weight: 700;
+        font-size: 1.2rem;
+        font-weight: 600;
     }
 
     .title a {
-        color: var(--text-color)
+        color: var(--text-color);
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
     }
 
     .right {
         margin-left: 2rem;
+        font-size: 0.9rem;
 
         display: flex;
         gap: 1.5rem;
@@ -62,19 +67,24 @@ import ExternalLinks from './ExternalLinks.astro';
     }
 
     .right a {
-        font-size: 0.95rem;
-        color: var(--text-color)
+        color: var(--text-color);
     }
 
     .right a:hover {
-        font-size: 0.95rem;
-        color: var(--accent-color)
+        color: var(--accent-color);
     }
 
+    .hamburger {
+        display: none;
+    }
 
     @media only screen and (max-width: 920px) {
         .right {
             display: none;
+        }
+
+        .hamburger {
+            display: block;
         }
     }
 </style>

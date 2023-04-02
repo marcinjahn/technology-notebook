@@ -1,5 +1,5 @@
 ---
-title: GTK
+title: Overview
 description: Building GTK 4 applications
 tags: ["gtk", "adwaita", "gjs", "linux"]
 lang: en-US

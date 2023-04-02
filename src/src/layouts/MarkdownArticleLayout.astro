@@ -16,6 +16,11 @@ const { frontmatter } = Astro.props;
             <slot />
         </main>
     </div>
+
+
+    <div slot="hamburger-panel-content">
+        <Sidebar />
+    </div>
 </BaseLayout>
 
 <style>
@@ -30,6 +35,11 @@ const { frontmatter } = Astro.props;
 
         background: white;
         padding: 3rem;
+    }
+
+    .sidebar {
+        margin-top: 2rem;
+        margin-left: 1rem;
     }
 
     @media only screen and (max-width: 920px) {

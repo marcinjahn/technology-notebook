@@ -5,7 +5,7 @@ tags: ["linux", "networking", "firewall"]
 lang: en-US
 ---
 
-# {{ $frontmatter.title }}
+# Networking
 
 ## Toolset
 

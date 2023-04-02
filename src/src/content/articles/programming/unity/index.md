@@ -5,7 +5,7 @@ tags: ["unity", "game", "dev", "gamedev", "2d"]
 lang: en-US
 ---
 
-# {{ $frontmatter.title }}
+# Unity
 
 To run Unity, you need to install Unity Hub, which is a manager of Unity
 installations. Through the Unity Hub, install the lateset release of Unity, and

@@ -5,7 +5,7 @@ lang: en-US
 tags: ["c", "programming", "c++", "class", "struct"]
 ---
 
-# {{ $frontmatter.title }}
+# Structs and Classes
 
 The C programming language has structs. C++ offers structs and classes.
 Here's a bit of an overview of these constructs.

@@ -5,7 +5,7 @@ lang: en-US
 tags: [".net", "dotnet", "asp.net", "asp", "core", "architecture"]
 ---
 
-# {{ $frontmatter.title }}
+# ASP.NET Core Projects
 
 ## Projects Organization
 

@@ -5,7 +5,7 @@ tags: ["css", "html", "web"]
 lang: en-US
 ---
 
-# {{ $frontmatter.title }}
+# Resonsive Design
 
 ::: tip
 The webpages are responsive by default. As soon as we start to constrain sizes

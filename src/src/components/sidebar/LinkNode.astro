@@ -1,0 +1,32 @@
+---
+import "./style.css";
+
+interface Props {
+    path: string;
+    title: string;
+}
+
+let { path, title } = Astro.props;
+---
+
+<li data-path={path}>
+    <a href={path}>{title}</a>
+</li>
+
+<style>
+    a {
+        color: rgb(48, 48, 48) !important;
+        user-select: none;
+        line-height: 2rem;
+    }
+
+    .active {
+        font-weight: bold;
+        color: var(--accent-color) !important;
+    }
+
+    a:hover {
+        cursor: pointer;
+        color: var(--accent-color) !important;
+    }
+</style>
