@@ -6,7 +6,7 @@ lang: en-US
 
 # Cargo
 
-It's a **build system** (turns Rust code into executable binaries) and a
+Cargo is a **build system** (turns Rust code into executable binaries) and a
 **package manager** (downloads and compiles project's dependencies).
 
 `cargo new` creates a new project from a standard template. There's a

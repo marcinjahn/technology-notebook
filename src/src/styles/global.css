@@ -32,11 +32,12 @@ ul {
 h1 {
     margin: 0 0 1rem 0;
     font-size: 1.8rem;
+    opacity: 0.5;
 }
 
 h2 {
     margin: 1.5rem 0 1rem 0;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
 }
 
 h3 {
@@ -46,12 +47,12 @@ h3 {
 
 h4 {
     margin: 1.5rem 0 0.7rem 0;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 h5 {
     margin: 1.5rem 0 0.7rem 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 /* Code inline in paragraphs */

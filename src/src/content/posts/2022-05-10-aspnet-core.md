@@ -9,8 +9,8 @@ the parts that I do not normally utilize (like [Razor
 Pages](../programming/dotnet/asp-net-core/razor-pages)). It was an
 interesting journey that helped me to put my knowledge of the ASP.NET Core
 framework in order. My main interest in the ASP.NET Core land has always been
-the [Web APIs](../programming/dotnet/asp-net-core/web-apis) and most of the
+the [Web APIs](/programming/dotnet/asp-net-core/web-apis) and most of the
 knowledge in my article series is applicable to that.
 
 You can find the articles
-[here](../programming/dotnet/asp-net-core/overview).
+[here](/programming/dotnet/asp-net-core/overview).
