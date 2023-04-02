@@ -31,7 +31,7 @@ const { frontmatter } = Astro.props;
     main {
         margin: 0 auto;
         margin-top: 2rem;
-        width: 800px;
+        max-width: 820px;
 
         background: white;
         padding: 3rem;
@@ -45,6 +45,11 @@ const { frontmatter } = Astro.props;
     @media only screen and (max-width: 920px) {
         .sidebar {
             display: none;
+        }
+
+        main {
+            width: 100vw;
+            min-width: initial;
         }
     }
 </style>

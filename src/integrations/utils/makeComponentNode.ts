@@ -17,9 +17,6 @@ export function makeComponentNode(
 	{ attributes = {} }: NodeProps = {},
 	...children: BlockContent[]
 ): MdxJsxFlowElement {
-	console.log(name);
-	console.log(attributes);
-	console.log(children);
 	return {
 		type: 'mdxJsxFlowElement',
 		name,
