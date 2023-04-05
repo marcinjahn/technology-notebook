@@ -153,7 +153,7 @@ The `ngModel` is used with square brackets only, it's not bi-drectional binding
 In bigger forms, we can group inputs. It might be useful also for partial
 validation - we could mark some group of inputs as invalid.
 
-```html{2}
+```html {2}
 <form (ngSubmit)="onSubmit(f)" #f="ngForm">
     <div ngModelGroup="basicInfo">
         <input type="text" ngModel name="age">
@@ -222,7 +222,7 @@ importing `FormsModule` in our `AppModule`, we need to import the
 Now, inside of the component wheret the form would reside, we'd create a
 property of type `FormGroup`:
 
-```ts{2,5}
+```ts {2,5}
 export class MyComponent implements OnInit {
     myForm: FormGroup;
 
@@ -253,7 +253,7 @@ get changed.
 
 Now, we need to write HTML code representing the form:
 
-```html{1,5,13,21}
+```html {1,5,13,21}
 <form [formGroup]="myForm" (ngSumbit)="onSubmit()">
     <div>
         <label for="username">Username</label>
@@ -297,7 +297,7 @@ in our component.
 We no longer use directives on HTML elements to define validation. We do that in
 TS code:
 
-```ts{6}
+```ts {6}
 export class MyComponent implements OnInit {
     myForm: FormGroup;
 
@@ -465,7 +465,7 @@ this.myForm = new FormGroup({
 
 The HTML would also have to change, it needs to have the group:
 
-```html{10}
+```html {10}
 <form [formGroup]="myForm" (ngSumbit)="onSubmit()">
     <div>
         <label for="username">Username</label>

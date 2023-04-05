@@ -144,7 +144,7 @@ then the error will be propagated to the subscribers.
 
 Observables can be finite. Here's how we can complete custom observables:
 
-```ts{7}
+```ts {7}
 let customInterval = Observable.crete(observer => {
     let i = 0;
     setInterval(() => {

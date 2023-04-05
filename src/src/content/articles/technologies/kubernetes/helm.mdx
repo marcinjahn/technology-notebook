@@ -384,7 +384,7 @@ Variables allow us to define values within templates and name them. They are
 useful when using the "with" scoping or loops, since within these we cannot
 refer to anything outside of their scope. However, we can refer to variables.
 
-```yaml{1,8}
+```yaml {1,8}
 {{ $defaultPortName := .Values.defaultPortName }} # variable definition
 spec:
   {{ with .Values.config }}

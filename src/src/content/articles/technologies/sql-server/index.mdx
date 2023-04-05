@@ -127,7 +127,7 @@ Entities referred to by a foreign key cannot be deleted. We can help ourselves
 with the `CASCADE` option. Whenever we delete an entity referenced by a foreign
 key, the entity that refers to it will be deleted as well.
 
-```sql{6}
+```sql {6}
 CREATE TABLE Orders.OrderItems(
     ....
     StockID int NOT NULL

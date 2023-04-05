@@ -17,8 +17,8 @@ decide not to pass message down and return a response earlier (i.e. caching).
 
 ## HttpClient configuration
 
-```csharp
-_httpClient.BaseAddress = "http://www..google.pl";
+```csharp  {2}
+_httpClient.BaseAddress = "https://some-api.com";
 _httpClient.Timeout = new TimeSpan(0, 0, 30);
 
 //Headers used by ALL requests:

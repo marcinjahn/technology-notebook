@@ -285,7 +285,7 @@ EF Core. We could also configure our own conventions.
 To create many-to-many, we just need two entities referring to each other via
 collections:
 
-```csharp{5,12}
+```csharp {5,12}
 public class Samurai
 {
     public int Id { get; set; }
@@ -637,7 +637,7 @@ In disconnected scenarios, the case is that we have to update some entity
 without retrieving it first (e.g., in some Web API). Then, we can do that as
 follows:
 
-```csharp{4}
+```csharp {4}
 // 'data' could be delivered in the body of a PUT request
 
 using var context = new SamuraiContext();
@@ -677,7 +677,7 @@ that DB is in proper state it will send to it everything.
 
 We can use `Attach` to circumvent that.
 
-```csharp{4}
+```csharp {4}
 // Disconnected
 using (var newContext = new SamuraiContext())
 {
@@ -708,7 +708,7 @@ newContext.SaveChanges();
 A similar issue that we had with a single entity when updating it in a
 Disconnected scenario occurs if we want to update some entity with relations:
 
-```csharp{10}
+```csharp {10}
 var quote = context.Samurais
     .Include(s => s.Quotes)
     .First(s => s.Id == 2)

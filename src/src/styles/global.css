@@ -14,12 +14,6 @@ code {
         DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-pre.astro-code {
-    font-size: 0.8rem;
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-        DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
 :root {
     --accent-color: rgb(203, 38, 38);
     --text-color: black;
@@ -66,8 +60,12 @@ h5 {
 
 /* Code blocks */
 pre.astro-code {
-    padding: 1rem;
-    border-radius: 5px;
+    margin: 1rem 0 !important;
+    padding: 1rem !important;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 table, th, td {

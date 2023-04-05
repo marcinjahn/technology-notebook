@@ -167,7 +167,7 @@ We can pass an object with event details by including `$event`:
 Our comonents can emit custom events that the parent of the component can
 handle:
 
-```ts{3,6}
+```ts  {3,6}
 @Component(...)
 export class MyComponent {
     @Output() userCreated = new EventEmitter<User>();
@@ -199,7 +199,7 @@ that I will describe next.
 In order to allow our components to accept "arguments", we need to define them,
 like this:
 
-```ts{3}
+```ts  {3}
 @Component(...)
 export class MyComponent {
     @Input() name: string;

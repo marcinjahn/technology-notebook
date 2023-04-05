@@ -24,7 +24,7 @@ export class LoggerService {
 
 Here's a class that wants to use the service:
 
-```ts{3,6,9}
+```ts {3,6,9}
 @Component({
     ...,
     providers: [LoggerService]
@@ -121,7 +121,7 @@ some dependency injected, need to use the special `@Injectable` decorator.
 
 Here's an example:
 
-```ts{1,3,6}
+```ts {1,3,6}
 @Injectable()
 export class DataService {
     constructor(private logger: Logger) {}

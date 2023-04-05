@@ -193,7 +193,7 @@ We can generate directives quickly with `ng g d <name>`.
 Directives can listen to events on the elements they are attached to.
 Here's an example:
 
-```ts{8}
+```ts  {8}
 @Directive({
   selector: '[appMyDirective]'
 })
@@ -216,7 +216,7 @@ allows to bind to a specified property on the DOM element to access it easily.
 
 Here's an example:
 
-```ts{6,11}
+```ts {6,11}
 @Directive({
   selector: '[appMyDirective]'
 })
@@ -253,7 +253,7 @@ have some influence on how it works.
 
 Here's an example:
 
-```ts{6,12}
+```ts {6,12}
 @Directive({
   selector: '[appMyDirective]'
 })
@@ -292,7 +292,7 @@ directly under the directive's name, like this:
 
 We can do it as well in our directives:
 
-```ts{6}
+```ts {6}
 @Directive({
   selector: '[appMyDirective]'
 })

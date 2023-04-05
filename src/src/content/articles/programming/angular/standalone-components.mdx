@@ -31,7 +31,7 @@ Standalone components can be mixed with the "classic" NgModule style.
 
 ## Example
 
-```ts{2}
+```ts {2}
 @Component({
     standalone: true,
     selector: 'app-my-component',
@@ -50,7 +50,7 @@ There are two ways to use standalone components in other components:
 
 ### Standalone Parent
 
-```ts{3}
+```ts {3}
 @Component({
     standalone: true,
     imports: [ MyComponent ],
@@ -69,7 +69,7 @@ there's a way to use standalone components in such "legacy" components.
 
 First, we need to import the standalone component in our parent component's module:
 
-```ts{7}
+```ts {7}
 @NgModule({
     declarations: [
         MyOtherComponent

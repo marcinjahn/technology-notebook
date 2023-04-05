@@ -87,7 +87,7 @@ export class AppRoutingModule { }
 
 Then, the `app.module` file gets simplified:
 
-```ts{9}
+```ts {9}
 @NgModule({
   declarations: [
     AppComponent,
@@ -207,7 +207,7 @@ We can get information about currently loaded route by injecting
 `ActivatedRoute`. It contains various metadata about the loaded path, e.g. the
 parameters.
 
-```ts{4,7}
+```ts {4,7}
 export class MovieComponent implements OnInit {
   movieId: string;
 
@@ -230,7 +230,7 @@ change.
 We can also make use of query parameters. To attach them to links on our page,
 we do it as follows:
 
-```html{3}
+```html {3}
 <a 
   [routerLink]="['/home', '3']"
   [queryParams]="{ darkMode: true }">
@@ -240,7 +240,7 @@ we do it as follows:
 
 Here's how we add query params from TS:
 
-```ts{3-5}
+```ts {3-5}
 this.router.navigate(
   ['/somewhere'], 
   {
@@ -278,7 +278,7 @@ might want to add (by having `queryParams` defined).
 
 Similarly, we can attach fragment (`#fragment`) to link we navigate to:
 
-```html{3}
+```html {3}
 <a 
   [routerLink]="['/home', '3']"
   fragment="something">
@@ -288,7 +288,7 @@ Similarly, we can attach fragment (`#fragment`) to link we navigate to:
 
 Here's how we add fragment from TS:
 
-```ts{3-5}
+```ts {3-5}
 this.router.navigate(
   ['/somewhere'], 
   {
@@ -330,7 +330,7 @@ export class ErrorComponent implements OnInit {
 
 We can set the static value(s) in the routes collection:
 
-```ts{7-8}
+```ts {7-8}
 const routes: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
   { path: 'home', redirectTo: '/' }
@@ -351,7 +351,7 @@ Then, each submenu would have a list of links that load a different content.
 
 First, we need to set up our routes properly:
 
-```ts{7}
+```ts {7}
 const routes: Routes = [
   { path: '', component: MainPageComponent },
   { path: 'users', component: UsersComponent },
@@ -469,7 +469,7 @@ depending on the success/failure of the checked condition.
 
 The route should be enabled for selected endpoints in the routes definition:
 
-```ts{6}
+```ts {6}
 const routes: Routes = [
   { path: '', component: MainPageComponent },
   { 
@@ -571,7 +571,7 @@ export class MyComponent implements DeactivatableComponent {
 
 To use the new guard, we need to enable it in the routes collection:
 
-```ts{6}
+```ts {6}
 const routes: Routes = [
   { path: '', component: MainPageComponent },
   { 
@@ -623,7 +623,7 @@ export class MovieResolver implements Resolve<Movie> {
 
 To use the resolver, we attach it to the route that needs it:
 
-```ts{9}
+```ts {9}
 const routes: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
   { path: 'home', redirectTo: '/' }

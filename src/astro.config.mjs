@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import AutoImport from 'astro-auto-import';
 import remarkMermaid from 'astro-diagram/remark-mermaid';
+import { astroCodeSnippets, codeSnippetAutoImport } from './integrations/astro-code-snippets';
 import { asideAutoImport, astroAsides } from './integrations/astro-asides';
 import mdx from "@astrojs/mdx";
 
@@ -10,10 +11,11 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: 'https://marcinjahn.com',
   integrations: [AutoImport({
-    imports: [asideAutoImport]
-  }), astroAsides(), mdx(), sitemap()],
+    imports: [asideAutoImport, codeSnippetAutoImport]
+  }), astroAsides(), astroCodeSnippets(), mdx(), sitemap()],
   markdown: {
-    remarkPlugins: [remarkMermaid]
+    remarkPlugins: [remarkMermaid],
+    syntaxHighlight: 'shiki',
   },
   experimental: {
     assets: true
