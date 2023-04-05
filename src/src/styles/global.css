@@ -48,6 +48,12 @@ h5 {
     font-size: 1.1rem;
 }
 
+blockquote {
+    color:#7d84b2;
+    margin: 2rem 0 2rem 2rem;
+    font-style: italic;
+}
+
 /* Code inline in paragraphs */
 :not(pre) > code {
   background: rgb(125, 125, 125) !important;

@@ -23,7 +23,7 @@ To support configuration providers that can be reloaded during runtime, we can
 inject `IOptionsSnapshot<T>` instead of `IOptions<T>`.
 :::
 
-The class for out options needs to have properties that:
+The class/record for our options needs to have properties that:
 
 - are public
 - have getters
@@ -71,3 +71,7 @@ private static AppConfiguration GetConfiguration()
     return ConfigurationBinder.Get<AppConfiguration>(rawConfig);
 }
 ```
+
+## References
+
+- [Options pattern guidance for .NET library authors (MSDN)](https://learn.microsoft.com/en-us/dotnet/core/extensions/options-library-authors)

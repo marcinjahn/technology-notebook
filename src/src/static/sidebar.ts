@@ -17,7 +17,7 @@ const structure: Sidebar = {
                 "dotnet/http-client",
                 {
                     title: "Async",
-                    children: ["dotnet/async/", "dotnet/async/tips"],
+                    children: ["dotnet/async", "dotnet/async/tips"],
                 },
                 "dotnet/equality",
                 "dotnet/comparisons",
@@ -45,7 +45,7 @@ const structure: Sidebar = {
                 {
                     title: "Entity Framework Core",
                     children: [
-                        "dotnet/entity-framework-core/",
+                        "dotnet/entity-framework-core",
                         "dotnet/entity-framework-core/testing",
                         "dotnet/entity-framework-core/tips",
                     ],
@@ -148,7 +148,7 @@ const structure: Sidebar = {
         {
             title: "Unity",
             icon: "unity.webp",
-            children: ["unity/"],
+            children: ["unity"],
         },
         {
             title: "Functional Programming",
@@ -263,7 +263,7 @@ const structure: Sidebar = {
         {
             title: "SQL Server",
             icon: "sql-server.webp",
-            children: ["sql-server/", "sql-server/t-sql"],
+            children: ["sql-server", "sql-server/t-sql"],
         },
         {
             title: "MongoDB",

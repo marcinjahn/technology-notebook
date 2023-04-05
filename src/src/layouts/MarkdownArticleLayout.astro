@@ -12,10 +12,7 @@ interface Props {
 }
 
 const { frontmatter, slug } = Astro.props;
-console.log(slug);
-
 const neighbours = await getNeighbourArticles(slug);
-console.log(neighbours)
 ---
 
 <BaseLayout pageTitle={`${frontmatter.title} | ${siteTitle}`}>
@@ -26,8 +23,11 @@ console.log(neighbours)
 
         <main>
             <slot />
-
-            <div class="previous-next"><PreviousNextArticles articles={neighbours}/></div> 
+        {
+            neighbours.previous || neighbours.next ?             
+                <div class="previous-next"><PreviousNextArticles articles={neighbours}/></div> : 
+                <></>
+        }
         </main>
     </div>
 

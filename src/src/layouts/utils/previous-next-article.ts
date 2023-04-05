@@ -13,17 +13,13 @@ export interface NeighbourArticles {
 
 export async function getNeighbourArticles(currentSlug: string): Promise<NeighbourArticles> {
   const mainSection = currentSlug.substring(0, currentSlug.indexOf('/'));
-  console.log(mainSection);
-  
   const sidebarSection = Sidebar['/' + mainSection +  '/'];
+  
   if (!sidebarSection) {
     return { previous: undefined, next: undefined };
   }
-
-  console.log(sidebarSection)
   
   for (let i = 0; i < sidebarSection.length; i++) {
-    console.log(sidebarSection[i])
     if (sidebarSection[i] === currentSlug) {
       return getNeighbourArticlesInternal(
         mainSection, 
@@ -32,7 +28,6 @@ export async function getNeighbourArticles(currentSlug: string): Promise<Neighbo
     } else if(typeof sidebarSection[i] === 'string') {
       continue;
     } else {
-      console.log('last')
       const lookIntoResult = await lookInto(sidebarSection[i] as SidebarItem, currentSlug, mainSection);
       if (lookIntoResult.next || lookIntoResult.previous) {
         return lookIntoResult;
@@ -45,15 +40,13 @@ export async function getNeighbourArticles(currentSlug: string): Promise<Neighbo
   return { previous: undefined, next: undefined };
 }
 
-async function lookInto(item: SidebarItem, currentSlug: string, mainSection: string): Promise<NeighbourArticles> {  
-  console.log('lookInto', item)
-  
+async function lookInto(item: SidebarItem, currentSlug: string, mainSection: string): Promise<NeighbourArticles> {    
   if (item.children.length === 0) {
     return { previous: undefined, next: undefined };
   }
 
   for (let i = 0; i < item.children.length; i++) {
-    const child = item.children[i]
+    const child = item.children[i];
     if (typeof child === 'string' && currentSlug.endsWith(child)) {
       return getNeighbourArticlesInternal(
         mainSection, 
@@ -79,8 +72,8 @@ async function getNeighbourArticlesInternal(
 {
   const previous = previousItem ? await getEntryBySlug('articles', buildSlug(mainSection, getLastInnerChild(previousItem))) : undefined;
   const next = nextItem ? await getEntryBySlug('articles', buildSlug(mainSection, getFirstInnerChild(nextItem))) : undefined;
-  
-  return {
+
+  return {  
     previous: !previous ? undefined : {
       title: previous.data.title,
       slug: previous.slug

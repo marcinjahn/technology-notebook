@@ -7,12 +7,12 @@ lang: en-US
 
 # SELinux
 
-SELinux is an implementation of a MAC (Mandatory Access Control) mechanism. It
-extends the default DAC (Discretionary Access Control).
+SELinux is an implementation of a MAC (Mandatory Access Control) mechanism. 
+It extends the default DAC (Discretionary Access Control).
 
 SELinux, fundamentally answers questions in a form
 
-> May {subject} do {action} to {object}?
+> May `{subject}` do `{action}` to `{object}`?
 
 SELinux disallows access by default. Access will be granted only if it was
 explicitly allowed. SELinux intercepts system calls and invokes configured
@@ -170,10 +170,11 @@ That is important during [type transitions](#inheritance). If a given process
 does not have a role with target type assigned to it, it will not be allowed to
 transition.
 
-We can display the list of allowed types for a given role with `seinfo -ruser_r
--x` (`user_r` is the name of the role in this example).
+We can display the list of allowed types for a given role with `seinfo -ruser_r -x` 
+(`user_r` is the name of the role in this example).
 
-A user can switch its role with `newrole -r somerole_r`. The supported roles are defined for each SELinux user.
+A user can switch its role with `newrole -r somerole_r`. The supported roles are defined 
+for each SELinux user.
 
 ### Users
 

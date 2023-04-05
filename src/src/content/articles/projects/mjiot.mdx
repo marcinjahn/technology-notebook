@@ -26,18 +26,18 @@ platform for devices to connect with.
 
 The thesis presents practical implementation of Internet of Things system that
 emphasizes the possibility of connecting many devices together. Another useful
-feature is the ability to collect telemetric data from connected “things”. This
+feature is the ability to collect telemetric data from connected "things". This
 project makes use of cloud services, that are subject of most of the thesis.
 
 The most important part of the designed platform exists in the cloud. The chosen
 cloud provider is Microsoft with its Azure subscription offering. Transport of
-data in the system is achieved by the means of IoT Hub service. Users’ data are
-stored in two database systems: Azure SQL and CosmosDB. The platform’s logic is
+data in the system is achieved by the means of IoT Hub service. Users' data are
+stored in two database systems: Azure SQL and CosmosDB. The platform's logic is
 hosted in a serverless architecture, delivered by Azure Functions.
 
 ![](../../../assets/mjiot-architecture.png)
 
-Another crucial part of the thesis is modelling approach. Every “thing” that is
+Another crucial part of the thesis is modelling approach. Every "thing" that is
 connected with the platform has a corresponding model, which defines its
 properties set. Each of these properties is characterized, among others, by its
 data type that it can store. The user has the ability to define new models based
@@ -59,7 +59,7 @@ user is able to create a program that can modify communication data in any way.
 
 The user has access to the platform by the use of web application based on the
 Angular framework. Features of this application include: viewing a list of
-user’s devices with its details; defining and deleting connections; displaying
+user's devices with its details; defining and deleting connections; displaying
 telemetry data in a form of a chart or a list, with corresponding timestamps.
 
 ## Control Panel
