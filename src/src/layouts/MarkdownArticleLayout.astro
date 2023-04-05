@@ -2,8 +2,20 @@
 import Sidebar from "../components/sidebar/Sidebar.astro";
 import { siteTitle } from "../static/navigation";
 import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from 'astro:content';
+import { getNeighbourArticles } from "./utils/previous-next-article";
+import PreviousNextArticles from "../components/PreviousNextArticles.astro";
 
-const { frontmatter } = Astro.props;
+interface Props {
+    slug: string;
+    frontmatter: CollectionEntry<'articles'>['data']; // any?
+}
+
+const { frontmatter, slug } = Astro.props;
+console.log(slug);
+
+const neighbours = await getNeighbourArticles(slug);
+console.log(neighbours)
 ---
 
 <BaseLayout pageTitle={`${frontmatter.title} | ${siteTitle}`}>
@@ -14,8 +26,11 @@ const { frontmatter } = Astro.props;
 
         <main>
             <slot />
+
+            <div class="previous-next"><PreviousNextArticles articles={neighbours}/></div> 
         </main>
     </div>
+
 
 
     <div slot="hamburger-panel-content">
@@ -29,8 +44,7 @@ const { frontmatter } = Astro.props;
     }
 
     main {
-        margin: 0 auto;
-        margin-top: 2rem;
+        margin: 2rem auto 0;
         max-width: 820px;
 
         background: white;
@@ -40,6 +54,13 @@ const { frontmatter } = Astro.props;
     .sidebar {
         margin-top: 2rem;
         margin-left: 1rem;
+    }
+    
+    .previous-next {
+        border-top: 1px solid rgb(230, 230, 230);
+        padding-top: 1rem;
+        margin-top: 2rem;
+        font-size: 1.1rem;
     }
 
     @media only screen and (max-width: 920px) {
