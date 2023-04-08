@@ -76,12 +76,16 @@ function getArticleTitle(endOfPath: string) {
     revealCurrentArticle();
 
     function revealCurrentArticle() {
-        const path = window.location.pathname;
+        let path = window.location.pathname;
+
+        if (path.endsWith('/')) {
+            path = path.substring(0, path.length - 1);
+        }
 
         // TODO: For now, it will retrieve all instance of sidebar on page.
         // Ideally, it should work with just this current instance
         // https://stackoverflow.com/questions/75912035/how-to-target-this-component-in-client-script
-        const currentLi = document.querySelectorAll(`[data-path="${path}"]`);
+        const currentLi = document.querySelectorAll(`li[data-path="${path}"]`);
 
         if (!currentLi?.length) {
             return;

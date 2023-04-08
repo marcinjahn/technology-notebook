@@ -1,11 +1,13 @@
 ---
-title: Resonsive Design
-description: How to create responsive web
+title: Responsive Design
+description: How to create responsive web pages
 tags: ["css", "html", "web"]
 lang: en-US
 ---
 
-# Resonsive Design
+import { Image } from 'astro:assets';
+
+# Responsive Design
 
 :::tip
 The webpages are responsive by default. As soon as we start to constrain sizes
@@ -14,7 +16,7 @@ of elements, the pages stop being responsive.
 
 The above is not true for images though. They will overflow on screen sizes smaller than the image itself. To fix that, the following CSS can be added:
 
-```csharp
+```css
 img {
   max-width: 100%;
 }

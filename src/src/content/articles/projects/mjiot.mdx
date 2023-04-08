@@ -5,6 +5,26 @@ lang: en-US
 tags: ["iot", "thesis", "internet of things", "cloud", "devices"]
 ---
 
+import { Image } from 'astro:assets';
+import mjiotArchitecture from '../../../assets/mjiot-architecture.png';
+import mjiotWebapp1 from '../../../assets/mjiot-webapp1.png';
+import mjiotWebapp2 from '../../../assets/mjiot-webapp2.png';
+import mjiotWebapp3 from '../../../assets/mjiot-webapp3.png';
+import mjiotWebapp4 from '../../../assets/mjiot-webapp4.png';
+import mjiotWebapp5 from '../../../assets/mjiot-webapp5.png';
+import mjiotHeater from '../../../assets/mjiot-heater.png';
+import mjiotHeaterElectric from '../../../assets/mjiot-heater-electric.png';
+import mjiotHumiditySensor from '../../../assets/mjiot-humidity-sensor.png';
+import mjiotDisplay from '../../../assets/mjiot-display.png';
+import mjiotHysteresisController from '../../../assets/mjiot-hysteresis-controller.png';
+import mjiotChat from '../../../assets/mjiot-chat.png';
+import tempControlLoop from '../../../assets/temp-control-loop.png';
+import mjiotTempControlDevices from '../../../assets/mjiot-temp-control-devices.png';
+import mjiotTempControlConnections from '../../../assets/mjiot-temp-control-connections.png';
+import mjiotTempControlGraph from '../../../assets/mjiot-temp-control-graph.png';
+import mjiotChatSysemConnections from '../../../assets/mjiot-chat-sysem-connections.png';
+import mjiotChatWorld from '../../../assets/mjiot-chat-world.png';
+
 # MJ IoT
 
 MJ IoT was a result of my work on the thesis titled "Design and implementation of
@@ -35,7 +55,7 @@ data in the system is achieved by the means of IoT Hub service. Users' data are
 stored in two database systems: Azure SQL and CosmosDB. The platform's logic is
 hosted in a serverless architecture, delivered by Azure Functions.
 
-![](../../../assets/mjiot-architecture.png)
+<Image src={mjiotArchitecture} alt=""/>
 
 Another crucial part of the thesis is modelling approach. Every "thing" that is
 connected with the platform has a corresponding model, which defines its
@@ -67,15 +87,15 @@ telemetry data in a form of a chart or a list, with corresponding timestamps.
 An essential part of the project was a web application allowing users to manage
 their devices. The app was created in Agular.
 
-![](../../../assets/mjiot-webapp1.png)
+<Image src={mjiotWebapp1} alt=""/>
 
-![](../../../assets/mjiot-webapp2.png)
+<Image src={mjiotWebapp2} alt=""/>
 
-![](../../../assets/mjiot-webapp3.png)
+<Image src={mjiotWebapp3} alt=""/>
 
-![](../../../assets/mjiot-webapp4.png)
+<Image src={mjiotWebapp4} alt=""/>
 
-![](../../../assets/mjiot-webapp5.png)
+<Image src={mjiotWebapp5} alt=""/>
 
 ## Devices
 
@@ -88,15 +108,15 @@ were purely software-based.
 I've purchased a generic heater and modified it by including a controlled relay
 in its electrical circuit.
 
-![](../../../assets/mjiot-heater.png)
+<Image src={mjiotHeater} alt=""/>
 
-![](../../../assets/mjiot-heater-electric.png)
+<Image src={mjiotHeaterElectric} alt=""/>
 
 ### Temperature and Humidity sensor
 
 One of my sensors was a simple temperature and humidity sensor that I've connected with a microcontroller.
 
-![](../../../assets/mjiot-humidity-sensor.png)
+<Image src={mjiotHumiditySensor} alt=""/>
 
 ### Display
 
@@ -104,21 +124,21 @@ A purely software-based device - a display. It could be connected to other
 devices to display their outputs (e.g. when connected to the temperature output
 of the temperature and humidity sensor we could observe the temperature).
 
-![](../../../assets/mjiot-display.png)
+<Image src={mjiotDisplay} alt=""/>
 
 ### Hysteresis Controller
 
 Another software-based device was a hysteresis controller that allows for an
 automated control of other appliances based on configuration parameters.
 
-![](../../../assets/mjiot-hysteresis-controller.png)
+<Image src={mjiotHysteresisController} alt=""/>
 
 ### Chat App
 
 One of the most interesting "devices" that I designed was the chat application.
 Its input was an incoming message. The output was an outgoing message.
 
-![](../../../assets/mjiot-chat.png)
+<Image src={mjiotChat} alt=""/>
 
 ## Applications
 
@@ -131,11 +151,11 @@ Connecting a few of my devices together and using the capabilities of MJIoT
 Platform I was able to have a working room temperature control system. This
 system uses some basic automation principles like the feedback loop.
 
-![](../../../assets/temp-control-loop.png)
+<Image src={tempControlLoop} alt=""/>
 
 Here's how I've connected various devices together to get a working system:
 
-![](../../../assets/mjiot-temp-control-devices.png)
+<Image src={mjiotTempControlDevices} alt=""/>
 
 The Heater was obviously responsible to heat the room. Depending on the input
 from the Hysteresis Control, it was either ON or OFF. In order to change the
@@ -149,12 +169,12 @@ the output of the Temperature Sensor.
 
 All of the connections were configured via the MJ IoT Control Panel as follows:
 
-![](../../../assets/mjiot-temp-control-connections.png)
+<Image src={mjiotTempControlConnections} alt=""/>
 
 With all that, I achieved typical temperature control characteristics with a
 hysteresis controller:
 
-![](../../../assets/mjiot-temp-control-graph.png)
+<Image src={mjiotTempControlGraph} alt=""/>
 
 The blue color represents the controller output (commands for the heater to be
 on or off); the yellow color represents the desired temperature; the green color
@@ -167,9 +187,9 @@ A really fun application of MJIoT was to use it as a chat platform. I have
 connected two instances of my Chat app together (output of one goes as
 an input to another) and got a simple chat system.
 
-![](../../../assets/mjiot-chat-sysem-connections.png)
+<Image src={mjiotChatSysemConnections} alt=""/>
 
-![](../../../assets/mjiot-chat-world.png)
+<Image src={mjiotChatWorld} alt=""/>
 
 The image shows an example of how I've been testing the solution. The PC on the
 left was in Poland (me), while the one on the right was in Tunisia (my

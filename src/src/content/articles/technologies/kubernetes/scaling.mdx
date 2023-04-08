@@ -5,6 +5,9 @@ tags: ["kubernetes", "k8s", "scaling", "deployment", "replicaset"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import deploymentReplicasetSelector from '../../../../assets/deployment-replicaset-selector.png';
+
 # Scaling
 
 It's not very convenient to manage pods individually. We need ways to deploy
@@ -94,7 +97,7 @@ they will not be reused in the Deployment's replicas. The ReplicaSet managed by
 the Deployment adds additional (based on `template` hash) label selector to
 the pods it manages.
 
-![](../../../../assets/deployment-replicaset-selector.png)
+<Image src={deploymentReplicasetSelector} alt=""/>
 :::
 
 ### Updates

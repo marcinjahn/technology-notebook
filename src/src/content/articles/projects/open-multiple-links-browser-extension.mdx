@@ -5,13 +5,16 @@ lang: en-US
 tags: ["chrome", "extension", "Open Multiple Links"]
 ---
 
+import { Image } from 'astro:assets';
+import openMultipleLinksLogo from '../../../assets/open-multiple-links-logo.png';
+
 # Open Multiple Links
 
 A web browser extension that makes it easy to open many links from web pages.
 Just select/highlight some text containing links, right-click it, and select
 "Open links in new tabs".
 
-![](../../../assets/open-multiple-links-logo.png)
+<Image src={openMultipleLinksLogo} alt=""/>
 
 It uses TypeScript and webpack.
 

@@ -4,12 +4,20 @@ description: A BSc thesis project - MJ IoT
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import ioModule from '../../../assets/io-module.png';
+import ioModuleUwp1 from '../../../assets/io-module-uwp-1.png';
+import ioModuleUwp2 from '../../../assets/io-module-uwp-2.png';
+import ioModuleUwp3 from '../../../assets/io-module-uwp-3.png';
+import ioModuleUwp4 from '../../../assets/io-module-uwp-4.png';
+import ioModuleInside from '../../../assets/io-module-inside.png';
+
 # Wireless analog/digital I/O module for mobile devices
 
 My BSc studies have been concluded with a thesis titled "Wireless analog/digital
 I/O module for mobile devices".
 
-![](../../../assets/io-module.png)
+<Image src={ioModule} alt=""/>
 
 ## Technologies
 
@@ -45,16 +53,16 @@ analog input, digital outputs, analog outputs. The user can freely switch
 between those and control the wirelessly connected device with the use of
 implemented virtual switches and sliders.
 
-![](../../../assets/io-module-uwp-1.png)
+<Image src={ioModuleUwp1} alt=""/>
 
-![](../../../assets/io-module-uwp-2.png)
+<Image src={ioModuleUwp2} alt=""/>
 
-![](../../../assets/io-module-uwp-3.png)
+<Image src={ioModuleUwp3} alt=""/>
 
-![](../../../assets/io-module-uwp-4.png)
+<Image src={ioModuleUwp4} alt=""/>
 
 The final device is built on the universal soldering board and it is powered
 from a 9V battery. The performance of the system fully covers the proposed
 goals, both read and set voltages are correct.
 
-![](../../../assets/io-module-inside.png)
+<Image src={ioModuleInside} alt=""/>

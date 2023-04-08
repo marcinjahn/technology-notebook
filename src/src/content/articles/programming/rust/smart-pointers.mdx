@@ -4,6 +4,11 @@ description: Smart Pointers in Rust
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import structOfKnownSize from '../../../../assets/struct-of-known-size.png';
+import graphWithRc from '../../../../assets/graph-with-rc.png';
+import inifiniteStructSize from '../../../../assets/inifinite-struct-size.png';
+
 # Smart Pointers
 
 The most common kind of pointer in Rust is a **reference**. **Smart Pointers**
@@ -113,7 +118,7 @@ let list = Cons(1, Cons(2, Cons(3, Nil)));
 
 This enum does not compile; its size is unknown.
 
-![](../../../../assets/inifinite-struct-size.png)
+<Image src={inifiniteStructSize} alt=""/>
 
 Here's a version with a `Box<T>`:
 
@@ -129,7 +134,7 @@ let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
 Only the `i32` 1 and the first `Box<T>` are stored on the stack. The rest is on
 the heap:
 
-![](../../../../assets/struct-of-known-size.png)
+<Image src={structOfKnownSize} alt=""/>
 
 ## Rc
 
@@ -166,7 +171,7 @@ fn main() {
 }
 ```
 
-]![](../../../../assets/graph-with-rc.png)
+<Image src={graphWithRc} alt=""/>
 
 There are 3 references to `a`, all of them encapsulated within `Rc`.
 The value will "live" as long as any `Rc` instance still points to it.

@@ -5,6 +5,9 @@ lang: en-US
 tags: [".net", "dotnet", "asp.net", "asp", "core", "architecture", "ddd", "domain driven design"]
 ---
 
+import { Image } from 'astro:assets';
+import aclLegacyToDdd from '../../../../assets/acl-legacy-to-ddd.png';
+
 # Domain-Driven Design
 
 The Domain-Driven Design (DDD) is an architecture style for building
@@ -417,7 +420,7 @@ introduce the new concepts into legacy codebase, we could create an ACL layer
 (like some set of services) that will communicate with our DDD system properly
 and return the data as the legacy system expects.
 
-![](../../../../assets/acl-legacy-to-ddd.png)
+<Image src={aclLegacyToDdd} alt=""/>
 
 ## Sources
 

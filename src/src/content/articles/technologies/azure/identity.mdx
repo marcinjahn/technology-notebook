@@ -5,6 +5,9 @@ tags: ["azure", "identity", "auth"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import identityDelegatedApplicationPermissions from '../../../../assets/identity-delegated-application-permissions.png';
+
 # Microsoft Identity
 
 ## Access Token vs. ID Token
@@ -187,7 +190,7 @@ When assigning scopes/app roles to our apps, the scopes we defined in *Expose an
 API* can be found under "Delegated permissions", while the App Roles can be
 found under "Application Permissions
 
-![](../../../../assets/identity-delegated-application-permissions.png)
+<Image src={identityDelegatedApplicationPermissions} alt=""/>
 :::
 
 ## AAD Groups

@@ -5,6 +5,9 @@ lang: en-US
 tags: [".net", "dotnet", "asp.net", "asp", "core", "architecture"]
 ---
 
+import { Image } from 'astro:assets';
+import domainFocuedArch from '../../../../assets/domain-focued-arch.png';
+
 # ASP.NET Core Projects
 
 ## Projects Organization
@@ -18,7 +21,7 @@ Our code could be split into the following projects:
 - **Presentation** - controllers/pages
 - **Common** - cross-cutting concerns
 
-![](../../../../assets/domain-focued-arch.png)
+<Image src={domainFocuedArch} alt=""/>
 
 The interfaces for various things like database accessshould be stored in the
 Application layer. The Persistence/Infrastructure should depend on Application

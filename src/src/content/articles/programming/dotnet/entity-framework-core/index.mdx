@@ -5,6 +5,8 @@ tags: [".net", "c#", entity framework, core, dotnet]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+
 # Overview of Entity Framework Core
 
 EF Core is the official .NET data access technology. It's an ORM (Object
@@ -71,7 +73,7 @@ We can do that in a few ways:
 
 - on `DbContext` - makes all queries NoTracking by default:
 
-    ```csharp{5}
+    ```csharp {5}
     public class MyContext: DbContext
     {
         public MyContext()
@@ -83,7 +85,7 @@ We can do that in a few ways:
 
 - in Dependency Injection registration:
 
-    ```csharp{5}
+    ```csharp {5}
     builder.Services.AddDbContext<SamuraiContext>(options =>
     {
         options

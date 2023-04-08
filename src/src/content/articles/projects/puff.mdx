@@ -4,6 +4,9 @@ description: A CLI tool that manages configuration files of dev projects
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import puffHelp from '../../../assets/puff-help.png';
+
 # Puff
 
 Puff is a CLI tool that solves the issue of storing app configuration files in
@@ -14,7 +17,7 @@ secrets they may contain. Puff manages those files and stores them in one
 common location. Your apps access the configuration files via symlinks that puff
 creates.
 
-![](../../../assets/puff-help.png)
+<Image src={puffHelp} alt=""/>
 
 For the .NET developers, these could be `appsettings.json` files. For the NodeJS
 developers, these could be `.env` files. Often such files contain secrets that you

@@ -5,6 +5,10 @@ tags: ["algorithms"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import bTree from '../../../../assets/b-tree.png';
+import wrongBTree from '../../../../assets/wrong-b-tree.png';
+
 # Trees
 
 - **Dimension** - maximum amount of children a tree node can have (e.g. binary
@@ -84,7 +88,7 @@ Use-cases:
 
 ## B-Tree
 
-![](../../../../assets/b-tree.png)
+<Image src={bTree} alt=""/>
 
 Characteristics:
 
@@ -103,7 +107,7 @@ Characteristics:
 
 An example of a tree that is not B-Tree:
 
-![](../../../../assets/wrong-b-tree.png)
+<Image src={wrongBTree} alt=""/>
 
 The node "1" does not have enough values (should have at least 2).
 

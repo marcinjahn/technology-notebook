@@ -5,6 +5,8 @@ tags: ["angular", "spa", "js", "ts", "forms", "validation"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+
 # Forms in Angular
 
 Angular comes with built-in tools to help us with dealing with forms.
@@ -25,7 +27,7 @@ This is the easiest approach. It requires the `AppModule` to import
 1. Define our form in HTML within the `<form>` tags. Use `ngSubmit` event of the
    form and a reference.
 
-    ```html{1}
+    ```html {1}
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
         <input type="text">
         <input type="text">
@@ -42,7 +44,7 @@ This is the easiest approach. It requires the `AppModule` to import
 
 2. Mark inputs that matter to you with the `ngModel` directive and name them.
 
-    ```html{2,4}
+    ```html {2,4}
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
         <input type="text" ngModel name="age">
         <input type="text">

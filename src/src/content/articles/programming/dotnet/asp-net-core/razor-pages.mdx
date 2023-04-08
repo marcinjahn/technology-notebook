@@ -5,6 +5,8 @@ tags: [".net", "asp.net", "c#"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+
 # Razor Pages
 
 It's a framework for building multiple-pages based websites generated on the
@@ -25,7 +27,7 @@ project (by default). **Razor** is a templating syntax.
 
 Here's an example of `Pages/Privacy.cshtml`:
 
-```csharphtml
+```cshtml
 @page // Indicates that this is a Razor Page
 @model PrivacyModel // Links to a model file (Privacy.cshtml.cs)
 @{

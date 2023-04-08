@@ -5,6 +5,8 @@ lang: en-US
 tags: ["c", "programming", "compilation", "machine code"]
 ---
 
+import { Image } from 'astro:assets';
+
 # Compilation
 
 Our source files go through the following tools that act on them:
@@ -16,9 +18,8 @@ Our source files go through the following tools that act on them:
 
 Let's explain the process based on a simple solution:
 
-:::: tabs
- 
-::: tab main.cpp
+`main.cpp`:
+
 ```cpp
 #include "source.hpp"
 
@@ -27,24 +28,20 @@ int main() {
     return 0;
 }
 ```
-:::
- 
- 
-::: tab add.cpp
+
+`add.cpp`:
+
 ```cpp
 int add(int a, int b) {
     return a + b;
 }
 ```
-:::
 
-::: tab add.hpp
+`add.hpp`:
+
 ```cpp
 int add(int a, int b);
 ```
-:::
-
-::::
 
 We can compile the app with:
 

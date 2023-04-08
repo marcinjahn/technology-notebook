@@ -5,6 +5,9 @@ tags: [".net", "asp.net", "c#", "filter"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import filterPipeline from '../../../../../assets/filter-pipeline.png';
+
 # Filters in ASP.NET Core
 
 Filters act as a pipeline, similarly to middleware. They can be used both with
@@ -64,7 +67,7 @@ If we short-circuit the Action/Page filter, the Result filter will still be
 executed!
 :::
 
-![](../../../../assets/filter-pipeline.png)
+<Image src={filterPipeline} alt=""/>
 
 ## Implementation
 

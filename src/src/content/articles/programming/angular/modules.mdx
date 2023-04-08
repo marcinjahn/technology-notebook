@@ -5,6 +5,8 @@ tags: ["angular", "spa", "js", "ts", "modules", "organization"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+
 # Modules in Angular
 
 Modules are a way of bundling various Angular entities together:
@@ -198,7 +200,7 @@ routing. Now, the products area is treated as a child of the main routing. All
 the child's routes go under the "*/products*" path, and the child module does
 not need to know about it.
 
-    ```ts{7}
+    ```ts {7}
     const routes: Routes = [
       {
         path: '',

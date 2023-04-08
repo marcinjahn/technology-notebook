@@ -4,6 +4,13 @@ description: A plugin for VuePress 1.x that allows users to submit feedback
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import buttonOnPage from '../../../assets/button-on-page.png';
+import pressMe from '../../../assets/press-me.png';
+import starQuestion from '../../../assets/star-question.png';
+import binaryQuestion from '../../../assets/binary-question.png';
+import openQuestion from '../../../assets/open-question.png';
+
 # VuePress Feedback Plugin
 
 [NPM](https://badge.fury.io/js/vuepress-plugin-feedback-panel)
@@ -17,12 +24,12 @@ A VuePress 1.x plugin that adds a global feedback widget to your website.
 
 When enabled, the plugin adds a button in the bottom-right corner of your site:
 
-![](../../../assets/button-on-page.png)
+<Image src={buttonOnPage} alt=""/>
 
 When clicked, a panel shows up where your users can provide feedback about the
 website:
 
-![](../../../assets/star-question.png)
+<Image src={starQuestion} alt=""/>
 
 The questions list is configurable. The answers will be sent to the webhook URL
 that you have to provide in the configuration.
@@ -138,7 +145,7 @@ Other than that, the object contains:
 
 This setting controls the text being displayed on the feedback button
 
-![](../../../assets/press-me.png)
+<Image src={pressMe} alt=""/>
 
 ### disableOnLocalhost
 
@@ -205,7 +212,7 @@ The following question types are available:
   }
   ```
 
-  ![](../../../assets/star-question.png)
+<Image src={starQuestion} alt=""/>
 
 - `BinaryQuestion`
 
@@ -226,7 +233,7 @@ The following question types are available:
   }
   ```
 
-  ![](../../../assets/binary-question.png)
+<Image src={binaryQuestion} alt=""/>
 
 - `OpenQuestion`
 
@@ -247,7 +254,7 @@ The following question types are available:
   }
   ```
 
-  ![](../../../assets/open-question.png)
+<Image src={openQuestion} alt=""/>
 
 ## Contributing
 

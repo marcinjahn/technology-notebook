@@ -5,11 +5,14 @@ tags: ["networking", "dns", "fqdn"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import dns from '../../../../assets/dns.png';
+
 # DNS
 
 Here's a diagram of how DNS works:
 
-![](../../../../assets/dns.png)
+<Image src={dns} alt=""/>
 
 We assume that there is some internal DNS server that we're reaching out to
 first. It could be a DNS server hosted on our gateway.

@@ -4,6 +4,13 @@ description: Pointers in the C programming language
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import memory from '../../../../assets/memory.png';
+import pointerInMemory from '../../../../assets/pointer-in-memory.png';
+import multiDimensionalArrays from '../../../../assets/multi-dimensional-arrays.png';
+import arrayInArgument from '../../../../assets/array-in-argument.png';
+import pointerToPointer from '../../../../assets/pointer-to-pointer.png';
+
 # Pointers
 
 A pointer is a variable whose value is the address of some value.
@@ -53,13 +60,14 @@ Pointers are useful for:
 
 Memory is organized as follows:
 
-![](../../../../assets/memory.png)
+
+<Image src={memory} alt=""/>
 
 Each slot is addressed.
 
 A pointer stores an address to some value in memory:
 
-![](../../../../assets/pointer-in-memory.png)
+<Image src={pointerInMemory} alt=""/>
 
 Pointer itself also has an address in memory, it also is some variable.
 In the case above, `&p` is `64`.
@@ -133,7 +141,7 @@ int (*p)[3] = B; // OK; 3 is needed, because pointer arithmetics needs to "know"
                  // how many bytes to add in operations like p++
 ```
 
-![](../../../../assets/multi-dimensional-arrays.png)
+<Image src={multiDimensionalArrays} alt=""/>
 
 Pointer arithmetic examples:
 
@@ -169,7 +177,7 @@ int **q = &p;
 
 A `p` points to `x`. `q` points to `p`.
 
-![](../../../../assets/pointer-to-pointer.png)
+<Image src={pointerToPointer} alt=""/>
 
 In this exmple we have even `int ***` pointer (a pointer to pointer to pointer).
 
@@ -195,7 +203,7 @@ understanding pointers.
 When a function accepts an array as an argument, a pointer to an array is
 passed:
 
-![](../../../../assets/array-in-argument.png)
+<Image src={arrayInArgument} alt=""/>
 
 This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
 `SumOfElements()` (4 bytes - just the size of a pointer to integer!).

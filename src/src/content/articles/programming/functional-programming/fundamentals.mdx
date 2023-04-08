@@ -5,6 +5,13 @@ tags: [".net", "asp.net", "c#", functional, programming, fp, turing, lambda]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import doFcn from '../../../../assets/do-fcn.png';
+import crossingAbstraction from '../../../../assets/crossing-abstraction.png';
+import map from '../../../../assets/map.png';
+import bind from '../../../../assets/bind.png';
+import typicalFpFunctionsInAbstractions from '../../../../assets/typical-fp-functions-in-abstractions.png';
+
 # Fundamentals of Functional Programming
 
 One of the most significant issues in programming nowadays is how to deal with
@@ -162,7 +169,7 @@ supposed to be used whenever we need to do some side-effect in the middle of a
 data flow. We could use `Map` for that as well, but `Map` shouldn't be used when
 side effects are involved.
 
-![](../../../../assets/do-fcn.png)
+<Image src={doFcn} alt=""/>
 
 `Do` invokes some provided action and returns the provided value; the flow may
 be continued.
@@ -236,7 +243,7 @@ We can look at various functions that operate on data as either:
 - returning the same level of abstraction
 - crossing abstraction
 
-![](../../../../assets/crossing-abstraction.png)
+<Image src={crossingAbstraction} alt=""/>
 
 Examples:
 
@@ -249,9 +256,9 @@ Examples:
 
 Using this classification, we can look see the following relations:
 
-![](../../../../assets/map.png)
+<Image src={map} alt=""/>
 
-![](../../../../assets/bind.png)
+<Image src={bind} alt=""/>
 
 The functions accepted by these two functions differ in the fact that `Bind`
 requires a function that crosses the abstraction upwards.
@@ -262,7 +269,7 @@ checking for `null`, using loops, etc. Working on the *elevated values*
 abstraction level makes it possible to fluently chain function calls.
 :::
 
-![](../../../../assets/typical-fp-functions-in-abstractions.png)
+<Image src={typicalFpFunctionsInAbstractions} alt=""/>
 
 ### Reducing a list to a single value
 

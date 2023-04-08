@@ -5,6 +5,9 @@ tags: ["linux", "networking", "firewall"]
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import nat from '../../../../assets/nat.png';
+
 # Networking
 
 ## Toolset
@@ -89,7 +92,7 @@ the top, for better performance.
 By default, if a packets goes through all of the rules and none is matched, it
 will be ACCEPTed.
 
-We can change that with `iptables –P INPUT DENY`.
+We can change that with `iptables -P INPUT DENY`.
 :::
 
 #### NAT Table
@@ -106,14 +109,12 @@ iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 The MASQUERADE target will use the IP address of eth1 for all traffic that
 leaves eth1.
 
-![](../../../../assets/nat.png)
+<Image src={nat} alt=""/>
 
 
 #### Mangle Table
 
 The Mangle table is used to modify packets.
-
----
 
 #### Logs
 

@@ -4,13 +4,20 @@ description: Service object in Kubernetes
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import podsNetworkFlat from '../../../../assets/pods-network-flat.png';
+import k8sService from '../../../../assets/k8s-service.png';
+import serviceBindingToPods from '../../../../assets/service-binding-to-pods.png';
+import loadBalancerService from '../../../../assets/load-balancer-service.png';
+import headlessServices from '../../../../assets/headless-services.png';
+
 # Services
 
 Pods can communicate with each other using private IP address space. They can be
 on different nodes, but K8s handles appropriate routing. For a pod, all other
 pods are on the same LAN.
 
-![](../../../../assets/pods-network-flat.png)
+<Image src={podsNetworkFlat} alt=""/>
 
 Problems:
 
@@ -27,7 +34,7 @@ new ones get created).
 Services make the pods accessible at one static entry point (IP), no matter how
 many replicas there are.
 
-![](../../../../assets/k8s-service.png)
+<Image src={k8sService} alt=""/>
 :::
 
 Services operate at the Layer 4 of the [OSI
@@ -69,7 +76,7 @@ pod.
 
 Services use **label selectors** to find pods that belong to a Service.
 
-![](../../../../assets/service-binding-to-pods.png)
+<Image src={serviceBindingToPods} alt=""/>
 
 ## Services types
 
@@ -85,7 +92,7 @@ K8s supports the following Service types:
   extension of NodePort. The pods will be accessible via a new IP address
   belonging to the load balancer.
 
-![](../../../../assets/load-balancer-service.png)
+<Image src={loadBalancerService} alt=""/>
 
 - **ExternalName** - creates CNAME records in K8s DNS. They have no clusterIP.
   The client gets the IP of the CNAMEd service.
@@ -169,7 +176,7 @@ use the service as normal, it can. The DNS will randomly return any pod's IP and
 the client will talk directly to a pod. DNS-aware clients can make use of the
 advantages listed above though.
 
-![](../../../../assets/headless-services.png)
+<Image src={headlessServices} alt=""/>
 
 Headless services are created by placing `clusterIP: None` in the YAML definition.
 

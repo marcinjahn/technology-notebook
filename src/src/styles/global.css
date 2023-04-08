@@ -91,6 +91,12 @@ table tbody tr:nth-of-type(even) {
 }
 
 /* Img fix */
-img {
+main img {
+    margin: 1rem auto;
     height: auto;
+}
+
+main hr {
+    margin: 2rem 0;
+    color: rgb(242, 242, 242);
 }

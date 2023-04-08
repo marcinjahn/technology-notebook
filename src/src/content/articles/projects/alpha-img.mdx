@@ -5,6 +5,9 @@ lang: en-US
 tags: ["web", "app", "project", "alpha", "image", "transparent"]
 ---
 
+import { Image } from 'astro:assets';
+import alphaImgSpa from '../../../assets/alpha-img-spa.png';
+
 # Alpha Img
 
 **Alpha Img** is a small web project that aims to solve the following problem:
@@ -18,7 +21,7 @@ Alpha Img is a simple search engine that returns ONLY images that are
 transparent. It also allows you to quickly save/copy/preview the image with a
 single click.
 
-![](../../../assets/alpha-img-spa.png)
+<Image src={alphaImgSpa} alt=""/>
 
 The solution consists of (the code is available on GitHub):
 

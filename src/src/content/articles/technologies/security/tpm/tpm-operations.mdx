@@ -4,6 +4,10 @@ description: Information about some fundamental operations that TPM is capable o
 lang: en-US
 ---
 
+import { Image } from 'astro:assets';
+import certifiedKey from '../../../../../assets/certified-key.png';
+import pcrMeasuredBoot from '../../../../../assets/pcr-measured-boot.png';
+
 # TPM Operations
 
 ## Generating Random Numbers
@@ -20,7 +24,7 @@ that the key has an accompanying certificate signed by the trusted CA. This
 certificate is stored in the TPM's NVDATA. It can be read and verified any time.
 The NV indices for the certs are reserved.
 
-![](../../../../assets/certified-key.png)
+<Image src={certifiedKey} alt=""/>
 
 If EK is trusted, all keys under it can be trusted as well (chain of trust).
 
@@ -114,7 +118,7 @@ It's a standardized technology supported by modern firmware. Before executing an
 element in the boot sequence, it's measured to make sure that it is the expected
 executable. If the result is unexpected, it's not executed.
 
-![](../../../../assets/pcr-measured-boot.png)
+<Image src={pcrMeasuredBoot} alt=""/>
 
 Each element is measured by its predecessor in the sequence.
 Each measurement is stored in a different PCR.
