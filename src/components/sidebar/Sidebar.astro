@@ -1,0 +1,108 @@
+---
+import './style.css';
+import sidebarStructure from "../../static/sidebar";
+import { getCollection } from "astro:content";
+import LinkNode from "./LinkNode.astro";
+import NodeWithChildren from "./NodeWithChildren.astro";
+
+function getSectionItems(path: string) {
+    const section = Object.keys(sidebarStructure).find((key) =>
+        path.startsWith(key)
+    ) as string;
+    return { items: sidebarStructure[section] || [], basePath: section };
+}
+
+const { items, basePath } = getSectionItems(Astro.url.pathname);
+const allArticles = await getCollection("articles");
+
+function slug(endOfPath: string) {
+    return `${basePath}${endOfPath}`
+}
+
+function getArticleTitle(endOfPath: string) {
+    const articleSlug = slug(endOfPath).substring(1);
+    const title = allArticles
+        .find(a => a.slug === articleSlug || a.slug + '/' === articleSlug)
+        ?.data.title;
+
+    return title ?? "Unknown"
+}
+---
+
+<ul class="sidebar-list">
+    {
+        items.map((item) =>
+            typeof item === "string" ? (
+                <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+            ) : (
+            <NodeWithChildren item={item} isTopLevel={true}>
+                {item.children.map((item) =>
+                    typeof item === "string" ? (
+                    <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+                    ) : (
+                    <NodeWithChildren item={item}>
+                        {item.children.map((item) =>
+                            typeof item === "string" ? (
+                            <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+                            ) : (
+                                <NodeWithChildren item={item}>
+                                    {item.children.map(
+                                        (item) => (
+                                            typeof item === "string" ? (
+                                            <LinkNode path={slug(item)} title={getArticleTitle(item)}/>
+                                            ) : (<></>)
+                                        )
+                                    )}
+                                </NodeWithChildren>
+                            )
+                        )}
+                    </NodeWithChildren>
+                    )
+                )}
+            </NodeWithChildren>
+            )
+        )
+    }
+</ul>
+
+<style>
+    .container {
+        margin-top: 0;
+        padding-left: 0;
+    }
+</style>
+
+<script>
+    revealCurrentArticle();
+
+    function revealCurrentArticle() {
+        let path = window.location.pathname;
+
+        if (path.endsWith('/')) {
+            path = path.substring(0, path.length - 1);
+        }
+
+        // TODO: For now, it will retrieve all instance of sidebar on page.
+        // Ideally, it should work with just this current instance
+        // https://stackoverflow.com/questions/75912035/how-to-target-this-component-in-client-script
+        const currentLi = document.querySelectorAll(`li[data-path="${path}"]`);
+
+        if (!currentLi?.length) {
+            return;
+        }
+
+        currentLi.forEach(li => {
+            li.classList.add('active');
+
+            let parent: HTMLElement | null | undefined = li.parentElement;
+            while(parent) {
+                if (parent.nodeName.toLowerCase() !== "ul") {
+                    break;
+                }
+                
+                parent.classList.remove('hidden');
+                parent = parent.parentElement?.parentElement;
+            }
+        });
+    }
+</script>

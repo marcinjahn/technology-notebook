@@ -1,0 +1,185 @@
+---
+title: Services
+description: Service object in Kubernetes
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+import podsNetworkFlat from '../../../../assets/pods-network-flat.png';
+import k8sService from '../../../../assets/k8s-service.png';
+import serviceBindingToPods from '../../../../assets/service-binding-to-pods.png';
+import loadBalancerService from '../../../../assets/load-balancer-service.png';
+import headlessServices from '../../../../assets/headless-services.png';
+
+# Services
+
+Pods can communicate with each other using private IP address space. They can be
+on different nodes, but K8s handles appropriate routing. For a pod, all other
+pods are on the same LAN.
+
+<Image src={podsNetworkFlat} alt=""/>
+
+Problems:
+
+- Pods are ephemeral and their IP might suddenly change.
+- Pods are not accessible on the outside by default.
+
+Services enable a single communication entry point to the pods. There'll be a
+single IP address regardless of how many replicas are deployed.
+
+Service's IP never changes, it's static, unlike the IPs of pods (pods die, and
+new ones get created).
+
+:::tip
+Services make the pods accessible at one static entry point (IP), no matter how
+many replicas there are.
+
+<Image src={k8sService} alt=""/>
+:::
+
+Services operate at the Layer 4 of the [OSI
+model](/technologies/networking/osi-model). They do not understand URLs, cookies
+(e.g. cookie-based affinity is not supported, only IP-based is supported), etc.
+
+Creating a simple service: `kubectl expose deployment kiada --type=LoadBalancer
+--port 8080`. It exposes all pods in the "kiada" deployment as a new service.
+The pods will be accessible via a load balancer. Service name is inherited from
+the deployment since we didn't specify any name.
+
+## DNS
+
+K8s runs pods with DNS servers (and a service to expose them as ClusterIP!),
+which all pods are configured to use. Thanks to them, service's IP is resolvable
+by service's name. If a service resides in a different namespace than the client
+pod, the namespace must be appended to the URL. Examples:
+
+- `http://quiz` - when the `quiz` service is in the same ns
+- `http://quiz.kiada` - when the `quiz` service is in another namespace (called
+  `kiada`)
+
+:::tip[Other URLs]
+Services are resolvable with:
+
+- `<service-name>` - same NS
+- `<service-name>.<service-namespace>` - different NS
+- `<service-name>.<service-namespace>.svc`
+- `<service-name>.<service-namespace>.svc.cluster.local` - the `cluster.local`
+   suffix might be changed at the cluster level.
+:::
+
+The IP addresses of services in a namespace are also available as envs in all
+pods (the pod needs to be started after the service is created!). It's better to
+rely on DNS though. These envs may be disabled with `enableServiceLinks` on a
+pod.
+
+## Binding services to pods
+
+Services use **label selectors** to find pods that belong to a Service.
+
+<Image src={serviceBindingToPods} alt=""/>
+
+## Services types
+
+K8s supports the following Service types:
+
+- **ClusterIP** - only within the cluster (it's the **default**). It acts as a
+  load balancer when multiple pods are behind it.
+- **NodePort** - a port on all nodes takes us to the pod. It is accessible from
+  the outside via any node's IP. Node ports may be explicitly specified in the
+  manifest or K8s may assign them randomly.
+- **LoadBalancer** - depends on cloud provider. There is an external load
+  balancer in front of the nodes that routes the traffic to the nodes. It is an
+  extension of NodePort. The pods will be accessible via a new IP address
+  belonging to the load balancer.
+
+<Image src={loadBalancerService} alt=""/>
+
+- **ExternalName** - creates CNAME records in K8s DNS. They have no clusterIP.
+  The client gets the IP of the CNAMEd service.
+
+### Load Balancer
+
+Kubernetes allows to create a service of LoadBalancer type, but it does not
+provide load balancing itself. It asks the cloud infrastucture (via cloud
+proivder-specific controller?) to provide it. The IP address of the load
+balancer becomes an External IP of the service.
+
+![](https://i.imgur.com/ClDDOJ7.png)
+
+Using Minikube or kind, the external IP will always be `<Pending>`, because load
+balancing functionality does not exist (it can be installed though, for example
+with MetalLB). We can access the service via any worker node IP with a port of
+the service:
+
+![](https://i.imgur.com/TFPxmnh.png)
+
+These node ports are what the load balancer forwards the traffic to:
+
+![](https://i.imgur.com/xp9CneN.png)
+
+There are actually two load balancers:
+
+- cloud-provider one that load balances traffic between nodes
+- K8s one that load balances traffic between pods
+
+With such a setup, every request has added latency, there're a lot of hops (load
+balancer -> node -> potentially another node if first one didn't have a pod ->
+pod).
+Additionally, original client's IP is lost due to these hops.
+
+:::caution
+The Load Balancer service allows to exposes just one service outside under a
+single IP address. [Ingresses](./ingress) remove that limitation.
+:::
+
+## Endpoints
+
+Together with a Service, an **Endpoints** object is created. Its name matches
+that of the Service. It contains a list of `{IP}:{PORT}` that a given service
+leads to together with other metadata (which node, which pod). It is built based
+on selectors specified for a service.
+
+There are also **EndpointSlices** objects, which are created by K8s when the
+number of endpoints of a service is large. Sending around a huge Endpoints
+object in a cluster becomes a performance issue. One Endpoints object may be
+splitted into multiple EndpointSlices.
+These two types of objects exist at the same time (why?).
+
+These objects are fully managed by K8s, it automatically updates
+Endpoints/EndpointSlices as pods are created/deleted - only if a service has a
+label selector! If it doesn't, we need to create Endpoints objects by ourselves.
+We don't need to create EndpointSlices, K8s will do that for us based on
+Endpoints object. It's useful when we want to expose some external service via a
+Service to the pods with an internal DNS name. We could, for example, switch
+from some K8s-hosted service to an external one (e.g. a DB) and just by removing
+a selector from a Service and creating Endpoints object that would work. The
+pods wouldn't notice any difference. We could also do the opposite.
+
+Availability of a given pod in Endpoints object depends from the status of the
+[readiness probe](./pods.html#readiness-probe) of that pod. If it's not ready,
+it'll be moved to `notReadyAddresses` in the Endpoints object. Readiness of pods
+may also be ignored by Services with proper configuration. Additionally, K8s
+automatically removes pods that are being shut down from Endpoints.
+
+## Headless Services
+
+We can skip the Service hop (pod -> Service -> pod) by creating headless
+service. When a DNS name of such a service gets resolved, instead of returning
+service's IP, the IPs of endpoints behind it are returned.
+
+It enables scenarios such as:
+- load balancing from the client side
+- ability to contact all pods of a given service
+
+If a pod does not need to know IP addresses of all the pods and it just wants to
+use the service as normal, it can. The DNS will randomly return any pod's IP and
+the client will talk directly to a pod. DNS-aware clients can make use of the
+advantages listed above though.
+
+<Image src={headlessServices} alt=""/>
+
+Headless services are created by placing `clusterIP: None` in the YAML definition.
+
+## Tips
+
+- Services cannot be pinged

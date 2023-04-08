@@ -1,0 +1,90 @@
+---
+import { siteTitle, mainNavigation } from "../../static/navigation";
+import Hamburger from "../hamburger/Hamburger.astro";
+import ExternalLinks from "./ExternalLinks.astro";
+import MainLinks from "./MainLinks.astro";
+---
+
+<nav>
+    <div class="left">
+        <div class="hamburger"><Hamburger /></div>
+        <div class="title">
+            <a href="/">{siteTitle}</a>
+        </div>
+    </div>
+
+    <div class="right">
+        <MainLinks />
+        <ExternalLinks />
+    </div>
+</nav>
+
+<style>
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: #acb2dc;
+        border-bottom: 1px solid grey;
+
+        padding: 0.6rem 1.3rem;
+    }
+
+    .title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .title a {
+        color: var(--text-color);
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .right {
+        margin-left: 2rem;
+        font-size: 0.9rem;
+
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .right ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        gap: 1.5rem;
+
+        border-right: 1px solid grey;
+        padding-right: 1.5rem;
+    }
+
+    .right a {
+        color: var(--text-color);
+    }
+
+    .right a:hover {
+        color: var(--accent-color);
+    }
+
+    .hamburger {
+        display: none;
+    }
+
+    @media only screen and (max-width: 920px) {
+        .right {
+            display: none;
+        }
+
+        .hamburger {
+            display: block;
+        }
+    }
+</style>

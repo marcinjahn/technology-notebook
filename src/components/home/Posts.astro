@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import Post from "./Post.astro";
+import Container from "../Container.astro";
+
+const allPosts = await getCollection("posts");
+allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
+---
+
+<Container>
+    {
+        allPosts.map((post) => (
+            <div class="post">
+                <Post post={post} />{" "}
+            </div>
+        ))
+    }
+</Container>
+
+<style>
+    h2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .post {
+        border-bottom: 1px solid #bababa;
+        padding-bottom: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .post:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+</style>

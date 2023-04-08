@@ -1,0 +1,99 @@
+---
+import "./style.css";
+import Arrow from "./Arrow.astro";
+import type { SidebarItem } from "../../static/sidebar";
+
+interface Props {
+    item: SidebarItem;
+    isTopLevel?: boolean;
+}
+
+const { item, isTopLevel } = Astro.props;
+---
+
+<li class:list={[{ top: isTopLevel }]}>
+    <div class="section-title">
+        { item.icon ? <img class="icon" src={`/sidebar-icons/${item.icon}`}/> : <></> }
+        <span>{item.title}</span>
+        <div class="arrow"><Arrow /></div>
+    </div>
+    <ul class="sidebar-list hidden">
+        <slot />
+    </ul>
+</li>
+
+<script>
+    addClickHandlerToUls();
+
+    function addClickHandlerToUls() {
+        const allTitles = document.getElementsByClassName("section-title");
+        for (let title of allTitles) {
+            title.addEventListener("click", () => {
+                const ul = title.parentElement?.getElementsByTagName("ul")[0];
+                const isHidden = ul?.classList.contains("hidden");
+
+                collapseAllTitles(title);
+
+                if (isHidden) {
+                    ul?.classList.remove("hidden");
+                }
+            });
+        }
+    }
+
+    function collapseAllTitles(clickedElement: Element) {
+        const allTitles =
+            clickedElement.parentElement?.parentElement?.getElementsByClassName(
+                "section-title"
+            );
+
+        if (!allTitles) {
+            return;
+        }
+
+        for (let title of allTitles) {
+            const ul = title.parentElement?.getElementsByTagName("ul")[0];
+            ul?.classList.add("hidden");
+        }
+    }
+</script>
+
+<style>
+    span {
+        color: rgb(48, 48, 48) !important;
+        user-select: none;
+        line-height: 2rem;
+    }
+
+    li:not(.top) span:hover {
+        color: var(--accent-color) !important;
+    }
+
+    .section-title {
+        display: flex;
+        gap: 0.1rem;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 200ms linear;
+    }
+
+    .section-title:hover {
+        opacity: 1;
+    }
+
+    .sidebar-list.hidden {
+        display: none;
+    }
+
+    .icon {
+        height: 1.2rem;
+        margin-right: 0.5rem;
+    }
+
+    @media only screen and (max-width: 920px) {
+        .section-title {
+            opacity: 0.8;
+        }
+    }
+</style>

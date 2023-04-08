@@ -1,0 +1,31 @@
+---
+import Logo from "../components/home/Logo.astro";
+import Posts from "../components/home/Posts.astro";
+import Text from "../components/home/Text.astro";
+import { siteTitle } from "../static/navigation";
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout pageTitle={siteTitle}>
+    <main>
+        <Logo />
+        <Posts />
+    </main>
+</BaseLayout>
+
+<style>
+    main {
+        margin: 0 auto;
+
+        margin-top: 4rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4rem;
+
+        max-width: 800px;
+    }
+</style>

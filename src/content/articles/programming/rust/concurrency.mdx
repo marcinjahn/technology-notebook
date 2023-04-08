@@ -1,0 +1,215 @@
+---
+title: Concurrency
+description: Concurrent and parallel programming in Rust
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Concurrency
+
+Just like with memory, Rust is quite good at finding out potential concurrency
+problems during compilation.
+
+## Multithreading
+
+Rust implements *1:1* threads, so when we create a thread in Rust, an actual
+thread is also created by the OS. There are crates that implement *M:N*
+threading.
+
+### Creating a New Thread
+
+```rust
+thread::spawn(|| {
+  for i in 1..10 {
+    println!("hi number {} from the spawned thread!", i);
+    thread::sleep(Duration::from_millis(1));
+  }
+});
+```
+
+Threads run closures. If the `main()` function finishes before threads finish
+execution, they will be terminated anyway.
+
+### Awaiting Threads
+
+A `JoinHandle` may be used to wait for a thread to finish its execution. Its is
+returned by `thread::spawn()`.
+
+```rust
+fn main() {
+  let handle = thread::spawn(|| {
+    for i in 1..10 {
+        println!("hi number {} from the spawned thread!", i);
+        thread::sleep(Duration::from_millis(1));
+    }
+  });
+
+  handle.join().unwrap();
+}
+```
+
+The app will finish only when the thread is done.
+
+### Environment Ownership
+
+Sometimes we might want one thread to pass ownership of some value to another
+thread. We can do that with the `move` keyword placed before the closure.
+
+```rust
+fn main() {
+  let v = vec![1, 2, 3];
+
+  let handle = thread::spawn(move || {
+    println!("Here's a vector: {:?}", v);
+  });
+
+  handle.join().unwrap();
+}
+```
+
+## Messaging
+
+Threads can communicate via **channels** where a **transmitter** sends messages
+and **receiver** receives them.
+
+```rust
+use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+
+let (tx, rx) = mpsc::channel();  // create transmitter and receiver
+
+thread::spawn(move || {
+    let vals = vec![
+        String::from("more"),
+        String::from("messages"),
+        String::from("for"),
+        String::from("you"),
+    ];
+
+    for val in vals {
+        tx.send(val).unwrap(); // send a message
+        thread::sleep(Duration::from_secs(1));
+    }
+});
+
+// recive messages (treats rx as an iterator)
+for received in rx {
+    println!("Got: {}", received);
+}
+```
+
+:::tip[mpsc]
+`mpsc` module stands for *Multiple Producers, Single Consumer*.
+We coulc clone tx and have another transmitter connected to `rx`.
+
+Multiple receivers are not allowed in this model.
+:::
+
+The `send()` method takes ownership of the value being sent and transfers
+ownership to the receiving thread.    d
+
+:::tip[Receiving]
+Receiver can use the following way to receive messages:
+
+- iterator (as shown) - blocking, receives all messages.
+- `recv()` method - blocking, receives 1 message.
+- `try_recv()` - non-blocking, receives 0 or 1 message.
+:::
+
+## Shared Memory
+
+### Mutex
+
+Data can be guarded by a mutex, which allows access to that data to only one 
+thread at a time.
+
+```rust
+use std::sync::Mutex;
+
+fn main() {
+  let m = Mutex::new(5);
+
+  {
+    let mut num = m.lock().unwrap();
+    *num = 6;
+  }
+
+  println!("m = {:?}", m);
+}
+```
+
+To get access to data protected by a `Mutex`, we have to call `lock()` on it.
+This is a blocking call, execution will continue as soon as either:
+
+- lock is free
+- other thread that had the lock panics
+
+:::tip[Smart Pointer]
+`lock()` returns a `MutexGuard` smart pointer.
+:::
+
+The lock is released as soon as `MutexGuard` goes out of scope.
+
+:::tip[Interior Mutability]
+`Mutex<T>` is a bit similar to `RefCell<T>`. Even though the `Mutex` instance is
+defined as immutable, we can change the value inside of it.
+:::
+
+:::danger[Deadlock]
+Threads using `Mutex` can suffer from deadlocks!
+:::
+
+### Arc
+
+We can't use `Rc<T>` in multithreaded contexts. Instead, we can use `Arc<T>`, which
+is thread safe (and has some performance overhead due to that).
+We can use `Arc` to share values between many threads. Example below shares a `Mutex`:
+
+```rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+  let counter = Arc::new(Mutex::new(0));
+  let mut handles = vec![];
+
+  for _ in 0..10 {
+    let counter = Arc::clone(&counter); // like Rc, Arc can be cloned to copy ownership to the value
+    let handle = thread::spawn(move || {
+      let mut num = counter.lock().unwrap();
+
+      *num += 1; // we increment in one thread at a time thanks to Mutex
+    });
+    handles.push(handle);
+  }
+
+  for handle in handles {
+    handle.join().unwrap();
+  }
+
+  // counter has value 10
+}
+```
+
+## Traits
+
+There are a few traits that are important for concurrency.
+
+### Send
+
+The `Send` marker trait indicates that ownership of values of the type
+implementing `Send` can be transferred between threads. Most types implement it
+with some exceptions (like `Rc`, which is not thread-safe). Any type that
+contains only `Send`-marked fields is automatically marked as `Send` as well.
+
+### Sync
+
+The `Sync` marker trait indicates that it is safe for the type implementing
+`Sync` to be referenced from multiple threads. Similar to `Send`, types composed
+entirely of types that are `Sync` are also `Sync`.
+
+:::caution
+Manually implementing `Send` and `Sync` is unsafe.
+:::

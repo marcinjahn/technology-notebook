@@ -1,0 +1,125 @@
+---
+title: Collections
+description: Collections of values in Rust
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Collections
+
+## Arrays
+
+Arrays are placed on the stack, since their size is static and
+always needs to be predefined.
+
+```rust
+let countries = ["Poland", "Brazil"];
+```
+
+Iterator is returned with `countries.iter();`.
+
+```rust
+for country in countries.iter() {
+
+}
+```
+
+Array is typed like this: `[u32, 5]` - 5 elements of type `u32`.
+Each array with different type and size is like a separate type in Rust.
+
+## Vectors
+
+Another collection type. It's dynamic, so it's placed on the heap (it's a
+struct). `Vec<T>` is like a `List<T>` in C#. They are more expensive than
+arrays. Elements are placed next to each other in memory.
+
+Creating vectors:
+
+```rust
+let v: Vec<i32> = Vec::new(); //empty
+let v = vec![1, 2, 3]; // infers type, uses a macro
+```
+
+Operations on vectors:
+
+```rust
+let mut v = Vec::new(); // no type needed, it's infered from the code below
+
+// update
+v.push(5);
+v.push(6);
+v.push(7);
+
+// read
+let third: &i32 = &v[2];
+
+match v.get(2) {
+  Some(third) => println!("The third element is {}", third),
+  None => println!("There is no third element."),
+} // returns Option<&T>
+```
+
+The second way of reading will not panic if we try to access element out of
+index. It will return `Option.None` instead.
+
+## HashMaps
+
+```rust
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");
+let score = scores.get(&team_name); // returns Option<&T>
+scores.entry(String::from("Yellow")).or_insert(60); // inserts only if Yellow key is not there yet
+```
+
+## Iterators
+
+Iterators give access to consecutive elements in collections. Iterators
+implement the `Iterator` trait, which exposes `next()` method and `Item`.
+It's easy to define our own iterators.
+Iterators provide *zero-cost abstractions*, they are very performant.
+
+There are three methods on collections that return iterators:
+
+- `iter()` - iterates over immutable references to items in the collection
+- `iter_mut()` - iterates over mutable references to items in the collection
+- `into_iter()` - returns owned values from the collection
+
+### Consuming Adaptors
+
+Some methods defined on the `Iterator` trait take ownership of the iterator
+and return something useful. An example is the `sum()` method.
+
+#### Collect function
+
+The `collect()` function consumes iterator into an actual collection
+of values.
+
+```rust
+let args: Vec<String> = env::args().collect();
+```
+
+### Iterator Adaptors
+
+Some other methods can transform an iterator into another kind of iterator.
+These iterators are lazy, so to actually do anything the resulting iterator
+needs to be consumed.
+
+Examples:
+
+- `map()` - takes a [closure](./closures) to be executed agains each item and
+  returns closure's result. It's similar to JS's `map` in concept.
+- `filter()` - returns an iterator that filters source collection based on a
+  closure returning bool.
+- `skip()` - skips some items.
+
+:::tip
+`collect()` applied on top of iterator adaptor returns a new collection of
+values.
+:::

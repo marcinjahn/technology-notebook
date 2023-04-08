@@ -1,0 +1,50 @@
+---
+export interface Props {
+    type?: "note" | "tip" | "caution" | "danger";
+    title?: string;
+}
+
+const { type = "note", title } = Astro.props as Props;
+---
+
+<aside class={`${type}`} aria-label={title}>
+    <p class="title" aria-hidden="true">
+        {title}
+    </p>
+    <section>
+        <slot />
+    </section>
+</aside>
+
+<style>
+    aside {
+        margin: 2rem 0;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+            rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+            rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    }
+
+    .tip {
+        background-color: #bce7fd;
+    }
+
+    .caution {
+        background-color: rgba(255, 229, 100, 0.3);
+        color: #937b05;
+    }
+
+    .danger {
+        background-color: #ffe6e6;
+        color: rgb(126, 0, 0);
+    }
+
+    .note {
+        background-color: #eee;
+    }
+
+    aside .title {
+        font-weight: 700;
+    }
+</style>

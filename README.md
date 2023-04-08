@@ -2,7 +2,7 @@
 
 This is a source code for my personal notepad - [marcinjahn.com](https://marcinjahn.com)
 
-The project uses VuePress.
+The project uses Astro.
 
 ## Running 
 

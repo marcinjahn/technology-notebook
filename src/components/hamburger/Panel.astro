@@ -1,0 +1,44 @@
+---
+import MainLinks from "../navbar/MainLinks.astro";
+---
+
+<div class="hamburger-panel">
+    <div class="content">
+        <MainLinks />
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <slot />
+    </div>
+</div>
+
+<style>
+    .hamburger-panel {
+        background-color: white;
+
+        position: fixed;
+        top: 3rem;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        display: none;
+
+        overflow: auto;
+    }
+
+    .content {
+        padding: 1rem 1.5rem;
+    }
+
+    .expanded {
+        display: unset;
+    }
+
+    .divider {
+        height: 1px;
+        border-bottom: 1px solid rgb(202, 202, 202);
+    }
+</style>

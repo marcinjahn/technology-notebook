@@ -1,0 +1,106 @@
+---
+import "../styles/reset.css";
+import "../styles/global.css";
+import Navbar from "../components/navbar/Navbar.astro";
+import Panel from "../components/hamburger/Panel.astro";
+import Footer from "../components/Footer.astro";
+
+export interface Props {
+    pageTitle: string;
+    description?: string;
+    tags?: string[]
+}
+
+const { pageTitle, description } = Astro.props;
+let { tags } = Astro.props;
+
+const baseTags = ["software development", "programming"];
+if (!tags) { tags = [] };
+
+tags = [...tags, ...baseTags];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon-32x32.png" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <title>{pageTitle}</title>
+        <meta
+            name="description"
+            content={(description ? description + " " : "") +
+                "Marcin Jahn's personal knowledge base for all the IT-related topics."}
+        />
+        <meta name="keywords" content={tags.join(", ")}>
+        <meta name="google-site-verification" content="uRhO2txNLDLyS2hZuK4JD4n-rPcdGJ0KMRSwvhSGzog" />
+
+        <!-- Google tag (gtag.js) -->
+        <script
+            type="text/partytown"
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"
+        ></script>
+        <script type="text/partytown">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-ZSM2N36X8P");
+        </script>
+    </head>
+    <body>
+        <div class="non-footer">
+            <Navbar />
+            <aside>
+                <Panel>
+                    <slot name="hamburger-panel-content" />
+                </Panel>
+            </aside>
+
+            <div class="slot">
+                <slot />
+            </div>
+        </div>
+
+        <div class="footer"><Footer /></div>
+    </body>
+</html>
+
+<style>
+    .non-footer {
+        min-height: calc(100% - 5.5rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .slot {
+        flex: 1;
+    }
+
+    aside {
+        display: none;
+    }
+
+    .footer {
+        margin-top: 2rem;
+    }
+
+    @media only screen and (max-width: 920px) {
+        aside {
+            display: initial;
+        }
+
+        .footer {
+            margin-top: 0;
+        }
+    }
+</style>
+
+<script>
+    import "../scripts/hamburger.js";
+</script>

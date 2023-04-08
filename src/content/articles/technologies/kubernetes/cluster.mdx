@@ -1,0 +1,47 @@
+---
+title: Cluster
+description: Kubernetes clusters and their building components
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Cluster
+
+Machines are split into two groups:
+
+- Control Plane - the brain of the cluster
+- Workload Plane
+
+## Control Plane
+
+It consists of:
+
+- Kubernetes API Server - RESTful API used by users and other components to
+  create objects
+- Scheduler - decides which node runs which app
+- Controllers - have different tasks. Most of them create objects from the
+  objects users create (e.g., if I create a *deployment*, it will create *pods*)
+  Some communicate with external systems (e.g. cloud provider API). Most object
+  types have an associated controller (e.g. "Deployment Controller" manages
+  "Deployment" objects).
+- etcd - the K8s API Server stores objects here. It's a distributed data store.
+
+## Workload Plane
+
+It consists of:
+
+- Kubelet - an agent that talks to K8s API Server and manages apps running on a
+  node. It reports apps' status via the API
+- Container Runtime - runs containers
+- Kube Proxy - load-balances traffic between apps.
+- apps
+
+There are also some addons that could be on Worker or Master nodes.
+
+## Failures
+
+In case of a failure of a node, its status changes to **NotReady**. The pods
+that were supposed on that node are still kept as **Running** for the next few
+minutes. After that time, the pods will be recreated on other nodes.
+The exact timings can be configured for the cluster.

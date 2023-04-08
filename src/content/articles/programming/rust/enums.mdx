@@ -1,0 +1,158 @@
+---
+title: Enums
+description: Enums in Rust
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Enums
+
+Enums are custom types, defined like this:
+
+```rust
+enum IpAddrKind {
+    V4,
+    V6,
+}
+```
+
+Using enums:
+
+```rust
+let four = IpAddrKind::V4;
+
+fn route(ip_kind: IpAddrKind) {}
+```
+
+Enums may have some data attached to them:
+
+```rust
+enum IpAddr {
+  V4(u8, u8, u8, u8),
+  V6(String)
+}
+
+let home = IpAddr::V4(127,0,0,0);
+let loopback = IpAddr::V6(String::from("::1"));
+```
+
+or
+
+```rust
+enum Message {
+  Quit,
+  Move { x: i32, y: i32 },
+  Write(String),
+  ChangeColor(i32, i32, i32),
+}
+```
+
+In this case the enum members become constructors. It's an alternative to
+creating a struct, e.g.:
+
+```rust
+struct QuitMessage; // unit struct
+struct MoveMessage {
+  x: i32,
+  y: i32,
+}
+struct WriteMessage(String); // tuple struct
+struct ChangeColorMessage(i32, i32, i32); // tuple struct
+```
+
+## Enum Methods
+
+Similarly to [structs](./structs), enums can have methods:
+
+```rust
+impl Message {
+  fn call(&self) {
+    // method body would be defined here
+  }
+}
+
+let m = Message::Write(String::from("hello"));
+m.call();
+```
+
+## Option Enum
+
+Similarly to some .NET libraries (like
+[Optional](https://github.com/nlkl/Optional)) Rust provides an `Option` enum to
+be used instead of `null`.
+
+:::tip[Null]
+Rust doesn not have NULL! It uses `Option<T>` monad instead.
+:::
+
+```rust
+let some_number = Some(5); //same as Option<i32>::Some(5)
+let some_string = Some("a string");
+
+let absent_number: Option<i32> = None; // same as Option<i32>::None
+```
+
+:::tip[Prelude ]
+`Option<T>`, `None`, and `Some` are available "automatically" in every file.
+:::
+
+`Option` provides us with explicit information that a variable might not have
+any actual value. In some other languages variable `a` of type `String` could be
+some string or `null`. In Rust, a variable of type `String` has to have some
+string (even empty one)! It's another example of how Rust focuses on safety.
+
+
+## Match
+
+[`match`](./basics.md#conditions) is quite useful with enums (like `Option<T>`):
+
+```rust
+fn plus_one(x: Option<i32>) -> Option<i32> {
+  match x {
+    None => None,
+    Some(i) => Some(i + 1),
+  }
+}
+
+let five = Some(5);
+let six = plus_one(five);
+let none = plus_one(None);
+```
+
+An example of [handling errors](./handling-errors):
+
+```rust
+let f = File::open("hello.txt");
+
+let f = match f {
+  Ok(file) => file,
+  Err(error) => match error.kind() {
+    ErrorKind::NotFound => match File::create("hello.txt") {
+      Ok(fc) => fc,
+      Err(e) => panic!("Problem creating the file: {:?}", e),
+    },
+    other_error => {
+      panic!("Problem opening the file: {:?}", other_error)
+    }
+  },
+};
+```
+
+:::tip
+Alternatively, we could use `unwrap_or_else()` method on `Result`.
+:::
+
+## If let
+
+`if let` is a syntax sugar for `match`. It is useful when we're interested only
+in one of `match` patterns:
+
+```rust
+let config_max = Some(3u8);
+if let Some(max) = config_max {
+  println!("The maximum is configured to be {}", max);
+}
+```
+
+`Some(max)` is a pattern, while `config_max` is a value being matched.

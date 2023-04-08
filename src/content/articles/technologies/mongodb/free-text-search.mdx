@@ -1,0 +1,42 @@
+---
+title: Free Text Search
+description: MongoDB Free Text Search
+tags: ["mongo", "mongodb", "nosql", "document", "database", "db", "search", "text"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Free Text Search
+
+A **Text Index** is required for free text search. Here's how to create one:
+
+```js
+db.cars.createIndex({name: "text"}) // just one idex on a "name" field
+db.cars.createIndex({name: "text", colors: "text"}) // 2 indexes
+```
+
+Such an index can be created on fields that are of type "string" or on array of
+strings.
+
+Query example:
+
+```js
+db.cars.find({ $text: { $search: "Ford orange" }})
+```
+
+This query will look in the "cars" collection among created indexes for the
+"Ford" and "orange" (separately) terms. If the index was created on multiple
+fields, all of them will be searched.
+
+##### Score
+
+The returned results are scored. We can use that to decide which results are
+more relevant than others.
+
+```js
+db.cars.find( {$text: { $search: "Ford" } }, {score: {$meta: "textScore"}})
+```
+
+Each document wil contain a "score" field. The higher the score, the more
+relevant the result. We can sort the documents by score as well.

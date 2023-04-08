@@ -1,0 +1,71 @@
+---
+import { NavigationItem, mainNavigation } from "../../static/navigation";
+---
+
+<ul>
+    {
+        mainNavigation.map((link) => (
+            <li class="main-menu-item" data-root-path={link.rootPath}>
+                <a href={link.path}>{link.name}</a>
+            </li>
+        ))
+    }
+</ul>
+
+<script>
+    const path = window.location.pathname;
+    const items = document.querySelectorAll(".main-menu-item");
+    items.forEach(item => {
+        if (!(item instanceof HTMLElement)){
+            return;
+        }
+
+        const rootPath = (<HTMLElement>item).dataset.rootPath;
+
+        if (!rootPath) {
+            return;
+        }
+
+        if (path.startsWith(rootPath)) {
+            item.classList.add('active');
+        }
+    })
+
+</script>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        gap: 1.5rem;
+
+        border-right: 1px solid grey;
+        padding-right: 1.5rem;
+    }
+
+    a {
+        color: var(--text-color);
+    }
+
+    .active a,
+    a:hover {
+        color: var(--accent-color);
+    }
+
+    @media only screen and (max-width: 920px) {
+        ul {
+            flex-direction: column;
+            border-right: 0;
+            padding-right: 0;
+
+            gap: 1rem;
+        }
+
+        a {
+            font-weight: 700;
+        }
+    }
+</style>

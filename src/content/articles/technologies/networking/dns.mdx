@@ -1,0 +1,85 @@
+---
+title: DNS
+description: Domain Name Services
+tags: ["networking", "dns", "fqdn"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+import dns from '../../../../assets/dns.png';
+
+# DNS
+
+Here's a diagram of how DNS works:
+
+<Image src={dns} alt=""/>
+
+We assume that there is some internal DNS server that we're reaching out to
+first. It could be a DNS server hosted on our gateway.
+
+The image presents the worst-case scenario, assuming that nothing was cached.
+
+1. If the entry is in the DNS cache of the internal DNS server, and the TTL of
+that entry has not expired, then the response is supplied immediately to the
+client. Similarly, if the client is requesting an entry that's hosted on the
+server in a zone file, the answer is supplied immediately to the client.
+2. If the entry is not in the cache of the internal DNS server, or if it is in
+the cache but the TTL of that entry has expired, then the internal server
+forwards the request to its upstream providers (often called forwarders) to
+refresh the entry. If the query is in the cache of the forwarder, it will simply
+return the answer. If this server has the authoritative name server for the
+domain, it will simply query that host (skipping ahead in the process to Step
+5).
+3. If the forwarder does not have the request in the cache, it will in turn
+request upstream. In this case, though, it will likely query the root name
+servers. The goal in this is to find the "authoritative name server" that has
+the actual entries (in a zone file) for that domain. In this case, the query is
+made to the root name servers for ".com".
+4. The root name server will not return the actual answer, but will instead
+return the authoritative name server for the top-level domain (TLD)—in this
+case, for .com.
+5. After the forwarder gets this response, it updates its cache with that name
+server entry, then makes the actual query against that server.
+6. The authoritative server for ".com" returns the authoritative DNS server for
+"example.com".
+7. The forwarder server then makes a request against this final authoritative
+name server. 8. The authoritative name server for example.com returns the actual
+query "answer" to the forwarder server.
+9. The forwarder name server caches that answer, then sends a reply back to your
+internal name server.
+10. Your internal DNS server also caches that answer, then forwards it back to
+the client. The client caches the request in its local cache, then passes the
+requested information (the DNS response) to the application that requested it
+(like a web browser)
+
+## Layers
+
+Logically, there are various layers of DNS:
+
+1. Local/Internal DNS
+2. External DNS (like `8.8.8.8`)
+3. Root Servers (`.`)
+4. TLD Servers (e.g., `.com`)
+5. Other Authoritative Servers
+
+There are 13 Root Servers (in reality these are rather clusters than servers).
+
+## New Approaches
+
+DNS requests are made without encryption. That basically means that ISPs can
+track the websited that you visit. There are two approaches to circumvent that:
+DoH and DoT.
+
+### DoH
+
+DNS over HTTPS - it basically turns DNS servers into HTTP(S) servers listening
+on 443 for DNS queries.
+
+### DoT
+
+DNS over TLS. It's the standard DNS, but encrypted with TLS.
+
+## Source
+
+- [Linux for Networking
+  Professionals](https://www.packtpub.com/product/linux-for-networking-professionals/9781800202399)

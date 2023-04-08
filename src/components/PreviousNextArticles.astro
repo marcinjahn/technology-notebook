@@ -1,0 +1,29 @@
+---
+import type { NeighbourArticles } from '../layouts/utils/previous-next-article';
+
+interface Props {
+    articles: NeighbourArticles;
+}
+
+const { articles } = Astro.props;
+const { previous, next } = articles;
+
+const leftArrow = '&#8592;';
+const rightArrow = '&#8594;';
+---
+
+<div class="container">
+    <div>
+        {previous ? <a href={'/' + previous.slug}><Fragment set:html={leftArrow} /> {previous.title}</a> : <></>}
+    </div>
+    <div>
+        {next ? <a href={'/' + next.slug}>{next.title} <Fragment set:html={rightArrow} /></a> : <></>}
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>

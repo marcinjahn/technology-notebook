@@ -1,0 +1,24 @@
+---
+title: CSS Pixel
+description: CSS pixel is not device pixel
+tags: ["css", "html", "web"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# CSS Pixel
+
+One of the units that we can use in CSS is a `px`. The name is confiusing,
+because the CSS px does not represent the display pixel. Instead, it is a
+[Reference Pixel](https://www.w3.org/TR/css-values-3/#absolute-lengths). The
+general rule is that **96 px (CSS px) = 1 inch**. This is physically true on
+hi-dpi displays, and less true on low-dpi ones. W3C initially required all CSS
+engines to render absolute sizes in a correct way, according to physical
+dimensions. However, manhy implementations did not follow that and W3C
+eventually dropped that requirement
+([source](https://www.w3.org/Style/Examples/007/units.en.html)).
+
+It is important, because it means that our current webpages that have sizes
+defined in px will continue to work in the future as higher resolution screens
+are developed.

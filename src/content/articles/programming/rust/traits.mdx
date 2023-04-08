@@ -1,0 +1,313 @@
+---
+title: Traits
+description: Traits in Rust
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Traits
+
+A **trait** is analogous to an interface or protocol from other languages. It
+enables types to advertise that they use some common behaviour (**methods**).
+
+All of Rust's operations are defined with traits. E.g., aaddition (`+`) is
+defined as the `std::ops::Add` trait. Operators are just syntactic sugar for
+traits' methods.
+
+`a + b` = `a.add(b)`
+
+## Defining a Trait
+
+Here's an example of a trait that contains a `summarize` method. Any type that
+has this trait needs to implement such a method.
+
+```rust
+pub trait Summary {
+  fn summarize(&self) -> String;
+}
+```
+
+We can also provide a default implementation:
+
+```rust
+pub trait Summary {
+  fn summarize(&self) -> String {
+    String::from("(Read more...)")
+  }
+}
+```
+
+:::tip
+Default implementation can call other methods of the same trait (even if
+they don't have default implementations).
+:::
+
+## Implementing Traits
+
+A type may implement a trait as follows:
+
+```rust
+// type itself
+pub struct Tweet {
+  pub username: String,
+  pub content: String,
+  pub reply: bool,
+  pub retweet: bool,
+}
+
+//Summary trait implementation
+impl Summary for Tweet {
+  fn summarize(&self) -> String {
+    format!("{}: {}", self.username, self.content)
+  }
+}
+```
+
+:::tip
+We can implement traits only if either the type or trait are local
+to our crate. We can implement traits on existing third-party types!
+:::
+
+To use a trait that has some default implementation (without overwriting it), we
+can do it as follows:
+
+```rust
+impl Summary for Tweet {}
+```
+
+Or we could overwrite it, the same way as implementing a trait.
+
+:::caution
+Overriding implementation of a trait cannot call the default implementation.
+:::
+
+### Blanket Implementations
+
+We can define methods for any type that implements some trait. It is similiar
+to **extensions in C#**.
+
+Rust does it with the `ToString` method, like this:
+
+```rust
+impl<T: Display> ToString for T {
+  // ...
+}
+```
+
+Thanks to it, any type that implement the `Display` trait has the `ToString` method
+
+## Using Traits
+
+### Function Parameter
+
+Here's a function that expects any object that implements a `Summary` trait:
+
+```rust
+pub fn notify(item: &impl Summary) {
+  println!("Breaking news! {}", item.summarize());
+}
+```
+
+or a full generic form:
+
+```rust
+pub fn notify<T: Summary>(item: &T) {
+  println!("Breaking news! {}", item.summarize());
+}
+```
+
+:::tip[Multiple Traits]
+A function can also require more than one trait to be implemented on its parameter:
+
+```rust
+pub fn notify(item: &(impl Summary + Display)) {}
+```
+
+or
+
+```rust
+pub fn notify<T: Summary + Display>(item: &T) {}
+```
+
+or
+
+```rust
+pub fn notify<T>(item: &T) where T: Summary + Display {}
+```
+:::
+
+### Function Return Value
+
+Functions can return types and specify just the trait of these types:
+
+```rust
+fn returns_summarizable() -> impl Summary {
+    // return anything that implements Summary
+}
+```
+
+:::caution
+A function defined as the one above can return only **one type**. It
+cannot return either one implementation or another.
+:::
+
+## Derivable Traits
+
+Some traits (in the standard library and third party) have sensible default
+implementations and they can be implemented on a type just by adding an
+annotation `#[derive(SomeTrait)]`.
+
+Here are the ones from the standard library:
+
+### Debug
+
+Writing `#[derive(Debug)]` before struct's definition makes that struct
+printable in debug mode (`print!("{}", instance)`).
+
+Another way to debug print is with the use of `dbg!(&instance)`.
+
+### PartialEq and Eq
+
+`PartialEq` allows checking equality with the `==` and `!=` operators.
+Underneath there's just the `eq` method. The default implementation checks all
+fields of a struct if they're equal.
+
+The `Eq` trait has no methods.
+
+### PartialOrd and Ord
+
+Allows comparisons with the `>`, `<`, `>=`, `<=` operators. It can only be
+applied to types that implement `PartialEq` as well.
+
+In structs, all fields are checked.
+
+### Clone
+
+Allows creation of deep copy of a value. Default implementation calls `clone()`
+on each field of the type. Cloning might involve copying heap data.
+
+### Copy
+
+Allows copying a value on a stack. All types that implement `Copy` must also
+implement `Clone`.
+
+### Hash
+
+Allows creating some hash of an instance. The default implementation combines
+resuts of `hash()` of all the fields of a struct.
+
+### Default
+
+Allows to create a default value for a type. It provides a `default()` function.
+
+## Trait Objects
+
+Trait Objects enable **polymorphism**.
+
+Without trait objects:
+
+```rust
+pub struct Screen<T: Draw> {
+  pub components: Vec<T>,
+}
+```
+
+The `components` vector's items must all be of the same type. If we want to have
+a vector that may contain values of any type (that implements `Draw`), we can
+use trait object:
+
+```rust
+pub struct Screen {
+  pub components: Vec<Box<dyn Draw>> // Box<dyn Draw> is a trait object
+}
+```
+
+Now, we could apply the following code on top of that to make use of
+polymorphism:
+
+```rust
+impl Screen {
+  pub fn run(&self) {
+    for component in self.components.iter() {
+      component.draw();
+    }
+  }
+}
+```
+
+:::tip[Pointer]
+Trait objects must use some kind of pointer (reference or smart
+pointer).
+:::
+
+This feature is a bit similar to what we can do in languages like JS (*duck
+typing*), but different in the sense that the existence of required methods is not
+done during runtime, and the code cannot panic due to some value not implementing
+a required trait. It's safer.
+However, Rust still needs to perform dynamic dispatch to find the code of the
+method on values in runtime. This incurs some cost.
+
+Trait objects may be used if in trait's methods:
+
+- The return type isn't `Self`.
+- There are no generic type parameters.
+
+## Associated Types
+
+Associated types allow traits to act a bit as if they were generic.
+
+A real example from the standard library:
+
+```rust
+pub trait Iterator {
+  type Item;
+  fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+The `next` method will return `Option<Item>` and the `Item` type is unknown
+in the trait's definition. The types that increment `Iterator` have to specify
+what `Item` stands for:
+
+```rust
+impl Iterator for Counter {
+  type Item = u32; // concrete type
+  fn next(&mut self) -> Option<Self::Item> { ... }
+}
+```
+
+:::tip[Generics]
+Why not use generics then? According to the
+[book](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html), if we used
+generics, anytime we'd call `next`, we'd have to call it like this:
+`next<SomeType>()`, because generic type could be anything. Associated type may
+be implemented only once per type (unlike generics), and the compiler knows
+exactly which type `next()` should use.
+
+Some traits use generics and associated types together (e.g. `Add`).
+:::
+
+## Supertraits
+
+Some traits might require other traits also to be implemented by the types that
+want to use it.
+
+```rust
+use std::fmt;
+
+trait OutlinePrint: fmt::Display {
+  fn outline_print(&self) {
+    let output = self.to_string(); // comes from Display
+    let len = output.len();
+    println!("{}", "*".repeat(len + 4));
+    println!("*{}*", " ".repeat(len + 2));
+    println!("* {} *", output);
+    println!("*{}*", " ".repeat(len + 2));
+    println!("{}", "*".repeat(len + 4));
+  }
+}
+```
+
+In the example above, `Display` is the supertrait of `OutlinePrint`.
+

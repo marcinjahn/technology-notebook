@@ -1,0 +1,138 @@
+---
+title: Generics
+description: Generics in Rust
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Generics
+
+Generics may be used in:
+
+- structs
+- functions
+- enums
+- methods
+
+:::tip[Monomorphization]
+Generics are not slower than non-generic code. Rust generates concrete types for
+the generics during compilation. It looks at all the usages of generics in our
+code and creates types for all the ways that we use them. It's called
+**monomorphization**. E.g. `Option<i32>` becomes `Option_i32`.
+:::
+
+:::danger[Limitation of generics]
+An instance of a generic type `T` with some trait bounds may only be used with
+one type in place of `T`. For example, a `Vec<T: SomeTrait>` is not able to
+store multiple different types that implement `SomeTrait`. All of the values it
+stores need to be of the same type (any type that implements `SomeTrait`). To
+have more polymorphic behaviour and be able to store values of different types,
+[Trait Objects](./traits.md#trait-objects) should be used.
+:::
+
+## Functions
+
+Function example:
+
+```rust
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+  let mut largest = list[0];
+
+  for &item in list {
+    if item > largest {
+      largest = item;
+    }
+  }
+  largest
+}
+```
+
+The function `largest` is generic over some type `T`.
+
+:::tip[Traits]
+The function `largest` works only with types `T` that implement the `PartialOrd`
+[trait](./traits) (it provides comparing functionality (`>` operator)) and
+the `Copy` trait (to support only the types stored on the stack?).
+:::
+
+We can call this function like this:
+
+```rust
+let number_list = vec![34, 50, 25, 100, 65];
+let result = largest(&number_list);
+```
+
+## Structs
+
+Struct example:
+
+```rust
+struct Point<T> {
+  x: T,
+  y: T,
+}
+
+fn main() {
+  let integer = Point { x: 5, y: 10 };
+  let float = Point { x: 1.0, y: 4.0 };
+}
+```
+
+## Enums
+
+Enum example:
+
+```rust
+enum Option<T> {
+  Some(T),
+  None,
+}
+```
+
+## Methods
+
+Method example:
+
+```rust
+struct Point<T> {
+  x: T,
+  y: T,
+}
+
+// the T after impl means that we're defining this method generically
+// and T is not any specific type
+impl<T> Point<T> {
+  fn x(&self) -> &T {
+    &self.x
+  }
+}
+```
+
+We can also specify a method for a concrete type `T`:
+
+```rust
+impl Point<f32> {
+  fn distance_from_origin(&self) -> f32 {
+    (self.x.powi(2) + self.y.powi(2)).sqrt()
+  }
+}
+```
+
+:::tip
+In the code above, there is no type after `impl`, since this method is
+not generic! Only `Point<f32>` instances will have this method.
+:::
+
+Or, we could specify a method only for `T`s that implement some traits:
+
+```rust
+impl<T: Display + PartialOrd> Point<T> {
+  fn cmp_display(&self) {
+    if self.x >= self.y {
+      println!("The largest member is x = {}", self.x);
+    } else P
+    println!("The largest member is y = {}", self.y);
+  }
+}
+```
