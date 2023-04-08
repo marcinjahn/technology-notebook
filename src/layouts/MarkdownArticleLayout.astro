@@ -16,7 +16,10 @@ const { frontmatter, slug } = Astro.props;
 const neighbours = await getNeighbourArticles(slug);
 ---
 
-<BaseLayout pageTitle={`${frontmatter.title} | ${siteTitle}`}>
+<BaseLayout 
+        pageTitle={`${frontmatter.title} | ${siteTitle}`} 
+        description={frontmatter.description} 
+        tags={frontmatter.tags}>
     <div class="container">
         <div class="sidebar">
             <Sidebar />

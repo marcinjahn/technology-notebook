@@ -7,9 +7,17 @@ import Footer from "../components/Footer.astro";
 
 export interface Props {
     pageTitle: string;
+    description?: string;
+    tags?: string[]
 }
 
-const { pageTitle } = Astro.props;
+const { pageTitle, description } = Astro.props;
+let { tags } = Astro.props;
+
+const baseTags = ["software development", "programming"];
+if (!tags) { tags = [] };
+
+tags = [...tags, ...baseTags];
 ---
 
 <!DOCTYPE html>
@@ -21,6 +29,13 @@ const { pageTitle } = Astro.props;
         <meta name="generator" content={Astro.generator} />
         <link rel="sitemap" href="/sitemap-index.xml" />
         <title>{pageTitle}</title>
+        <meta
+            name="description"
+            content={(description ? description + " " : "") +
+                "Marcin Jahn's personal knowledge base for all the IT-related topics."}
+        />
+        <meta name="keywords" content={tags.join(", ")}>
+
         <!-- Google tag (gtag.js) -->
         <script
             type="text/partytown"
