@@ -21,6 +21,21 @@ const { pageTitle } = Astro.props;
         <meta name="generator" content={Astro.generator} />
         <link rel="sitemap" href="/sitemap-index.xml" />
         <title>{pageTitle}</title>
+        <!-- Google tag (gtag.js) -->
+        <script
+            type="text/partytown"
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-ZSM2N36X8P"
+        ></script>
+        <script type="text/partytown">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-ZSM2N36X8P");
+        </script>
     </head>
     <body>
         <div class="non-footer">

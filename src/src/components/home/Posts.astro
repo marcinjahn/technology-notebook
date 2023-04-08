@@ -1,13 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import Post from "./Post.astro";
-import Container from "./Container.astro";
+import Container from "../Container.astro";
 
 const allPosts = await getCollection("posts");
 allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
 ---
 
-<div class="container">
+<Container>
     {
         allPosts.map((post) => (
             <div class="post">
@@ -15,7 +15,7 @@ allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
             </div>
         ))
     }
-</div>
+</Container>
 
 <style>
     h2 {
@@ -24,6 +24,13 @@ allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
     }
 
     .post {
-        margin-bottom: 2rem;
+        border-bottom: 1px solid #bababa;
+        padding-bottom: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .post:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
     }
 </style>

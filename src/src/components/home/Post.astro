@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Container from "./Container.astro";
 
 interface Props {
     post: CollectionEntry<"posts">;
@@ -11,12 +10,18 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 ---
 
-<Container>
-    <div class="content">
-        <h3>{post.data.title}</h3>
-        <h4>{post.data.publishDate.toDateString()}</h4>
-        <Content />
-    </div>
-</Container>
+<div class="content">
+    <h4>{post.data.title}</h4>
+    <h6>{post.data.publishDate.toDateString()}</h6>
+    <div><Content /></div>
+</div>
 
-<style></style>
+<style>
+    h4 {
+        margin-top: 0 !important;
+    }
+
+    h6 {
+        margin-top: 0.5rem;
+    }
+</style>
