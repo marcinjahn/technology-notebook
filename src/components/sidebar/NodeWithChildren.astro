@@ -13,7 +13,7 @@ const { item, isTopLevel } = Astro.props;
 
 <li class:list={[{ top: isTopLevel }]}>
     <div class="section-title">
-        { item.icon ? <img class="icon" src={`/sidebar-icons/${item.icon}`}/> : <></> }
+        { item.icon ? <img class="icon" src={`/sidebar-icons/${item.icon}`} alt={`An icon of the ${item.title} section`}/> : <></> }
         <span>{item.title}</span>
         <div class="arrow"><Arrow /></div>
     </div>
