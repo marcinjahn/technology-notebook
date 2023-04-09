@@ -3,42 +3,39 @@ title: Transition to Astro
 publishDate: 2023-04-08
 ---
 
-This website has been running on [VuePress](https://vuepress.vuejs.org/) (v1)
-since its inception. Even though it has been serving me pretty well, it was not
-perfect. First of all, VuePress websites are actually SPA (Single Page Apps).
-This has quite a big impact on the website performance, due to lost (and lots!)
-of JavaScript being involved. It's alright on more app-like sites, where lots of
-interactivity is needed. This is not one of these sites. It's a content-focused
-website where interactivity is limited to the minimum. That's where frameworks
-like [Astro](https://astro.build) come in. Astro puts a big focus on performance
-of the generated website, and it does it by resolving most of the JS during
-build time, or via Server Side Rendering. 
+Hey there! So, my website has been running on
+[VuePress](https://vuepress.vuejs.org/) (v1) since the beginning. It's been
+pretty good, but let's face it, it had some shortcomings. VuePress websites are
+Single Page Apps (SPAs), which means there's a lot of JavaScript involved.
+That's fine for interactive sites, but for a content-focused website like this
+one, it's not ideal. That's where [Astro](https://astro.build) comes in, a
+framework that puts performance first.
 
-I've been eyeing Astro since quite some time, and when it hit version 2, I
-decided to give it a try by transitioning this very website from VuePress to
-Astro. The process went rather smoothly, here are a few of the things that I
-had to take care of in the process:
+I'd been keeping an eye on Astro for a while, and when it reached version 2, I
+thought it was the perfect time to switch this website from VuePress to Astro.
+The transition went smoothly, and here's a quick overview of what I had to
+tackle:
 
-- building my own "core" components, like navbar, sideabar, tip boxes, or even
-  hamburger menu - VuePress would come with that functionality built-in, Astro
-  does not.
-- code syntax highlighting - while VuePress would come with a quite nice
-  out-of-the-box configuration of syntax highlighting, Astro has just the
-  default "coloring" of code syntax. The thing that I missed was specific lines
-  highlighting. That required me to create custom component that would handle
-  that.
-- recreating the theme of my site - I had it coded into VuePress, mangled in
-  between the VuePress provided, now I had to opportunity to clean it up. I
-  consider the process to be ongoing though, as I plan to transition it to
-  Tailwind CSS.
+Building core components: Astro doesn't come with built-in features like
+navbars, sidebars, or tip boxes, which VuePress does. So, I rolled up my sleeves
+and created them myself.
 
-One of the coolest features of Astro is [Content
-Collections](https://docs.astro.build/en/guides/content-collections/). It allows
-to "model" the content splitting it into different kinds (in my case it's
-"articles" and "posts" (like this one)). Each kind of content can be attributed
-by its own (TypeScript typed metadata). It allows fetch the content together
-with its metadata, and operate on it in various ways. That feature was quite
-useful when building component such as a Sidebar.
+Code syntax highlighting: VuePress has a nice out-of-the-box syntax highlighting
+configuration, while Astro provides only the default code syntax coloring. To
+get specific line highlighting, I had to craft a custom component.
 
-Finishing up, Astro is awesome, and if you have a need to create a static
-website with focus on content, I'd suggest you give it a try.
+Recreating the theme: My site's theme used to be coded into VuePress,
+intertwined with its default theme. Switching to Astro gave me the chance to
+clean things up, and now I'm in the process of transitioning it to Tailwind CSS.
+
+One of Astro's coolest features is [Content
+Collections](https://docs.astro.build/en/guides/content-collections/). It lets
+you organize content by splitting it into different types (for me, it's
+"articles" and "posts" like this one). Each type can have its own
+TypeScript-typed metadata, making it easy to fetch content along with its
+metadata and work with it in various ways. This feature came in handy when
+building components like the Sidebar.
+
+To wrap it up, Astro is pretty awesome for static websites that focus on
+content. If that's what you're looking to create, I'd definitely recommend
+giving Astro a try.
