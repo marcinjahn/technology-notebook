@@ -11,7 +11,7 @@ const { frontmatter } = Astro.props;
 <BaseLayout pageTitle={siteTitle}>
     <main>
         <Logo />
-        <Posts />
+        <div class="posts"><Posts /></div>
     </main>
 </BaseLayout>
 
@@ -27,5 +27,11 @@ const { frontmatter } = Astro.props;
         gap: 4rem;
 
         max-width: 800px;
+    }
+
+    @media only screen and (max-width: 920px) {
+        .posts {
+            width: 100vw;
+        }
     }
 </style>
