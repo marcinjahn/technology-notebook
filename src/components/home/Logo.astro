@@ -4,51 +4,64 @@
 <div class="logo">
     <img class="my-photo" src="/img/me.webp" title="Marcin Jahn photo" />
     <div class="text-container">
-      <h1 class="title">Marcin Jahn's</h1>
-      <h2 class="subtitle">Dev Notebook</h2>
+        <h1 class="title">Marcin Jahn's</h1>
+        <h2 class="subtitle">Dev Notebook</h2>
     </div>
 </div>
 
 <style>
-.logo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
+    .logo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0 2rem;
+        gap: 2rem;
+    }
 
-.text-container {
-    display: flex;
-    flex-direction: column;
-}
+    .text-container {
+        display: flex;
+        flex-direction: column;
+    }
 
-.my-photo {
-    max-width: 11rem;
-    max-height: 11rem;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    margin-right: 2rem;
-}
+    .my-photo {
+        max-width: 11rem;
+        max-height: 11rem;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
 
-.title, .subtitle {
-    color: white;
-    text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
-                0px 8px 13px rgba(0,0,0,0.1),
-                0px 18px 23px rgba(0,0,0,0.1);
-}
+    .title,
+    .subtitle {
+        color: white;
+        text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4),
+            0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+    }
 
-.title {
-    font-size: 3rem;
-    margin-top: 0;
-    margin-bottom: 0.8rem;
-    line-height: 3rem;
-}
+    .title {
+        font-size: 3rem;
+        margin-top: 0;
+        margin-bottom: 0.8rem;
+        line-height: 3rem;
+    }
 
-.subtitle {
-    font-size: 2.4rem;
-    margin-top: 0;
-    text-decoration: none;
-    border-bottom: 0;
-    color: #e1e1e1;
-    line-height: 2.5rem;
-}
+    .subtitle {
+        font-size: 2.4rem;
+        margin-top: 0;
+        text-decoration: none;
+        border-bottom: 0;
+        color: #e1e1e1;
+        line-height: 2.5rem;
+    }
+
+    @media only screen and (max-width: 920px) {
+        .logo {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .my-photo {
+            max-width: 6rem;
+        }
+    }
 </style>

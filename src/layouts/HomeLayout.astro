@@ -9,17 +9,22 @@ const { frontmatter } = Astro.props;
 ---
 
 <BaseLayout pageTitle={siteTitle}>
+    <div class="logo"><Logo /></div>
     <main>
-        <Logo />
+        
         <div class="posts"><Posts /></div>
     </main>
 </BaseLayout>
 
 <style>
+    .logo {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
     main {
         margin: 0 auto;
 
-        margin-top: 4rem;
+
 
         display: flex;
         flex-direction: column;
