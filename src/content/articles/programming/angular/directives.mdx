@@ -182,7 +182,7 @@ A few highlights:
 - the `elementRef` in the constructor is the element that the directive was
   applied to. It gets injected into the instance automatically by Angular. The
   name can be whatever we want, just the type needs to be `ElementRef`.
-- it's a good idea to use [Renderer2](./tips.md#renderer2).
+- it's a good idea to use [Renderer2](./tips#renderer2).
 - we can do something with our element. `ngOnInit` lifecycle hook is a good
   place to do it.
 
@@ -212,8 +212,8 @@ class MyDirective {
 ### @HostBinding
 
 There's an even easier way to modify DOM properties than using
-[references](./tips.md#references-to-html-elements) or
-[Renderer2](./tips.md#renderer2). It's a decorator called `HostBinding`. It
+[references](./tips#references-to-html-elements) or
+[Renderer2](./tips#renderer2). It's a decorator called `HostBinding`. It
 allows to bind to a specified property on the DOM element to access it easily.
 
 Here's an example:
@@ -243,7 +243,7 @@ Another example shows how we can toggle a class on some element:
 Setting `isOpen` to `true` adds the class `open` to the element.
 
 :::tip[Renderer2]
-There's nothing wrong with using [Renderer2](./tips.md#renderer2). It's just
+There's nothing wrong with using [Renderer2](./tips#renderer2). It's just
 another convenient way to access the DOM.
 :::
 
