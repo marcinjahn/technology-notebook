@@ -181,7 +181,11 @@ const structure: Sidebar = {
         {
             title: "Architecture",
             icon: "architecture.webp",
-            children: ["architecture/asp-net-core", "architecture/ddd"],
+            children: [
+                "architecture/basics",
+                "architecture/ddd",
+                "architecture/asp-net-core",
+            ],
         },
     ],
     "/technologies/": [

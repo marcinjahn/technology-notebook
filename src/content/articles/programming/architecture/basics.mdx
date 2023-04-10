@@ -1,0 +1,81 @@
+---
+title: What is architecture?
+description: What is Architecture in Software Development?
+lang: en-US
+tags: ["architecture", "design"]
+---
+
+# What is architecture?
+
+Since Software Development as a profession borrows quite a bit of nomenclature
+from the house building industry, the **architect** role could not be omitted.
+Software architecture is usually understood as one of the following:
+
+- the process of designing a software system
+- the set of principles that we follow while building applications of some
+  system
+- a diagram of a system presenting what it's comprised of and how the inner
+  parts are connected with each other
+
+Every piece of software follows some architecture, sometimes it's more
+explicitly defined, sometimes it's an "accidental" architecture, which had not
+been planned, but rather comes out during the process of coding. The latter is
+alright for smallest projects.
+
+An architecture is there to:
+
+- plan the solution well and avoid costly mistakes
+- have an overall look at the system - allows to create diagrams, like C4.
+
+## Architect Persona
+
+The role of the software architect is usually seen as fundamental role in
+building a system. Before any line of code gets written, there should be a
+design prepared that will guide the developers to build a good system (unless
+we're building something tiny).
+
+A good architect should:
+
+- have a decent understanding of the *problem space* - that way the proposed
+  solution will trully apply to the problem that we want to solve
+
+### Types of Architects
+
+We often see the following titles being mentioned regarding software architects:
+
+- Enterprise Architect - responsible for the design of rules to be followed by
+  an enterprise as a whole
+- Solution Architect - responsible for a selected product/solution. They know
+  the problem that they got to solve and they come up with some solution to
+  that, taking into account the constraints and resources at hand.
+- Application Architect - designs a single application, what technologies to
+  use, etc.
+
+The decisions of an Enterprise Architect will have an impact on the other
+architect roles. The policits and decisions made on the level of the
+organization will have to be respected by any project within that organization.
+
+
+## C4
+
+C4 is a system of visualizing systems' architecture. There are 4 levels of
+solution visualization in C4, from highest to lowest:
+
+- Systems (C1) - a top-level look at a solution as a whole, where our system is a
+  single block that users and our systems interact with
+- Containers (C2) - each block is a single app, or some kind of data store, messaging bus, etc.
+- Components (C3) - inner systems within an app, like controllers, and services
+- Code (C4) - a collection of classes - it will change pretty often in an
+  actively developed system, so it might be skipped sometimes.
+
+It's important to note that System diagram shows sysem**s**, Container diagram
+shows container**s**, and Component diagram shows component**s**. A Container
+diagram does not show a content of one container (app), but rahter apps and
+their interactions within the system.
+
+![C4 Diagram symbols,
+https://c4model.com/](https://static.structurizr.com/workspace/36141/diagrams/Containers-key.png)
+
+## References
+
+- [C4](https://c4model.com/)
