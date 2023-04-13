@@ -61,6 +61,12 @@ var rec2 = rec1 with { Age = 20 }; // only age gets modified in the new record i
 The `with` operator can also be applied to anonymous types in C#.
 :::
 
+:::danger[Entity Framework Core]
+Record types aren't appropriate for use as entity types in Entity Framework
+Core. Read more at
+[MSDN](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records#value-equality).
+:::
+
 ### Deconstructing
 
 A bit similarly to JS, we can extract some values from records:
