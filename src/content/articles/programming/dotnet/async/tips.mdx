@@ -129,35 +129,82 @@ using (var streamWriter = new StreamWriter(context.Response.Body))
 }
 ```
 
-### Returning `Task`
+### Async Eliding
 
-There are benefits to using the async/await keyword instead of directly
-returning the `Task`:
+In some cases, we might be able to write methods that return a `Task`, without
+any `await` keywords. Such approach comes with some benefts and drawbacks.
 
-- Asynchronous and synchronous exceptions are normalized to always be
-  asynchronous.
-- The code is easier to modify (consider adding a using, for example).
-- Diagnostics of asynchronous methods are easier (debugging hangs etc).
-- Exceptions thrown will be automatically wrapped in the returned Task instead
-  of surprising the caller with an actual exception.
-
-GOOD:
-
-```csharp
-public async Task<int> DoSomethingAsync()
-{
-    return await CallDependencyAsync();
-}
-```
-
-BAD:
+#### Pros of eliding async
 
 ```csharp
 public Task<int> DoSomethingAsync()
 {
-    return CallDependencyAsync();
+    return InternalAsync();
 }
 ```
+
+- (minimal) performance gain - without `async` - `await`, the state machine does
+not need to be generated. An application will execute faster abd it will
+allocate less memory.
+
+#### Pros of NOT eliding async
+
+```csharp
+public async Task<int> DoSomethingAsync()
+{
+    return await InternalAsync();
+}
+```
+
+- awaited call will throw both synchronous and asynchronous exceptions
+
+    Eliding causes only synchronous exceptions to be caught:
+
+    ```csharp
+    public Task<int> DoSomethingAsync()
+    {
+        try 
+        {
+            return InternalAsync();
+        }
+        catch(Exception)
+        {
+            // It will catch only synchronous exceptions, anything
+            // asynchronous will not be caught here, but rather
+            // on the caller of DoSomethingAsync (unless it's not awaited)
+        }
+    }
+    ```
+
+- Asynchronous and synchronous exceptions are normalized to always be
+  asynchronous.
+
+    ```csharp
+    public async Task<string> FunctionWithoutEliding()
+    {
+        throw Exception(); // synchronous exception
+        
+        return Something();
+    }
+
+    public Task<string> FunctionWithElidinging()
+    {
+        throw Exception(); // synchronous exception
+        
+        return await Something();
+    }
+
+    var task = FunctionWithoutEliding(); // throws some 
+    var result = await task; // Exception thrown here
+
+    var task = FunctionWithElidinging(); // Exception thrown here
+    var result = await task;
+    ```
+
+- Diagnostics of asynchronous methods is easier (full call stack).
+
+- `AsyncLocal` works as expected
+  ([stephencleary.com](https://blog.stephencleary.com/2016/12/eliding-async-await.html))
 
 ### Attached/Detached tasks
 
