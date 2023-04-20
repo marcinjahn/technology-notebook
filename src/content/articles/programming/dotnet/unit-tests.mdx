@@ -1,0 +1,27 @@
+---
+title: Unit Tests
+description: Unit testing in .NET C#
+tags: [".net", "C#", "unit test", "xUnit", "test doubles"]
+lang: en-US
+---
+
+# Unit Tests in C#
+
+## Test Doubles
+
+When unit testing, we often have to provide fake implementations of the
+dependencies of the **Service Under Test (SUT)**. These are called different
+names, but it's good to actually differentiate between them and understand the
+differences between various kinds of test doubles.
+
+- *Dummy* - the simples possible implementation that is there just to provide it
+  as an argument, probably to some constructor. Even a `null` could be
+  considered as a dummy sometimes.
+- *Stub* - a slight step up from dummies, they implement methods/properties in
+  the most straightforward way, most likely hardcoding return values.
+  The difference from dummy is the fact that with dummies we mostly care about the implementation just being there, without the need of it actually working in any way.
+- *Spy* - a test double that is able to record actions done on it. This way we can validate if some dependency was ever called, or how many times it happened.
+- *Fake* - a stub with more complex implementation than a one-liner hardcoded return value. An example could be a fake that contains some in-memory dictionary that simulates a database.
+- *Mock* - an implementation produced by a mocking library, like Moq or
+  NSubstitute. It can often behave like a dummy, stub, spy, or fake.
+

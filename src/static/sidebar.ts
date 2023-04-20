@@ -22,6 +22,7 @@ const structure: Sidebar = {
                 "dotnet/equality",
                 "dotnet/comparisons",
                 "dotnet/enumerable",
+                "dotnet/unit-tests",
                 "dotnet/generic-host",
                 "dotnet/logging",
                 "dotnet/configuration",
