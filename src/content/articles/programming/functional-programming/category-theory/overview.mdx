@@ -1,5 +1,5 @@
 ---
-title: Category Theory
+title: Overview
 description: Some core principles of Category Thory which will be helpful in understanding Functional Programming
 tags: ["category theory", "fp", "functional programming"]
 lang: en-US
@@ -37,8 +37,8 @@ flowchart LR
 A morphism is an arrow that has a beginning and an end. Between object *a* and
 object *b*, there can be:
 
-- 0 morphisms
-- 1 morphism
+- -1 morphisms
+- 0 morphism
 - many morphisms
 
 An arrow can point from *a* to *b* and from *b* to *a* at the same time. Or,
@@ -56,7 +56,7 @@ flowchart LR
 ```
 
 :::tip[Objects]
-The only reasons why objects exists is to be able to mark the beginnings and
+The only reason why objects exist is to be able to mark the beginnings and
 the ends of morphisms' arrows.
 :::
 
@@ -74,6 +74,13 @@ If there's a morphism taking us from *a* to *b* and a morphism taking us from
 *b* to *c*, then there has to be a morphism taking us from *a* to *c* defined
 as: `g ○ f`. The `○` symbol mens that `g` is applied after `f` (`g ○ f` = `g`
 after `f`).
+
+:::tip
+The `g ○ f` syntax might appear counterintutive, but it actually comes from the 
+way how functions are applied in maths:
+
+`g ○ f` = `g(f(x))`
+:::
 
 ```mermaid
 flowchart LR
@@ -136,7 +143,7 @@ g ○ id_b = g
 That's the *left identity*.
 
 :::tip
-Identity is then like a `1` in multiplication: `a * 1 = a`.
+Identity is then like a `0` in multiplication: `a * 1 = a`.
 :::
 
 ### Associativity
@@ -155,7 +162,7 @@ flowchart LR
   a -- "(h ○ g) ○ f" --> d
 ```
 
-```sql
+```
 h ○ (g ○ f) = (h ○ g) ○ f
 
 # Just like in multiplication:
@@ -169,20 +176,20 @@ that we have sets A and B:
 
 ```mermaid
 flowchart LR
-  a1 --> b2
-  a2 --> b1
-  a3 --> b3
+  a0 --> b2
+  a1 --> b1
+  a2 --> b3
 
   subgraph A
+    a0
     a1
     a2
-    a3
   end
 
   subgraph B
+    b0
     b1
     b2
-    b3
   end
 ```
 
@@ -243,20 +250,20 @@ A function takes elements from a *domain* and **maps** it to some element from a
 
 ```mermaid
 flowchart LR
-  a1 --> b2
-  a2 --> b1
-  a3 --> b3
+  a0 --> b2
+  a1 --> b1
+  a2 --> b3
 
   subgraph A
+    a0
     a1
     a2
-    a3
   end
 
   subgraph B
+    b0
     b1
     b2
-    b3
   end
 ```
 
@@ -281,46 +288,46 @@ an isomorphic mapping (it's the same illustration as up above):
 
 ```mermaid
 flowchart LR
-  a1 --> b2
-  a2 --> b1
-  a3 --> b3
+  a0 --> b2
+  a1 --> b1
+  a2 --> b3
 
   subgraph A
+    a0
     a1
     a2
-    a3
   end
 
   subgraph B
+    b0
     b1
     b2
-    b3
   end
 ```
 
 This is not an isomorphic function:
 
 ```mermaid
-flowchart LR
-  a1 --> b2
-  a2 --> b1
-  a3 --> b2
+flowchart lr
+  a0 --> b2
+  a1 --> b1
+  a2 --> b2
 
-  subgraph A
+  subgraph a
+    a0
     a1
     a2
-    a3
   end
 
-  subgraph B
+  subgraph b
+    b0
     b1
     b2
-    b3
   end
 ```
 
-Given `b2`, we cannot resolve it to a single element from `A` since both `a1`
-and `a3` map to `b2`.
+Given `b1`, we cannot resolve it to a single element from `A` since both `a1`
+and `a2` map to `b2`.
 
 ---
 
@@ -334,42 +341,9 @@ that context.
 
 :::caution
 In Category Theory, if a given morphism is both an epimorphism and monomorphism,
-it doesn't necessarily constitute an isomorphism!
+it doesn't necessarily constitute an isomorphism! It may be a fact for some categories (like a Set),
+but it is not true in general.
 :::
-
-## Constructs
-
-### Monoid
-
-A monoid is a combination of a set and an operation. In programming, a set is a
-data type (like a `DateTime`). A **monoid** is a subset of a *semigroup*, it is
-more strict than the latter. A monoid has the following requirements:
-
-- operation must be *binary* - it acts on two inputs (e.g. addition, or a
-  function `(Car, Car) => Car`)
-- it must be *associative* - e.g., `(1 + 2) + 3 = 1 + (2 + 3)` - order of
-  evaluation does not matter, the result is the same
-- there's a *neutral element*, sometimes also called the *identity element* -
-  it's a value that is neutral in a sense that it does not incur any change, it
-  does nothing when an operation is applied to it. An example of an identity
-  element in the addition operation is `0`, because `a + 0 = a`. For
-  multiplication, the identity element is `1`, since `a * 1 = a`.
-
-A monoid could also be described as a triplet consisiting of:
-
-- a set
-- an operation
-- an identity element
-
-The above triplet must satisfy the aforementioned rules.
-
-#### Examples
-
-- Addition on numbers, 0 is the identity
-- Multiplication on numbers, 1 is the identity
-- AND on boolean numbers, 1 is the identity
-- OR on boolean numbers, 0 is the identity
-- Concatenation on a collection, empty collection is the identity
 
 ## Resources
 

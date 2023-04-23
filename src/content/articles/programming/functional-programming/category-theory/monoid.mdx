@@ -1,0 +1,144 @@
+---
+title: Monoid
+description: Monoid in Category Theory as a combination of a set, operation, and identity element
+tags: ["category theory", "fp", "functional programming", "monoid"]
+lang: en-US
+---
+
+# Monoid
+
+A monoid is a combination of a set and an operation abd ab identity element. In
+programming, a set is a data type (like a `DateTime`). A **monoid** is a subset
+of a *semigroup*, it is more strict than the latter. A monoid has the following
+requirements:
+
+- operation must be *binary* - it acts on two inputs (e.g. addition, or a
+  function `(Car, Car) => Car`). Notice that the type of inputs and the output
+  is the same, That's because a Monoid is a combinaton of a single data type and
+  an operation.
+- it must be *associative* - e.g., `(1 + 2) + 3 = 1 + (2 + 3)` - order of
+  evaluation does not matter, the result is the same.
+
+  :::caution[Commutativity]
+  Monoid does not have to be
+  [Commmutative](https://en.wikipedia.org/wiki/Commutative_property)!
+  :::
+
+- there's a *neutral element*, sometimes also called the *identity element* -
+  it's a value that is neutral in a sense that it does not incur any change, it
+  does nothing when an operation is applied to it. An example of an identity
+  element in the addition operation is `0`, because `a + 0 = a`. For
+  multiplication, the identity element is `1`, since `a * 1 = a`.
+
+A monoid could also be described as a triplet consisiting of:
+
+- a set
+- an operation
+- an identity element
+
+The above triplet must satisfy the aforementioned rules.
+
+## Examples
+
+- Addition on numbers, 0 is the identity
+- Multiplication on numbers, 1 is the identity
+- AND on boolean numbers, 1 is the identity
+- OR on boolean numbers, 0 is the identity
+- Concatenation on a collection, empty collection is the identity
+
+### Tuples
+
+Note that a tuple (also triple, quadriple, and so on...) may also be a monoid.
+It will be one only if all of its elements are monoids. The same goes for types,
+like a C# record. A C# record is a monoid if and only if all of its properties
+form a monoid when combined with some operation and identity element.
+
+Example:
+
+```csharp
+record RobotGroup(int PainerRobots, int SingingRobots, string[] DischargedRobots);
+```
+
+In the example abovr, `PainterRobots` and `SingingRobots` are integers. They
+form monoids with addition and 0 as an identity element. In case of
+`DischargedRobots`, the concatenation operation and an empty list form a monoid.
+
+We may define the following operation on `RobotGroup`:
+
+```csharp
+public static RobotGroup Combine(this RobotGroup robotGroup, RobotGroup anotherRobotGroup) =>
+  new RobotGroup(
+    robotGroup.PainerRobots + anotherRobotGroup.PainterRobots,
+    robotGroup.SingingRobots + anotherRobotGroup.SingingRobots,
+    robotGroup.DischargedRobots.Concat(anotherRobotGroup.DischargedRobots)
+  );
+```
+
+And here's the identity:
+
+```csharp
+public static RobotGroup Identity => new RobotGroup(0, 0, Array.Empty<string>());
+```
+
+##### Functions
+
+Any function that returns a monoid is itself a monoid. The input parameters
+do not matter.
+
+An example could be the following TypeScript signature:
+
+```ts
+(string) => number
+```
+
+`number` forms a monoid under addition, and 0 identity element.
+`string`, as a collection, also does form a monoid, however, it doesn't have to
+for the function to form a monoid.
+
+Here's some functions that follow the signature:
+
+```ts
+function countCharacters(text: string): number {
+  return text.length;
+}
+
+function countDigitsInText(text: string): number {
+  const digitMatches = input.match(/\d/g);
+  return digitMatches ? digitMatches.length : 0;
+}
+```
+
+Here's the identity element
+
+```ts
+const identity = (_: string) => 0;
+```
+
+The operation to form a monoid:
+
+```ts
+function combine(f1: (string) => number, f2: (string) => number): (string) => number {
+  return x => f1(x) + f2(x); 
+}
+```
+
+## Endomorphims
+
+So far, we've been discussing functions that accept two arguments - binary
+functions. Endomorphisms are simpler - these are unary functions that return the
+same type as they accept as an argument. Here's an example:
+
+```csharp
+int Increment(int value) => value +1;
+```
+
+A quote from [Mark Seeman's
+article](https://blog.ploeh.dk/2017/11/13/endomorphism-monoid/):
+
+> You can compose two such unary operations together in order to get a composed
+> operation. You simply take the output of the first method and use it as the
+> input argument for the second method. That composition is a monoid. 
+
+More precisely, the composition forms a function that forms a monoid, since
+there will be an identity element (function), and associativity requirement will
+be fulfilled.

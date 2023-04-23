@@ -162,7 +162,13 @@ const structure: Sidebar = {
                 "functional-programming/error-handling",
                 "functional-programming/partial-application",
                 "functional-programming/modularity",
-                "functional-programming/category-theory",
+                {
+                    title: "Category Theory",
+                    children: [
+                        "functional-programming/category-theory/overview",
+                        "functional-programming/category-theory/monoid",
+                    ],
+                },
             ],
         },
         {
