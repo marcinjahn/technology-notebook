@@ -1,7 +1,7 @@
 ---
 title: Unit Tests
 description: Unit testing in .NET C#
-tags: [".net", "C#", "unit test", "xUnit", "test doubles"]
+tags: [".net", "C#", "unit test", "xUnit", "test doubles", "mock", "stub", "fake"]
 lang: en-US
 ---
 
@@ -18,10 +18,53 @@ differences between various kinds of test doubles.
   as an argument, probably to some constructor. Even a `null` could be
   considered as a dummy sometimes.
 - *Stub* - a slight step up from dummies, they implement methods/properties in
-  the most straightforward way, most likely hardcoding return values.
-  The difference from dummy is the fact that with dummies we mostly care about the implementation just being there, without the need of it actually working in any way.
-- *Spy* - a test double that is able to record actions done on it. This way we can validate if some dependency was ever called, or how many times it happened.
-- *Fake* - a stub with more complex implementation than a one-liner hardcoded return value. An example could be a fake that contains some in-memory dictionary that simulates a database.
+  the most straightforward way, most likely hardcoding return values. The
+  difference from dummy is the fact that with dummies we mostly care about the
+  implementation just being there, without the need of it actually working in
+  any way.
+- *Spy* - a test double that is able to record actions done on it. This way we
+  can validate if some dependency was ever called, or how many times it
+  happened.
+- *Fake* - a stub with more complex implementation than a one-liner hardcoded
+  return value. An example could be a fake that contains some in-memory
+  dictionary that simulates a database.
 - *Mock* - an implementation produced by a mocking library, like Moq or
   NSubstitute. It can often behave like a dummy, stub, spy, or fake.
 
+## Approaches to Testing 
+
+When writing tests, it's good to follow the below advice:
+
+> Use Stubs or Fakes with Queries, and Mocks with Commands.
+
+Using Mocks (or Spies) to verify Queries is troublesome, since it introduces
+interaction-based approach to a test that could be writtn in a state-based
+manner.
+
+### State-based Testing
+
+Preferably, if possible, it's best to use state-based testing approach, since it
+does not rely that much on internal implementation of the tested thing. It makes
+tests less fragile. The tests are fragile when internal changes in the
+implementation require chanes in the tests, even though the public contract of
+the tested thing stayed the same. 
+
+State-based testing is often the valid option for testing Queries.
+
+### Interaction-based Testing
+
+Interaction-based testing is often necessary, but it introduces tight coupling
+between the test and internal implementation of the tested thing. Tests become
+fragile, and often need to be changed whenever the implementation internals
+change.
+
+Interaction-based tests use mocks as spies and stubs, when often we could just
+be using fakes. It might save us from the need to update tests when SUT changes.
+
+Often, tests that could use state-based approach are written in
+interaction-based style, making the code over-tested.
+
+## References
+
+[Refactroign tests from interaction-based to State-based (Mark
+Seeman)](https://blog.ploeh.dk/2019/02/18/from-interaction-based-to-state-based-testing/)
