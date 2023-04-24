@@ -1,0 +1,148 @@
+---
+title: Other Magmas
+description: Magmas other than monoid in Category Theory - semigroups, quasigroups
+tags: ["category theory", "fp", "functional programming", "monoid", "semigroup", "quasigroup"]
+lang: en-US
+---
+
+# Other Magmas
+
+[Monoid](./monoids) is just one of subsets of Magmas. There are others, like a semigroup.
+
+## Semigroups
+
+Semigroups is a superset of [monoids](./monoid). Every monoid is a semigroup,
+while the opposite is not true. They have very similar requirements as monoids,
+with an exception for the identity element - it does not have to exist for a
+semigroup to be formed.
+
+With that, a semigroup is a tuple consisting of:
+
+- a set
+- a binary operation
+
+All the other Monoid rules still apply:
+
+- associativity
+- arguments of the operation must be of the same type as the returned value
+
+### Examples
+
+#### Minimum
+
+An example of a semigroup is a set of real numbers, and the MIN operation.
+Since there is no identity element (real numbers go from -Inf to +Inf), we cannot
+call that semigroup a monoid.
+
+:::caution[Computers]
+In maths, the above statement about real numbers holds true. However, programming
+environments do have limits on their number implementations, so we could
+actually find an identity element. For the MIN operation, the identity element
+would be the maximum numerical value possible to define in a given programming
+environment. `MIN(MAX_VALUE, x)` would return `x` for any `x`.
+:::
+
+Similarly, MAX operation could form a semigroup, but not a monoid.
+
+---
+
+Other examples of semigroups, that are not monoids, include:
+
+- T First(T first, T second)
+- Last
+
+### Accumulation
+
+Just like monoids, semigroups may be accumulated. Having multiple values 
+from some set, we can accumulate them into one element, with the use of
+semigroup's binary operation.
+
+```csharp
+var values = new[] { 1 , 2 , 3 };
+var first = values.First();
+var result = values
+    .Skip(1)
+    .Aggregate(
+        first, 
+        (m, n) => Math.Min(m, n)
+    );
+```
+
+Since semigroups do not have an identity element, in the example above we have
+to make sure that the collection is not empty. Otherwise, what would a
+`Math.Min` return? In case of monoids, where identity/neutral element exists,
+that element would be returned from an accumulation.
+
+## Quasigroups
+
+Another subset of Magmas is Quasigroups. A quasigroup is a set Q with a binary
+operation * that satisfies the *Latin square property*. Quasigroups don't
+require an identity element to be there, or an operation to be associative.
+
+:::tip 
+Identity element and associativity are not required, which does not mean
+that they are forbidden. This is why some monoids, some semigroups, but also
+some magmas that are neither monoids or semigroups can be quasigroups.
+:::
+
+An example of a quasigroup that is neither a monoid or a semigroup is a set of
+integers and the subtraction operation. Subtraction satisfies Latin square
+property.
+
+:::tip[Latin Square Property and Subtraction]
+Let's consider the set of integers, denoted by "Z", and the binary operation of
+subtraction, denoted by "-". For any two integers `a` and `b`, we need to find
+unique integers `x` and `y` such that:
+
+`a - x = b` => `x = a - b`
+
+`y - a = b` => `y = b + a`
+
+These solutions are unique because, for each specific pair of integers `a` and
+`b`, there is only one possible value for `x` and `y` that satisfy the
+equations. Since subtraction is a well-defined operation on the set of integers,
+and we can always find unique `x` and `y` that satisfy the Latin square property,
+subtraction does indeed satisfy the Latin square property in the context of
+integer arithmetic.
+:::
+
+Quasigroups are not that useful in the programming area.
+
+## Magmas
+
+We've gone from monoids to quasigroups, and all of them are subset of a greater
+set of Magmas.
+
+Magmas is simply a set with a binary operation - no other requirements there!
+
+### Examples
+
+#### Rock Paper Scissors
+
+The Rock, Paper, Scissors game may be thought of as a Magma.
+If you think about it, the game may be modeled with a binary function:
+
+```ts
+type RPS = RockOrPaperOrScissors;
+
+function play(choice1: RPS, choice2: RPS): RPS {
+    if (choice1 === RPS.Stone && choice2 === RPS.Paper) {
+        return choice2;
+    }
+    // and so on...
+}
+```
+
+The function above (operation) does not have an identity element (not a Monoid),
+and it is not associative (not a Semigroup), and it does not satisfy the Latin
+Square Property (not a Quasigroup). However, it is a binary operation, so it
+certainly is a Magma.
+
+Interestingly, the Rock Paper Scissors "operation" is commutative (a*b = b*a),
+but in the world of magmas that doesn't have any impact. Associativity would at
+least give us a Semigroups, commutativity does not.
+
+## References
+
+[Rock Paper Scissors example
+(Seemann)](https://blog.ploeh.dk/2017/12/28/rock-paper-scissors-magma)

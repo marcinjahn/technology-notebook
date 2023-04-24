@@ -167,7 +167,7 @@ const structure: Sidebar = {
                     children: [
                         "functional-programming/category-theory/overview",
                         "functional-programming/category-theory/monoids",
-                        "functional-programming/category-theory/semigroups",
+                        "functional-programming/category-theory/other-magmas",
                     ],
                 },
             ],

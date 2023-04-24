@@ -132,7 +132,7 @@ same type as they accept as an argument. Here's an example:
 int Increment(int value) => value +1;
 ```
 
-A quote from [Mark Seeman's
+A quote from [Mark Seemann's
 article](https://blog.ploeh.dk/2017/11/13/endomorphism-monoid/):
 
 > You can compose two such unary operations together in order to get a composed
@@ -142,3 +142,34 @@ article](https://blog.ploeh.dk/2017/11/13/endomorphism-monoid/):
 More precisely, the composition forms a function that forms a monoid, since
 there will be an identity element (function), and associativity requirement will
 be fulfilled.
+
+## Accumulation
+
+Having a collection of values that are part of some monoid's set, we can
+accumulate them into one value. Such an operation is called *Reduce* or *Fold*
+in functional programming.
+
+```csharp
+public static Thing Accumulate(IEnumerable<Thing> things)
+{
+  var accumulator = Thing.Identity;  // monoid's identity
+  foreach (var thing in things)
+  {
+    accumulator = Thing.Operation(accumulator, thing);  // monoid's operation
+  }
+
+  return accumulator;
+}
+```
+
+.NET has a built-in implementation of accumulation - `Aggregate`:
+
+```csharp
+public static Thing Accumulate(IEnumerable<Thing> things)
+{
+  return things.Aggregate(
+    Thing.Identity,
+    (accumulator, thing) => Thing.Operation(accumulator, thing)
+  );
+}
+```
