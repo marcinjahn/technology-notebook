@@ -166,7 +166,8 @@ const structure: Sidebar = {
                     title: "Category Theory",
                     children: [
                         "functional-programming/category-theory/overview",
-                        "functional-programming/category-theory/monoid",
+                        "functional-programming/category-theory/monoids",
+                        "functional-programming/category-theory/semigroups",
                     ],
                 },
             ],

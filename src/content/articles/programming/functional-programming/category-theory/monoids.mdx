@@ -5,7 +5,7 @@ tags: ["category theory", "fp", "functional programming", "monoid"]
 lang: en-US
 ---
 
-# Monoid
+# Monoids
 
 A monoid is a combination of a set and an operation abd ab identity element. In
 programming, a set is a data type (like a `DateTime`). A **monoid** is a subset
@@ -14,7 +14,7 @@ requirements:
 
 - operation must be *binary* - it acts on two inputs (e.g. addition, or a
   function `(Car, Car) => Car`). Notice that the type of inputs and the output
-  is the same, That's because a Monoid is a combinaton of a single data type and
+  is the same. That's because a Monoid is a combinaton of a single data type and
   an operation.
 - it must be *associative* - e.g., `(1 + 2) + 3 = 1 + (2 + 3)` - order of
   evaluation does not matter, the result is the same.
@@ -33,7 +33,7 @@ requirements:
 A monoid could also be described as a triplet consisiting of:
 
 - a set
-- an operation
+- a binary operation
 - an identity element
 
 The above triplet must satisfy the aforementioned rules.
