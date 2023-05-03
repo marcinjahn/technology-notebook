@@ -168,6 +168,7 @@ const structure: Sidebar = {
                         "functional-programming/category-theory/overview",
                         "functional-programming/category-theory/monoids",
                         "functional-programming/category-theory/other-magmas",
+                        "functional-programming/category-theory/functors",
                     ],
                 },
             ],
