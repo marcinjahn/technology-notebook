@@ -8,6 +8,7 @@ allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
 ---
 
 <Container>
+    <h1 class="changelog-header">Updates</h1>
     {
         allPosts.map((post) => (
             <div class="post">
@@ -18,6 +19,10 @@ allPosts.sort((a, b) => (a.data.publishDate < b.data.publishDate ? 1 : -1));
 </Container>
 
 <style>
+    .changelog-header {
+        margin-bottom: 1em;
+    }
+
     h2 {
         margin-top: 0 !important;
         padding-top: 0 !important;

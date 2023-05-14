@@ -1,7 +1,7 @@
 ---
+import Intro from "../components/home/Intro.astro";
 import Logo from "../components/home/Logo.astro";
 import Posts from "../components/home/Posts.astro";
-import Text from "../components/home/Text.astro";
 import { siteTitle } from "../static/navigation";
 import BaseLayout from "./BaseLayout.astro";
 
@@ -9,10 +9,10 @@ const { frontmatter } = Astro.props;
 ---
 
 <BaseLayout pageTitle={siteTitle}>
-    <div class="logo"><Logo /></div>
+    <section class="logo"><Logo /></section>
     <main>
-        
-        <div class="posts"><Posts /></div>
+        <section class="content"><Intro /></section>
+        <section class="content"><Posts /></section>
     </main>
 </BaseLayout>
 
@@ -24,18 +24,20 @@ const { frontmatter } = Astro.props;
     main {
         margin: 0 auto;
 
-
-
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4rem;
+        gap: 2rem;
 
-        max-width: 800px;
+        width: 800px;
+    }
+
+    .content {
+        width: 800px;
     }
 
     @media only screen and (max-width: 920px) {
-        .posts {
+        .content {
             width: 100vw;
         }
     }

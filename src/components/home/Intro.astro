@@ -1,0 +1,55 @@
+---
+import Container from "../Container.astro";
+---
+
+<Container>
+  <h1>Welcome to my Dev Notes!</h1>
+    <p>This website is a collection of articles I've written on various topic:</p>
+    <ul>
+      <li><a class="section-title" href="/programming">Programming</a> - 
+        things related to programming languages or framework, e.g. 
+        <a href="/programming/dotnet/http-client">.NET C#</a>, 
+        <a href="/programming/angular/overview">Angular</a>, 
+        <a href="/programming/functional-programming/fundamentals">Functional Programming</a>, 
+        and others...</li>
+      <li><a class="section-title" href="/technologies/networking/http/">Technology</a> -
+        topics include <a href="/technologies/linux/gist">Linux</a>, 
+        <a href="/technologies/kubernetes/meaning">Kubernetes</a>, 
+        <a href="/technologies/mongodb/nosql">MongoDB</a>, and many other, 
+        hopefully interesing, pieces.</li>
+    </ul>
+
+    If you want to learn more about me or this website, head on to 
+    <a href="/about/who-am-i">About</a>.
+    You can also have a look at some of the open source projects 
+    I've been working on at <a href="/projects/open-multiple-links-browser-extension">Projects</a> 
+    (or at <a href="https://github.com/marcinjahn">GitHub</a>).
+</Container>
+
+<style>
+    .changelog-header {
+        margin-bottom: 1em;
+    }
+
+    h2 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .post {
+        border-bottom: 1px solid #bababa;
+        padding-bottom: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .post:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .section-title {
+      font-weight:bold;
+    }
+
+    li {margin-top:1em}
+</style>
