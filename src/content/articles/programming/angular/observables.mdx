@@ -1,17 +1,19 @@
 ---
-title: Observables
+title: Observables (RxJS)
 description: Directives in Angular SPA framework
 tags: ["angular", "spa", "js", "ts", "observable", "rxjs", "rx", "subject", "exhaustmap", "eventemitter"]
 lang: en-US
 ---
 
 import { Image } from 'astro:assets';
+import withLatestFrom from '../../../../assets/withlatestfrom-visualization.webp';
+import combineLatestWith from '../../../../assets/combinelatestwith-visualization.webp';
 
 # Observables in Angular
 
 Observables are pretty similar to .NET's Events. The `Observable<T>` is a stream
 of data that we can `subscribe()` to to get the latest values. This
-functionality comes with the [rxJS](https://rxjs.dev/) package.
+functionality comes with the [RxJS](https://rxjs.dev/) package.
 
 An `Observable<T>` might deliver 3 kinds of messages:
 
@@ -21,7 +23,7 @@ An `Observable<T>` might deliver 3 kinds of messages:
 
 Observables can be finite, meaning the stream of data will eventually finish and
 the observer(s) will be notified about that (HTTP request is an example of such
-an Observable). Observables might also be inifinite and the completion will
+an Observable). Observables might also be infinite and the completion will
 never occur.
 
 :::tip[$ Postfix]
@@ -38,11 +40,14 @@ temperature: number; // last value of temperature$
 
 ## Built-in Observables
 
-rxJS comes with a few built-in functions that create observables:
+RxJS comes with a few built-in functions that create observables:
 
 - `interval` - works similarly to JS's `setInterval`. We set the interval in
   milliseconds, incoming values are incresing, like in a counter (starting from
   0).
+- `create` - we're given a function where values emitted by the new observables
+  need to ne "manually" pushed out (example is below).
+- [and a few more...](https://www.learnrxjs.io/learn-rxjs/operators/creation)
 
 ## Custom Observables
 
@@ -50,7 +55,7 @@ Here's how we can create our own Observables. This is a custom `interval`
 implementation:
 
 ```ts
-let customInterval = Observable.crete(observer => {
+let customInterval = Observable.create(observer => {
     let i = 0;
     setInterval(() => {
         observer.next(i++);
@@ -69,7 +74,7 @@ sub.unsubscribe();
 ### Removing Subscription
 
 Subscriptions stay for as long as the app lives. If we are no longer interested
-in receiving values, we should exlicitly remove the subscription. Otherwise,
+in receiving values, we should explicitly remove the subscription. Otherwise,
 we'd have a memory leak.
 
 ```ts
@@ -116,10 +121,10 @@ console.
 
 ### catchError
 
-We cna also use the `catchError` [operator](#operators). We can attach it once
-to some observable, to include some error handling logic. It is useful when we
-want to have some common error-handling logic. We can rethrow an error from
-withing that operator with `throwError(...)`.
+We can also use the `catchError` [operator](#operators). We can attach it once
+to some observable, to include some common error handling logic. We can rethrow
+an error from withing that operator with `throwError(...)`. Then, each
+subscriber may handle the rethrown error individually.
 
 ```ts
 const observable = someObservable.catchError(e => {
@@ -130,11 +135,11 @@ const observable = someObservable.catchError(e => {
 const sub1 = observable.subscribe(n => {
     // do somehting...
 }, error =>{
-    // handle error...
+    // handle rethrown error...
 })
 
 const sub2 = observable.subscribe(n => {
-    // do something...
+    // do something, and hope it will not fail...
 })
 ```
 
@@ -227,7 +232,7 @@ we can provide more operators as next arguments to `pipe()`.
 
 ## Subject
 
-rxjs comes with a special type of Observable - **Subject**. It is functionally
+Rxjs comes with a special type of Observable - **Subject**. It is functionally
 very similar to Angular's `EventEmitter<T>`. Reportedly, it's more performant
 though and it's recommended to always use **Subject**.
 
@@ -262,3 +267,54 @@ with an additional feature - the subscriber is always able to read the last
 value of the Subject, even if it subscribes after that value was published.
 It needs to be initialized via constructor with some initial value.
 :::
+
+## Combining Observables
+
+In some cases we might need to use values from multiple observables to create
+some new value. It is often used in [ngRx effects](./ngRx).
+
+RxJs offers a few ways to combine observables. Some of these are operators, and
+some are functions that allow us to create new Observables, based on the ones we
+provide.
+
+:::caution[ngRx selectors] 
+In [NgRx](./ngrx), our state often has some initial default values (often `null`
+or `undefined`). These are counted as "emitted values", meaning that the
+operators/function below will ues them to produce the output. It might make
+sense to skip these initial values with some operator like `skipWhile(n => !n)`. 
+:::
+
+### Operators
+
+#### withLatestFrom
+
+<Image src={withLatestFrom} alt="RxJS withLatestFrom operator visualized"/>
+
+It will publish only at points of time when the first observable emits. The
+first output will come out only after all of the provided observables have
+emitted at least one value.
+
+####
+
+#### combineLatestWith
+
+<Image src={combineLatestWith} alt="RxJS combineLatestWith operator visualized"/>
+
+It's pretty similar to `withLatestFrom`. The difference is that the output is
+emitted when any of the input observables emits something, the first observable
+is not prioritized in any way.
+
+:::caution[combineLatest]
+There is also a [combineLatest](https://rxjs.dev/api/operators/combineLatest)
+operator, which is pretty similar to `combineLatestWith`, but it's **deprecated**.
+:::
+
+There also is a
+[combineLatest](https://rxjs.dev/api/index/function/combineLatest) function (not
+the same as the deprecated operator!) that behaves pretty similar to the
+`combineLatestWith` operator, and it may be used to create observables from
+other observables. The difference is that operator fires when the source
+observable emits, while the function like
+[combineLatest](https://rxjs.dev/api/index/function/combineLatest) (not an
+operator) creates an observable, that one can subscribe to, and only then it
+will produce values.
