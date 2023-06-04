@@ -1,0 +1,36 @@
+---
+export interface Props {
+  name: string;
+  text: string | number;
+  greyedOut: boolean;
+}
+
+const { name, text, greyedOut } = Astro.props as Props;
+---
+
+<div class="container">
+  <img src={`/icons/${name}`} class:list={[{ 'greyed-out': greyedOut }]}/>
+  <span class:list={[{ 'greyed-out': greyedOut }]}>{text}</span>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  img {
+    width: 1.5rem;
+  }
+
+  img.greyed-out {
+    filter: invert(88%);
+  }
+
+  span.greyed-out {
+    color: rgb(160, 160, 160);
+  }
+
+
+</style>

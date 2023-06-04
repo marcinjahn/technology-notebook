@@ -1,0 +1,124 @@
+---
+import ProjectTile from "../components/projects/project-tile.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getGithubProjects } from "../services/projects/github-client";
+
+const pageTitle = "Projects";
+const description = "Open-source projects that I've worked on";
+const tags = ['open source', 'github', 'projects']
+
+const projects = [
+  'gnome-quicksettings-audio-devices-hider-extension',
+  'gnome-quicksettings-audio-devices-renamer-extension',
+  'technology-notebook',
+  'gnome-dim-completed-calendar-events-extension',
+  'gnome-do-not-disturb-while-screen-sharing-or-recording-extension',
+  'vuepress-plugin-feedback-panel',
+  'LodzkieReservationChecker',
+  'puff',
+  'azure-webapp-locker',
+  'MJIoT-Master-Thesis',
+  'Hack.JackCompiler',
+  'Hack.JackPrograms',
+  'Hack.VMTranslator',
+  'Hack.Assembler',
+  'azure-config-converter',
+  'alpha-img.webapi-dotnet',
+  'alpha-img.spa-vue',
+  'open-multiple-links-browser-extension',
+  'air-quality-sensor'
+];
+
+// const githubProjects = (await getGithubProjects('marcinjahn'))
+//   .filter(project => projects.includes(project.name));
+
+const githubProjects = [
+  {
+    name: 'project 1',
+    description: 'Some description of the project',
+    stars: 2,
+    tags: ['gnome', 'gtk'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    mainLanguage: 'typescript',
+    url: 'google.com',
+  },
+  {
+    name: 'project 2',
+    description: 'Some description of the project',
+    stars: 0,
+    tags: ['gnome', 'gtk'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    mainLanguage: 'typescript',
+    url: 'google.com',
+  },
+  {
+    name: 'project 3',
+    description: 'Some description of the project',
+    stars: 3,
+    tags: ['gnome', 'gtk'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    mainLanguage: 'typescript',
+    url: 'google.com',
+  },
+  {
+    name: 'project 4',
+    description: 'Some description of the project',
+    stars: 0,
+    tags: ['gnome', 'gtk'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    mainLanguage: 'typescript',
+    url: 'google.com',
+  }
+]
+
+---
+
+<BaseLayout pageTitle={pageTitle} description={description} tags={tags}>
+  <div class="container">
+    <ul>
+      {
+        githubProjects.map(project => (
+          <li><ProjectTile project={project}></li>
+        ))
+      }
+    </ul>
+  </div>
+
+
+</BaseLayout>
+
+<style>
+.container {
+  padding: 1rem;
+  width: 900px;
+  margin: 2rem auto;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+li {
+  justify-self: justify-self;
+}
+
+@media only screen and (max-width: 920px) {
+  .container {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  ul {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

@@ -20,7 +20,7 @@ import { NavigationItem, mainNavigation } from "../../static/navigation";
             return;
         }
 
-        const rootPath = (<HTMLElement>item).dataset.rootPath;
+        const rootPath = (item as HTMLElement).dataset.rootPath;
 
         if (!rootPath) {
             return;
