@@ -41,6 +41,8 @@ const projects = import.meta.env.FETCH_GITHUB_PROJECTS ?
 
 <BaseLayout pageTitle={pageTitle} description={description} tags={tags}>
   <div class="container">
+    <h1>Projects</h1>
+    <h2>Below is a listing of some of the open source projects that I've created.</h2>
     <ul>
       {
         projects.map(project => (
@@ -58,6 +60,18 @@ const projects = import.meta.env.FETCH_GITHUB_PROJECTS ?
   padding: 1rem;
   width: 900px;
   margin: 2rem auto;
+}
+
+h1 {
+  color: black;
+  margin-bottom: 1rem !important;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin-top: 0 !important;
+  margin-bottom: 2rem !important;
+  color: #3d3d3d;
 }
 
 ul {
