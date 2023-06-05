@@ -46,8 +46,6 @@ async function getPage(octokit: Octokit, owner: string, page: number): Promise<G
 
   const data = (response as ListReposResponse).data;
 
-  console.log(data);
-
   return data.map(repo => ({
     name: repo.name!,
     description: repo.description!,
