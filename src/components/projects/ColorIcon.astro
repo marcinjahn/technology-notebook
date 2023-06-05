@@ -1,0 +1,28 @@
+---
+export interface Props {
+  color: string;
+  text: string | number;
+}
+
+const { color, text, } = Astro.props as Props;
+---
+
+<div class="container">
+  <span class="color"/>
+  <span>{text}</span>
+</div>
+
+<style define:vars={{ color }}>
+  .container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .color {
+    width: 1.3rem;
+    height: 1.3rem;
+    background-color: var(--color);
+    border-radius: 4px;
+  }
+</style>

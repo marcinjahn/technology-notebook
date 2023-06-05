@@ -20,7 +20,7 @@ export const mainNavigation: NavigationItem[] = [
     },
     {
         name: "Projects",
-        path: "/projects/open-multiple-links-browser-extension",
+        path: "/projects",
         rootPath: "/projects",
     },
     { name: "About", path: "/about/who-am-i", rootPath: "/about" },

@@ -1,13 +1,14 @@
 ---
-import ProjectTile from "../components/projects/project-tile.astro";
+import ProjectTile from "../components/projects/ProjectTile.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getGithubProjects } from "../services/projects/github-client";
+import { Project, createProject } from "../services/projects/project-factory";
 
 const pageTitle = "Projects";
 const description = "Open-source projects that I've worked on";
 const tags = ['open source', 'github', 'projects']
 
-const projects = [
+const projectNames = [
   'gnome-quicksettings-audio-devices-hider-extension',
   'gnome-quicksettings-audio-devices-renamer-extension',
   'technology-notebook',
@@ -29,51 +30,52 @@ const projects = [
   'air-quality-sensor'
 ];
 
-// const githubProjects = (await getGithubProjects('marcinjahn'))
-//   .filter(project => projects.includes(project.name));
+const projects = (await getGithubProjects('marcinjahn'))
+  .filter(project => projectNames.includes(project.name))
+  .map(createProject);
 
-const githubProjects = [
-  {
-    name: 'project 1',
-    description: 'Some description of the project',
-    stars: 2,
-    tags: ['gnome', 'gtk'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    mainLanguage: 'typescript',
-    url: 'google.com',
-  },
-  {
-    name: 'project 2',
-    description: 'Some description of the project',
-    stars: 0,
-    tags: ['gnome', 'gtk'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    mainLanguage: 'typescript',
-    url: 'google.com',
-  },
-  {
-    name: 'project 3',
-    description: 'Some description of the project',
-    stars: 3,
-    tags: ['gnome', 'gtk'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    mainLanguage: 'typescript',
-    url: 'google.com',
-  },
-  {
-    name: 'project 4',
-    description: 'Some description of the project',
-    stars: 0,
-    tags: ['gnome', 'gtk'],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    mainLanguage: 'typescript',
-    url: 'google.com',
-  }
-]
+// const projects: Project[] = [
+//   {
+//     name: 'project 1',
+//     description: 'Some description of the project',
+//     stars: 2,
+//     tags: ['gnome', 'gtk'],
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     mainLanguage: 'TypeScript',
+//     url: 'google.com',
+//   },
+//   {
+//     name: 'project 2',
+//     description: 'Some description of the project. It is a bit long on purpose to see what will happen in the user interface',
+//     stars: 0,
+//     tags: ['gnome', 'gtk'],
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     mainLanguage: 'C#',
+//     url: 'google.com',
+//   },
+//   {
+//     name: 'project 3',
+//     description: 'Some description of the project',
+//     stars: 3,
+//     tags: ['gnome', 'gtk'],
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     mainLanguage: 'Rust',
+//     url: 'google.com',
+//   },
+//   {
+//     name: 'project 4',
+//     description: 'Some description of the project',
+//     stars: 0,
+//     tags: ['gnome', 'gtk'],
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     mainLanguage: 'JavaScript',
+//     url: 'google.com',
+//   }
+// ].map(createProject);
 
 ---
 
@@ -81,7 +83,7 @@ const githubProjects = [
   <div class="container">
     <ul>
       {
-        githubProjects.map(project => (
+        projects.map(project => (
           <li><ProjectTile project={project}></li>
         ))
       }

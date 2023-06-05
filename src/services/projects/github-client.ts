@@ -1,23 +1,23 @@
 import type { Endpoints } from "@octokit/types";
 import { Octokit } from "octokit";
 
-export interface GithubProject {
+export interface GithubResponse {
   name: string;
   description: string;
   stars: number;
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
-  mainLanguage: string;
+  mainLanguage: string | null;
   url: string;
 }
 
 type ListReposResponse = Endpoints["GET /users/{username}/repos"]["response"];
 
-export async function getGithubProjects(owner: string): Promise<GithubProject[]> {
+export async function getGithubProjects(owner: string): Promise<GithubResponse[]> {
   const octokit = new Octokit();
 
-  let result: GithubProject[] = [];
+  let result: GithubResponse[] = [];
   let page = 1;
 
   let count = -1;
@@ -31,7 +31,7 @@ export async function getGithubProjects(owner: string): Promise<GithubProject[]>
   return result;
 }
 
-async function getPage(octokit: Octokit, owner: string, page: number): Promise<GithubProject[]> {
+async function getPage(octokit: Octokit, owner: string, page: number): Promise<GithubResponse[]> {
   const response = await octokit.request(`GET /users/${owner}/repos`, {
     username: owner,
     page,
@@ -46,6 +46,8 @@ async function getPage(octokit: Octokit, owner: string, page: number): Promise<G
 
   const data = (response as ListReposResponse).data;
 
+  console.log(data);
+
   return data.map(repo => ({
     name: repo.name!,
     description: repo.description!,
@@ -53,7 +55,7 @@ async function getPage(octokit: Octokit, owner: string, page: number): Promise<G
     tags: repo.topics!,
     createdAt: new Date(repo.created_at!),
     updatedAt: new Date(repo.updated_at!),
-    mainLanguage: repo.language!,
+    mainLanguage: repo.language ?? null,
     url: repo.html_url
   }));
 }
