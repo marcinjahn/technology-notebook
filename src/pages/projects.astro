@@ -3,57 +3,81 @@ import ProjectTile from "../components/projects/ProjectTile.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getGithubProjects } from "../services/projects/github-client";
 import { getMockProjects } from "../services/projects/mock-projects";
-import { Project, createProject } from "../services/projects/project-factory";
+import { createProject } from "../services/projects/project-factory";
+import GithubProjectNames from '../static/projects';
 
 const pageTitle = "Projects";
 const description = "Open-source projects that I've worked on";
 const tags = ['open source', 'github', 'projects']
 
-const projectNames = [
-  'gnome-quicksettings-audio-devices-hider-extension',
-  'gnome-quicksettings-audio-devices-renamer-extension',
-  'technology-notebook',
-  'gnome-dim-completed-calendar-events-extension',
-  'gnome-do-not-disturb-while-screen-sharing-or-recording-extension',
-  'vuepress-plugin-feedback-panel',
-  'LodzkieReservationChecker',
-  'puff',
-  'azure-webapp-locker',
-  'MJIoT-Master-Thesis',
-  'Hack.JackCompiler',
-  'Hack.JackPrograms',
-  'Hack.VMTranslator',
-  'Hack.Assembler',
-  'azure-config-converter',
-  'alpha-img.webapi-dotnet',
-  'alpha-img.spa-vue',
-  'open-multiple-links-browser-extension',
-  'air-quality-sensor'
-];
-
 const projects = import.meta.env.FETCH_GITHUB_PROJECTS ?
   (await getGithubProjects('marcinjahn'))
-    .filter(project => projectNames.includes(project.name))
+    .filter(project => GithubProjectNames.includes(project.name))
     .map(createProject) :
   getMockProjects();
 
+// Sort by newest by default
+projects.sort((a, b) => b.createdAt - a.createdAt);
 ---
 
 <BaseLayout pageTitle={pageTitle} description={description} tags={tags}>
   <div class="container">
     <h1>Projects</h1>
     <h2>Below is a listing of some of the open source projects that I've created.</h2>
-    <ul>
+
+    <section class="sorting">
+      <span>Sort by</span>
+      <select id="sort-select">
+        <option value="newest" selected>Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="stars">GitHub Stars</option>
+        <option value="downloads">Downloads</option>
+      </select>
+    </section>
+
+
+    <ul class="projects-list">
       {
         projects.map(project => (
-          <li><ProjectTile project={project}></li>
+          <li data-project={JSON.stringify(project)} class="project">
+            <ProjectTile project={project}>
+          </li>
         ))
       }
     </ul>
   </div>
-
-
 </BaseLayout>
+
+<script>
+  const selectElement = document.getElementById('sort-select');
+
+  selectElement?.addEventListener('change', function() {
+    const that = this as HTMLSelectElement;
+    const selectedOption = that.options[that.selectedIndex].value;
+    
+    const ul = document.querySelector('.projects-list');
+    const projects = document.querySelectorAll(".project");
+
+    ul!.innerHTML = '';
+
+    const sortedProjects = Array.from(projects).sort((a, b) => {
+      const projectA = JSON.parse((a as HTMLElement).dataset.project!);
+      const projectB = JSON.parse((b as HTMLElement).dataset.project!);
+
+      if (selectedOption === 'newest') {
+        return new Date(projectB.createdAt).getTime() - new Date(projectA.createdAt).getTime();
+      } else if (selectedOption === 'oldest') {
+        return new Date(projectA.createdAt).getTime() - new Date(projectB.createdAt).getTime();
+      }
+
+      return projectB[selectedOption] - projectA[selectedOption];
+    });
+
+    sortedProjects.forEach(project => {
+      ul?.appendChild(project);
+    })
+  });
+</script>
 
 <style>
 .container {
@@ -85,6 +109,13 @@ ul {
 
 li {
   justify-self: justify-self;
+}
+
+.sorting {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
 }
 
 @media only screen and (max-width: 920px) {

@@ -1,0 +1,21 @@
+export default [
+  'gnome-quicksettings-audio-devices-hider-extension',
+  'gnome-quicksettings-audio-devices-renamer-extension',
+  'technology-notebook',
+  'gnome-dim-completed-calendar-events-extension',
+  'gnome-do-not-disturb-while-screen-sharing-or-recording-extension',
+  'vuepress-plugin-feedback-panel',
+  'LodzkieReservationChecker',
+  'puff',
+  'azure-webapp-locker',
+  'MJIoT-Master-Thesis',
+  'Hack.JackCompiler',
+  'Hack.JackPrograms',
+  'Hack.VMTranslator',
+  'Hack.Assembler',
+  'azure-config-converter',
+  'alpha-img.webapi-dotnet',
+  'alpha-img.spa-vue',
+  'open-multiple-links-browser-extension',
+  'air-quality-sensor'
+];

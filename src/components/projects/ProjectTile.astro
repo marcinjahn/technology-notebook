@@ -10,14 +10,14 @@ export interface Props {
 const { project } = Astro.props as Props;
 ---
 
-<a class="container" href={project.github.url} target="_blank">
-  <h2>{project.github.name}</h2>
-  <p>{project.github.description}</p>
+<a class="container" href={project.url} target="_blank">
+  <h2>{project.name}</h2>
+  <p>{project.description}</p>
   <section class="spacer"></section>
   <section class="icons">
     <ImageIcon name="star.svg" 
-      text={project.github.stars} 
-      greyedOut={project.github.stars === 0}/>
+      text={project.stars} 
+      greyedOut={project.stars === 0}/>
 
     {
       project.language !== null ?
