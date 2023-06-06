@@ -8,7 +8,7 @@ export default [
   'LodzkieReservationChecker',
   'puff',
   'azure-webapp-locker',
-  'MJIoT-Master-Thesis',
+  'mj-iot',
   'Hack.JackCompiler',
   'Hack.JackPrograms',
   'Hack.VMTranslator',

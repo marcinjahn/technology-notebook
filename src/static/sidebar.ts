@@ -319,16 +319,7 @@ const structure: Sidebar = {
             ],
         },
     ],
-    "/about/": ["who-am-i", "cv", "this-website"],
-    "/projects/": [
-        "open-multiple-links-browser-extension",
-        "feedback-panel-vuepress-plugin",
-        "puff",
-        "nand2tetris-implementation",
-        "alpha-img",
-        "mjiot",
-        "io-module",
-    ],
+    "/about/": ["who-am-i", "cv", "this-website"]
 };
 
 export default structure;
