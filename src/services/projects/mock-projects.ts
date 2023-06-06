@@ -1,5 +1,4 @@
 import type { GithubResponse } from "./github-client";
-import { Project, createProject } from "./project-factory";
 
 export function getMockProjects(): GithubResponse[] {
   return [

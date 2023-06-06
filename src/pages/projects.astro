@@ -64,7 +64,8 @@ projects.sort((a, b) => b.createdAt - a.createdAt);
 </BaseLayout>
 
 <script>
-  const selectElement = document.getElementById('sort-select');
+  const selectElement = document.getElementById('sort-select') as HTMLSelectElement;
+  selectElement!.value = "newest";
 
   selectElement?.addEventListener('change', function() {
     const that = this as HTMLSelectElement;
@@ -78,8 +79,6 @@ projects.sort((a, b) => b.createdAt - a.createdAt);
     const sortedProjects = Array.from(projects).sort((a, b) => {
       const projectA = JSON.parse((a as HTMLElement).dataset.project!);
       const projectB = JSON.parse((b as HTMLElement).dataset.project!);
-
-      console.log(projectA);
 
       if (selectedOption === 'newest') {
         return new Date(projectB.createdAt).getTime() - new Date(projectA.createdAt).getTime();
