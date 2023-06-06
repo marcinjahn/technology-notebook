@@ -1,20 +1,35 @@
 ---
 import ProjectTile from "../components/projects/ProjectTile.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { executeDownloadCounters } from "../services/projects/execute-download-counters";
 import { getGithubProjects } from "../services/projects/github-client";
 import { getMockProjects } from "../services/projects/mock-projects";
-import { createProject } from "../services/projects/project-factory";
-import GithubProjectNames from '../static/projects';
+import { Project, createProject } from "../services/projects/project-factory";
+import { projectDefinitions } from '../static/projects';
 
 const pageTitle = "Projects";
 const description = "Open-source projects that I've worked on";
 const tags = ['open source', 'github', 'projects']
 
-const projects = import.meta.env.FETCH_GITHUB_PROJECTS ?
-  (await getGithubProjects('marcinjahn'))
-    .filter(project => GithubProjectNames.includes(project.name))
-    .map(createProject) :
+const githubProjects = import.meta.env.FETCH_GITHUB_PROJECTS ?
+  await getGithubProjects('marcinjahn') :
   getMockProjects();
+
+const projects = await Promise.all(
+  githubProjects
+    .map(githubProject => ({
+      projectDefinition: projectDefinitions.find(p => p.githubName === githubProject.name),
+      githubResponse: githubProject
+    }))
+    .filter(project => !!(project.projectDefinition))
+    .map(async project => {
+      return {
+        githubResponse: project.githubResponse,
+        downloads: await executeDownloadCounters(project.projectDefinition!)
+      }
+    })
+    .map((promise) => promise.then(({githubResponse, downloads}) => 
+      createProject(githubResponse, downloads))));
 
 // Sort by newest by default
 projects.sort((a, b) => b.createdAt - a.createdAt);
@@ -64,10 +79,14 @@ projects.sort((a, b) => b.createdAt - a.createdAt);
       const projectA = JSON.parse((a as HTMLElement).dataset.project!);
       const projectB = JSON.parse((b as HTMLElement).dataset.project!);
 
+      console.log(projectA);
+
       if (selectedOption === 'newest') {
         return new Date(projectB.createdAt).getTime() - new Date(projectA.createdAt).getTime();
       } else if (selectedOption === 'oldest') {
         return new Date(projectA.createdAt).getTime() - new Date(projectB.createdAt).getTime();
+      } else if(selectedOption === 'downloads') {
+        return (projectB.downloads?.downloads ?? 0) - (projectA.downloads?.downloads ?? 0);
       }
 
       return projectB[selectedOption] - projectA[selectedOption];

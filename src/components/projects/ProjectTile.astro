@@ -20,14 +20,17 @@ const { project } = Astro.props as Props;
       greyedOut={project.stars === 0}/>
 
     {
-      project.language !== null ?
-        <ColorIcon color={project.language.color} 
-          text={project.language.shortName} /> :
-        <>
+      (project.downloads !== null && project.downloads.downloads > 0) &&
+        <ImageIcon name="downloads.svg" 
+          text={project.downloads!.downloads} 
+          greyedOut={false} />
     }
 
-    
-    
+    {
+      (project.language !== null) &&
+        <ColorIcon color={project.language.color} 
+          text={project.language.shortName} />
+    }
   </section>
 </a>
 
