@@ -8,11 +8,13 @@ export interface Props {
   project: Project
 }
 
+
 const { project } = Astro.props as Props;
 ---
 
 <a class="container" href={project.url} target="_blank">
   <h2>{project.name}</h2>
+  
   <p>{project.description}</p>
   <section class="spacer"></section>
   <section class="icons">
@@ -39,6 +41,7 @@ const { project } = Astro.props as Props;
         </Tooltip>
     }
   </section>
+  <span class="created-at">Created on {project.createdAt.toLocaleDateString()}</span>
 </a>
 
 <style>
@@ -61,7 +64,7 @@ const { project } = Astro.props as Props;
 
 h2 {
   font-size: 1.2rem !important;
-  margin: 0 0 1rem 0 !important;
+  margin: 0 0 0 0 !important;
 }
 
 .icons {
@@ -72,5 +75,12 @@ h2 {
 
 .spacer {
   flex-grow: 1;
+}
+
+.created-at {
+  margin-top: 0.5rem;
+  color: rgb(115, 115, 115);
+  font-size: 0.9rem;
+  align-self: flex-end;
 }
 </style>
