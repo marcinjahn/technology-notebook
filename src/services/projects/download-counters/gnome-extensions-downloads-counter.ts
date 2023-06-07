@@ -23,7 +23,7 @@ export class GnomeExtensionsDownloadsCounter implements DownloadsCounter {
 
       return {
         downloads: downloadsNumber,
-        source: this.egoLink
+        source: 'gnome.extensions.org'
       };
     })
   }
