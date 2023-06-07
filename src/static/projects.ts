@@ -94,11 +94,11 @@ export const projectDefinitions: ProjectDefinition[] = [
   },
   {
     githubName: 'open-multiple-links-browser-extension',
-    // downloadCounters: [
-    //   () => new ChromeExtensionsDownloadsCounter(
-    //     'https://chrome.google.com/webstore/detail/open-multiple-links/aihgofmdijjhegajmdomlafeiklofndl'),
-    //   () => new EdgeExtensionsDownloadsCounter(
-    //     'https://microsoftedge.microsoft.com/addons/detail/open-multiple-links/edibnioojbnicoocokdokbmgblbnnbpe'),
-    // ]
+    downloadCounters: [
+      () => new ChromeExtensionsDownloadsCounter(
+        'aihgofmdijjhegajmdomlafeiklofndl'),
+      () => new EdgeExtensionsDownloadsCounter(
+        'edibnioojbnicoocokdokbmgblbnnbpe'),
+    ]
   }
 ];

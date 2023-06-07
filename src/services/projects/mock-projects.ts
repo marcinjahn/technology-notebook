@@ -13,7 +13,7 @@ export function getMockProjects(): GithubResponse[] {
       url: 'google.com',
     },
     {
-      name: 'gnome-quicksettings-audio-devices-hider-extension',
+      name: 'open-multiple-links-browser-extension',
       description: 'Some description of the project. It is a bit long on purpose to see what will happen in the user interface',
       stars: 0,
       tags: ['gnome', 'gtk'],
