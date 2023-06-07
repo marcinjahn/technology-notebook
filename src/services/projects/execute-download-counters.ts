@@ -14,6 +14,8 @@ export async function executeDownloadCounters(project: ProjectDefinition)
 
   return countersResults.reduce((acc, result) => ({
     downloads: acc.downloads + result.downloads,
-    source: `${acc.source}; ${result.source}`
-  }), {downloads: 0, source: ''} as DownloadsCounterResult);
+    source: `${acc.source !== INTRO ? acc.source + ';': acc.source} ${result.source}`
+  }), {downloads: 0, source: INTRO} as DownloadsCounterResult);
 }
+
+const INTRO = "Data collected from: "

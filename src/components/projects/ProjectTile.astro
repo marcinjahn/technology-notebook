@@ -1,5 +1,6 @@
 ---
 import type { Project } from '../../services/projects/project-factory';
+import Tooltip from '../ui/Tooltip.astro';
 import ColorIcon from './ColorIcon.astro';
 import ImageIcon from './ImageIcon.astro';
 
@@ -15,21 +16,27 @@ const { project } = Astro.props as Props;
   <p>{project.description}</p>
   <section class="spacer"></section>
   <section class="icons">
-    <ImageIcon name="star.svg" 
+    <Tooltip text="GitHub Stars">
+      <ImageIcon name="star.svg" 
       text={project.stars} 
       greyedOut={project.stars === 0}/>
+    </Tooltip>
 
     {
-      (project.downloads !== null && project.downloads.downloads > 0) &&
+      (project.downloads?.downloads! > 0) &&
+      <Tooltip text={project.downloads!.source}>
         <ImageIcon name="downloads.svg" 
           text={project.downloads!.downloads} 
           greyedOut={false} />
+      </Tooltip>
     }
 
     {
       (project.language !== null) &&
-        <ColorIcon color={project.language.color} 
+        <Tooltip text={project.language.fullName}>
+          <ColorIcon color={project.language.color} 
           text={project.language.shortName} />
+        </Tooltip>
     }
   </section>
 </a>
