@@ -6,6 +6,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getNeighbourArticles } from "./utils/previous-next-article";
 import PreviousNextArticles from "../components/PreviousNextArticles.astro";
 import Container from "../components/Container.astro";
+import Singature from "../components/Singature.astro";
 
 interface Props {
     slug: string;
@@ -26,18 +27,20 @@ const neighbours = await getNeighbourArticles(slug);
         </div>
 
         <main>
-        <Container>
-            <slot />
-        {
-            neighbours.previous || neighbours.next ?             
-                <div class="previous-next"><PreviousNextArticles articles={neighbours}/></div> : 
-                <></>
-        }
-        </Container>
+            <Container>
+                <section>
+                    <div><slot /></div>
+                    <!-- <div class="signature"><Singature/></div> -->
+                </section>
+
+            {
+                neighbours.previous || neighbours.next ?             
+                    <div class="previous-next"><PreviousNextArticles articles={neighbours}/></div> : 
+                    <></>
+            }
+            </Container>
         </main>
     </div>
-
-
 
     <div slot="hamburger-panel-content">
         <Sidebar />
@@ -50,7 +53,7 @@ const neighbours = await getNeighbourArticles(slug);
     }
 
     main {
-        margin: 2rem auto 0;
+        margin: 3.5rem auto 0;
         max-width: 820px;
     }
 
@@ -64,6 +67,16 @@ const neighbours = await getNeighbourArticles(slug);
         padding-top: 1rem;
         margin-top: 2rem;
         font-size: 1.1rem;
+    }
+
+    .content {
+        display: flex;
+    }
+
+    .signature {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-end;
     }
 
     @media only screen and (max-width: 920px) {
