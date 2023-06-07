@@ -1,0 +1,41 @@
+---
+title: Revamped Projects Section
+publishDate: 2023-06-07
+---
+
+One of the sections of this site is [Projects](/projects). Initially,
+it had a very similar structure to the rest of the website - a sidebar on
+the left, listing some of my projects, and the actual content about the
+projects on the right. Recently, I started to think about improving that
+sections, due to the following reasons:
+
+-   all of my projects are on GitHub, so maybe it would make sense
+    to pull some metadata from there to make the view on them here more
+    attractive
+-   again, all of my projects are on GitHub, so why would I duplicate
+    the contents of README files as part of this website? Updating any README
+    requires me to update it here as well
+
+The result is a revamped [Projects](/projects) section. Its features are:
+
+- projects are presented as clickable tiles (that take you to GitHub)
+- projects' titles, descriptions, programming language icon, and star counters
+  are data pulled from GitHub using its API (I used
+  [Octokit](https://github.com/octokit))
+- some projects have downloads counters. Projects with that characteristic are
+  only those that are being distributed via some kind of store/package
+  repository. In my case, I implemented services that pull that kind of data
+  from: [npm](https://npmjs.com), [crates.io](https://crates.io), [Gnome
+  Extensions](https://extensions.gnome.org), [Chrome Web
+  Store](https://chrome.google.com/webstore), [Edge
+  Addons](https://microsoftedge.microsoft.com/addons/).
+- projects' data gets refreshed only during builds, to keep the client-side code
+  as light as possible. To keep the data relatively up-to-date, I added a
+  cron-based trigger to my [GitHub
+  Action](https://github.com/marcinjahn/technology-notebook/blob/main/.github/workflows/deployToGithubPages.yml),
+  so that the data is refreshed everyday, in addition to builds on push.
+
+Projects being displayed are still hand-selected, since displaying ALL of
+the stuff from GitHub would bring a lot of trash, which even I don't want
+to look at.
+
