@@ -17,7 +17,7 @@ const { text } = Astro.props as Props;
   }
   
   .tooltip .tooltiptext {
-    visibility: hidden;
+    display: none;
     background-color: black;
     color: #fff;
     border-radius: 6px;
@@ -29,6 +29,6 @@ const { text } = Astro.props as Props;
   }
   
   .tooltip:hover .tooltiptext {
-    visibility: visible;
+    display: initial;
   }
   </style>
