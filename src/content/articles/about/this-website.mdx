@@ -94,8 +94,6 @@ though, I already had a K8s cluster that I use for various other projects.
 Adding this site to it was quite reasonable.
 :::
 
-The DNS records are managed via [NameCheap](https://www.namecheap.com/).
-
 The website has a CI/CD workflow defined using [GitHub
 Actions](https://docs.github.com/en/actions). In order to make any change, all I
 have to do is push a commit to the _main_ branch of my
@@ -105,15 +103,12 @@ have to do is push a commit to the _main_ branch of my
 
 Due to the fact that my K8s cluster is used for various experiments, it might
 stop working sometimes (also, I might run out of Azure credit in a given month
-:|). Since a notebook that is accessible a bit randomly is not what I wanted, I
+:|). Since a website that is accessible a bit randomly is not what I wanted, I
 decided to host the website somewhere else as a backup. Since the page's source
 code is already on GitHub I decided to go with [GitHub
-Pages](https://pages.github.com/) for this purpose. I have a separate GitHub
-Actions workflow defined that automatically builds the artifacts from the *main*
-branch and places them on a [separate
-branch](https://github.com/marcinjahn/technology-notebook/tree/gh-pages) that is
-configured to be a source of data for the GitHub Pages hosting.
+Pages](https://pages.github.com/). I have a separate GitHub Actions workflow
+defined that automatically builds the artifacts from the *main* branch.
 
 Both the AKS and the GitHub Pages IPs are configured for my domain, so when
 visiting [https://marcinjahn.com](marcinjahn.com) you might get the bits from
-either one of these randomly.
+either one of these.
