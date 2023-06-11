@@ -1,3 +1,4 @@
+import type { ProjectDefinition } from "../../static/projects";
 import type { DownloadsCounterResult } from "./download-counters/downloads-counter";
 import type { GithubResponse } from "./github-client";
 import { ProgrammingLanguage, mapProgrammingLanguage } from "./language-mapper";
@@ -14,11 +15,12 @@ export interface Project {
 }
 
 export function createProject(
+  projectDefinition: ProjectDefinition,
   githubResponse: GithubResponse, 
   downloads: DownloadsCounterResult | null): Project 
 {
   return {
-    name: githubResponse.name,
+    name: projectDefinition.displayName ?? githubResponse.name,
     description: githubResponse.description,
     language: mapProgrammingLanguage(githubResponse.mainLanguage),
     downloads: downloads,

@@ -24,12 +24,13 @@ const projects = await Promise.all(
     .filter(project => !!(project.projectDefinition))
     .map(async project => {
       return {
+        projectDefinition: project.projectDefinition!,
         githubResponse: project.githubResponse,
         downloads: await executeDownloadCounters(project.projectDefinition!)
       }
     })
-    .map((promise) => promise.then(({githubResponse, downloads}) => 
-      createProject(githubResponse, downloads))));
+    .map((promise) => promise.then(({projectDefinition, githubResponse, downloads}) => 
+      createProject(projectDefinition, githubResponse, downloads))));
 
 // Sort by newest by default
 projects.sort((a, b) => b.createdAt - a.createdAt);

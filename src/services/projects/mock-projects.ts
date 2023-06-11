@@ -31,16 +31,6 @@ export function getMockProjects(): GithubResponse[] {
       updatedAt: new Date(),
       mainLanguage: 'Rust',
       url: 'google.com',
-    },
-    // {
-    //   name: 'project 4',
-    //   description: 'Some description of the project',
-    //   stars: 0,
-    //   tags: ['gnome', 'gtk'],
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    //   mainLanguage: 'JavaScript',
-    //   url: 'google.com',
-    // }
+    }
   ];
 }
