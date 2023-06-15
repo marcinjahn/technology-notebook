@@ -1,0 +1,103 @@
+---
+title: Nullability
+description: Nullability in .NET C#
+tags: [".net", "asp.net", "C#"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Nullability in C#
+
+C# allows us to specify if a given variable/argument/... is nullable or not.
+It works for both value and reference types.
+
+However, in some cases that is not enough, and we can do more.
+Here's an example:
+
+```csharp
+public string? GetFirstName(string? fullName)
+{
+  if (fullName is null)
+  {
+    return null;
+  }
+
+  // return non-null string...
+}
+```
+
+The above method would be used as follows:
+
+```csharp
+var fullName = "John Smith";
+var firstName = GetFirstName(fullName);
+
+var length = firstName.Length; // Compiler generates a warning of possible null reference!
+```
+
+The `GetFirstName` method specifies that its output may be `null`.
+It happens only when the input is null as well, but it's not communicated
+in any way to the clients, causing a warning from the compiler,
+even though the result will not be `null`.
+
+For cases like that, .NET comes with a bunch of nullability attributes that
+enrich nullability metadata of the method with more intricate details.
+We could improve the method like this:
+
+```csharp {1}
+[return: NotNullIfNotNull(nameof(fullName))]
+public string? GetFirstName(string? fullName)
+{
+  if (fullName is null)
+  {
+    return null;
+  }
+
+  // return non-null string...
+}
+```
+
+We've added the
+[NotNullIfNotNullAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.notnullifnotnullattribute),
+which will aid the compiler in delivering warnings only if the input to the
+method is nullable. In the example shown before, the variable `fullName` was no
+nullable. With the attribute in place, compiler will not generate the null
+reference warning anymore.
+
+
+:::tip
+A listing of all other nullability attributes can be found at
+[MSDN](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis).
+:::
+
+Another case where theses attributes come useful is properties with getters and setters.
+It could be that a setter accepts both null and non-null inputs, while the getter always 
+returns a non-null value, because it has some default. It is illustrated below:
+
+```csharp
+[AllowNull]
+public string SomeString
+{
+    get => _someString;
+    set => _someString = value ?? "default";
+}
+private string _someString = "default";
+```
+
+The
+[AllowNullAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.allownullattribute)
+has effect only on the setter. Citing
+[MSDN](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#preconditions-allownull-and-disallownull):
+
+> The AllowNull attribute specifies *pre-conditions*, and only applies to
+> arguments. The get accessor has a return value, but no parameters. Therefore,
+> the AllowNull attribute only applies to the set accessor.
+
+:::tip[Generics] 
+Attributes such as `MaybeNull` might be expecially useful in
+the context of generic types, where nullability (`T?`) is a bit more complex
+than in concrete types, due to value and reference types having different
+implementations of nullability. More information can be found at
+[MSDN](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references#generics).
+:::
