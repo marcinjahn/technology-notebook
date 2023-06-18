@@ -117,5 +117,12 @@ export const projectDefinitions: ProjectDefinition[] = [
       () => new EdgeExtensionsDownloadsCounter(
         'edibnioojbnicoocokdokbmgblbnnbpe'),
     ]
-  }
+  },
+  {
+    displayName: 'Peek Top Bar on Fullscreen (Gnome Shell Extension)',
+    githubName: 'gnome-peek-top-bar-on-fullscreen-extension',
+    downloadCounters: [() => new GnomeExtensionsDownloadsCounter(
+      'https://extensions.gnome.org/extension/6048/peek-top-bar-on-fullscreen/')
+    ]
+  },
 ];
