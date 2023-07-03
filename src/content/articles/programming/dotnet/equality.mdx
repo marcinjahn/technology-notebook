@@ -1,7 +1,7 @@
 ---
 title: Equality
 description: How equality works in .NET
-tags: [".net"]
+tags: [".net", "dotnet", "C#", "equality", "comparison"]
 lang: en-US
 ---
 
@@ -42,22 +42,6 @@ efficiently. If two objects are equal they should have the same hash codes (or
 dictionaries might not work)! Therefore `Equals` and `GetHashCode` should rely
 on the same set of properties to get the result.
 
-:::note[Title]
-abc
-:::
-
-:::tip[Title]
-abc
-:::
-
-:::caution[Title]
-abc
-:::
-
-:::danger[Title]
-abc
-:::
-
 It's recommended to implement hashcodes using XOR operator (`^`):
 
 ```csharp {1}
@@ -67,7 +51,7 @@ public override int GetHashCode()
 }
 ```
 
-## `Object`'s virtual `Equals(object o)` method
+## Object's virtual Equals(object o) method
 
 ### Classes
 
@@ -83,7 +67,7 @@ very bad performance.
 It involves boxing in case of value types, which also is not a good thing. It's
 a good practice to always override `GetHashCode` when overriding `Equals`.
 
-## `Object`'s static `Equals(object o1, object o2)` method
+## Object's static Equals(object o1, object o2) method
 
 This method makes it safe to compare 2 objects if one of them is `NULL`. If they
 are not both `NULL`, the virtual `Equals` of `o1` is used (as described above).
@@ -92,13 +76,13 @@ where `o1` is `NULL`).
 
 It cannot be overriden (because it's static)
 
-## `Object`'s `ReferenceEquals(Object o)` method
+## Object's ReferenceEquals(Object o) method
 
 It checks only reference, it cannot be overriden (becasue it's static). Useful
 in the case where some type overrides the virtual `Equals`, but also wants to
 check for reference equality.
 
-## `IEquatable<T>`
+## IEquatable
 
 It has the following method: `Equals(T other)` - it is strongly typed, which is
 good for value types (no boxing). All numeric primitive types implement it
@@ -112,7 +96,7 @@ It is not good for reference types:
 - there is no boxing, so no improvement in this area
 - doesn't play nicely with inheritance
 
-## `==` operator
+## == operator
 
 It's a feature of C#, not .NET. If overriding `Object`'s `Equals`, `==` also
 should be overriden. `==` does not use `Equals` - it uses `eqc` IL procedure
@@ -158,7 +142,7 @@ public static bool operator !=(MyClass left, MyClass right)
 
 The logic should be the same as in `Object.Equals()`!
 
-## `IEqualityComparer<T>`
+## IEqualityComparer
 
 Requires `Equals` and `GetHashCode` to be implemented. It's adviced to inherit
 from `EqualityComparer<T>` base class (similar as with `Comparer<T>`).
@@ -174,7 +158,7 @@ uses the `T`'s equality implementation.
 `StringComparer` is a static class that has 6 variosu comparers for strings
 (implements `IComparer` and `IEqualityComparer`).
 
-## `IStructuralEquatable`
+## IStructuralEquatable
 
 Collections are structurally equal if:
 - they contain same elements

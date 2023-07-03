@@ -1,7 +1,7 @@
 ---
 title: Comparisons
 description: How comparisons work in .NET
-tags: [".net"]
+tags: [".net", "dotnet", "C#", "equality", "comparison"]
 lang: en-US
 ---
 
@@ -15,7 +15,7 @@ defined.
 Comparisons do not work well with inheritance. It's not recommneded to implement
 comparisons on unsealed classes.
 
-## `IComparable<T>`
+## IComparable
 
 This interface defines `CompareTo` method that returns `int`:
 - -1 (less then)
@@ -32,7 +32,7 @@ exception will be thrown.
 There are 4 operators that can be implemented: `<`, `<=`, `>`, `>=`. If these get
 implemented, it's recommended to also implement `==` (and `!=`).
 
-## `IComparer<T>`
+## IComparer
 
 Interface to be implemented by classes that can compare `T`. When implementing
 it there's a convention:
@@ -42,11 +42,12 @@ it there's a convention:
 
 There is actually a recomendation to inherit from `Comparer<T>` base class
 instead of implementing the interface from zero (because it also implements
-non-generic `IComparer`, which makes it easier for our class).
+non-generic `IComparer`, so our inherited class doesn't have to do that
+explicitly).
 
 Comparers are good candidates for singletons.
 
-A good comparer should be deterministic and the reuslt should not depend on the
+A good comparer should be deterministic and the result should not depend on the
 input order. For example, if a class has 2 properties and our comparer sorts
 them by one of these properties, it might happen that two instances will be
 considered equal when their second property has different values. So, our
@@ -59,7 +60,7 @@ order of input elements since the comparer does not know anything about the
 inheriting instances (unles it actually does). There is no real solution for
 this issue.
 
-`Comparer<T>.Default` every type can use the default comparer, which uses the
+`Comparer<T>.Default` - every type can use the default comparer, which uses the
 T's `IComparer<T>` implementation (or `IComparer` if generic one is missing).
 What if both are missing? An exception?
 
