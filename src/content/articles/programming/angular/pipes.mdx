@@ -60,6 +60,7 @@ Here's an example of a pipe that truncates inputs:
 
 ```ts
 @Pipe({
+    standalone: true,
     name: 'truncate'
 })
 export class TruncatePipe implements PipeTransform {
@@ -75,7 +76,7 @@ export class TruncatePipe implements PipeTransform {
 Any pipe needs to return string data.
 This pipe accepts an optional [parameter](#parameters) - `length`.
 
-Pipes should be registered in module's declarations:
+Non-standalone pipes should be registered in module's declarations:
 
 ```ts {4}
 @NgModule({
