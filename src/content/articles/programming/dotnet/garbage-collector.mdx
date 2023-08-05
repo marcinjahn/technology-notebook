@@ -1,0 +1,75 @@
+---
+title: Garbage Collector
+description: How Garbage Collection works in .NET
+tags: [".net", "dotnet", "C#", "gc", "garbage", "collector", "collection", "memory"]
+lang: en-US
+---
+
+# Garbage Collector
+
+.NET uses Garbage Collection to free up memory from unused objects, that is
+objects that are unreachable form applicaton root.
+
+:::tip
+Value types are not part of Garbage Collection cleanup process. They live on
+the stack and they're naturally added and removed to/from it.
+:::
+
+There are 4 generations of GC:
+
+- **Gen 0** - for ephemeral objects, like objects allocated in some method, that
+  are no longer in scope after that method's execution is over. Gen 0
+  deallocation is the cheapest, objects basically land on top of the heap, and
+  are removed from there as soon as the method's execution is over.
+- **Gen 1** - also for ephemeral objects. Objects that go untouched after at
+  least one Gen 0 pass are Gen 1. This could be an object being assigned to some
+  property of a class instance.
+- **Gen 2** - for long-lived objects that have stayed alive after a few Gen 1
+  passes. It could be a property of a static class, or some other objects that
+  live throught the whole lifetime of an app.
+- **LOH** (Large Object Heap) - objects bigger than 85 kilobytes.
+
+Moving up the generations, the cost of GC becomes higher (Gen 0 is the
+cheapest). Therefore, whenever possible, it's good to keep our objects in the
+Gen0/1 range, or, even better, use value types.
+
+## GC Modes
+
+Garbage Collection may work in different modes:
+
+- Background Mode - enabled by default. Only Gen 2 is collected in the background.
+- Workstation Mode - also enabled by default. Gen 0 and Gen 1 are collected in
+  the foreground thread, pausing user code. It's blocking, but it's relatively
+  cheap (since it's Gen 0/1)
+- Server Mode - ideal for server-side apps. Each CPU core gets its own heap.
+  Also, each core has its own GC thread running in the background. It's
+  non-blocking, but uses more memory (30-40% more) and CPU. We can enable that via csproj. It
+  can give you a huge boost of performance if utilized in scenarios where
+  throughput is really important.
+
+## Tips
+
+### Pooling Objects
+
+When dealing with lots of potentially expensive objects creations, it could be a
+better idea to reuse pooled objects instead. That way, GC will have less work to
+do, since there will be less objects to deallocate. Microsoft provides
+[ObjectPool](https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool)
+for this.
+
+Good candidates for pooling are:
+
+- StringBuilder
+- byte array
+
+So, instead of creating an object every time, you crete a pool of them (like
+hundred, or a thousand, depending on your needs), and request/return object
+from/to the pool during the lifetime of the app.
+
+Object Pool is also useful if object creation is expensive, since you can create
+a pool of reusable objects on startup and just use them afterwards.
+
+### Empty Collections
+
+Whenever an empty collection is needed, do not create a new object, use
+`Array.Empty<T>` instead, which skips unnecessary allocation.
