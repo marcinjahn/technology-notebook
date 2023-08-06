@@ -29,6 +29,7 @@ const structure: Sidebar = {
                 "dotnet/records",
                 "dotnet/nullability",
                 "dotnet/garbage-collector",
+                "dotnet/il-and-allocations",
                 "dotnet/grpc",
                 "dotnet/platform-invoke",
                 {

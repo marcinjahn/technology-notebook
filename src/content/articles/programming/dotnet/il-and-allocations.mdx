@@ -1,0 +1,456 @@
+---
+title: IL and Allocations
+description: Intermediary Language (IL) and memory allocations in C# 
+tags: [".net", "dotnet", "C#", "il", "intermediary language", "cil", "msil", "memory", "allocations"]
+lang: en-US
+---
+
+# IL and Memory Allocations
+
+.NET C#, similarly to Java, or LLVM-based languages, is a VM-based language. It
+gets compiled into an Intermediary Language, which is then compiled (usually
+JIT) into platform-specific machine code.
+
+IL is a stack-based language. Looking through the generated IL code, we can
+understand how memory is being managed in our programs. Specifically, we can see
+how many memory allocations there are. This is quite important since lots of
+allocations might cause [GC](./garbage-collector) to hurt our app's performance.
+
+Below are a few examples of C# - IL snippets with notes on interesting parts. I
+disabled nullability for the IL snippets to be shorter.
+
+## IL Examples
+
+### Simple Class With One Method
+
+```csharp
+public class MyClass
+{
+    public int Increment(int number) => number + 1;
+}
+```
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.MyClass
+    extends [System.Runtime]System.Object
+{
+
+  .method public hidebysig instance int32
+    Increment(
+      int32 number
+    ) cil managed
+  {
+    .maxstack 8
+
+    // [5 41 - 5 51]
+    IL_0000: ldarg.1      // number
+    IL_0001: ldc.i4.1
+    IL_0002: add
+    IL_0003: ret
+
+  } // end of method MyClass::Increment
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method MyClass::.ctor
+} // end of class HelloWorld.MyClass
+```
+
+The example is rather straightforward, here're some things to note:
+
+- `// [5 41 - 5 51]` - such comments appear often in generated IL code (at least
+  in Debug builds) to indicate line/column numbers of corresponding C# code.
+- Since IL is stack-based, we will see lots of loads (instructions starting with
+  `LD`), which are followed by operations that act on values on the stack (like
+  `ADD`). [Wikipedia](https://en.wikipedia.org/wiki/List_of_CIL_instructions)
+  contains listing of all CIL instructions. Here's a brief explanation of instructions that appear in our code example:
+
+    - `LDARG.1` - loads first argument onto the stack (in this case it's the
+      value of `number` argument). `LDARG.0` would represent `this`.
+    - `LDC.i4.1` - pushes "1" on top of the stack (since we're incrementing the
+      provided `number`)
+    - `ADD` - without any surprise, it adds two last values on the stack
+    - `RET` - returns from a method
+    - `CALL` - calls a method. In this case, since our class does not inherit
+      from anything explicitly, it implicitly inherits `Object`, and `Object`'s
+      constructor is called within our class's constructor. Before it's called,
+      `LDARG.0` is used to load `this` onto the stack. This reference is
+      required by the constructor.
+    - `NOP` - no operation. It's used in Debug builds, to mark points where
+      breakpoints could be placed even though there isn't any actual instruction
+      (like on opening/closing braces).
+
+### Returning a Delegate From Class's Method
+
+```csharp
+public class MyClass
+{
+    public int Increment(int number) => number + 1;
+
+    public Func<int, int> GetDelegate() => Increment;
+}
+```
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.MyClass
+    extends [System.Runtime]System.Object
+{
+
+  .method public hidebysig instance int32
+    Increment(
+      int32 number
+    ) cil managed
+  {
+    .maxstack 8
+
+    // [5 41 - 5 51]
+    IL_0000: ldarg.1      // number
+    IL_0001: ldc.i4.1
+    IL_0002: add
+    IL_0003: ret
+
+  } // end of method MyClass::Increment
+
+  .method public hidebysig instance class [System.Runtime]System.Func`2<int32, int32>
+    GetDelegate() cil managed
+  {
+    .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+      = (01 00 01 00 00 ) // .....
+      // unsigned int8(1) // 0x01
+    .maxstack 8
+
+    // [7 44 - 7 53]
+    IL_0000: ldarg.0      // this
+    IL_0001: ldftn        instance int32 HelloWorld.MyClass::Increment(int32)
+    IL_0007: newobj       instance void class [System.Runtime]System.Func`2<int32, int32>::.ctor(object, native int)
+    IL_000c: ret
+
+  } // end of method MyClass::GetDelegate
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method MyClass::.ctor
+} // end of class HelloWorld.MyClass
+```
+
+`LDFTN` pushes a pointer to a function/method on a stack. It is required by
+`Func` constructor (it requires a target - class instance, and functon pointer -
+the function to be invoked).
+
+Every invocation of `GetDelegate` causes a new isntance of `Func` to be
+allocated on the heap (`NEWOBJ ...Func2<int32, int32>...`). We could optimize
+the C# code by storing a singleton instance of `Func` and reusing it lated:
+
+```csharp
+private Func<int, int> _func = Increment;
+
+public Func<int, int> GetDelegate() => _func;
+```
+
+### Returning a Delegate From Lambda (no closure)
+
+```csharp
+public class MyClass
+{
+    public Func<int, int> GetDelegate() => x => x + 1;
+}
+```
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.MyClass
+    extends [System.Runtime]System.Object
+{
+
+  .class nested private sealed auto ansi serializable beforefieldinit
+    '<>c'
+      extends [System.Runtime]System.Object
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+
+    .field public static initonly class HelloWorld.MyClass/'<>c' '<>9'
+
+    .field public static class [System.Runtime]System.Func`2<int32, int32> '<>9__0_0'
+
+    .method private hidebysig static specialname rtspecialname void
+      .cctor() cil managed
+    {
+      .maxstack 8
+
+      IL_0000: newobj       instance void HelloWorld.MyClass/'<>c'::.ctor()
+      IL_0005: stsfld       class HelloWorld.MyClass/'<>c' HelloWorld.MyClass/'<>c'::'<>9'
+      IL_000a: ret
+
+    } // end of method '<>c'::.cctor
+
+    .method public hidebysig specialname rtspecialname instance void
+      .ctor() cil managed
+    {
+      .maxstack 8
+
+      IL_0000: ldarg.0      // this
+      IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+      IL_0006: nop
+      IL_0007: ret
+
+    } // end of method '<>c'::.ctor
+
+    .method assembly hidebysig instance int32
+      '<GetDelegate>b__0_0'(
+        int32 x
+      ) cil managed
+    {
+      .maxstack 8
+
+      // [5 55 - 5 60]
+      IL_0000: ldarg.1      // x
+      IL_0001: ldc.i4.1
+      IL_0002: add
+      IL_0003: ret
+
+    } // end of method '<>c'::'<GetDelegate>b__0_0'
+  } // end of class '<>c'
+
+  .method public hidebysig instance class [System.Runtime]System.Func`2<int32, int32>
+    GetDelegate() cil managed
+  {
+    .maxstack 8
+
+    // [5 44 - 5 60]
+    IL_0000: ldsfld       class [System.Runtime]System.Func`2<int32, int32> HelloWorld.MyClass/'<>c'::'<>9__0_0'
+    IL_0005: dup
+    IL_0006: brtrue.s     IL_001f
+    IL_0008: pop
+    IL_0009: ldsfld       class HelloWorld.MyClass/'<>c' HelloWorld.MyClass/'<>c'::'<>9'
+    IL_000e: ldftn        instance int32 HelloWorld.MyClass/'<>c'::'<GetDelegate>b__0_0'(int32)
+    IL_0014: newobj       instance void class [System.Runtime]System.Func`2<int32, int32>::.ctor(object, native int)
+    IL_0019: dup
+    IL_001a: stsfld       class [System.Runtime]System.Func`2<int32, int32> HelloWorld.MyClass/'<>c'::'<>9__0_0'
+    IL_001f: ret
+
+  } // end of method MyClass::GetDelegate
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method MyClass::.ctor
+} // end of class HelloWorld.MyClass
+```
+
+The generated IL is considerably longer than before, even thought the C# code is
+actually shorter. A few new instructions popped up:
+
+- `STSFLD <field>` - pops value from a stack a puts it in a requested static
+ field. In this case, a new isntance of compiler-generated class `<>c` is
+ created, and then its assigned to `<>9` of that class.
+- `LDSFLD <field>` - pushes value of specified static field onto the stack.
+- `BRTRUE.S <label>` - jumps to the specified label if value on stack is non-zero
+
+Let's try to "decompile" the IL code above back into C#, together with the compiler-generated stuff:
+
+```csharp
+public class MyClass
+{
+    private class HiddenClass
+    {
+        public static HiddenClass instance;
+        public static Func<int, int>? func = null;
+
+        static HiddenClass
+        {
+            HiddenClass.instance = new HiddenClass();
+        }
+
+        public int Lambda()
+        {
+            return x + 1;
+        }
+    }
+
+    public Func<int, int> GetDelegate()
+    {
+        if (HiddenClass.func is not null)
+        {
+            return HiddenClass.func;
+        }
+
+        HiddenClass.func = HiddenClass.instance.Lambda;
+
+        return HiddenClass.func;
+    }
+}
+```
+
+The most insteresting thing in classes that contain lambdas is that compiler
+generates additional class for us behind the scenes, and puts lamda function's
+code in that class. The generated class has a static constructor (`cctor`
+instead of usual `ctor`).
+
+Interestingly, when using lambda, the compiler already includes the optimization
+that we had to add by ourselves before. The delegate gets instantiated just
+once, therefore there's just one allocation, no matter how many times we call
+`GetDelegate`.
+
+:::caution
+In reality, there are two allocations. `HiddenClass` is also created in the
+background, which counts as additional allocation.
+:::
+
+### Returning a Delegate From Lambda (with closure)
+
+This time, we're going to intrdocue a closure. The sample is similar to what we looked at previously,
+only this time our lambda will keep the state of the method where it was created:
+
+```csharp
+public class MyClass
+{
+    public Func<int, int> GetDelegate()
+    {
+        var one = 1;
+        
+        return x => x + one;
+    }
+}
+```
+
+Here's IL:
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.MyClass
+    extends [System.Runtime]System.Object
+{
+
+  .class nested private sealed auto ansi serializable beforefieldinit
+    '<>c'
+      extends [System.Runtime]System.Object
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+
+    .field public static initonly class HelloWorld.MyClass/'<>c' '<>9'
+
+    .field public static class [System.Runtime]System.Func`2<int32, int32> '<>9__0_0'
+
+    .method private hidebysig static specialname rtspecialname void
+      .cctor() cil managed
+    {
+      .maxstack 8
+
+      IL_0000: newobj       instance void HelloWorld.MyClass/'<>c'::.ctor()
+      IL_0005: stsfld       class HelloWorld.MyClass/'<>c' HelloWorld.MyClass/'<>c'::'<>9'
+      IL_000a: ret
+
+    } // end of method '<>c'::.cctor
+
+    .method public hidebysig specialname rtspecialname instance void
+      .ctor() cil managed
+    {
+      .maxstack 8
+
+      IL_0000: ldarg.0      // this
+      IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+      IL_0006: nop
+      IL_0007: ret
+
+    } // end of method '<>c'::.ctor
+
+    .method assembly hidebysig instance int32
+      '<GetDelegate>b__0_0'(
+        int32 x
+      ) cil managed
+    {
+      .maxstack 2
+      .locals init (
+        [0] int32 one,
+        [1] int32 V_1
+      )
+
+      // [6 5 - 6 6]
+      IL_0000: nop
+
+      // [7 9 - 7 21]
+      IL_0001: ldc.i4.1
+      IL_0002: stloc.0      // one
+
+      // [9 9 - 9 24]
+      IL_0003: ldarg.1      // x
+      IL_0004: ldloc.0      // one
+      IL_0005: add
+      IL_0006: stloc.1      // V_1
+      IL_0007: br.s         IL_0009
+
+      // [10 5 - 10 6]
+      IL_0009: ldloc.1      // V_1
+      IL_000a: ret
+
+    } // end of method '<>c'::'<GetDelegate>b__0_0'
+  } // end of class '<>c'
+
+  .method public hidebysig instance class [System.Runtime]System.Func`2<int32, int32>
+    GetDelegate() cil managed
+  {
+    .maxstack 8
+
+    // [5 44 - 10 6]
+    IL_0000: ldsfld       class [System.Runtime]System.Func`2<int32, int32> HelloWorld.MyClass/'<>c'::'<>9__0_0'
+    IL_0005: dup
+    IL_0006: brtrue.s     IL_001f
+    IL_0008: pop
+    IL_0009: ldsfld       class HelloWorld.MyClass/'<>c' HelloWorld.MyClass/'<>c'::'<>9'
+    IL_000e: ldftn        instance int32 HelloWorld.MyClass/'<>c'::'<GetDelegate>b__0_0'(int32)
+    IL_0014: newobj       instance void class [System.Runtime]System.Func`2<int32, int32>::.ctor(object, native int)
+    IL_0019: dup
+    IL_001a: stsfld       class [System.Runtime]System.Func`2<int32, int32> HelloWorld.MyClass/'<>c'::'<>9__0_0'
+    IL_001f: ret
+
+  } // end of method MyClass::GetDelegate
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method MyClass::.ctor
+} // end of class HelloWorld.MyClass
+```
+
+The result is very similar to what we had seen before. Mostly the lamba
+function's logic in the compiler-generated class is more involved, local
+variables are introduced.
+
+## References
+
+- [List of IL Instructions](https://en.wikipedia.org/wiki/List_of_CIL_instructions)
+- [IL Basics](http://www.vijaymukhi.com/documents/books/ilbook/chap2.htm)
