@@ -55,7 +55,9 @@ When dealing with lots of potentially expensive objects creations, it could be a
 better idea to reuse pooled objects instead. That way, GC will have less work to
 do, since there will be less objects to deallocate. Microsoft provides
 [ObjectPool](https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool)
-for this.
+for this (and
+[ArrayPool](https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1?view=net-7.0)
+specifically for arrays).
 
 Good candidates for pooling are:
 
@@ -73,3 +75,17 @@ a pool of reusable objects on startup and just use them afterwards.
 
 Whenever an empty collection is needed, do not create a new object, use
 `Array.Empty<T>` instead, which skips unnecessary allocation.
+
+### Stackallock
+
+We are able to allocate objects on the stack instead of the heap.
+
+```csharp
+var array = stackallow new byte[500]();
+```
+
+A few facts to keep in mind:
+
+- can't be done in async methods
+- shouldn't be used to allocate too much stafe, otherwise stack overflow will occur
+- it will always be faster than allocating objects on the heap
