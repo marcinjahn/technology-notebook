@@ -24,7 +24,7 @@ record into either a class or a struct (in a process called the *lowering*).
 Record is just s "sugar syntax" in .NET.
 
 Records are useful when we're dealing with classes that just carry information
-and do not have any logic/methods.
+and do not have any logic/methods (DTOs).
 
 ## Features
 
@@ -80,3 +80,302 @@ To support deconstructing, the compiler generates the `Deconstruct` method for a
 record during the lowering process of compilation.
 :::
 
+## Intermediate Language
+
+To better understand the difference between a class and a struct, let's compare
+IL generated for an empty class and record.
+
+### Class
+
+```csharp
+public class SimpleClass
+{
+}
+```
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.SimpleClass
+    extends [System.Runtime]System.Object
+{
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method SimpleClass::.ctor
+} // end of class HelloWorld.SimpleClass
+```
+
+The generated IL is really simple, and it really just corresponds to the
+provided C# code. The only thing added is a constructor.
+
+### Record
+
+```csharp
+public record SimpleRecord();
+```
+
+```asm
+.class public auto ansi beforefieldinit
+  HelloWorld.SimpleRecord
+    extends [System.Runtime]System.Object
+    implements class [System.Runtime]System.IEquatable`1<class HelloWorld.SimpleRecord>
+{
+  .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+    = (01 00 01 00 00 ) // .....
+    // unsigned int8(1) // 0x01
+  .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(unsigned int8)
+    = (01 00 00 00 00 ) // .....
+    // unsigned int8(0) // 0x00
+  .interfaceimpl type class [System.Runtime]System.IEquatable`1<class HelloWorld.SimpleRecord>
+    .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(unsigned int8)
+      = (01 00 00 00 00 ) // .....
+      // unsigned int8(0) // 0x00
+
+  .method public hidebysig specialname rtspecialname instance void
+    .ctor() cil managed
+  {
+    .maxstack 8
+
+    // [3 1 - 3 30]
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method SimpleRecord::.ctor
+
+  .method family hidebysig virtual newslot specialname instance class [System.Runtime]System.Type
+    get_EqualityContract() cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldtoken      HelloWorld.SimpleRecord
+    IL_0005: call         class [System.Runtime]System.Type [System.Runtime]System.Type::GetTypeFromHandle(valuetype [System.Runtime]System.RuntimeTypeHandle)
+    IL_000a: ret
+
+  } // end of method SimpleRecord::get_EqualityContract
+
+  .method public hidebysig virtual instance string
+    ToString() cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 2
+    .locals init (
+      [0] class [System.Runtime]System.Text.StringBuilder V_0
+    )
+
+    IL_0000: newobj       instance void [System.Runtime]System.Text.StringBuilder::.ctor()
+    IL_0005: stloc.0      // V_0
+    IL_0006: ldloc.0      // V_0
+    IL_0007: ldstr        "SimpleRecord"
+    IL_000c: callvirt     instance class [System.Runtime]System.Text.StringBuilder [System.Runtime]System.Text.StringBuilder::Append(string)
+    IL_0011: pop
+    IL_0012: ldloc.0      // V_0
+    IL_0013: ldstr        " { "
+    IL_0018: callvirt     instance class [System.Runtime]System.Text.StringBuilder [System.Runtime]System.Text.StringBuilder::Append(string)
+    IL_001d: pop
+    IL_001e: ldarg.0      // this
+    IL_001f: ldloc.0      // V_0
+    IL_0020: callvirt     instance bool HelloWorld.SimpleRecord::PrintMembers(class [System.Runtime]System.Text.StringBuilder)
+    IL_0025: brfalse.s    IL_0030
+    IL_0027: ldloc.0      // V_0
+    IL_0028: ldc.i4.s     32 // 0x20
+    IL_002a: callvirt     instance class [System.Runtime]System.Text.StringBuilder [System.Runtime]System.Text.StringBuilder::Append(char)
+    IL_002f: pop
+    IL_0030: ldloc.0      // V_0
+    IL_0031: ldc.i4.s     125 // 0x7d
+    IL_0033: callvirt     instance class [System.Runtime]System.Text.StringBuilder [System.Runtime]System.Text.StringBuilder::Append(char)
+    IL_0038: pop
+    IL_0039: ldloc.0      // V_0
+    IL_003a: callvirt     instance string [System.Runtime]System.Object::ToString()
+    IL_003f: ret
+
+  } // end of method SimpleRecord::ToString
+
+  .method family hidebysig virtual newslot instance bool
+    PrintMembers(
+      class [System.Runtime]System.Text.StringBuilder builder
+    ) cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldc.i4.0
+    IL_0001: ret
+
+  } // end of method SimpleRecord::PrintMembers
+
+  .method public hidebysig static specialname bool
+    op_Inequality(
+      class HelloWorld.SimpleRecord left,
+      class HelloWorld.SimpleRecord right
+    ) cil managed
+  {
+    .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+      = (01 00 02 00 00 ) // .....
+      // unsigned int8(2) // 0x02
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // left
+    IL_0001: ldarg.1      // right
+    IL_0002: call         bool HelloWorld.SimpleRecord::op_Equality(class HelloWorld.SimpleRecord, class HelloWorld.SimpleRecord)
+    IL_0007: ldc.i4.0
+    IL_0008: ceq
+    IL_000a: ret
+
+  } // end of method SimpleRecord::op_Inequality
+
+  .method public hidebysig static specialname bool
+    op_Equality(
+      class HelloWorld.SimpleRecord left,
+      class HelloWorld.SimpleRecord right
+    ) cil managed
+  {
+    .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+      = (01 00 02 00 00 ) // .....
+      // unsigned int8(2) // 0x02
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // left
+    IL_0001: ldarg.1      // right
+    IL_0002: beq.s        IL_0013
+    IL_0004: ldarg.0      // left
+    IL_0005: brfalse.s    IL_0010
+    IL_0007: ldarg.0      // left
+    IL_0008: ldarg.1      // right
+    IL_0009: callvirt     instance bool HelloWorld.SimpleRecord::Equals(class HelloWorld.SimpleRecord)
+    IL_000e: br.s         IL_0011
+    IL_0010: ldc.i4.0
+    IL_0011: br.s         IL_0014
+    IL_0013: ldc.i4.1
+    IL_0014: ret
+
+  } // end of method SimpleRecord::op_Equality
+
+  .method public hidebysig virtual instance int32
+    GetHashCode() cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: call         class [System.Collections]System.Collections.Generic.EqualityComparer`1<!0/*class [System.Runtime]System.Type*/> class [System.Collections]System.Collections.Generic.EqualityComparer`1<class [System.Runtime]System.Type>::get_Default()
+    IL_0005: ldarg.0      // this
+    IL_0006: callvirt     instance class [System.Runtime]System.Type HelloWorld.SimpleRecord::get_EqualityContract()
+    IL_000b: callvirt     instance int32 class [System.Collections]System.Collections.Generic.EqualityComparer`1<class [System.Runtime]System.Type>::GetHashCode(!0/*class [System.Runtime]System.Type*/)
+    IL_0010: ret
+
+  } // end of method SimpleRecord::GetHashCode
+
+  .method public hidebysig virtual instance bool
+    Equals(
+      object obj
+    ) cil managed
+  {
+    .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+      = (01 00 02 00 00 ) // .....
+      // unsigned int8(2) // 0x02
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: ldarg.1      // obj
+    IL_0002: isinst       HelloWorld.SimpleRecord
+    IL_0007: callvirt     instance bool HelloWorld.SimpleRecord::Equals(class HelloWorld.SimpleRecord)
+    IL_000c: ret
+
+  } // end of method SimpleRecord::Equals
+
+  .method public hidebysig virtual newslot instance bool
+    Equals(
+      class HelloWorld.SimpleRecord other
+    ) cil managed
+  {
+    .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(unsigned int8)
+      = (01 00 02 00 00 ) // .....
+      // unsigned int8(2) // 0x02
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: ldarg.1      // other
+    IL_0002: beq.s        IL_001d
+    IL_0004: ldarg.1      // other
+    IL_0005: brfalse.s    IL_001a
+    IL_0007: ldarg.0      // this
+    IL_0008: callvirt     instance class [System.Runtime]System.Type HelloWorld.SimpleRecord::get_EqualityContract()
+    IL_000d: ldarg.1      // other
+    IL_000e: callvirt     instance class [System.Runtime]System.Type HelloWorld.SimpleRecord::get_EqualityContract()
+    IL_0013: call         bool [System.Runtime]System.Type::op_Equality(class [System.Runtime]System.Type, class [System.Runtime]System.Type)
+    IL_0018: br.s         IL_001b
+    IL_001a: ldc.i4.0
+    IL_001b: br.s         IL_001e
+    IL_001d: ldc.i4.1
+    IL_001e: ret
+
+  } // end of method SimpleRecord::Equals
+
+  .method public hidebysig virtual newslot instance class HelloWorld.SimpleRecord
+    '<Clone>$'() cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: newobj       instance void HelloWorld.SimpleRecord::.ctor(class HelloWorld.SimpleRecord)
+    IL_0006: ret
+
+  } // end of method SimpleRecord::'<Clone>$'
+
+  .method family hidebysig specialname rtspecialname instance void
+    .ctor(
+      class HelloWorld.SimpleRecord original
+    ) cil managed
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .maxstack 8
+
+    IL_0000: ldarg.0      // this
+    IL_0001: call         instance void [System.Runtime]System.Object::.ctor()
+    IL_0006: nop
+    IL_0007: ret
+
+  } // end of method SimpleRecord::.ctor
+
+  .property instance class [System.Runtime]System.Type EqualityContract()
+  {
+    .custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor()
+      = (01 00 00 00 )
+    .get instance class [System.Runtime]System.Type HelloWorld.SimpleRecord::get_EqualityContract()
+  } // end of property SimpleRecord::EqualityContract
+} // end of class HelloWorld.SimpleRecord
+```
+
+That's a huge difference. An empty record results in lots of code being
+generated. All this code is a result of features that records support:
+
+- equality logic (you can see a few equality-related methods)
+- `ToString` override - interesting point is how the `{` character is added
+  via `Append(string)` override of `StringBuilder`, while the closing bracket
+  (`}`) uses `Append(char)` (with value 125 representing `}`)
+- cloning
