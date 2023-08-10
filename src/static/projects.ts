@@ -19,7 +19,7 @@ export interface ProjectDefinition {
 export const projectDefinitions: ProjectDefinition[] = [
   {
     displayName: 'Quick Settings Audio Devices Hider (Gnome Shell Extension)',
-    githubName: 'gnome-quicksetings-audio-devices-hider-extension',
+    githubName: 'gnome-quicksettings-audio-devices-hider-extension',
     downloadCounters: [() => new GnomeExtensionsDownloadsCounter(
       'https://extensions.gnome.org/extension/5964/quick-settings-audio-devices-hider/')
     ]
