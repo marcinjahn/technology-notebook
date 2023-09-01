@@ -1,0 +1,476 @@
+---
+title: Overview
+description: Overview of Elasticsearch
+tags: ["elasticsearch", "elastic", "search", "database", "elk"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Overview of Elasticsearch
+
+Elasticsearch is a NoSQL database that stores JSON documents. It uses [Apache
+Lucene](https://lucene.apache.org/) under the hood. It's often a part of ELK
+stack (Elasticsearch, Logstash, Kibana).
+
+## Architecture
+
+An instance of Elasticsearch is a **Node**. Node(s) belong to a **Cluster**.
+There's always at least one cluster with at least one node. There could be more
+clusters and searches would be executed across these clusters. It's not very
+common though to have more than 1 cluster.
+
+### Node Roles
+
+Elasticsearch nodes can take multiple roles:
+
+- **Master Role** - one node will be a master. Only nodes that have this role
+  may become masters. Master is responsible for various cluster-wide operations,
+  like creating or deleting indices.
+- **Data Role** - enables nodes to store data. Storing data inclines executing
+  queries on that data. We may want some nodes to only become masters, then we
+  could disable data role on such nodes.
+- **Ingest Role** - enables a node to run *ingest pipelines*. These are similar
+  to what Logstash offers. Some steps may be run while inserting documents to
+  transform them somehow. It's good for simple transformations. It's better to
+  turn to Logstash for more complex stuff.
+- *Machine Learning Role** - nodes may run ML jobs.
+- **Coordination Role** - distributes work to execute a query and aggegates the
+  results. This role is enabled by disabling all other roles.
+- **Voting-only Role** - node will participate in voting to elect a new master
+  node, but it cannot be the master itself. It's used in large clusters only.
+
+## Documents
+
+Elasticsearch stores JSON documents. It adds some metadata to each document. The
+raw data taht we send in goes into `_source` field of query results.
+
+Documents are stored in **indices**. Normally, an index stores documents that
+belong to some category. It's similar to Mongo collection.
+
+When we invoke some query, it's always against some specified index(es). Every
+document has an `_id` that is auto-generated when the document gets inserted
+(indexed). We can also specify `_id` on our own.
+
+Document are immutable. When we update some document, it actually gets replaced
+with a new version.
+
+### Versioning
+
+Every document contain a `_version` field. Only the latest version is available,
+we cannot retrieve older versions of documents.
+
+:::tip
+If we delete a document, and create a new one with the same `_id` within
+a minute, the `_version` will not be set to 1. Instead, it will be an increment
+of the version that the delected document had.
+:::
+
+:::caution 
+The `_version` field is considered legacy. It was used for optimistic
+concurrency control in the past. Elastic allows us to attach the last known
+version of the document while updating it. If a newer version is present in the
+DB, the upate would be rejected.
+
+Nowadays, `_primary_term` and `_seq_nr` are used in similar way as `_version`
+used to be utilized. Both these parameters are delivered to us when reading docs
+from the db.
+:::
+
+## Indices
+
+An index acts like a collection in Mongo, or a table in SQL.
+
+:::tip
+Indices with names starting with a `.` are system indices. They are hidden by
+default, a bit similarly to UNIX dot files.
+:::
+
+We can configure Elasticsearch to auto-create indices when we insert documents
+into non-existing ones. By default, indices need to be created explicitly
+beforehand.
+
+### Sharding
+
+An index may be split into multiple shards. A single shard is stored on 1 node.
+Multiple shards can also be stored on a single node. Under the hood, each shard
+is an *Apache Lucene Index*. A single shard can store aup to 2 billion documents.
+Benefits of sharding:
+
+- store more documents
+- fit large indices into our nodes
+- increase performance - a query can run in parallel on multiple shards
+
+:::tip
+In older versions of Elasticsearch (prior to 7.0.0), each index was created with 5
+shards by default. Nowadays, it's 1 shard.
+:::
+
+Shards count should be specified while creating the index. It's a good idea to
+have multiple shards when documents counts go up to millions.
+
+#### Routing
+
+Elasticsearch knows which shard to use for various opeations thanks to routing.
+It is an algorithm that matches a document (its `_id`) to a shard. There is a
+default algorithm, but it can be changed. The default one stores documents
+evenly across shards. When we change routing method, each document will have
+`routing` field in its metadata.
+
+:::tip
+The default routing algorithm uses the number of shards of the index in its
+formula to choose the shard. Because of that, we can't change the number of
+shards past index creation! Documents that were already indexed, would not be
+matched to their shards anymore.
+:::
+
+## Text Analysis
+
+Text field are not stored in the same way as we include them in our JSON
+documents. Elasticsearch transforms text values into a structure that is
+efficient for querying. Elasticsearch also builds an **inverted index** where
+words are matched to documents where they can be found (together with position
+of the word within document). This makes searches way faster. Each field in our
+mapping has its own inverted index.
+
+:::tip[Apache Lucene]
+Text analysis is actually a job of Apache Lucene, and not Elasticsearch itself.
+:::
+
+Just like documents being indexed are analyzed, queries on text fields are
+analyzed as well (in exactly the same way). This is necessary for query terms to
+match analyzed data in the index.
+
+## Mappings
+
+Similarly to SQL's table schema, Elasticsearch defines shape of data within an
+index with a mapping. It includes all fields that a document may have together
+with their types. We can define the mappings by ourselves, or it can be inferred
+dynamically as we index new documents. These approaches can be used together.
+
+:::tip[Best Practice]
+It's better to manually create a mapping to have the data indexed exactly as we
+exepct to match our query needs.
+:::
+
+Dynamic mapping may be disabled per index. Then, the fields outside of manual
+mapping are not going ot be indexed. We can't query by these fields. However,
+they will still be stored with in `_source`.
+
+We can also make dynamic mapping `strict`. This way, it'll be forbidden to add
+any fields that were not manually defined in a mapping.
+
+It's also possible to mix the approaches. E.g., we can make dynamic mapping
+"strict" on teh idnex level, but reenable it on some specific object within our
+mapping.
+
+---
+
+All fields in the mapping are optional and we can't enforce them to be required.
+Applications need to take care of data validation. Elasticsearch allows us to
+configure some default value that will be used if we don't supply any value for
+a field. Similarly, like in some other cases, the `_source` field will not
+contain that default value. It will only be stored in the index and will be used
+to serve our queries.
+
+:::tip Configuration
+Some data types allow additional configurations to be provided. E.g., "date"
+type allows us to specify the accepted formats.
+:::
+
+:::danger
+Existing field mappings cannot be updated or removed! If such change is
+required, we'll need to reindex all the documents (there's a special API for
+that though).
+:::
+
+### Supported Data Types
+
+Supported data types may be found in the
+[documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html).
+
+#### Object type
+
+The "object" type is like JSON. We must watch out for arrays of objects though.
+Querying them might not bring expected results, e.g. AND might behave like OR.
+This is due to how data is internally stored within Lucene. For such cases,
+"nested" type is a better choice. "nested" values are stored separately as
+Lucene documents and are hidden from queries unless we ask for them explicitly.
+However, it comes with a cost, there are various limitations around "nested"
+type.
+
+:::tip[Apache Lucene]
+Apache Lucene does not support objects. Elasticsearch flattens them and adds
+dots in the names behind the scenes.
+:::
+
+#### Keyword
+
+The keyword data type is for txt fileds that should not be analyzed and split
+into tokens. They represent some uniform string, like a tag. When we query for
+them, we use term searches.
+
+### Enforcing Types
+
+Elasticsearch requires our documents to conform to the mapping. However, it also
+supports **type coersion**, a bit similarly to how JavaScript does it when
+comparing values. E.g., we can store strings containing numbers in numerical
+fields. Type coersion is enabled by default.
+
+:::caution
+When coersion takes place, and we query the document, the `_source`
+will contain the same type that we supplied when inserting the document! The
+coerced value is only used internally in the indexed structures.
+:::
+
+Coersion can be disabled for an entire index, or per document.
+
+### Arrays
+
+Mapping do not specify array as a type. Instead, every field is allowed to store
+one or many values.
+
+### Multi-fields
+
+A field can hae additional mappings. E.g., it could bbe a "text", with
+additional mapping of "keyword" type. This way, when indexing, both "text" and
+"keyword" will be indexed separately. When querying, we need to choose which
+type to use in our query. It's not much different from having two completely
+separate fields of different types. The convenience is that, while inserting, we
+provide the value just once, under one field, and Elasticsearch takes care of
+the rest.
+
+Multi-fields consume more disk space.
+
+:::tip
+When Elasticsearch generates dynamic mappings for strings, it will create a
+"text" field with multi-field configuration - a "keyword" will be added, just
+like it was outlined above.
+:::
+
+### Aliasing
+
+It allows us to have multiple names for the same field. `_source` will not
+contain alias names.
+
+## Useful Opeartions
+
+### Scripting
+
+We can send scripts to elasticsearch to execute them on the server. E.g., we
+could increment some filed, or do something on some condition. Without
+scripting, we'd have to fetch documents, invoke some logic on our side, and send
+back the modified document.
+
+### Bulk Operation
+
+We can update multiple documents by including a query to match docs to be
+updated. Writes are then done sequentially across replication groups. Potential
+conflicts (optimistic concurrency) may be ignored via a "conflicts" key of the
+update payload. Similarly batch deletes can be invoked.
+
+There's also a `/_bulk` endpoint that allows us to send multiple operations at
+once (like creates, updates, deletes) with 1 request. It may include operations
+to be executed across different clusters.
+
+## Searching
+
+We can query using Lucene syntax and GET requests. It's simplified and rarely
+used. Instead, **Query DSL** is the popular choice.
+
+### Term Queries
+
+Matches the provided value exactly. Case-sensitivity is configurable
+(case-sensitive by default). Text analyzers are not being run for these queries,
+and they shouldn't be used with text fields, because their indexed values are a
+result of text analysis, and are optimized for elastic to lookup. Targetting
+text fields with terms might result in unexpected results (unless you know
+exactly how tokenization works in your DB).
+
+#### Term
+
+Matches provided value exactly.
+
+#### Terms
+
+Just like "term", but we can supply multiple values. OR is applied to them.
+
+#### Ids
+
+We can lookup documents by provided list of `_id`s.
+
+#### Range
+
+We can query values in the specified range. We can use operators:
+
+- lt
+- lte
+- gt
+- gte
+
+It's useful for:
+
+- numerics
+- dates - we ca specify format or UTC offset of range values.
+
+#### Prefix
+
+Similar to "term", but we supply some prefix that the field's value should start
+with. Use with keywords.
+
+#### Wildcard
+
+Similar to prefix, but we can use `*` or `?` wildcards. Using wildcard as a
+first characted is possible, but it's not recommended.
+
+#### Regexp
+
+Matches with regexp.
+
+#### Exists
+
+Returns these documents where some specified field exists, It will return also
+documents where the field is an empty string, or an empty array.
+
+The opposite operation does not exist, but we can achieve it with a "bool" query.
+
+:::tip
+Relevance scores for all term queries will be 1.0 for each returned document.
+:::
+
+### Match Queries
+
+#### Match
+
+It's a full text search analysis kind of query. It's used mostly with "text"
+fields. It shouldn't be used for "keywords".
+
+:::tip
+Query goes through the same text analysis process as indexing of text field
+does. Thanks to it, values stored in the inverted index will be matched exactly.
+:::
+
+"Match" has an "operator" parameter, which can be either "AND" or "OR". This
+decides whether documents should include all the values in the query, or any of
+them. "OR" is the default.
+
+:::tip
+Under the hood, "match" is tranformed into "bool" with terms set to look for
+specific values within vithin inverted index. Elasticsearch generates these
+terms using text analysis of teh supplied match query.
+:::
+
+#### Match-multiple
+
+It's a variation of "match", which accepts multiple fields that should be
+searched for. We can boost scoring of docs that contain the searched value in
+specific fields. There's a priority system for that.
+
+:::tip 
+Internally, "match-multiple" is turned into multiple "match" queries and
+the results are merged with some logic applied to calculate the `_score`
+(`dis_max` is used for that).
+:::
+
+#### Match-phrase
+
+It's like "match", but the order of words in the query matters. Also, the words
+in the documents must be adjacent, like in the query. Documents that do not
+satisfies these criteria will not be returned.
+
+This query works, because Elasticsearch also keeps token positions within
+inverted index.
+
+:::tip
+All the queries above are **leaf queries**. They filter one or more fields with
+some seach query. Leaf queries may be combined using **compound queries**.
+:::
+
+#### Bool
+
+It's a compound query. We can specify leaf queries under categories (each one is
+an array):
+
+- **must** - a list of queries that must be satisfied 
+- **must_not** - a list of queries that must not be satisfied
+- **should** - if "should" is the only bool clause, at least of of the provided
+  queries must be satisfied for the document to show up in the results.
+  Otherwise, this clause only affects scoring, and nothing more. There's also a
+  configuratin parameter that allows us to change that behaviour and allows us
+  to decide how many "shoulds" must be satisfied for a document to show up.
+- **filter** - works like "must", but it doesn't affect scoring in any way,
+  therefore is has better performance.
+
+#### Boosting
+
+It's a compound query. It allows to specify queries that elect documents that
+negatively affect the scoring. E..g, we can look or all game consoles in a
+catalog, but lower the scoring of those produced by Microsoft. 
+
+It's kind of the opposite of "bool"'s "should".
+
+#### dis_max
+
+It's a compound query. Whenever internal queries return the same documents, the
+score to be used for such document will be taken from the query that applied the
+highest score to it. There're also configuration options that allow us to make
+that logic more complex. For example, we can boost the score for documents that
+were found in multiple queries.
+
+#### Nested
+
+When we have arrays of objects in our documents, it's probably a good idea to
+make these objects mapped as "nested" type (if we need to query based on these
+objects). To query nested fields, we have to use a specialized "nested" query.
+
+This approach is useful when we want multiple conditions to be satisfied per
+object in some array. We can't do that with the default object type. 
+
+By default, when querying by some nested object array, we get the root document
+and we don't know which object in the array was matched. We can get that
+information by using the "nested_hits" parameter in our query.
+
+:::caution
+Indexing and querying "nested" fields is more expensive than querying of other
+types. Each nested object is a separate Lucene document.
+:::
+
+## Pagination
+
+Using "size" and "from" (offset) we can achieve pagination.
+
+:::danger
+Max 10.000 results can be returned in total.
+:::
+
+Pagination in Elasticsearch is stateless, there is no cursor, or anything like
+that. It might happen, that users will see the same values on different pages,
+while going through them, since new records might get introduced, or some migt
+get deleted while users use our services.
+
+`_search_offer` might help with that.
+
+## Optimization Tips
+
+- disable "norms" in mappings for fields where relevance scoring is not going to
+  be used - saves disk space.
+- disable "doc_values" for fields that will not be aggregated, sorted, scripted.
+- disable "index" on fields that won't be used in query terms. Aggregations will
+  still work for such fields.
+- we can specify which fields we want to receive in query results. It will save
+  some bandwidth.
+
+## Related Tools
+
+**Logstash** - a kind of pipeline that transforms input and produces output. It
+has many input and output providers. E.g., it processes events and sends the
+result to Elasticsearch.
+
+**Kibana** - a tool for visualization of data stored in Elasticsearch. It stores
+its own configs in an isntance of Elasticsearch itself.
+
+**Metricsbeat** - an
+agent that sends metrics (e.g., from VMs) to either Logstaswh or Elasticsearch.
+
+**X Tools** - a kind of extension for Elasticsearch that adds additional
+capabilities (like auth or SQL driver).

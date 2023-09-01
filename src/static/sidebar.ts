@@ -292,6 +292,13 @@ const structure: Sidebar = {
             ],
         },
         {
+            title: "Elasticsearch",
+            icon: "elasticsearch.webp",
+            children: [
+                "elasticsearch/overview",
+            ],
+        },
+        {
             title: "Git",
             icon: "git.webp",
             children: ["git/overview"],
