@@ -14,10 +14,10 @@ const rightArrow = '&#8594;';
 
 <div class="container">
     <div>
-        {previous ? <a href={'/' + previous.slug}><Fragment set:html={leftArrow} /> {previous.title}</a> : <></>}
+        {previous ? <a href={'/' + previous.slug}><Fragment set:html={leftArrow} />&nbsp; {previous.title}</a> : <></>}
     </div>
     <div>
-        {next ? <a href={'/' + next.slug}>{next.title} <Fragment set:html={rightArrow} /></a> : <></>}
+        {next ? <a href={'/' + next.slug}>{next.title}&nbsp; <Fragment set:html={rightArrow} /></a> : <></>}
     </div>
 </div>
 

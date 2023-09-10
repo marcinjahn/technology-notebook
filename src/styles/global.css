@@ -1,3 +1,10 @@
+:root {
+    --accent-color: rgb(203, 38, 38);
+    --text-color: black;
+    --page-background-color: #ffffff;
+    --navbar-background-color: #ffffff;
+}
+
 a {
     text-decoration: none;
     color: var(--accent-color);
@@ -6,7 +13,7 @@ a {
 html {
     color: rgb(11, 11, 11);
     font-family: system-ui, sans-serif;
-    background-color: #7d84b2;
+    background-color: var(--page-background-color);
 }
 
 code {
@@ -14,41 +21,38 @@ code {
         DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-:root {
-    --accent-color: rgb(203, 38, 38);
-    --text-color: black;
-}
-
 ul {
     list-style-type: initial;
 }
 
-h1 {
-    margin: 0 0 1rem 0;
-    font-size: 1.8rem;
+.article h1 {
+    margin: 0 0 3rem 0;
+    font-size: 2.5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgb(233, 233, 233);
 }
 
-h2 {
+.article h2 {
     margin: 1.5rem 0 1rem 0;
+    font-size: 2rem;
+}
+
+.article h3 {
+    margin: 1.5rem 0 0.8rem 0;
     font-size: 1.6rem;
 }
 
-h3 {
-    margin: 1.5rem 0 0.8rem 0;
-    font-size: 1.5rem;
-}
-
-h4 {
+.article h4 {
     margin: 1.5rem 0 0.7rem 0;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
-h5 {
+.article h5 {
     margin: 1.5rem 0 0.7rem 0;
     font-size: 1.1rem;
 }
 
-blockquote {
+.article blockquote {
     color:#7d84b2;
     margin: 2rem 0 2rem 2rem;
     font-style: italic;
@@ -73,20 +77,20 @@ pre.astro-code {
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-table, th, td {
+.article table, th, td {
     border: 1px solid;
     border-collapse: collapse;
     padding: 0.8rem;
 }
 
-table {
+.article table {
     margin-bottom: 1rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-spacing: 0;
 }
 
 
-table tbody tr:nth-of-type(even) {
+.article table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 

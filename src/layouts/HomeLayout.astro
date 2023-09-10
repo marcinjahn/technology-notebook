@@ -12,6 +12,7 @@ const { frontmatter } = Astro.props;
     <section class="logo"><Logo /></section>
     <main>
         <section class="content"><Intro /></section>
+    <hr />
         <section class="content"><Posts /></section>
     </main>
 </BaseLayout>
@@ -27,9 +28,14 @@ const { frontmatter } = Astro.props;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2rem;
 
         width: 800px;
+    }
+
+    hr {
+        width: 100%;
+        margin: 1rem;
+        border-top: 1px solid rgb(219, 219, 219);
     }
 
     @media only screen and (max-width: 920px) {

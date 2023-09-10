@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { executeDownloadCounters } from "../services/projects/execute-download-counters";
 import { getGithubProjects } from "../services/projects/github-client";
 import { getMockProjects } from "../services/projects/mock-projects";
-import { type Project, createProject } from "../services/projects/project-factory";
+import { createProject } from "../services/projects/project-factory";
 import { projectDefinitions } from '../static/projects';
 
 const pageTitle = "Projects";
