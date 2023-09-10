@@ -99,7 +99,11 @@ function getArticleTitle(endOfPath: string) {
                 if (parent.nodeName.toLowerCase() !== "ul") {
                     break;
                 }
+
+                const arrow = parent.previousElementSibling?.getElementsByClassName('arrow')?.[0];
                 
+                arrow?.classList.add('rotated');
+
                 parent.classList.remove('hidden');
                 parent = parent.parentElement?.parentElement;
             }

@@ -30,12 +30,15 @@ const { item, isTopLevel } = Astro.props;
         for (let title of allTitles) {
             title.addEventListener("click", () => {
                 const ul = title.parentElement?.getElementsByTagName("ul")[0];
-                const isHidden = ul?.classList.contains("hidden");
+                const arrow = title.parentElement?.getElementsByClassName("arrow")[0];
+                
+                const clickedOnClosedNode = ul?.classList.contains("hidden");
 
                 collapseAllTitles(title);
 
-                if (isHidden) {
+                if (clickedOnClosedNode) {
                     ul?.classList.remove("hidden");
+                    arrow?.classList.add("rotated");
                 }
             });
         }
@@ -54,6 +57,9 @@ const { item, isTopLevel } = Astro.props;
         for (let title of allTitles) {
             const ul = title.parentElement?.getElementsByTagName("ul")[0];
             ul?.classList.add("hidden");
+
+            const arrow = title.parentElement?.getElementsByClassName("arrow")[0];
+            arrow?.classList.remove("rotated");
         }
     }
 </script>
@@ -89,6 +95,14 @@ const { item, isTopLevel } = Astro.props;
     .icon {
         height: 1.2rem;
         margin-right: 0.5rem;
+    }
+
+    .arrow {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .rotated {
+        transform: rotate(90deg);
     }
 
     @media only screen and (max-width: 920px) {
