@@ -132,7 +132,7 @@ They persist power cycles. It's an object that an owner of a hierarchy has asked
 to remain resident in the TPM through power cycles. The owner of the hierarchy
 where it belongs can evict it. TPM has limited amount of persistent memory.
 
-# Hierarchies
+## Hierarchies
 
 It's a collection of entities that are related and managed as a group. Those
 entities include permanent objects (the hierarchy handles), primary objects at
@@ -152,7 +152,7 @@ ephemeral requirements.
 
 TPM 1.2 has one hierarchy. TPM 2.0 has four.
 
-## Endorsement Hierarchy
+### Endorsement Hierarchy
 
 It's reserved for objects created and certified by the TPM manufacturer. The
 endorsement seed (`eseed`) is randomly generated at manufacturing time and never
@@ -162,14 +162,14 @@ used to identify the device. Since there's only one TPM device per machine, the
 primary endorsement key can also be used as the machine's identity. It's
 privacy-sensitive. 
 
-## Platform Hierarchy
+### Platform Hierarchy
 
 The platform hierarchy is reserved for objects created and certified by the OEM
 that builds the host platform. The platform seed (pseed) is randomly generated
 at manufacturing time, but can be changed by the OEM by calling
 `TPM2_CC_ChangePPS`.
 
-## Storage Hierarchy
+### Storage Hierarchy
 
 It's used by the platform owner (IT department or the end user). It has owner
 policy and an authorization value, both persist through reboots. They are rarely
@@ -182,7 +182,7 @@ keys generated on the owner hierarchy.
 It's intended fo non-privacy-sensitive operations.
 It can be turned off.
 
-## Null Hierarchy
+### Null Hierarchy
 
 The null hierarchy is reserved for ephemeral keys. The null seed is re-generated
 each time the host reboots.
