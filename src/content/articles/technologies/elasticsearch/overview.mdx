@@ -173,7 +173,7 @@ a field. Similarly, like in some other cases, the `_source` field will not
 contain that default value. It will only be stored in the index and will be used
 to serve our queries.
 
-:::tip Configuration
+:::tip[Configuration]
 Some data types allow additional configurations to be provided. E.g., "date"
 type allows us to specify the accepted formats.
 :::
@@ -366,7 +366,7 @@ It's a variation of "match", which accepts multiple fields that should be
 searched for. We can boost scoring of docs that contain the searched value in
 specific fields. There's a priority system for that.
 
-:::tip 
+:::tip
 Internally, "match-multiple" is turned into multiple "match" queries and
 the results are merged with some logic applied to calculate the `_score`
 (`dis_max` is used for that).
