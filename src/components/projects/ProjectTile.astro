@@ -48,15 +48,15 @@ const { project } = Astro.props as Props;
 .container {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--project-tile-background-color);
   border-radius: 4px;
   padding: 1em;
   height: 100%;
   width: 100%;
-  color: black;
+  color: var(--text-color);
   cursor: pointer;
   transition: box-shadow 0.3s ease-in-out;
-  border: 1px solid rgb(212, 212, 212);
+  border: 1px solid var(--border-color);
 }
 
 .container:hover {

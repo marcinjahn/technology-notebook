@@ -1,17 +1,43 @@
 :root {
     --accent-color: rgb(203, 38, 38);
     --text-color: black;
+    --reversed-text-color: #EDEDED;
+    --dark-text-color: var(--text-color);
     --page-background-color: #ffffff;
+    --alternative-page-background-color: #e7e7e7;
     --navbar-background-color: #ffffff;
+    --border-color: rgb(233, 233, 233);
+    --title-color: rgb(55, 55, 55);
+    --subtitle-color: #5c5c5c;
+    --project-tile-background-color: white;
+    --footer-background-color: rgb(118, 146, 219);
+    --inline-code-background-color: rgb(130, 130, 130);
+}
+
+
+[data-theme='dark'] {
+    --accent-color: #DA0037;
+    --text-color: #EDEDED;
+    --reversed-text-color: black;
+    --dark-text-color: var(--reversed-text-color);
+    --page-background-color: #272727;
+    --alternative-page-background-color: #2f2f2f;
+    --navbar-background-color: #171717;
+    --border-color: rgb(77, 77, 77);
+    --title-color: rgb(215, 215, 215);
+    --subtitle-color: #7e7e7e;
+    --project-tile-background-color: rgb(54, 54, 54);
+    --footer-background-color: var(--navbar-background-color);
+    --inline-code-background-color: rgb(79, 79, 79);
 }
 
 a {
-    text-decoration: none;
+text-decoration: none;
     color: var(--accent-color);
 }
 
 html {
-    color: rgb(11, 11, 11);
+    color: var(--text-color);
     font-family: system-ui, sans-serif;
     background-color: var(--page-background-color);
 }
@@ -29,7 +55,7 @@ ul {
     margin: 0 0 3rem 0;
     font-size: 2.5rem;
     padding-bottom: 3rem;
-    border-bottom: 1px solid rgb(233, 233, 233);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .article h2 {
@@ -60,7 +86,7 @@ ul {
 
 /* Code inline in paragraphs */
 :not(pre) > code {
-  background: rgb(125, 125, 125) !important;
+  background: var(--inline-code-background-color) !important;
   color: white !important;
   border-radius: 4px !important;
   font-size: 0.9rem;
@@ -91,7 +117,7 @@ pre.astro-code {
 
 
 .article table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: var(--alternative-page-background-color);
 }
 
 /* Img fix */
@@ -102,5 +128,5 @@ main img {
 
 main hr {
     margin: 2rem 0;
-    color: rgb(242, 242, 242);
+    color: var(--border-color);
 }

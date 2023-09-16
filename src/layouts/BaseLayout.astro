@@ -4,6 +4,7 @@ import "../styles/global.css";
 import Navbar from "../components/navbar/Navbar.astro";
 import Panel from "../components/hamburger/Panel.astro";
 import Footer from "../components/Footer.astro";
+import Themes from 'astro-themes';
 
 export interface Props {
     pageTitle: string;
@@ -23,6 +24,7 @@ tags = [...tags, ...baseTags];
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <Themes />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon-32x32.png" />

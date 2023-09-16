@@ -1,8 +1,9 @@
 ---
-import { siteTitle, mainNavigation } from "../../static/navigation";
+import { siteTitle } from "../../static/navigation";
 import Hamburger from "../hamburger/Hamburger.astro";
 import ExternalLinks from "./ExternalLinks.astro";
 import MainLinks from "./MainLinks.astro";
+import LightDarkSwitcher from "../theming/LightDarkSwitcher.astro";
 ---
 
 <nav>
@@ -12,11 +13,14 @@ import MainLinks from "./MainLinks.astro";
             <a href="/">{siteTitle}</a>
         </div>
     </div>
-
     <div class="right">
-        <MainLinks />
-        <ExternalLinks />
+        <div class="links">
+            <MainLinks />
+            <ExternalLinks />
+        </div>
+        <LightDarkSwitcher class="theme-switcher"/>
     </div>
+
 </nav>
 
 <style>
@@ -26,7 +30,7 @@ import MainLinks from "./MainLinks.astro";
         align-items: center;
 
         background-color: var(--navbar-background-color);
-        border-bottom: 1px solid rgb(195, 195, 195);
+        border-bottom: 1px solid var(--border-color);
 
         padding: 1rem 1.3rem;
     }
@@ -47,14 +51,21 @@ import MainLinks from "./MainLinks.astro";
     }
 
     .right {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .links {
         margin-left: 2rem;
         font-size: 0.9rem;
 
         display: flex;
+        align-items: center;
         gap: 1.5rem;
     }
 
-    .right ul {
+    .links ul {
         list-style: none;
         padding: 0;
         margin: 0;
@@ -66,11 +77,11 @@ import MainLinks from "./MainLinks.astro";
         padding-right: 1.5rem;
     }
 
-    .right a {
+    .links a {
         color: var(--text-color);
     }
 
-    .right a:hover {
+    .links a:hover {
         color: var(--accent-color);
     }
 
@@ -79,7 +90,7 @@ import MainLinks from "./MainLinks.astro";
     }
 
     @media only screen and (max-width: 920px) {
-        .right {
+        .links {
             display: none;
         }
 

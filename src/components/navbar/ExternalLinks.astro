@@ -1,4 +1,7 @@
 ---
+import GithubExternalLink from './external-links/GithubExternalLink.astro';
+import LinkedInExternalLink from './external-links/LinkedInExternalLink.astro';
+
 const items = [
     {
         text: "LinkedIn",
@@ -7,7 +10,7 @@ const items = [
     },
     {
         text: "GitHub",
-        icon: "/img/github.webp",
+        icon: "abc",
         link: "https://github.com/marcinjahn",
     },
     { text: "cirro.services", link: "https://www.cirro.services" },
@@ -15,19 +18,11 @@ const items = [
 ---
 
 <ul>
-    {
-        items.map((item) => (
-            <li>
-                <a target="_blank" href={item.link}>
-                    {item.icon ? (
-                        <img src={item.icon} alt={"A logo of " + item.text} />
-                    ) : (
-                        <span>{item.text}</span>
-                    )}
-                </a>
-            </li>
-        ))
-    }
+    <GithubExternalLink />
+    <LinkedInExternalLink />
+    <a target="_blank" href="https://www.cirro.services">
+        <span>cirro.services</span>
+    </a>
 </ul>
 
 <style>
@@ -61,5 +56,11 @@ const items = [
 
     span:hover {
         color: var(--accent-color)
+    }
+
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
