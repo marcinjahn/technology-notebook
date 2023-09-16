@@ -450,6 +450,137 @@ get deleted while users use our services.
 
 `_search_offer` might help with that.
 
+## Aggregations
+
+The aggregations run on top of query's results (unless Global is used). We could
+skip the query, and then aggregation will be run on all index documents. We can
+specify multiple aggreggations within a single request. Each one should have its
+name so that we can recognize the results.
+
+### Metric Aggregations
+
+There are single-value and multi-value metric aggregations.
+
+Examples:
+
+- sum
+- avg
+- min
+- max
+- stats (multi-value)
+
+### Bucket Aggregations
+
+It puts source documents into some buckets. A result could be:
+
+- asingle bucket
+- some fixed number of buckets
+- some dynamic number of buckets
+
+:::caution[Multiple Shards]
+When we have multiple shards, the number of documents within buckets is
+approximate! That's due to the distributed nature of Elastic search. All shards of
+an index will return its results and the Coordinating Node will create the final
+result. 
+
+E.g., we could ask for the 3 most popular products in order from most to the
+least popular. It could be that on sherd A some product has lots of sells. Shard
+A will return that product as one of the 3 popular ones. On another shard, that
+same product might have less orders stored. It will not be returned from that
+shard. Coordinating Node will not be able to calculate the real amount of that
+product's sales due to missing orders returned from some shards. The accuracy
+increases with higher "size" parameter values. Each shard will return more results
+and it will give us better results (but worse performance). 10 is the default.
+Even if we went to see, e.g., just 3 results, it's better to actually get more
+(like 10), for higher accuracy.
+:::
+
+Let's have a look at a few examples of bucket aggregations.
+
+### Terms
+
+Creates bucket for each new value of some specified field. It's like a GROUPBY.
+
+It returns buckets with their counts. If there'd be too many buckets, it will
+not return all of them. Instead, it will inform us about the number of documents
+that don't belong to any of the returned buckets.
+
+The number of returned buckets is configurable.
+
+### Nested Aggregates
+
+Buckets from bucket aggregations may be used for further aggregations. We could
+have mey levels of nesting where some buckets are aggregated into further
+buckets.
+
+:::caution
+Metric aggregations can't contain nested aggregations.
+:::
+
+### Filter
+
+Filter is a bucket aggregation where we specify which documents should be passed
+down to nested aggregation. It creates a single bucket.
+
+It's useful when we went to retrieve a bunch of documents and apply aggregations
+only on part of these documents.
+
+### Filters
+
+This bucket aggregation allows us to split source documents into as many buckets
+as we went based on conditions that we specify. We name each bucket and spcify
+queries that they should satisfy individually.
+
+### Ranges 
+
+A bucket aggregation where we specify a field and value ranges for each
+resulting bucket. It's good for numerics and date fields.
+
+### Histogram
+
+We specify a field name to aggregate on and on interval. The result will be a
+set of buckets with growing values based on interval. E.g., if an interval is set to 50,
+we'll get buckets:
+
+- O
+- 50
+- 100
+- 150
+- ....
+
+In each bucket, there will be those documents that had the specified field'v
+value closest to the bucket's key.
+
+:::tip[Variable Intervals]
+There's also a different variation of histogram aggregation, called [Variable
+Width
+Histogram](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-variablewidthhistogram-aggregation.html).
+Instead of specifying a fixed interval between buckets, we have to specify the
+maximum amount of buckets that we want to get. Elasticsearch will generate
+buckets for us, aiming to obtain low distances between bucket centroids.
+:::
+
+### Global
+
+Normally , aggregations take the parent results as a source. A global
+aggregation allows to change that. Its nested aggregators will take all
+documents into account, kind of resetting the aggreagation context.
+
+Global aggregation may only be used on the root level. It wouldn't make sense to
+nest it anyway.
+
+:::tip[Post Filter]
+[Post
+Filter](https://www.elastic.co/guide/en/elasticsearch/reference/8.9/filter-search-results.html#post-filter)
+is a similar tool that allows us to specify queries that will be applied AFTER
+aggregates are calculated.
+:::
+
+### Missing
+
+Allows to retrieve a bucket of documents where some
+specified field is missing (Null or empty string ?)
+
 ## Optimization Tips
 
 - disable "norms" in mappings for fields where relevance scoring is not going to
