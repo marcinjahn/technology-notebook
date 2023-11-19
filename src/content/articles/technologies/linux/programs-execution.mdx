@@ -126,8 +126,9 @@ time slice per process. For lots of precesses running, it might take a long time
 to go back to that process once we switch away from it. 
 
 Another strategy is to decide on how long (max) it should take to get back to a
-process after we switch away from it. It's called *target latency*. Linux uses
-CFS - Completely Fair Scheduler and it uses 6ms target latency.
+process after we switch away from it. It's called *target latency*. Linux(until
+6.5) used to use CFS - Completely Fair Scheduler and it uses 6ms target latency.
+Nowadays, Linux uses EEVDF.
 
 :::tip
 In the past, there was no preemption. Programs themselves hed to yield control
