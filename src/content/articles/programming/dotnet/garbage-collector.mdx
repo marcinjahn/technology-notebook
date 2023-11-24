@@ -8,7 +8,7 @@ lang: en-US
 # Garbage Collector
 
 .NET uses Garbage Collection to free up memory from unused objects, that is
-objects that are unreachable form applicaton root.
+objects that are unreachable from the application root.
 
 :::tip
 Value types are not part of Garbage Collection cleanup process. They live on
@@ -26,7 +26,7 @@ There are 4 generations of GC:
   property of a class instance.
 - **Gen 2** - for long-lived objects that have stayed alive after a few Gen 1
   passes. It could be a property of a static class, or some other objects that
-  live throught the whole lifetime of an app.
+  live through the whole lifetime of an app.
 - **LOH** (Large Object Heap) - objects bigger than 85 kilobytes.
 
 Moving up the generations, the cost of GC becomes higher (Gen 0 is the
@@ -65,7 +65,7 @@ Good candidates for pooling are:
 - byte array
 
 So, instead of creating an object every time, you crete a pool of them (like
-hundred, or a thousand, depending on your needs), and request/return object
+hundred, or a thousand, depending on your needs), and request/return objects
 from/to the pool during the lifetime of the app.
 
 Object Pool is also useful if object creation is expensive, since you can create
@@ -87,5 +87,5 @@ var array = stackallow new byte[500]();
 A few facts to keep in mind:
 
 - can't be done in async methods
-- shouldn't be used to allocate too much stafe, otherwise stack overflow will occur
+- shouldn't be used to allocate too much data, otherwise stack overflow will occur
 - it will always be faster than allocating objects on the heap

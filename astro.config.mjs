@@ -11,6 +11,7 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://marcinjahn.com',
+  trailingSlash: 'never',
   integrations: [
     AutoImport({imports: [asideAutoImport, codeSnippetAutoImport]}), 
     astroAsides(), 
