@@ -15,8 +15,12 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [AutoImport({
     imports: [asideAutoImport]
-  }), sitemap(), astroAsides(), expressiveCode({
-
+  }), 
+  sitemap({
+    filter: (page) => !page.startsWith('https://marcinjahn.com/internal'),
+  }),
+  astroAsides(),
+  expressiveCode({
     themes: ['one-dark-pro'],
     styleOverrides: {
       frames: {
