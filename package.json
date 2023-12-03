@@ -19,7 +19,7 @@
     "@astrojs/mdx": "^1.0.0",
     "@astrojs/sitemap": "^3.0.0",
     "@octokit/types": "^9.2.3",
-    "astro": "^3.0.6",
+    "astro": "^3.6.4",
     "astro-auto-import": "^0.3.1",
     "astro-diagram": "^0.7.0",
     "astro-expressive-code": "^0.29.2",
