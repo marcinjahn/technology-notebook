@@ -22,7 +22,7 @@ the contract. These files contain:
 - listing of endpoints under `service`
 - shape of the data (`message`)
 
-```protobuf
+```
 syntax = "proto3";
 
 option csharp_namespace = "MyNamespace.gRPC";
@@ -181,7 +181,7 @@ We can have uni- or bi-directional streaming.
 
 Here's an example of protobuf with streaming:
 
-```protobuf
+```
 service MeterReadingService {
     rpc AddReadingStreaming (stream ReadingPacket) returns (stream ErrorMessage);
 }

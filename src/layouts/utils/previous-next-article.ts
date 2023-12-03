@@ -1,4 +1,5 @@
-import Sidebar, {SidebarItem} from '../../static/sidebar';
+import SidebarStructure from '../../static/sidebar';
+import type {SidebarItem} from '../../static/sidebar';
 import { getEntryBySlug } from 'astro:content';
 
 export interface NeighbourArticle {
@@ -13,7 +14,7 @@ export interface NeighbourArticles {
 
 export async function getNeighbourArticles(currentSlug: string): Promise<NeighbourArticles> {
   const mainSection = currentSlug.substring(0, currentSlug.indexOf('/'));
-  const sidebarSection = Sidebar['/' + mainSection +  '/'];
+  const sidebarSection = SidebarStructure['/' + mainSection +  '/'];
   
   if (!sidebarSection) {
     return { previous: undefined, next: undefined };
