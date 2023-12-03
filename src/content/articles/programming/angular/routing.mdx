@@ -72,7 +72,7 @@ Usually, we do not define routes directly in `app.module.ts`. Instead, we'd
 create a separate module file `app-routing.module.ts` with the routing setup
 inside of it.
 
-```ts
+```ts title="app-routing.module.ts"
 const routes: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
   // other routes...
@@ -87,9 +87,9 @@ const routes: Routes = [
 export class AppRoutingModule { }
 ```
 
-Then, the `app.module` file gets simplified:
+Then, the `app.module.ts` file gets simplified:
 
-```ts {9}
+```ts title="app.module.ts" {9}
 @NgModule({
   declarations: [
     AppComponent,

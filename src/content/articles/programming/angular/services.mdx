@@ -14,9 +14,7 @@ services. The classes that provide some specific functionalities (like logging)
 can be brought into other classes (e.g. components) using Dependency Injection.
 Here's a simple example:
 
-This is some service:
-
-```ts
+```ts title="Service"
 export class LoggerService {
     log(message: string) {
         console.log(message);
@@ -24,9 +22,7 @@ export class LoggerService {
 }
 ```
 
-Here's a class that wants to use the service:
-
-```ts {3,6,9}
+```ts title="Component" {3,6,9}
 @Component({
     ...,
     providers: [LoggerService]
