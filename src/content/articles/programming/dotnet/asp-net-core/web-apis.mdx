@@ -66,15 +66,16 @@ The `ApiController` attribute applies some useful conventions to the controller
 
 :::tip[Controller]
 There is also a `Controller` base class, but it's more useful for MVC
-controllers that return Razor views (btw, [Razor Pages](./razor-pages) are a
-better alternative).
+controllers that return Razor views (btw, [Razor
+Pages](/programming/dotnet/asp-net-core/razor-pages/) are a better alternative).
 :::
 
 ## Routing
 
 We can use exactly the same templates as in the [Razor Pages
-routing](./razor-pages-routing#route-templates). However, we speify those in
-a different place - in the action's `Route` attribute.
+routing](/programming/dotnet/asp-net-core/razor-pages-routing#route-templates).
+However, we speify those in a different place - in the action's `Route`
+attribute.
 
 ```csharp
 public class WeatherForecastController : ControllerBase

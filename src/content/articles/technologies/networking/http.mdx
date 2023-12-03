@@ -29,11 +29,11 @@ The assumptions are:
     4. DNS respons to us with the IP address. The IP address could be found either
       in our DNS service or the service could reach out to some other DNS service
       for the IP.
-2. With the IP address, we can start to establish a [TCP connection](./tcp) with
+2. With the IP address, we can start to establish a [TCP connection](/technologies/networking/tcp/) with
    the "example.com" server.
     1. 3-way handshake occurs and sockets are created on the client and the server
       (IP-port pairs).
-3. [HSTS](./hsts) can jump in forcing us to use HTTPS (let's assume that it
+3. [HSTS](/technologies/networking/hsts/) can jump in forcing us to use HTTPS (let's assume that it
    happened). We need to establish TLS session.
 4. The client will start the TLS session with the server. Depending on the TLS
    version used, a proper handshake procedure will occur.
@@ -145,7 +145,7 @@ Proxies may be chained, so that a proxy has its own proxy:
 There are at least two ways to enforce HTTPS:
 
 - Redirect from HTTP to HTTPS on your server
-- Use [HSTS](./hsts) - it's a header that informs the browser to ALWAYS use HTTPS when
+- Use [HSTS](/technologies/networking/hsts/) - it's a header that informs the browser to ALWAYS use HTTPS when
   reaching the app.
 
 :::tip[ASP.NET Core]

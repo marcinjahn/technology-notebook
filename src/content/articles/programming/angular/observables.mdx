@@ -92,12 +92,12 @@ component is no longer displayed. In such case, the component should implement
 subscription there.
 
 :::tip[Router]
-Angular's [Router](./routing) allows us to subscribe to various observables (e.g. `params`).
-Exceptionally, we don't need to unsubscribe from them, because Angular will do
-that for us in the background. Using `unsubscribe()` does not cause any harm
-though.
+Angular's [Router](/programming/angular/routing) allows us to subscribe to
+various observables (e.g. `params`). Exceptionally, we don't need to unsubscribe
+from them, because Angular will do that for us in the background. Using
+`unsubscribe()` does not cause any harm though.
 
-[HttpClient](./http) has similar characteristics.
+[HttpClient](/programming/angular/http) has similar characteristics.
 :::
 
 ### Error handling
@@ -219,8 +219,8 @@ There's a nice overview of different kids of maps, like `map`, `mergeMap`,
 
 :::tip[exhaustMap]
 An `Observable<T>` could be treated as a
-[functor](../dotnet/functional/fundamentals#functors) and a
-[monad](../dotnet/functional/fundamentals#monads).
+[functor](/programming/dotnet/functional/fundamentals#functors) and a
+[monad](/programming/dotnet/functional/fundamentals#monads).
 
 The `map` operator is like a `Map` on a functor. It turns `Observable<T>` into
 `Observable<U>` by accepting a function that turns a *regular value* `T` into a
@@ -277,14 +277,14 @@ It needs to be initialized via constructor with some initial value.
 ## Combining Observables
 
 In some cases we might need to use values from multiple observables to create
-some new value. It is often used in [ngRx effects](./ngRx).
+some new value. It is often used in [ngRx effects](/programming/angular/ngRx/).
 
 RxJs offers a few ways to combine observables. Some of these are operators, and
 some are functions that allow us to create new Observables, based on the ones we
 provide.
 
 :::caution[ngRx selectors] 
-In [NgRx](./ngrx), our state often has some initial default values (often `null`
+In [NgRx](/programming/angular/ngrx/), our state often has some initial default values (often `null`
 or `undefined`). These are counted as "emitted values", meaning that the
 operators/function below will ues them to produce the output. It might make
 sense to skip these initial values with some operator like `skipWhile(n => !n)`. 

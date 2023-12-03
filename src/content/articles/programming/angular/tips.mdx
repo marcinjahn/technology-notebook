@@ -61,7 +61,7 @@ someMethod() {
 
 :::caution
 If we're about to access the reference from `ngOnInit` [lifecycle
-hook](./components#component-lifecycle), the `@ViewChild` decorator requires
+hook](/programming/angular/components#component-lifecycle), the `@ViewChild` decorator requires
 the `{ static: true }` argument as well:
 
 ```ts
@@ -126,9 +126,9 @@ One solution is to:
 
 - move the `EventEmitter<T>` to a service;
 - replace that `EventEmitter<T>` with `Subject<T>` - it works pretty much the
-  same, but is more functional (read [here](./observables#subject)).
-  `EventEmitter<T>` would still work if for some reason we want to keep using
-  that.
+  same, but is more functional (read
+  [here](/programming/angular/observables#subject)). `EventEmitter<T>` would
+  still work if for some reason we want to keep using that.
 
 Then, both the even producer and consumer inject that service. The producer can
 raise the event via the service:

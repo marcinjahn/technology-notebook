@@ -34,8 +34,9 @@ They do something with the "outside world".
 
 :::tip[Arguments order]
 For the functions to be usable with [Patrial
-Application](./partial-application), it makes sense to order the arguments
-from the most generic ones to the most specific ones.
+Application](/programming/functional-programming/partial-application), it makes
+sense to order the arguments from the most generic ones to the most specific
+ones.
 
 ```csharp
 // GOOD - Apply can be easily used
@@ -91,7 +92,7 @@ ValueTuple DoSomething()
 ## Option
 
 In FP we never use `null`. Instead, `Option<T>` is used. It makes signatures
-[honest](./signatures#honesty).
+[honest](/programming/functional-programming/signatures#honesty).
 
 `Option<T>` is a union of `Some(T)` and `None`.
 

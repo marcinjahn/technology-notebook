@@ -10,7 +10,7 @@ import { Image } from 'astro:assets';
 # Directives
 
 Directives are a way to kind of decorate HTML element with some additional
-logic. Similarly to [Components](./components), they can be applied to
+logic. Similarly to [Components](/programming/angular/components), they can be applied to
 element using:
 
 - attributes (most often used)
@@ -183,7 +183,7 @@ A few highlights:
 - the `elementRef` in the constructor is the element that the directive was
   applied to. It gets injected into the instance automatically by Angular. The
   name can be whatever we want, just the type needs to be `ElementRef`.
-- it's a good idea to use [Renderer2](./tips#renderer2).
+- it's a good idea to use [Renderer2](/programming/angular/tips#renderer2).
 - we can do something with our element. `ngOnInit` lifecycle hook is a good
   place to do it.
 
@@ -213,8 +213,8 @@ class MyDirective {
 ### @HostBinding
 
 There's an even easier way to modify DOM properties than using
-[references](./tips#references-to-html-elements) or
-[Renderer2](./tips#renderer2). It's a decorator called `HostBinding`. It
+[references](/programming/angular/tips#references-to-html-elements) or
+[Renderer2](/programming/angular/tips#renderer2). It's a decorator called `HostBinding`. It
 allows to bind to a specified property on the DOM element to access it easily.
 
 Here's an example:
@@ -244,14 +244,14 @@ Another example shows how we can toggle a class on some element:
 Setting `isOpen` to `true` adds the class `open` to the element.
 
 :::tip[Renderer2]
-There's nothing wrong with using [Renderer2](./tips#renderer2). It's just
+There's nothing wrong with using [Renderer2](/programming/angular/tips#renderer2). It's just
 another convenient way to access the DOM.
 :::
 
 ### Directive's Inputs
 
 Our directives can support some input arguments, very similarly to the way how
-[Components](./components) accept inputs. This way, users of the directive can
+[Components](/programming/angular/components) accept inputs. This way, users of the directive can
 have some influence on how it works.
 
 Here's an example:
@@ -331,7 +331,7 @@ their own individual names.
 
 :::tip[@Output]
 Other than `@Input`s, directives can also have `@Output`s. That makes them even
-more similar to [Components](./components).
+more similar to [Components](/programming/angular/components).
 :::
 
 ### Custom Structural Directives

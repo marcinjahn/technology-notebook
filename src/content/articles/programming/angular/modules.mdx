@@ -22,8 +22,8 @@ A proper organization of code between modules results in:
 - better performance (when lazy loading is used)
 
 :::caution[Standalone Components]
-[Standalone Components](./standalone-components.mdx) do not require modules
-to be there!
+[Standalone Components](/programming/angular/standalone-components.mdx) do not
+require modules to be there!
 :::
 
 Angular itself bundles its various parts into modules. Here are some examples:
@@ -46,8 +46,8 @@ The `NgModule` decorator has the following options:
   :::
 
 - **imports** - here, we pull in other modules (or other things if [Standalone
-  Components](./standalone-components) are being used), either provided by
-  external parties (e.g. Angular itself) or our own modules.
+  Components](/programming/angular/standalone-components) are being used),
+  either provided by external parties (e.g. Angular itself) or our own modules.
 - **exports** - a way to expose some entities to the other modules (those that
   will import the current module). E.g., if I export `RouterModule` from
   `SomeModule`, any module that imports `SomeModule` may use `RouterModule`'s
@@ -60,8 +60,8 @@ The `NgModule` decorator has the following options:
   property.
 - **bootstrap** - defines the starting component(s) (usually `AppComponent`)
 - **entryComponents** - *deprecated*, it was used for [dynamic
-  modules](./components#instantiating-components-from-typescript) in the
-  past.
+  modules](/programming/angular/components#instantiating-components-from-typescript)
+  in the past.
 
 ## Organizing Code into Modules
 

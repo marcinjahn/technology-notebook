@@ -80,11 +80,11 @@ tree of that component.
 Providing a service via the `AppComponent` makes it a singleton among all
 components (since `AppComponent` is usually the root of any Angular app).
 
-Providing a service in ANY [eager-loaded module](./modules#lazy-loading)
+Providing a service in ANY [eager-loaded module](/programming/angular/modules#lazy-loading)
 (e.g., `AppModule`), makes it a **global singleton** (for both all the components
 and services). T
 
-Providing a service in a [lazy-loaded module](./modules#lazy-loading), makes
+Providing a service in a [lazy-loaded module](/programming/angular/modules#lazy-loading), makes
 that service available in entities declared within that module only. If some
 service is provided both globally and in lazy-loaded module, the lazy-loaded
 module (and its entities) will get its own instance of that service.
@@ -94,7 +94,7 @@ We can also decide that some service should be a singleton on this service's
 level via the `@Injectable({provideIn: 'root'})` decorator. Then, we don't have
 to put it in any `providers` array.
 
-This method cannot be used with [interceptors](./http#interceptors).
+This method cannot be used with [interceptors](/programming/angular/http#interceptors).
 They have to be provided in a module.
 :::
 

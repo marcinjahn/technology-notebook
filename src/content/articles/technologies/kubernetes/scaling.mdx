@@ -18,9 +18,10 @@ Additionally, we need a way to keep pods running in case some node fails.
 
 ReplicaSet allows us to create a group of pod replicas, instead of just one pod.
 The pods managed by the ReplicaSet are selected using an immutable label
-`selector` (similarly to [Services](./services)). There is also a `template`,
-which defines the pod(s) that will be created under ReplicaSet. Such a pod has
-to conform to the *selector* specified by the ReplicaSet. 
+`selector` (similarly to [Services](/technologies/kubernetes/services)). There
+is also a `template`, which defines the pod(s) that will be created under
+ReplicaSet. Such a pod has to conform to the *selector* specified by the
+ReplicaSet. 
 
 :::tip[Existing Pods]
 If some pods matching the selector already existed prior to the creation of the

@@ -255,9 +255,9 @@ content that we pass into it is just lost.
 ### @ViewContent
 
 We might need to access some HTML element that is passed to our component as a
-child. We can't do that with [@ViewChild](./tips#viewchild), because it can
-only be used for elements that belong to our component directly. There's another
-decorator though - `@ViewContent`.
+child. We can't do that with [@ViewChild](/programming/angular/tips#viewchild),
+because it can only be used for elements that belong to our component directly.
+There's another decorator though - `@ViewContent`.
 
 Here's an example:
 
@@ -294,7 +294,7 @@ would not be even initialized yet. It will be initialized in the
 - `ngOnInit` - fired once the component is initialized. It's not yet displayed,
   but the object for it was created in memory (the constructor finished its
   execution at this point). Accessing DOM elements from here (e.g. via
-  [references](./tips#references-to-html-elements)) might not give us the
+  [references](/programming/angular/tips#references-to-html-elements)) might not give us the
   expected result since they might not be initialized yet. It's better to use
   `ngAfterViewInit` for that.
 - `ngOnChanges` - fired when the component is initialized and also each time any

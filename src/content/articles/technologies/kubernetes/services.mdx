@@ -129,7 +129,7 @@ Additionally, original client's IP is lost due to these hops.
 
 :::caution
 The Load Balancer service allows to exposes just one service outside under a
-single IP address. [Ingresses](./ingress) remove that limitation.
+single IP address. [Ingresses](/technologies/kubernetes/ingress/) remove that limitation.
 :::
 
 ## Endpoints
@@ -156,7 +156,7 @@ a selector from a Service and creating Endpoints object that would work. The
 pods wouldn't notice any difference. We could also do the opposite.
 
 Availability of a given pod in Endpoints object depends from the status of the
-[readiness probe](./pods.html#readiness-probe) of that pod. If it's not ready,
+[readiness probe](/technologies/kubernetes/pods/#readiness-probe) of that pod. If it's not ready,
 it'll be moved to `notReadyAddresses` in the Endpoints object. Readiness of pods
 may also be ignored by Services with proper configuration. Additionally, K8s
 automatically removes pods that are being shut down from Endpoints.

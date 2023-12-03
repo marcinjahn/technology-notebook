@@ -369,7 +369,7 @@ effect that:
    state change.
 
 In some cases though, effects do not emit any actions. Instead, an effect could
-use a [Router](./routing) to redirect the user somewhere else. To do that,
+use a [Router](/programming/angular/routing) to redirect the user somewhere else. To do that,
 the `createEffect` function needs to be provided with a second argument:
 
 ```ts
@@ -388,7 +388,7 @@ store to receive the books as soon as they arrive.
 ### Accessing State
 
 Accessing state within an action is possible with the `withLatestFrom`
-[RxJs](./observables) operator. It joins the original observable with data
+[RxJs](/programming/angular/observables) operator. It joins the original observable with data
 from some another observable (like some state selector).
 
 ## Extra Packages
@@ -408,10 +408,10 @@ to see in detail what happens with the store:
 
 An offical package from NgRx
 [@ngrx/router-store](https://www.npmjs.com/package/@ngrx/router-store) is an
-addition that emits [actions](#actions) based on [Router](./routing)'s
-activity. Whenever some navigation happens, etc., a specific action type is
-emitted with some payload, allowing us to react to it in our actions or
-reducers. 
+addition that emits [actions](#actions) based on
+[Router](/programming/angular/routing)'s activity. Whenever some navigation
+happens, etc., a specific action type is emitted with some payload, allowing us
+to react to it in our actions or reducers. 
 
 ## The Old API
 

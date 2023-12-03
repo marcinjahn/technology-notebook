@@ -15,7 +15,7 @@ Vue.js or React, which do not provide such tooling.
 In order to use the built-in client, it needs to be imported into your module.
 You need to import the `HttpClientModule`. With that in place, we can inject the
 HTTP client into our classes, kind of similar to how we'd do in
-[.NET](../dotnet/http-client).
+[.NET](/programming/dotnet/http-client).
 
 ```ts
 export class MyComponent {
@@ -38,8 +38,9 @@ httpClient.post<Person>('api.com', { name: 'Marcin' })
 ```
 
 By default, all these methods return an `Observable`. We can use
-[operators](./observables#operators) on them. [Error
-handling](./observables#error-handling) is also the same as in `Observables`.
+[operators](/programming/angular/observables#operators) on them. [Error
+handling](/programming/angular/observables#error-handling) is also the same as
+in `Observables`.
 
 :::caution
 The requests will actually NOT be sent out if nothing subscribes to 
@@ -132,7 +133,7 @@ Here's how we register interceptors. In the module, we'd do:
 export class AppModule {}
 ```
 
-What we're doing above is just the [DI](./services). We treat
+What we're doing above is just the [DI](/programming/angular/services). We treat
 `HTTP_INTERCEPTORS` as a placeholder for actual interceptors. Angular's inner
 code asks for `HTTP_INTERCEPTORS` and it is given whatever we register.
 
