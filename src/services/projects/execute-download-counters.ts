@@ -18,4 +18,4 @@ export async function executeDownloadCounters(project: ProjectDefinition)
   }), {downloads: 0, source: INTRO} as DownloadsCounterResult);
 }
 
-const INTRO = "Data collected from: "
+const INTRO = "Downloads - data collected from: "
