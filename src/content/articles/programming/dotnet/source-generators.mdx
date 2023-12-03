@@ -1,0 +1,79 @@
+---
+title: Source Generators
+description: Source Generators in .NET C#
+tags: [".net", "asp.net", "C#", "csharp", "dotnet", "source generator"]
+lang: en-US
+---
+
+import { Image } from 'astro:assets';
+
+# Source Generators
+
+Source Generators is a feature that allows us to generate new code, based on
+existing (written by us) code (and other files). The generation happens at compile time.
+
+:::caution
+Source Generator cannot edit existing code! It can only add new code (e.g., new
+classes).
+:::
+
+Generation can happen not only based on source code, but also based on other
+kinds of files, like `.txt` files for example. E.g., a txt file containing a
+list of words could be there, and some enum could be generated based on that.
+
+It's often needed to extend some existing class via source generation. In order
+for a class to be extensible this way, it has to be `partial`. Since source
+generator can only add new code, and cannot modify existing source, this is the
+only way to extend existing classes.
+
+:::tip
+Source Generator could even generate code based on some database entries, or
+some webservice response! Note that such generator could have a serious impact
+on IDE experience!
+:::
+
+Source Generators run during compilation. When working on a project in an IDE,
+projects could be often built, and sevice generators could be invoked often.
+Performance could become an issue (of developer workflow only, since runtime will not
+be hit by that!)
+
+## Incremental Generators
+
+Starting with .NET 6, source generator classes have to:
+
+- implement the
+  [IIncrementalGeneretor](https://learn.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.iincrementalgenerator)
+  interface
+- have the `[Generator]` attribute
+
+Incremental Generator is a pipeline of operations that lead to new source code
+generation. An important part of it is *memoization*. Stages of the pipeline
+utilize caching. This is due to the feet that every code change triggers
+compilation in IDE. To not kill performance, incremental generator will only run
+these stages of the pipeline that will produce different results than before.
+
+## Interesting Use Cases
+
+### Performant Logging
+
+The `Microsoft.Extensions.Logging` package from Microsoft has a built-in support
+for [source-generated
+logs](https://learn.microsoft.com/en-us/dotnet/core/extensions/logger-message-generator).
+
+### Faster Enum to String
+
+Andrew Lock has created a
+[NetEscapades.EnumGenerators](https://github.com/andrewlock/NetEscapades.EnumGenerators)
+package, that will auto-generate (among other things) `ToStringFast()` methods
+for each enum marked with `[EnumExtensions]` attribute. It is much faster than
+reflection-based `ToString()`.
+
+---
+
+Many other useful generators are listed
+[here](https://github.com/amis92/csharp-source-generators).
+
+## References
+
+- [Series: Creating a source generator (Andrew
+Lock)](https://andrewlock.net/series/creating-a-source-generator/)

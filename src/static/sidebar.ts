@@ -31,6 +31,7 @@ const structure: Sidebar = {
                 "dotnet/garbage-collector",
                 "dotnet/il-and-allocations",
                 "dotnet/grpc",
+                "dotnet/source-generators",
                 "dotnet/platform-invoke",
                 {
                     title: "ASP.NET Core",
