@@ -22,6 +22,7 @@
     "astro": "^3.0.6",
     "astro-auto-import": "^0.3.1",
     "astro-diagram": "^0.7.0",
+    "astro-expressive-code": "^0.29.2",
     "cheerio": "^1.0.0-rc.12",
     "chroma-js": "^2.4.2",
     "html-escaper": "^3.0.3",
@@ -35,7 +36,7 @@
     "unist-util-remove": "^3.1.1"
   },
   "devDependencies": {
-    "@astrojs/partytown": "^1.2.0",
+    "@astrojs/partytown": "^1.2.3",
     "astro-themes": "^0.2.4"
   }
 }

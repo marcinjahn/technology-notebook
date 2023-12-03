@@ -91,16 +91,7 @@ ul {
   border-radius: 4px !important;
   font-size: 0.9rem;
   padding: 0.1rem 0.3rem;
-}
-
-/* Code blocks */
-pre.astro-code {
-    margin: 1rem 0 !important;
-    padding: 1rem !important;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  white-space: nowrap;
 }
 
 .article table, th, td {
@@ -129,4 +120,8 @@ main img {
 main hr {
     margin: 2rem 0;
     color: var(--border-color);
+}
+
+.expressive-code {
+    margin: 1rem 0;
 }
