@@ -13,13 +13,14 @@ export class ChromeExtensionsDownloadsCounter implements DownloadsCounter {
 
     return await response.text().then(text => {
       const $ = cheerio.load(text);
-      const users = $(`a.value[href="/d/${this.extensionId}/trends"]`).html();
 
-      if (!users) {
+      const extractedText = $(`.left-panel a[href="/d/${this.extensionId}/trends"]`).first().text().trim().replaceAll(',', '');
+
+      if (!extractedText) {
         throw new Error('Could not find the HTML node representing active users on Chrome Web Store');
       }
 
-      const downloadsNumber = parseInt(users.trim());
+      const downloadsNumber = parseInt(extractedText);
 
       return {
         downloads: downloadsNumber,
