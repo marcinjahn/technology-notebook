@@ -1,0 +1,64 @@
+---
+title: Stack and Heap
+description: What are stack and heap, how they works, and why they even exist
+tags: ["programming", "stack", "heap"]
+lang: en-US
+---
+
+# Stack and Heap
+
+In programming, or memory management, we often talk about placing our data
+either on **stack** or **heap**. Here are some key differences between them:
+
+- placing data on the stack is faster than doing so on the heap
+- stack is local to the currently executing function, while the heap is "global"
+- memory allocated on the heap is linked to via a pointer/reference placed on
+  the stack. This pointer/reference can than be cloned or moved around between
+  different functions.
+
+Various programming languages often allow us to choose where to store the data.
+The usual default is to store smaller pieces of data on the stack, and put
+larger amounts of data on the heap. Stack's size is pretty small compard to
+heap.
+
+## Stack Machine
+
+"Stack" is not just a region of memory. This word sometimes also refers to an
+architecture of Stack Machine. CPUs (and VMs) have built-in support for stacks,
+meaning that their instruction sets include special instructions for
+manipulating the stack (i.e., push, pop). It is a convenience that compilers use
+for implementing function calls. Each function call creates a **stack frame**.
+Such a frame contains all the data local to a given function execution:
+
+- arguments passed into the function
+- return value
+- return address
+
+Anytime some function is called, a new stack frame is created. Anytime a
+function returns, its stack frame is gone (or rather, stack pointer gets
+decremented). Too many recursive calls will obviously cause a *stack overflow*,
+since stack has some predefined size.
+
+### Stack size
+
+The size of the stack is defined during compilation, or at runtime, so the value
+will vary depending on what toolchain was used to build the program, and what
+the execution environment (i.e., the OS) is.
+
+## Heap
+
+We place data on the heap when:
+
+- it's big (stack could be too small to hold it)
+- it's going to be used by multiple functions (then placing in on the stack
+  would incur copying it to new stack frames lots of times)
+
+Memory on the heap needs to be **allocated**. There are various strategies of
+how to allocate data on the heap, every program can have its own way of doing
+that. Allocators take care of things such as memory defragmentation.
+
+
+## Resources
+
+- [Why Stack Exists (YouTube)](https://www.youtube.com/watch?v=hKXNr8oAkk8)
+- [Memory Allocation at samwho.dev](https://samwho.dev/memory-allocation/)

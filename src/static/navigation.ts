@@ -10,7 +10,7 @@ export const mainNavigation: NavigationItem[] = [
     { name: "Home", path: "/" },
     {
         name: "Programming",
-        path: "/programming/dotnet/http-client",
+        path: "/programming/core/programs-execution",
         rootPath: "/programming",
     },
     {

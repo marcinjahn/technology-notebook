@@ -11,6 +11,14 @@ export interface Sidebar {
 const structure: Sidebar = {
     "/programming/": [
         {
+            title: "Core",
+            icon: "core.webp",
+            children: [
+                "core/programs-execution",
+                "core/stack-and-heap"
+            ]
+        },
+        {
             title: ".NET",
             icon: "dotnet.webp",
             children: [
