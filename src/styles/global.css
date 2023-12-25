@@ -125,3 +125,7 @@ main hr {
 .expressive-code {
     margin: 1rem 0;
 }
+
+p:not(:first-child)  {
+ margin-top: 1rem;
+}
