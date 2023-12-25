@@ -1,0 +1,177 @@
+---
+title: OOP in C
+description: Object-Oriented Programming (OOP) in the C language
+lang: en-US
+tags: ["c", "programming", "oop", "object-oriented programming"]
+---
+
+# Object-Oriented Programming in C
+
+C is a procedural language, it does not support OOP principles, like
+inheritance, or polymorphism. There are various approaches to kind of add OOP
+into C. All of them are different variants of [type
+punning](https://en.wikipedia.org/wiki/Type_punning).
+
+All these approaches are inherently unsafe. Compiler will not catch all of the
+issues, the program will just explode in the runtime (most likely "Segmentation
+Fault").
+
+## Using Union
+
+This simples approach allows us to add some kind of polymorphism into C.
+
+Here's a simple example:
+
+```c
+#include <string.h>
+
+enum Type {
+    PERSON,
+    STUDENT,
+    WORKER
+};
+
+struct Person {
+    enum Type type;
+    int age;
+};
+
+struct Student {
+    enum Type type;
+    int age;
+    char faculty[20];
+};
+
+struct Worker {
+    enum Type type;
+    int age;
+    char* job;
+};
+
+union Object {
+    struct Person person;
+    struct Student student;
+    struct Worker worker;
+};
+
+int main() {
+    union Object object;
+
+    object.student.type = STUDENT;
+    object.student.age = 20;
+    strcpy(object.student.faculty, "Electrical Engineering");
+
+    DoSomething(object);
+}
+
+void DoSomething(union Object object) {
+    switch(object.person.type) {
+        case PERSON:
+            // do something...
+            break;
+        case STUDENT:
+            // do something...
+            break;
+        case WORKER:
+            // do something...
+            break;    
+    }
+}
+```
+
+A few points to note:
+
+- we have a base type (`Person`) and two "deriving" types: `Student` and `Worker`.
+- the base type's members have to be repeated in every "inheriting" type (in the
+  exact same order!). This is due to the fact that we're using a union, and the
+  memory layout should be the same in every "derived" type. Any change in the
+  base type requires changes in derived types (unsafe).
+- we can recognize what the actual type is in the runtime via an enum.
+- there's only one level of inheritance
+
+:::tip[GTK]
+[GTK](/programming/gtk/overview) Events use this exact approach! The base type
+looks [as follows](https://api.gtkd.org/gdk.c.types.GdkEventAny.html):
+
+```c
+struct GdkEventAny {
+    GdkEventType type;
+    GdkWindow* window;
+    byte sendEvent;
+};
+```
+
+Every event has these members repeated, like we've seen in the simple example above.
+The union type is [GdkEvent](https://docs.gtk.org/gdk3/union.Event.html).
+:::
+
+## Using Parent Member
+
+Let's look at a different approach that uses composition:
+
+```c
+#include <string.h>
+
+enum Type {
+    PERSON,
+    UNIVERSITY_WORKER,
+    PROFESSOR
+};
+
+struct Person {
+    enum Type type;
+    int age;
+};
+
+struct UniversityWorker {
+    struct Person parent;
+    char faculty[20];
+};
+
+struct Professor {
+    struct UniversityWorker parent;
+    unsigned int office_number;
+};
+
+int main() {
+    struct Professor prof;
+    prof.parent.parent.type = PROFESSOR;
+    prof.parent.parent.age = 43;
+    strcpy(prof.parent.faculty, "Electrical Engineering");
+    prof.office_number = 52;
+
+    struct Person* person = (struct Person*)&prof;
+
+    DoSomething(person);
+}
+
+void DoSomething(struct Person* person) {
+    switch(person->type) {
+        case PERSON:
+            // do something...
+            break;
+        case UNIVERSITY_WORKER:
+            // do something...
+            break;
+        case PROFESSOR:
+            // do something...
+            break;    
+    }
+}
+```
+
+Notes:
+
+- this time, we have an inheritance chain: `Base` -> `UniversityWorker` ->
+  `Professor` (multiple levels of inheritance).
+- we're using pointer casting to treat `Professor` as a `Person` (unsafe)
+
+:::tip[GObject]
+This approach is a basis of how [GObject](/programming/gtk/overview) is built.
+The dirty bits are hidden behind macros that the apps built using GTK utilize.
+:::
+
+## Resources
+
+- [Dive into GObject (YouTube)](https://www.youtube.com/watch?v=jg6gFshtJlo)
+- [Type Punning (Wikipedia)](https://en.wikipedia.org/wiki/Type_punning)

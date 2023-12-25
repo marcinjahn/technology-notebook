@@ -1,0 +1,167 @@
+---
+title: GObject
+description: The core of GTK - GLib and GObject
+tags: ["gtk", "gobject", "glib", "adwaita", "gjs", "linux", "binding"]
+lang: en-US
+---
+
+# GObject
+
+GObject is a library that is a base for many other Gnome libraries (like GTK).
+It is a common base layer providing [OOP paradigm to the C
+language](/programming/c/oop-in-c). It may be seen as an alternative to C++ or
+Objective C, since it enables developers to create classes, but in this case,
+directly in C (however, in a rather tedious way, since it's still "just" C)!
+
+GObject is a part of [GLib](https://wiki.gnome.org/Projects/GLib) and uses the
+same version numbers. GLib contains:
+
+- GObject - type system
+- GThread - threading
+- GIO - I/O operations
+- others...
+
+:::tip[QT]
+A kind of similar thing to GLib in the KDE world is
+[QtCore](https://doc.qt.io/qt-6/qtcore-index.html), although QT is a C++
+framework so it skips the entire "OOP in C" mess.
+:::
+
+Some features of GObject that are often used in GTK apps are:
+
+- the `GObject` root base type
+- signals (like events in .NET)
+
+## History
+
+GObject has been created in the 90s, and the design hasn't changed much since
+then. It's been created before C++ has been standardized (and probably this is
+why it was even created instead of just using C++).
+
+GObject was originally a part of GIMP Toolkit, which was created for GIMP.
+Later, GTK was extracted from GIMP to become a standalone thing.
+
+## Implementation
+
+The base type of all types in GTK is
+[GTypeInstance](https://docs.gtk.org/gobject/struct.TypeInstance.html) (also
+GObject inherits from it). However, we usually use `GObject` as a base when we want to
+refer to anything in the GTK world, since it implements the core things such as
+signals or properties (it's a bit more complicated than that).
+
+### Instances and Classes
+
+GTK types have separate structs for instances and classes, e.g. there is
+`GObject` (instance) and `GObjectClass`. The stuff in `GObjectClass` is shared
+among all GObjects (a list of signals, properties, CSS classes, etc.), while
+`GObject` contains instance-specific data.
+
+Here's an example of types that we could find in GLib:
+
+```c
+struct GObject {
+    struct GTypeInstance parent_instance;
+};
+
+struct GObjectClass {
+    struct GTypeClass parent_instance;
+};
+
+struct GtkWidget {
+    struct GtkObject parent_instance;
+};
+
+struct GtkWidgetClass {
+    struct GtkObjectClass parent_instance;
+};
+
+struct GtkButton {
+    struct GtkWidget parent_instance;
+};
+
+struct GtkButtonClass {
+    struct GtkWidgetClass parent_instance;
+};
+```
+
+The "Thing" and "ThingClass" structs are connected via `GTypeInstance` and
+`GTypeClass`:
+
+```c
+struct GTypeClass {
+  //....
+};
+
+struct GTypeInstance {
+    struct GTypeClass* g_class;
+};
+```
+
+So, for example, every instance of `GtkButton` will have a pointer to a (common)
+instance of `GtkButtonClass`. There're even macros that allow us to retrieve a
+ThingClass from Thing, like
+[GTK_BUTTON_GET_CLASS](https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gtk/gtkbutton.h#L41),
+(it's an equivalent of `((GTypeInstance*)instance)->g_type`).
+
+There are lots of other macros, some of them just cast one type to another to
+make the code more readable (plus, they can do some type checks for safety).
+
+### Registration
+
+Every type in the GObject inheritance tree (also our custom types) needs to be
+registered. When registering we need to provide a bunch of information:
+- what is the size of the instance
+- what is the size of the [class](#instances-and-classes)
+- what's the init function of the instance type
+- what's the init function of the class type
+
+:::tip
+Well, actually we don't need to provide all this information, because there's a
+[G_DEFINE_TYPE macro](https://docs.gtk.org/gobject/func.DEFINE_TYPE.html) that
+takes care of that, making it as simple as it can be, also verifying that we do
+not register the same type mulitple times, taking care of thread-safety, and so
+on.
+:::
+
+Thanks to the registration, the instantation of the new objects of the
+registered type will be simplified later on, and it will properly setup the new
+object using the GObject type system. Otherwise, we'd have to do a bunch of
+things manually, probably making some mistakes in the process, and also making
+the code completely unreadable.
+
+The registration process requires us to follow some conventions, like creating a
+duet of instance and class types that we talked about before (and the class type
+needs to have `Class` postfix!)
+
+The registration returns a `GType`.
+
+## Bindings
+
+The GObject libraries are written in the C language. However, there are a bunch
+of bindings for many other programming languages that open the toolkit to a vast
+group of developers. Examples of supported languages include:
+
+- C (obviously)
+- [JavaScript](https://gjs.guide/)
+- Python
+- [Rust](https://gtk-rs.org/)
+- [Vala](https://vala.dev/)
+- [C#](https://github.com/gircore/gir.core)
+- and more...
+
+Since there is a lot of GObject-based libraries, there is an established way of
+generating bindings for them - [GObject
+Introspection](https://gi.readthedocs.io/en/latest/). The bindings, under the
+hood, call the C libraries code via mechanisms similar to
+[PInvoke](/programming/dotnet/platform-invoke/).
+
+:::tip
+GTK is a base for many other GUI frameworks, often those that taget multiple
+operating systems (like [Avalonia UI](https://avaloniaui.net/) or
+[Tauri](https://github.com/tauri-apps/tauri)).
+These frameworks often rely on GTK 3, since GTK 4 is still relatively new.
+:::
+
+## References
+
+- [Dive into GObject (YouTube)](https://www.youtube.com/watch?v=jg6gFshtJlo)

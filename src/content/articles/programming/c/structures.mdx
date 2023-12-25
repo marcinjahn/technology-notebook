@@ -1,0 +1,138 @@
+---
+title: Structures
+description: Classes and Structs in C and C++
+lang: en-US
+tags: ["c", "programming", "c++", "class", "struct", "union", "oop"]
+---
+
+import { Image } from 'astro:assets';
+
+# Structures
+
+The C programming language has structs (and unions). C++ offers structs and
+classes (and unions). Here's a bit of an overview of these constructs.
+
+## C
+
+### Structs
+
+```c
+struct MyStructure {
+  int myNum;
+  char myLetter;
+};
+
+int main() {
+  struct MyStructure s1;
+  s1.myNum = 13;
+  s1.myLetter = 'B';
+
+  return 0;
+} 
+```
+
+C's structs are quite different from C++ structs, they are more limited.
+
+Some key points:
+
+- only data members can be used, no methods!
+- no constructors or destructors
+- no access modifiers, hence no encapsulation
+- may be referred to by pointer only, no references
+
+That's basically it, structs are a way to group related data (not functionality)
+together.
+
+#### Typedef
+
+Sometimes, you can find structs defined using the `typedef` keyword, like this:
+
+```c
+typedef struct {
+  int myNum;
+  char myLetter;
+} MyStructure;
+```
+
+It's basically the same thing as the previous example. `typedef` is used to apply a custom name to any type, e.g.:
+
+```c
+typedef unsigned int AGE;
+```
+
+### Unions
+
+Unions allow us to specify a structure with multiple members, where only one of
+those members is valid at a time. Any member of a union is stored in the same
+location in memory, so setting any of the members actually overwrites the
+previous member that was set.
+
+The purpose of this structure type is to save memory on systems where that resource is
+very limited (embedded systems).
+
+Here's a small example:
+
+```c title="Code"
+#include <stdio.h>
+#include <string.h>
+ 
+union MyUnion {
+   int some_int;
+   char some_string[20];
+};
+ 
+int main( ) {
+
+   union MyUnion my_union;        
+
+   my_union.some_int = 24;
+   strcpy( my_union.some_string, "Whatever");
+
+   printf( "my_union.some_int : %d\n", my_union.some_int);
+   printf( "my_union.some_string : %s\n", my_union.some_string);
+
+   return 0;
+}
+```
+
+```sh title="cout"
+my_union.some_int : 1952540759
+my_union.some_string : Whatever
+```
+
+As you can see, only the `some_string` member has a valid value. The integer
+got messed up, because it's reading the same memory location where a "Whatever"
+was written, overwriting the original value - `24`.
+
+:::tip[Size]
+The size of a union instance is the size of the biggest member of the union.
+:::
+
+## C++
+
+C++ is an Object-Oriented Programming language (although it could be considered
+multi-paradigm). It has both structs and classes. There is just one difference
+between them:
+
+> Structs have their members public by default, while classes have their members 
+> private by default.
+
+Other than that, structs and classes are pretty much the same.
+Some features:
+
+- they can hold data
+- they can have methods
+- they can have constructors/destructors
+- they may be referred to by pointer or a reference
+- they support access modifiers
+
+You can find opinions that a `class` is supposed to be used to hold data
+and functionality, while a `struct` is for related data, similarly to C.
+
+Personally, I think that in the ideal world, there would be just one - either a
+class or a struct. I think the only reason to have both is:
+
+1. Structs, with their syntax would be kept compatible with C (assuming we don't
+   use methods, and other non-C things) where everything is public.
+2. Classes are supposed to be the "ideal" OOP construct, introduced for those
+   who want to write new programs in an OOP style.

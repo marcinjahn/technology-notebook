@@ -140,8 +140,9 @@ const structure: Sidebar = {
             title: "C/C++",
             icon: "c.webp",
             children: [
-                "c/classes",
                 "c/compilation",
+                "c/structures",
+                "c/oop-in-c",
                 "c/pointers",
                 "c/strings",
                 "c/dynamic-memory",
@@ -151,7 +152,7 @@ const structure: Sidebar = {
         {
             title: "GTK",
             icon: "gtk.webp",
-            children: ["gtk/overview", "gtk/gjs"],
+            children: ["gtk/overview", "gtk/gobject", "gtk/gjs"],
         },
         {
             title: "CSS",
