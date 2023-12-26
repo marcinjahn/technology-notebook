@@ -36,9 +36,9 @@ C's structs are quite different from C++ structs, they are more limited.
 Some key points:
 
 - only data members can be used, no methods!
-- no constructors or destructors
-- no access modifiers, hence no encapsulation
-- may be referred to by pointer only, no references
+- they can have no constructors or destructors
+- they cannot have access modifiers, hence no encapsulation
+- they may be referred to by pointer only, no references
 
 That's basically it, structs are a way to group related data (not functionality)
 together.
@@ -127,9 +127,9 @@ Some features:
 - they support access modifiers
 
 You can find opinions that a `class` is supposed to be used to hold data
-and functionality, while a `struct` is for related data, similarly to C.
+and functionality, while a `struct` is for related data, similar to C.
 
-Personally, I think that in the ideal world, there would be just one - either a
+I think that in the ideal world, there would be just one - either a
 class or a struct. I think the only reason to have both is:
 
 1. Structs, with their syntax would be kept compatible with C (assuming we don't

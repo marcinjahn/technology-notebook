@@ -98,7 +98,7 @@ struct GTypeInstance {
 ```
 
 So, for example, every instance of `GtkButton` will have a pointer to a (common)
-instance of `GtkButtonClass`. There're even macros that allow us to retrieve a
+instance of `GtkButtonClass`. There are even macros that allow us to retrieve a
 ThingClass from Thing, like
 [GTK_BUTTON_GET_CLASS](https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gtk/gtkbutton.h#L41),
 (it's an equivalent of `((GTypeInstance*)instance)->g_type`).
@@ -119,14 +119,14 @@ registered. When registering we need to provide a bunch of information:
 Well, actually we don't need to provide all this information, because there's a
 [G_DEFINE_TYPE macro](https://docs.gtk.org/gobject/func.DEFINE_TYPE.html) that
 takes care of that, making it as simple as it can be, also verifying that we do
-not register the same type mulitple times, taking care of thread-safety, and so
+not register the same type multiple times, taking care of thread safety, and so
 on.
 :::
 
 Thanks to the registration, the instantation of the new objects of the
-registered type will be simplified later on, and it will properly setup the new
+registered type will be simplified later on, and it will properly set up the new
 object using the GObject type system. Otherwise, we'd have to do a bunch of
-things manually, probably making some mistakes in the process, and also making
+things manually, probably making some mistakes in the process and also making
 the code completely unreadable.
 
 The registration process requires us to follow some conventions, like creating a
@@ -149,14 +149,14 @@ group of developers. Examples of supported languages include:
 - [C#](https://github.com/gircore/gir.core)
 - and more...
 
-Since there is a lot of GObject-based libraries, there is an established way of
+Since there are a lot of GObject-based libraries, there is an established way of
 generating bindings for them - [GObject
 Introspection](https://gi.readthedocs.io/en/latest/). The bindings, under the
 hood, call the C libraries code via mechanisms similar to
 [PInvoke](/programming/dotnet/platform-invoke/).
 
 :::tip
-GTK is a base for many other GUI frameworks, often those that taget multiple
+GTK is a base for many other GUI frameworks, often those that target multiple
 operating systems (like [Avalonia UI](https://avaloniaui.net/) or
 [Tauri](https://github.com/tauri-apps/tauri)).
 These frameworks often rely on GTK 3, since GTK 4 is still relatively new.

@@ -21,7 +21,7 @@ The declaration looks as follows:
 float *my_pointer
 ```
 
-The pointer is defined with the type of the value that it points to. This is
+The pointer is defined by the type of the value that it points to. This is
 helpful, because:
 
 - we can do various arithmetic operations on pointers (e.g. `++` will result in
@@ -30,7 +30,7 @@ helpful, because:
   pointer points to and how to interpret them (e.g. `int` and `float` both take
   4 bytes, but the same contents mean different values)
 
-The "star" sign may be placed adjacent to the type or to the name, or to both:
+The "star" sign may be placed adjacent to the type, or to the name, or both:
 
 ```c
 int *pointer;
@@ -41,7 +41,7 @@ int*pointer3;
 :::tip[Smart Pointers in C++]
 C++ additionally has **Smart Pointers**, which are like pointers with added
 reference counting. When the data pointed to by the pointer goes out of scope,
-the value gets deleted automatically. Depending who you ask you might hear that
+the value gets deleted automatically. Depending on who you ask you might hear that
 this is a form of garbage collection.
 
 Smart pointers might be *shared* or *unique* - the latter one is a bit similar
@@ -69,7 +69,7 @@ A pointer stores an address to some value in memory:
 
 <Image src={pointerInMemory} alt=""/>
 
-Pointer itself also has an address in memory, it also is some variable.
+The pointer itself also has an address in memory, it also is some variable.
 In the case above, `&p` is `64`.
 
 ### Variables
@@ -93,14 +93,14 @@ int *pointer;
 pointer = &number; // address where value 10 is stored
 
 // Dereferencing
-int number_copy = *pointer; // returns value stored under the address that the pointer contains
+int number_copy = *pointer; // returns the value stored under the address that the pointer contains
 
 *pointer = 20; //updates the value of the `number` variable
 ```
 
 ### Arrays
 
-Array can be treated as a pointer to **the first element** that it contains.
+An array can be treated as a pointer to **the first element** that it contains.
 
 ```c
 int array[] = {1, 2, 3};
@@ -125,10 +125,10 @@ Simply:
 An array variable cannot have its value set to some pointer!
 
 ```c
-array = pointer; //wrong!
+array = pointer; // wrong!
 ```
 
-Therefore array variable is not the same as pointer.
+Therefore array variable is not the same as the pointer.
 :::
 
 #### Multi-dimensional Arrays
@@ -137,7 +137,7 @@ Therefore array variable is not the same as pointer.
 int B[2][3];
 
 int *p = B; // ERROR! B is a pointer to an array, not to an int
-int (*p)[3] = B; // OK; 3 is needed, because pointer arithmetics needs to "know"
+int (*p)[3] = B; // OK; 3 is needed because pointer arithmetics needs to "know"
                  // how many bytes to add in operations like p++
 ```
 
@@ -157,8 +157,8 @@ Pointer arithmetic examples:
 - `p++` would move from `400` to `412`
 
 :::tip
-`B` is an address of the first sub-array.
-`*B` is an address of the first element of the first sub-array.
+`B` is the address of the first sub-array.
+`*B` is the address of the first element of the first sub-array.
 `**B` is the value of the first sub-array.
 :::
 
@@ -179,7 +179,7 @@ A `p` points to `x`. `q` points to `p`.
 
 <Image src={pointerToPointer} alt=""/>
 
-In this exmple we have even `int ***` pointer (a pointer to pointer to pointer).
+In this example, we have even `int ***` pointer (a pointer to pointer to pointer).
 
 We can also dereference such "deep" pointers. For example:
 
@@ -206,7 +206,7 @@ passed:
 <Image src={arrayInArgument} alt=""/>
 
 This means that `sizeof(A)` will be different in `main()` (20 bytes) and in
-`SumOfElements()` (4 bytes - just the size of a pointer to integer!).
+`SumOfElements()` (4 bytes - just the size of a pointer to an integer!).
 
 :::tip
 `Function(int[] A)` is treated the same as `Function(int *A)`. A typical C
@@ -270,7 +270,7 @@ int main()
 A pointer `p` points to a function `Add`.
 
 :::tip[Ampersand and Start]
-Address of a function can be retrieved just by function's name (e.g. `Add`) or
+The address of a function can be retrieved just by the function's name (e.g. `Add`) or
 with `&` (e.g. `&Add`).
 
 We can invoke a function via a pointer just by using the pointer as if it was a
@@ -279,4 +279,4 @@ function (e.g. `p(2,3)`) or with a `*` (e.g. `(*p)(2, 3)`).
 
 ## References
 
-[https://www.youtube.com/watch?v=zuegQmMdy8M](https://www.youtube.com/watch?v=zuegQmMdy8M)
+- [Pointers in C / C++ by freeCodeCamp.org (YouTube)](https://www.youtube.com/watch?v=zuegQmMdy8M)

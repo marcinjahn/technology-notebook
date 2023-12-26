@@ -8,17 +8,17 @@ tags: ["c", "programming", "oop", "object-oriented programming"]
 # Object-Oriented Programming in C
 
 C is a procedural language, it does not support OOP principles, like
-inheritance, or polymorphism. There are various approaches to kind of add OOP
+inheritance, or polymorphism. There are various approaches to adding OOP
 into C. All of them are different variants of [type
 punning](https://en.wikipedia.org/wiki/Type_punning).
 
-All these approaches are inherently unsafe. Compiler will not catch all of the
+All these approaches are inherently unsafe. The compiler will not catch all of the
 issues, the program will just explode in the runtime (most likely "Segmentation
 Fault").
 
 ## Using Union
 
-This simples approach allows us to add some kind of polymorphism into C.
+This simple approach allows us to add some kind of polymorphism into C.
 
 Here's a simple example:
 
@@ -101,7 +101,7 @@ struct GdkEventAny {
 };
 ```
 
-Every event has these members repeated, like we've seen in the simple example above.
+Every event has these members repeated, as we've seen in the simple example above.
 The union type is [GdkEvent](https://docs.gtk.org/gdk3/union.Event.html).
 :::
 
@@ -167,7 +167,7 @@ Notes:
 - we're using pointer casting to treat `Professor` as a `Person` (unsafe)
 
 :::tip[GObject]
-This approach is a basis of how [GObject](/programming/gtk/overview) is built.
+This approach is the basis of how [GObject](/programming/gtk/overview) is built.
 The dirty bits are hidden behind macros that the apps built using GTK utilize.
 :::
 

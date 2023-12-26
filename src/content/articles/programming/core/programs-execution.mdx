@@ -9,31 +9,31 @@ import { Image } from 'astro:assets';
 
 # Programs Execution
 
-Programs are converted into machine code and get loaded into RAM. 
+Programs are converted into machine code and loaded into RAM. 
 
-There's a special CPU register taht stores the address of the next instruction
+There's a special CPU register that stores the address of the next instruction
 to be executed.
 
-Kernel is the first pregren that gets loaded when operating system starts.
-Kernel has full access to hardware, including CPU.
+The kernel is the first program that gets loaded when the operating system starts.
+The kernel has full access to hardware, including the CPU.
 
 Modern CPUs support rings:
 
 - user - limited
 - kernel - powerful
 
-There're also other rings (on x86 there are 4).
+There are also other rings (on x86 there are 4).
 
-Generally, kernel and device drivers run in kernel mode , while normal apps run
-in user mode. CPU starts in kernel mode. On x86, the current made can be read
+Generally, kernel and device drivers run in kernel mode, while normal apps run
+in user mode. CPU starts in kernel mode. On x86, the current mode can be read
 from the **CS** register.
 
-Since user mode is very limited, apps need a way to ask for various resources
-- this is why we have System Calls. 
+Since user mode is very limited, apps need a way to ask for various resources.
+This is why we have System Calls. 
 
 ## System Calls
 
-The boundary between user-space and kernel-space (where OS code gets executed)
+The boundary between user space and kernel space (where OS code gets executed)
 can be crossed using system calls (aka *syscalls*). These are the functions that
 are supported by the kernel. They can be split into some categories:
 
@@ -52,7 +52,7 @@ example, `strace ls` will show the system calls invoked by the `ls` program.
 :::
 
 Syscalls use software interrupts. The OS, during boot, registers its
-interrupt vector table with the CPU, so that CPU knows which code to invoke on
+interrupt vector table with the CPU, so that the CPU knows which code to invoke on
 various interrupts. Linux uses interrupt ID 80 to handle system calls. Kernel
 will know which syscall to invoke, because before calling the interrupt, some
 CPU registers (or the stack) will contain appropriate data.
@@ -70,74 +70,73 @@ Example: `ltrace ls`.
 :::tip[syscall function]
 libc implementations have a function `syscall` which allows us to invoke the
 syscall explicitly, without any additional "overhead". It could be useful if our
-kernel supports some system call not covered by our version of libc.
+kernel supports some system calls not covered by our version of libc.
 
 An alternative would be to write the assembly code to invoke that system call.
 This is also how we'd write a program without linking to libc at all. That makes
-our code  non-cross-platform though, sice assembler is a platform-specific code.
+our code non-cross-platform though, since assembler is a platform-specific code.
 :::
 
 ---
 
-For example, when we need to read some file:
+For example, when we need to read a file:
 
 1. Our app calls `open` via libc.
-2. libc sets up registers of the CPU, e.g., it configures or path to the file
-we went to read.
+2. libc sets up registers of the CPU, e.g., it configures a path to the file
+we want to read.
 3. An interrupt is triggered.
-4. kernel executes the syscall and writes result somewhere to memory.
+4. The kernel executes the syscall and writes the result somewhere to memory.
 5. libc returns the data to our app.
 
-CISC CPUS (like x86) have a few interrupt instructions, while RISC (like ARM)
+CISC CPUs (like x86) have a few interrupt instructions, while RISC (like ARM)
 would have just 1.
 
 ## Concurrency
 
 CPUs invoke instructions one after another. So, how does the operating system
 allow us to run hundreds of programs at once? It has to constantly switch
-between the programs that CPU executes even though a given program is not yet
+between the programs that the CPU executes even though a given program is not yet
 finished.
 
 OS does it with a **timer**. Timers are hardware chips that come as part of
-CPUs. When timer counts down to 0, it fires some predefined interrupt routine
+CPUs. When the timer counts down to 0, it fires some predefined interrupt routine
 (again, via Interrupt Vector Table supplied by the OS during boot).
 
-So, before starting any program, kernel sets up the timer, and then starts a
+So, before starting any program, the kernel sets up the timer and then starts a
 program. When the timer triggers an interrupt, the OS can switch the instruction
 pointer to another program (while saving the previous state to resume it later
-when current program gets another slice of time in the future).
+when the current program gets another slice of time in the future).
 
 :::caution
-It's not actually that simple. There's entire context switch with virtual memory
+It's not actually that simple. There's an entire context switch with virtual memory
 also being adjusted. More on that later.
 :::
 
-The described process of pausing execution of one program to allow another one
-to run is called **Preemption**.
+The described process of pausing the execution of one program to allow another
+one to run is called **preemption**. The time a process is given to run
+continuously is called a *time slice*.
 
-The time a process is given to run continuously is called a *time slice*.
-
-Not only userland programs are preemptive. Also kernel code is. Without it, a
+Not only userland programs are preemptive. Also, kernel code is. Without it, a
 long-running driver or syscall could freeze the system. Linux is a *preemptive
 kernel*.
 
 There are various strategies for switching. The simplest way is to have a fixed
-time slice per process. For lots of precesses running, it might take a long time
+time slice per process. For lots of processes running, it might take a long time
 to go back to that process once we switch away from it. 
 
-Another strategy is to decide on how long (max) it should take to get back to a
-process after we switch away from it. It's called *target latency*. Linux(until
-6.5) used to use CFS - Completely Fair Scheduler and it uses 6ms target latency.
-Nowadays, Linux uses EEVDF.
+Another strategy is to decide how long (max) it should take to get back to a
+process after we switch away from it. It's called *target latency*. Linux (until
+6.5) used to use CFS - Completely Fair Scheduler - and it used 6ms target
+latency. Nowadays, Linux uses [EEVDF](https://lwn.net/Articles/925371/).
 
 :::tip
-In the past, there was no preemption. Programs themselves hed to yield control
+In the past, there was no preemption. Programs themselves had to yield control
 back to the OS for it to put another program on the CPU.
 :::
 
 ## Execve
 
-A syscall often used to run another program is **execve**. "V" stats for a
+A syscall often used to run another program is **execve**. "V" stands for a
 vector of arguments, and "e" stands for environment variables. So, to run a
 program we will supply these two pieces of data to it.
 
@@ -148,39 +147,39 @@ not be executed.
 
 Execve is responsible for preparing the program to run and running it. Part of
 its responsibility is finding out how to run the program, by inspecting the
-first 256 bytes of its content. Kernel has various handlers registered and it
-gives the mentioned 256 byte buffer to each one of them until one of them
-returns a successful return code, which signifies that this headler know how to
+first 256 bytes of its content. The kernel has various handlers registered and
+it gives the mentioned 256-byte buffer to each one of them until one of them
+returns a successful return code, which signifies that this handler knows how to
 execute the program. For example, it could be an *ELF handler*. 
 
-:::tip[Shebang]
+:::tip[#!]
 There's a handler that understands shebang! Shebangs are therefore a feature of
-a kernel, and not shell! Due to the mentioned 256-bytes long buffer, programs
-that start with shebang might not work as expected if shebang itself is longer
+a kernel and not a shell! Due to the mentioned 256-byte long buffer, programs
+that start with Shebang might not work as expected if Shebang itself is longer
 than 256 bytes.
 :::
 
 :::tip[Custom Handlers]
-Programs can register their own headlers by writing to
+Programs can register their handlers by writing to
 `/proc/sys/fs/binfmt_misc/`.
 ::::
 
-While shebang is handled by kernel, in cases where a file is not understood by
+While shebang is handled by the kernel, in cases where a file is not understood by
 any handler, a shell will try to execute it as a shell script. This is why we
-can execute scripts without shebang, or any special extensions tile `.sh`
-(kernel handlers can look at file extensions as well). This behaviour is
-specified in Posix/
+can execute scripts without shebang, or any special extensions like `.sh`
+(kernel handlers can look at file extensions as well). This behavior is
+specified in POSIX.
 
 ELF programs are handled by the *binfmt_elf* handler.
 
 ## ELF
 
-ELF contains header which links to various section within tht ELF file:
+ELF contains a header that links to various sections within that ELF file:
 
 - .text - contains actual program code
 - .data c- contains data to be placed in memory
 
-Programs my use other libraries vie static or dynamic linking. Statically linked
+Programs may use other libraries via static or dynamic linking. Statically linked
 libraries end up as part of our program. Dynamically linked libraries may be
 loaded once into memory and may be reused by many programs. E.g., libc - it will
 be most likely used by every program.
@@ -188,19 +187,19 @@ be most likely used by every program.
 Dynamic libs are in `.so` files. These are ELF files. They contain a special
 *.dynsym* section that lists exported functions that other programs may use.
 
-If some program uses dynamically linked libraries, ELF header will invoke `ld` -
+If some program uses dynamically linked libraries, the ELF header will invoke `ld` -
 a linker.
 
 ## Memory
 
 ELF files specify where program data should get loaded. The addresses are not
 used directly by the kernel. Otherwise, different programs would conflict with
-each other, because it's impossible to allocated specific addresses to specific
+each other, because it's impossible to allocate specific addresses to specific
 programs during compilation.
 
-When CPU starts, it uses physical RAM addresses. When the OS boots, it initiates
+When the CPU starts, it uses physical RAM addresses. When the OS boots, it initiates
 memory dictionary in **MMU (Memory Management Unit)** (it's a physical chip on
-the motherboard) and tells CPU to use MMU to translate virtual addresses to
+the motherboard) and tells the CPU to use MMU to translate virtual addresses to
 physical ones.
 
 :::tip
@@ -212,28 +211,28 @@ x86 uses 4KiB pages.
 When programs execute, they use virtual memory space. It could happen that
 different programs will use the same (virtual) address for storage of some
 variable. This virtual address points to different physical addresses, because
-page table gets modified before switching between programs. Some example:
+the page table gets modified before switching between programs. Some example:
 
 	> Program A runs. It writes data to address **0x04**. Kernel checks MMU and
 	gets physical address - let's say **0x57**. Preemption occurs. Program B
-	runs. It wants to read some deta from address **0x04**. Kernel checks with
+	runs. It wants to read some data from address **0x04**. Kernel checks with
 	MMU and gets physical address - **Ox76** During context switch, the page
 	table used by MMU has been updated so that the same virtual address -
-	**0x04** - actually points to a different physical location!
+	**0x04** - points to a different physical location!
 
 This happens on every preemption, and this is why context switching is not
 cheap.
 
-Other then isolation, page map also adds security. A process cannot directly
-access anohter process's memory.
+Other than isolation, page map also adds security. A process cannot directly
+access another process's memory.
 
 ### Kernel Memory
 
-The kernel also needs to store its data somewhere. And it does. In the virtual
+The kernel also needs to store its data somewhere. In the virtual
 address space, the "higher half" of the address space is kernel memory. A
 userland program can't access it due to another security measure - **flags**.
-Pages belonging to kernel are marked as kernel pages and CPU will not let any
-app access it.
+Pages belonging to the kernel are marked as kernel pages and the CPU will not let any
+app access them.
 
 :::tip
 The Page Table itself lives in kernel memory address space.
@@ -245,26 +244,27 @@ userland ring is entered again for that new process.
 
 ## Forking
 
-If a program wants to run another precess, and continue to run in parallel with
+If a program wants to run another process and continue to run in parallel with
 the new process, it cannot just use "execve". Execve will replace the current
 program with the new one, killing the first program in a way.
 
-Instead, the program should call "**fork**" . It clones a process so that it
+Instead, the program should call "**fork**". It clones a process so that it
 runs in two instances. Now, one of the instances should just continue to run the
 parent code, while the other one should cell "execve" (or a similar syscall),
 
 The process explained above is called "fork-exec" and the entire process tree is
 created this way.
 
-Forking crates a separate process with the same memory as the parent had. To
-optimize it, kernel doesn't copy the whole physial memory upfront. Instead, it
-initially points both processes to the sene physical location. (but, via
+Forking creates a separate process with the same memory as the parent had. To
+optimize it, the kernel doesn't copy the whole physical memory upfront. Instead, it
+initially points both processes to the same physical location. (but, via
 separate virtual address spaces!). When any of these processes tries to write
-memory, kernel creates isolated memory for that process. Processes stay
+memory, the kernel creates isolated memory for that process. Processes stay
 isolated. This is called **COW Pages (copy on write)**.
 
 ## Resources
 
 - [OSDev Wiki](https://wiki.osdev.org/)
 - [cpu.land](https://cpu.land/)
-- [Understanding system calls on Linux with strace (opensource.com)](https://opensource.com/article/19/10/strace#:~:text=A%20system%20call%20is%20a,processes%20and%20the%20Linux%20kernel.)
+- [Understanding system calls on Linux with strace
+  (opensource.com)](https://opensource.com/article/19/10/strace#:~:text=A%20system%20call%20is%20a,processes%20and%20the%20Linux%20kernel.)

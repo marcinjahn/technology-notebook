@@ -7,24 +7,24 @@ lang: en-US
 
 # Stack and Heap
 
-In programming, or memory management, we often talk about placing our data
+In programming or memory management, we often talk about placing our data
 either on **stack** or **heap**. Here are some key differences between them:
 
 - placing data on the stack is faster than doing so on the heap
 - stack is local to the currently executing function, while the heap is "global"
 - memory allocated on the heap is linked to via a pointer/reference placed on
-  the stack. This pointer/reference can than be cloned or moved around between
+  the stack. This pointer/reference can then be cloned or moved around between
   different functions.
 
 Various programming languages often allow us to choose where to store the data.
-The usual default is to store smaller pieces of data on the stack, and put
-larger amounts of data on the heap. Stack's size is pretty small compard to
-heap.
+The usual default is to store smaller pieces of data on the stack and put
+larger amounts of data on the heap. The stack's size is pretty small compared to
+the heap.
 
 ## Stack Machine
 
-"Stack" is not just a region of memory. This word sometimes also refers to an
-architecture of Stack Machine. CPUs (and VMs) have built-in support for stacks,
+"Stack" is not just a region of memory. This word sometimes also refers to the
+architecture of a Stack Machine. CPUs (and VMs) have built-in support for stacks,
 meaning that their instruction sets include special instructions for
 manipulating the stack (i.e., push, pop). It is a convenience that compilers use
 for implementing function calls. Each function call creates a **stack frame**.
@@ -35,9 +35,9 @@ Such a frame contains all the data local to a given function execution:
 - return address
 
 Anytime some function is called, a new stack frame is created. Anytime a
-function returns, its stack frame is gone (or rather, stack pointer gets
-decremented). Too many recursive calls will obviously cause a *stack overflow*,
-since stack has some predefined size.
+function returns, its stack frame is gone (or rather, the stack pointer gets
+decremented). Too many recursive calls will cause a *stack overflow* since the
+stack has some predefined size.
 
 ### Stack size
 
@@ -49,13 +49,13 @@ the execution environment (i.e., the OS) is.
 
 We place data on the heap when:
 
-- it's big (stack could be too small to hold it)
-- it's going to be used by multiple functions (then placing in on the stack
+- it's big (the stack could be too small to hold it)
+- it's going to be used by multiple functions (placing it on the stack
   would incur copying it to new stack frames lots of times)
 
 Memory on the heap needs to be **allocated**. There are various strategies of
-how to allocate data on the heap, every program can have its own way of doing
-that. Allocators take care of things such as memory defragmentation.
+how to allocate data on the heap, every program can have its way of doing that.
+Allocators take care of things such as memory defragmentation.
 
 
 ## Resources

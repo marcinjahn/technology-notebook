@@ -8,7 +8,7 @@ import { Image } from 'astro:assets';
 
 # Strings
 
-Strings are arrays of `char`. Their size is the amount of characters + 1 (the
+Strings are arrays of `char`. Their size is the number of characters + 1 (the
 *NULL* (`\0`) character).
 
 Code example:
@@ -23,7 +23,7 @@ c[3] = 'L';
 c[4] = 'O';
 c[5] = '\0'; // NULL
 
-printf("%s", c); // uses NULL charater to know when to stop printing the array
+printf("%s", c); // uses a NULL character to know when to stop printing the array
 // without NULL it would print memory contents past the end of the string
 ```
 
@@ -37,7 +37,7 @@ or
 
 ```c
 char c[6] = "HELLO"; // adds NULL implicitly
-c = "SOMETHING" // ERROR! Arrays cannot me modified like this. strcpy should be used
+c = "SOMETHING" // ERROR! Arrays cannot be modified like this. strcpy should be used
 ```
 
 or 

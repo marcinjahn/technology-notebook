@@ -1,7 +1,7 @@
 ---
 title: Responsive Design
 description: How to create responsive web pages
-tags: ["css", "html", "web"]
+tags: ["css", "html", "web", "responsive design"]
 lang: en-US
 ---
 
@@ -10,11 +10,12 @@ import { Image } from 'astro:assets';
 # Responsive Design
 
 :::tip
-The webpages are responsive by default. As soon as we start to constrain sizes
+The web pages are responsive by default. As soon as we start to constrain sizes
 of elements, the pages stop being responsive.
 :::
 
-The above is not true for images though. They will overflow on screen sizes smaller than the image itself. To fix that, the following CSS can be added:
+The above is not true for images though. They will overflow on screen sizes
+smaller than the image itself. To fix that, the following CSS can be added:
 
 ```css
 img {
@@ -22,7 +23,7 @@ img {
 }
 ```
 
-We're using `max-width` and not `width`, because we want the image to be in its
+We're using `max-width` and not `width` because we want the image to be in its
 original size when possible and shrink down to 100% only when the screen is too
 small.
 
@@ -30,17 +31,17 @@ small.
 
 **em** and **rem** are essential for responsive design. We do not use absolute
 units, like `cm`, because their size is constant no matter the distance that we
-look at the screen from. The desktop and phone display need different sizes of
+look at the screen. The desktop and phone displays need different sizes of
 elements due to that distance.
 
 ### em and rem
 
 #### em
 
-The unit applied on some element is in relation to:
+The unit applied to an element is about:
 
-- it's parent's `font-size` when dealing with `font-size`.
-- it's own `font-size` when dealing with other properties (e.g. `margin`). It is
+- its parent's `font-size` when dealing with `font-size`.
+- its own `font-size` when dealing with other properties (e.g. `margin`). It is
   useful, because the things like margin/padding usually should get bigger as
   the text of the element gets bigger (e.g. a button)
 
@@ -51,7 +52,7 @@ The unit applied on some element is in relation to:
 ```
 
 :::caution
-**em** is in relation to either the parent's font size or to current element's
+**em** is about either the parent's font size or the current element's
 font size.
 :::
 
@@ -101,20 +102,20 @@ based on the HTML parent size.
 
 #### vmin and vmax
 
-**vmin** and **vmax** work in a way that the final size is dictated by the hight
+**vmin** and **vmax** work in a way that the final size is dictated by the height
 or width of the viewport. Whichever is smaller/bigger will be taken as a base.
 
 For example, with `20vmin`, the size of the element will be 20% of the height of
 the viewport, or width, depending on which one is smaller at the moment.
-**vmax** works in an opposite way and is based on the greater size
-(width/height) of the viewport.
+**vmax** works oppositely and is based on the greater size (width/height) of the
+viewport.
 
-It gives a good effect on titles, which will scale depending on the size of the
+It has a good effect on titles, which will scale depending on the size of the
 screen. It's not good for accessibility though.
 
 ## Tips
 
-- it rarely makes sense to set `height` of elements. Noramlly, they should grow as
+- it rarely makes sense to set `height` of elements. Normally, they should grow as
   needed.
 - similarly, `min-width` should be rarely used.
 

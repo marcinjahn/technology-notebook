@@ -32,8 +32,8 @@ naming systems. [BEM](http://getbem.com/introduction/) is one of them and it's
 quite simple. It focuses on defining:
 
 - Blocks - something that can exist on its own (e.g., hero)
-- Elements - something that is dependent on a containin block (e.g., hero__text)
-- Modifiers - variation of something (e.g. btn--success)
+- Elements - something that is dependent on a containing block (e.g., hero__text)
+- Modifiers - a variation of something (e.g. btn--success)
 
 Here's a [YT video](https://www.youtube.com/watch?v=SLjHSVwXYq4) about it.
 
@@ -56,7 +56,7 @@ after another. That makes mobile design much easier to pull off.
 Obviously, another argument is that nowadays people use smartphones a lot.
 :::
 
-### Tresholds
+### Thresholds
 
 There are two main techniques for choosing breakpoints:
 
@@ -65,7 +65,7 @@ There are two main techniques for choosing breakpoints:
 - looking at our desktop-first site, resizing it, and just looking where it starts
   to look bad - probably a better alternative
 
-It's also worth to remember that realistically:
+It's also worth remembering that realistically:
 
 - people are not going to change the size of the window too much while seeing the site
 - some sizes are not going to be used
@@ -75,9 +75,9 @@ making the site look great on every possible screen size. Just focus on the
 realistic ones.
 
 :::tip[Common tresholds]
-Often poeple use **600px** as a treshold between mobile and above, and then
+Often poeple use **600px** as a threshold between mobile and above, and then
 **900px** between tablet and above. Additionally, if needed, **1200px** and
-**1800px** could be good choices for large monitors, if we want to display
+**1800px** could be good choices for large monitors if we want to display
 things in special ways on those.
 :::
 
@@ -86,6 +86,6 @@ Here's a nice article with some reasoning:
 
 :::danger[Viewport]
 Don't forget to use the viewport `meta` tag, otherwise the media queries will
-not work properly. Without, the website will zoom-out instead of being
+not work properly. Without it, the website will zoom out instead of being
 responsive on mobile.
 :::
