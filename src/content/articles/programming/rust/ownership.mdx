@@ -17,7 +17,7 @@ let b = a;
 // there will be two "4" on the stack
 ```
 
-In case of heap data, only the pointer is copied:
+In the case of heap data, only the pointer is copied:
 
 ```rust
 let a = String::from("abc");
@@ -27,10 +27,9 @@ let b = a;
 ```
 
 Unique to Rust, the `a` variable becomes invalid when the code above gets
-executed. If we try to access it, it will result in a panic. Thanks to it,
-during runtime Rust will not try to `drop` (`free`) this memory space twice,
-which would be wrong.
-It is called a **move**. `a` gets _moved_ to `b`.
+executed. If we try to access it, it will result in a compilation error. Thanks
+to it, during runtime Rust will not try to drop/free this memory space twice, which
+would be wrong. It is called a **move**. `a`'s contents get _moved_ to `b`.
 
 Passing a value to a function also causes a _move_!
 
@@ -48,6 +47,10 @@ fn some_func(data: String) {
 
 A function may also move ownership by returning a value. Then, the calling
 function's scope owns the variable.
+
+:::tip
+Ownership applies only to data on the **heap**!
+:::
 
 ## References
 
@@ -76,6 +79,13 @@ fn calculate_length(s: &String) -> usize {
 ![](https://doc.rust-lang.org/book/img/trpl04-05.svg)
 
 Creating a reference is called **borrowing**.
+
+:::tip
+References are non-owning pointers because the ownership stays with the
+original owner. When a reference goes out of scope, Rust does not
+drop any heap memory.
+:::
+
 References are *immutable* by default. We can change that:
 
 ```rust
@@ -121,7 +131,7 @@ let r3 = &mut s; // BIG PROBLEM
 println!("{}, {}, and {}", r1, r2, r3);
 ```
 
-That's because if one function would get an immutable reference, it will expect
+That's because if one function gets an immutable reference, it will expect
 that the value should not change suddenly.
 :::
 
@@ -138,11 +148,11 @@ let r2 = &mut s; // It's OK!
 println!("{}", r2);
 ```
 
-`r1` gets created, but it is never used afterwards. `r2` may be created.
+`r1` gets created, but it is never used afterward. `r2` may be created.
 :::
 
-With Rust, it's impossible to have dangling pointers. Rust will complain of such
-issues at compile time.
+With Rust, it's impossible to have dangling pointers. Rust will complain about
+such issues at compile time.
 
 ### Dereferencing
 
@@ -155,7 +165,7 @@ assert_eq!(5, y); // WRONG! i32 and &i32 are different types
 ```
 
 Sometimes we might need to obtain an actual value that the reference is pointing
-to. We can do that we the **dereferencing operator**:
+to. We can do that with the **dereferencing operator**:
 
 ```rust
 let x = 5;
@@ -170,9 +180,8 @@ assert_eq!(5, *y); // OK
 
 ## Slices
 
-Slice is a part of some collection.
-It is basically a pointer to some index of that collection and a count of
-elements starting from that index.
+Slice is a part of some collection. It is a pointer to some index of that
+collection and a count of elements starting from that index.
 
 ```rust
 let a = [1, 2, 3, 4, 5];
