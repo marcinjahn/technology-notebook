@@ -47,6 +47,22 @@ Just like other kinds of entities in Angular, files containing services
 are usually named following the template of `<name>.service.ts`.
 :::
 
+:::tip[inject]
+We can also inject services with the `inject` function:
+
+```ts
+import { inject } from '@angular/core'
+
+export class MyComponent {
+    const logger = inject(LoggerService);
+
+    someMethod() {
+        this.logger.log('Something happened');
+    }
+}
+```
+:::
+
 Services in Angular are just typical TypeScript classes. They do not use any
 Angular-specific decorator (unless you want to [inject into some other
 service](#injecting-into-services)).
@@ -70,7 +86,7 @@ The Angular injector is *hierarchical*. We can inject services into:
 
 ### Singleton
 
-Providing a sevice via `SomeComponent` makes it a singleton among the children
+Providing a service via `SomeComponent` makes it a singleton among the children
 tree of that component.
 
 Providing a service via the `AppComponent` makes it a singleton among all
@@ -96,10 +112,9 @@ They have to be provided in a module.
 
 ---
 
-
 The way how Angular sets up DI is different from the .NET's way of doing that.
 In .NET we decide whether the service should be a singleton or not at the
-aplication root level. In Angular, each class/component may decide whether it
+application root level. In Angular, each class/component may decide whether it
 wants to reuse some service instance or to get a new one.
 
 :::caution[Overriding]
@@ -142,7 +157,7 @@ or the decorator should be used like this: `@Injectable(provideIn: 'root')`
 
 ## Provide Strategies
 
-Until now, in the module's `providers` array, we'd just list names of the
+Until now, in the module's `providers` array, we'd just list the names of the
 services. By default, the class's name acts as a token that represents that
 class. Angular's injector is more flexible and we can define a token and
 dependency to be different things. It's a bit similar to how in .NET there's an
