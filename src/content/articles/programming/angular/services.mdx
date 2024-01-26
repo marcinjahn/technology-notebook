@@ -64,7 +64,7 @@ export class MyComponent {
 :::
 
 Services in Angular are just typical TypeScript classes. They do not use any
-Angular-specific decorator (unless you want to [inject into some other
+Angular-specific decorator (unless you want to [inject it into some other
 service](#injecting-into-services)).
 
 ## Scope
@@ -74,7 +74,7 @@ some consequences:
 
 - the child components (direct and indirect) will receive the same instance of
   the `LoggerService` (if they ask for it)
-- all the other comonents (other than the children of `MyComponent`) would
+- all the other components (other than the children of `MyComponent`) would
   receive different instance(s) of `LoggerService`
 
 The Angular injector is *hierarchical*. We can inject services into:
