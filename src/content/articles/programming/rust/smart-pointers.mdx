@@ -22,7 +22,7 @@ References borrow data, while smart pointers often own the data.
 manipulate it. They have metadata (like capacity).
 :::
 
-There are some built-in smart pointers add there are many in crates. We can
+There are some built-in smart pointers and there are many in crates. We can
 write our smart pointers as well.
 
 ## Traits
@@ -49,37 +49,37 @@ fn main() {
 ```
 
 `Deref` trait has one method - `deref()` - it should return a `&`
-(immutable) reference. By using `*`, compiler calls `deref()` behind the
+(immutable) reference. By using `*`, the compiler calls `deref()` behind the
 scenes to get a reference, and then it knows how to get value behind that
 reference.
 
-#### Deref Coersion
+#### Deref Coercion
 
 Rust can automatically dereference values to proper types if possible. For
 example, if a function expects `&str` we can pass it `&String`. The compiler
-will call `defer()` on the `&String` to get `&str`. Compiler can call `deref()`
+will call `defer()` on the `&String` to get `&str`. The compiler can call `deref()`
 as many times as needed until the proper type is found. E.g., if we had
 `Box<String>` it would have to call `deref()` twice:
 
 > `&Box<String>` -> `&String` -> `&str`
 
 :::tip[DerefMut]
-Similar to `Deref` is the `DerefMut` trait. It enables resolving of mutable
+Similar to `Deref` is the `DerefMut` trait. It enables the resolution of mutable
 references `mut&`.
 :::
 
 ### Drop
 
-`Drop` allows writing code that will be run when the a type goes out of scope.
+`Drop` allows writing code that will be run when the type goes out of scope.
 E.g. it could release some resources like files or connections. It is similar to
 `IDisposable` interface in the .NET world. In the case of smart pointers, `Drop`
 will deallocate the memory on the heap.
 
-The `Drop` trait has one method - `drop()`. Compiler will call it automatically
+The `Drop` trait has one method - `drop()`. The compiler will call it automatically
 when the value goes out of scope.
 
 :::tip[Dropping manually]
-If we need to destruct an instance before its end of scope, we can call
+If we need to destroy an instance before its end of the scope, we can call
 `drop(instance)`. It's not the same `drop()` as the one implemented via the
 `Drop` trait! Calling that one explicitly is not allowed.
 :::
@@ -177,7 +177,7 @@ There are 3 references to `a`, all of them encapsulated within `Rc`.
 The value will "live" as long as any `Rc` instance still points to it.
 
 :::tip[Performance]
-`clone()` on `Rc` is cheap. It just increments reference count. It's cheaper to
+`clone()` on `Rc` is cheap. It just increments the reference count. It's cheaper to
 clone `Rc` than to clone the actual value that `Rc` points to.
 :::
 
@@ -197,17 +197,17 @@ Weak references do not increment the `strong_count`, they increment
 `weak_count`. The `weak_count` does not need to be 0 for the value being
 referred to to be dropped.
 
-Since the value begind `Weak<T>` is uncertain it needs to be retrieved using 
+Since the value behind `Weak<T>` is uncertain it needs to be retrieved using 
 the `upgrade()` method that returns `Option<T>`.
 
 :::tip[Reference Cycles]
-`Weak` is useful for protection agains reference cycles. If some node referes to
+`Weak` is useful for protection against reference cycles. If some node refers to
 another via `Rc`, it's a strong connection. If the other node needs to have a
 reference to the first one as well, it would use `Weak`. That way, the
 `strong_count` stays at 1 and the nodes can be dropped when they go out of
 scope.
 
-`Weak` is useful in graphs as an alternative of `Rc`.
+`Weak` is useful in graphs as an alternative to `Rc`.
 :::
 
 ## RefCel
@@ -220,11 +220,11 @@ Here are the borrowing rules in Rust:
 
 With references and `Box<T>`, the borrowing rules are enforced at compile time.
 With `RefCell<T>`, these invariants are enforced at runtime. With references, if
-you break these rules, you’ll get a compiler error. With `RefCell<T>,` if you
+you break these rules, you'll get a compiler error. With `RefCell<T>,` if you
 break these rules, your program will panic and exit.
 
 :::tip[Why?]
-The `RefCell<T>` type is useful when you’re sure your code follows the borrowing
+The `RefCell<T>` type is useful when you're sure your code follows the borrowing
 rules but the compiler is unable to understand and guarantee that.
 :::
 
@@ -271,7 +271,7 @@ stores the invocations. We can get a mutable reference to that vector with
 `borrow_mut()`.
 
 :::tip
-`RefCell` also allows to get an immutable reference using `borrow()`.
+`RefCell` also allows one to get an immutable reference using `borrow()`.
 :::
 
 `RefCell` keeps track of how many mutable and immutable references were taken
