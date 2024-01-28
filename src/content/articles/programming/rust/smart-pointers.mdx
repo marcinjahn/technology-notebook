@@ -81,7 +81,10 @@ when the value goes out of scope.
 :::tip[Dropping manually]
 If we need to destroy an instance before its end of the scope, we can call
 `drop(instance)`. It's not the same `drop()` as the one implemented via the
-`Drop` trait! Calling that one explicitly is not allowed.
+`Drop` trait, it's a function that is preimported. It will call our `drop`
+implementation.
+
+We can't call `Drop::drop` by ourselves.
 :::
 
 ## Box
@@ -181,7 +184,7 @@ The value will "live" as long as any `Rc` instance still points to it.
 clone `Rc` than to clone the actual value that `Rc` points to.
 :::
 
-:::tip[Check count]
+:::tip[Check Count]
 We can check the current reference count of `Rc` with `Rc::strong_count(&a)`,
 where `&a` is a reference to an actual instance of `Rc`.
 :::

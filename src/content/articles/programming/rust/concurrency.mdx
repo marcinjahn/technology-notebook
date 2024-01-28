@@ -14,7 +14,7 @@ problems during compilation.
 ## Multithreading
 
 Rust implements *1:1* threads, so when we create a thread in Rust, an actual
-thread is also created by the OS. There are crates that implement *M:N*
+thread is also created by the OS. There are crates that implement M:N
 threading.
 
 ### Creating a New Thread
@@ -94,7 +94,7 @@ thread::spawn(move || {
     }
 });
 
-// recive messages (treats rx as an iterator)
+// receive messages (treats rx as an iterator)
 for received in rx {
     println!("Got: {}", received);
 }
@@ -102,7 +102,7 @@ for received in rx {
 
 :::tip[mpsc]
 `mpsc` module stands for *Multiple Producers, Single Consumer*.
-We coulc clone tx and have another transmitter connected to `rx`.
+We could clone tx and have another transmitter connected to `rx`.
 
 Multiple receivers are not allowed in this model.
 :::
@@ -111,7 +111,7 @@ The `send()` method takes ownership of the value being sent and transfers
 ownership to the receiving thread.    d
 
 :::tip[Receiving]
-Receiver can use the following way to receive messages:
+The receiver can use the following way to receive messages:
 
 - iterator (as shown) - blocking, receives all messages.
 - `recv()` method - blocking, receives 1 message.
@@ -144,7 +144,7 @@ To get access to data protected by a `Mutex`, we have to call `lock()` on it.
 This is a blocking call, execution will continue as soon as either:
 
 - lock is free
-- other thread that had the lock panics
+- another thread that had the lock panics
 
 :::tip[Smart Pointer]
 `lock()` returns a `MutexGuard` smart pointer.
@@ -164,8 +164,8 @@ Threads using `Mutex` can suffer from deadlocks!
 ### Arc
 
 We can't use `Rc<T>` in multithreaded contexts. Instead, we can use `Arc<T>`, which
-is thread safe (and has some performance overhead due to that).
-We can use `Arc` to share values between many threads. Example below shares a `Mutex`:
+is thread-safe (and has some performance overhead due to that).
+We can use `Arc` to share values between many threads. The example below shares a `Mutex`:
 
 ```rust
 use std::sync::{Arc, Mutex};
