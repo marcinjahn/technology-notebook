@@ -219,8 +219,11 @@ Loops can be labeled, and nested loops can be exited using the outer loop label.
 There is no concept of truthy/falsey values. Conditions rely on `true` and
 `false` - that's it.
 
-There is `match`, which is analogous to `switch` in other languages. Compilation
-fails if `match` does not cover some relevant alternative.
+### match
+
+There is `match`, which is similar to `switch` in other languages, but is much
+more powerful, because it supports expressions. Compilation fails if `match`
+does not cover all possible arms.
 
 ```rust
 match item {
@@ -235,6 +238,34 @@ match item {
 it's executed, and `match` is exited.
 
 `match` is very useful with [enums](/programming/rust/enums/).
+
+:::tip 
+When dealing with match patterns, the values within them are consumed by
+default. Example:
+
+```rs {4}
+let optional: Option<Point> = Some(Point { x: 2, y: 3 });
+
+match optional {
+  Some(p) => println!("Point is {}", p),
+  _ => panic!("No match"),
+}
+
+println!("Optional is {}", optional);
+```
+
+The code above does not compile, since the value within the `Option` gets consumed
+on the highlighted line. The solution is to use `ref`:
+
+```rs {2}
+match optional {
+  Some(ref p) => println!("Point is {}", p),
+  _ => panic!("No match"),
+}
+```
+
+This way, instead of consuming `Point`, it's borrowed (`&Point`).
+:::
 
 :::danger[Dropping temporary values]
 Some statements with `let` will not behave the same as statements without `let`.
