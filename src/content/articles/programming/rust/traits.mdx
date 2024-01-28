@@ -9,7 +9,7 @@ import { Image } from 'astro:assets';
 # Traits
 
 A **trait** is analogous to an interface or protocol from other languages. It
-enables types to advertise that they use some common behaviour (**methods**).
+enables types to advertise that they use some common behavior (**methods**).
 
 All of Rust's operations are defined with traits. E.g., aaddition (`+`) is
 defined as the `std::ops::Add` trait. Operators are just syntactic sugar for
@@ -39,7 +39,7 @@ pub trait Summary {
 ```
 
 :::tip
-Default implementation can call other methods of the same trait (even if
+The default implementation can call other methods of the same trait (even if
 they don't have default implementations).
 :::
 
@@ -65,7 +65,7 @@ impl Summary for Tweet {
 ```
 
 :::tip
-We can implement traits only if either the type or trait are local
+We can implement traits only if either the type or trait is local
 to our crate. We can implement traits on existing third-party types!
 :::
 
@@ -84,7 +84,7 @@ Overriding implementation of a trait cannot call the default implementation.
 
 ### Blanket Implementations
 
-We can define methods for any type that implements some trait. It is similiar
+We can define methods for any type that implements some trait. It is similar
 to **extensions in C#**.
 
 Rust does it with the `ToString` method, like this:
@@ -95,7 +95,7 @@ impl<T: Display> ToString for T {
 }
 ```
 
-Thanks to it, any type that implement the `Display` trait has the `ToString` method
+Thanks to it, any type that implements the `Display` trait has the `ToString` method
 
 ## Using Traits
 
@@ -149,7 +149,17 @@ fn returns_summarizable() -> impl Summary {
 
 :::caution
 A function defined as the one above can return only **one type**. It
-cannot return either one implementation or another.
+cannot return either one implementation or another. For that, we'd have
+to use [Trait Objects](/programming/rust/traits#trait-objects).
+
+However, a function may accept multiple arguments implementing the same trait,
+and these arguments do not need to be of the same type.
+
+```rs
+fn some_func(summary1: impl Summary, summary2: impl Summary) {
+  // the type of summary1 does not have to be the same as the type of summary2
+} 
+```
 :::
 
 ## Derivable Traits
