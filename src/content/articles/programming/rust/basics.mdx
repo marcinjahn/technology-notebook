@@ -239,6 +239,22 @@ it's executed, and `match` is exited.
 
 `match` is very useful with [enums](/programming/rust/enums/).
 
+`match` patterns can also provide values of internals of matched values:
+
+```rust
+match <[u8; 4]>::try_from(s.as_bytes()) {
+  Err(_) => Err(Box::new(InvalidStringError{})),
+  Ok(bytes @ [_, _, bit, _]) => if bit.is_ascii_alphabetic() {
+      Ok(Self {bytes})
+    } else {
+      Err(Box::new(InvalidStringError{}))
+    }
+}
+```
+
+Above, both `bytes` (the whole array) and individual `bit` are accessible to the
+second `match` arm.
+
 :::tip 
 When dealing with match patterns, the values within them are consumed by
 default. Example:
