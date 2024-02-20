@@ -84,7 +84,7 @@ we can expect the following:
 
 ## Asynchronous Abstractions
 
-Abstractions may be categorize in various ways.
+Abstractions may be categorized in various ways.
 Here's one:
 
 - *cooperative* - tasks yield control ti scheduler whenever
@@ -107,3 +107,54 @@ Here's another:
 Threads can be understood as OS threads (managed by the kernel),
 or user-level threads, managed by some runtime/framework.
 
+#### OS Threads
+
+:::tip
+Also called **1:1 Threading**, because each task
+is mapped to its own thread. 
+:::
+
+Characteristics:
+
+- creating threads
+  takes time, so it's not going to scale well
+  when the number of tasks grows.
+- each thread has its own stack - stack has
+  a fixed size, so many threads will use much memory
+- synchronization might be required to circumvent
+  data races
+- switching between threads (context switch) can be costly
+- parallelism
+- all threads are equal for the scheduler
+- unavailable on OS-less systems
+
+:::tip
+An abstraction over OS threads could use a 
+managed thread pool to run tasks there.
+:::
+
+#### Green Threads
+
+Other names: *fibers*, *stackful corountines*.
+
+:::tip
+Green Threads are also called *M:N Threading*, because 
+M tasks will run on N threads.
+
+We could have just 1 thread, and we'd have *M:1* model.
+:::
+
+Green threads require a scheduler in the runtime.
+Such runtime has a thread pool of N threads where
+tasks are being run. This runtime has almost the
+same capabilities as the OS scheduler. It can preempt
+tasks.
+
+Green threads are very similar to OS threads in how
+they work. Characteristics:
+
+- each task has its own stack. The state of 
+  execution is stored on these stacks. However,
+  these stacks may be growable (which also comes
+  with its own set of problems regarding memory
+  management)
