@@ -15,7 +15,8 @@ const structure: Sidebar = {
             icon: "core.webp",
             children: [
                 "core/programs-execution",
-                "core/stack-and-heap"
+                "core/stack-and-heap",
+                "core/async"
             ]
         },
         {

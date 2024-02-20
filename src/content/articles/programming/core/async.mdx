@@ -1,3 +1,12 @@
+---
+title: Asynchronous Programming
+description: Concepts of asynchronous programming and basic primitives used by runtimes
+lang: en-US
+tags: ["async", "await", "concurency", "parallel", "syscall", "linux", "multitasking", "programming"]
+---
+
+import { Image } from 'astro:assets';
+
 # Asynchronous Programming
 
 The frameworks and languages of today provide
@@ -109,10 +118,8 @@ or user-level threads, managed by some runtime/framework.
 
 #### OS Threads
 
-:::tip
-Also called **1:1 Threading**, because each task
-is mapped to its own thread. 
-:::
+Using OS threading is called **`1:1` Threading**, because each task
+is mapped to its own thread.
 
 Characteristics:
 
@@ -135,13 +142,12 @@ managed thread pool to run tasks there.
 
 #### Green Threads
 
+Green Threads are also called **`M:N` Threading**, because 
+M tasks will run on N threads.
 Other names: *fibers*, *stackful corountines*.
 
 :::tip
-Green Threads are also called *M:N Threading*, because 
-M tasks will run on N threads.
-
-We could have just 1 thread, and we'd have *M:1* model.
+We could have just 1 thread, and we'd have `M:1` model.
 :::
 
 Green threads require a scheduler in the runtime.
@@ -161,7 +167,7 @@ they work. Characteristics:
 
 ### Coroutines (promises)
 
-It's another example of M:N threading. Each task is
+It's another example of `M:N` threading. Each task is
 represented by a state machine.
 
 There are two kinds of coroutines:
@@ -179,7 +185,7 @@ to the runtime scheduler. The task gets suspended
 until the awaited future/promise/task gets resolved.
 
 ```cs
-async runAsync()
+async RunAsync()
 {
     await RunTask1(); // yields control to scheduler
     await RunTask2(); // yields control to scheduler
@@ -228,15 +234,56 @@ Only when we've done all the work and need he results, we `await` and
 let the runtime preempt the task until the awaited
 thing is ready.
 
+## Event Queues
+
+Event Queues are provided natively by most popular OSs, and they
+are also abstracted away by popular low-level libraries such as:
+
+- libuv
+- mio
+
+Focusing on `epoll` on Linux, the API of working with the event queues is as follows:
+
+```rs
+pub const EPOLL_CTL_ADD: i32 = 1;
+pub const EPOLLIN: i32 = 0x1;
+pub const EPOLLET: i32 = 1 << 31;
+
+#[link(name = "c")]
+extern "C" {
+    pub fn epoll_create(size: i32) -> i32;
+    pub fn close(fd: i32) -> i32;
+    pub fn epoll_ctl(epfd: i32, op: i32, fd: i32, event: *mut Event) -> i32;
+    pub fn epoll_wait(epfd: i32, events: *mut Event, maxevents: i32, timeout: i32) -> i32;
+}
+
+#[derive(Debug)]
+#[repr(C, packed)]
+pub struct Event {
+    pub(crate) events: u32,
+    // Token to identify event
+    pub(crate) epoll_data: usize,
+}
+
+impl Event {
+    pub fn token(&self) -> usize {
+        self.epoll_data
+    }
+}
+```
+
+
+
 ### OS Differences
 
-Linux (`epoll`) and macOS (`kqueue`) have radiness-based event queues.
+Linux (`epoll`) and macOS (`kqueue`) have readiness-based event queues.
 Windows (`IOCP` (IO Completion Port)) uses completion-based queue.
 
 **Readiness-based** queue is simpler - it notifies us of
 readiness when the resource is ready to be consumed, but
 it does not do anything with the data for us, we need to
 read it by ourselves.
+
 **Completon-based** queues notify us when the resoure is ready
 and they also expose the data for us (like file contents) in a
 buffer that we provide to the OS.
