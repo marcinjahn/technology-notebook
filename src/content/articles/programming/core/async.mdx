@@ -81,3 +81,29 @@ we can expect the following:
   to access I/O, hardware. Some system calls might be 
   blocking, while others might be async, allowing us to
   poll the OS for results.
+
+## Asynchronous Abstractions
+
+Abstractions may be categorize in various ways.
+Here's one:
+
+- *cooperative* - tasks yield control ti scheduler whenever
+  they cannot progress further because they're awaiting
+  some data/operation. Examples: `async`/`await` in .NET, JS, or Rust.
+- *non-cooperative* - it's the scheduler that pre-empts a running
+  task, no matter if it can continue to run or not. Usually, 
+  tasks can also yield control back to scheduler on their own.
+  Examples: OS threads, Go's goroutines. Examples: fibers
+
+Here's another:
+
+- *stackful* - each task has its own stack. Tasks can be preempted
+  at any time, their state is preserved on the stack.
+- *stackless* - there's one stack. Tasks cannot be preempted in the middle
+  of execution. Examples: Rust `async`/`await`.
+
+### Threads
+
+Threads can be understood as OS threads (managed by the kernel),
+or user-level threads, managed by some runtime/framework.
+
