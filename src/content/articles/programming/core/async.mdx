@@ -1,0 +1,83 @@
+# Asynchronous Programming
+
+The frameworks and languages of today provide
+tools that allow us to easily incorporate async
+code into our programs. However, these are usually
+rather hight abstractions over the actual mechanisms
+used to implement concurrency of some form. These 
+hight level abstractions sometimes "leak" giving
+us various restrictions on what we can do, and what
+we cannot do. Without deeper understanding of how
+asynchrony works under the hood, it's difficult
+to understand how our programs actually execute.
+This page will cover some basics around concurrency.
+
+**Asynchronous Programming** allows us to split
+our code into tasks. Each tasks might contain
+a bunch of instructions. The tasks may execute 
+concurrently (although not necessarily in parallel).
+
+## Synchronous Programs
+
+When running our synchronous code on top of modern operating system,
+there's a high chance that this code will not be 
+executed synchronously. The OS schedules processes
+on our machines, and switches between them constantly.
+Even though from the perspective of our program, it might
+be 100% synchronous, in reality the OS might split
+it into "chunks" interlaced with other processes
+executions in between.
+
+## Evolution of Multitasking
+
+Chronologically, the following approaches were used
+to achieve some form of concurrency:
+
+1. Non-preemptive multitasking - the responsibility
+to let other processes run was in full control of the programmer
+It was programmer's responsibility to yield control
+to the OS, so that another process could be scheduled
+2. Preemptive multitasking - OS is responsible for 
+stopping/starting processes, freeing programmers
+from this responsibility.
+3, Pipelining - executing CPU instructions follows
+some well-defined process of steps. We can parallelize those.
+E.g., while some instruction is being decoded, we can already
+start to fetch the next one from memory.
+3. Hyper-threading - a single CPU core might be used
+to execute multiple operations in parallel, if different
+instructions require different parts of the CPU to 
+be involved
+3. Multi-core Processors - allow us to run
+code in parallel on multiple CPUs.
+
+## Parallel vs Concurrent
+
+**Parallelism** is about throwing more cores
+at a problem.
+**Concurrency** is about being efficient, trying
+to use the resources we have in the best way possible,
+e.g. by calculating something while waiting for
+some I/O operation to complete.
+
+Concurrency will not make single task (synchonous set of instructions)
+go faster, parallelism will. It might make a set of tasks
+execute faster though.
+
+In actual applications, it's often best to mix the 
+two approaches, i.e. execute tasks concurrently on multiple
+cores (multi-threading).
+
+## Operating System
+
+Assuming, that our application targets some OS as its host,
+we can expect the following:
+
+- OS will schedule our process to run on the CPU
+- OS will interrupt our process whenever it sees fit to let other
+  processes to run (pre-emption)
+- OS allows us to create threads to run tasks concurrently
+- OS exposes its API (system calls) allowing us
+  to access I/O, hardware. Some system calls might be 
+  blocking, while others might be async, allowing us to
+  poll the OS for results.
