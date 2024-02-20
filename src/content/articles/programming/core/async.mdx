@@ -158,3 +158,91 @@ they work. Characteristics:
   these stacks may be growable (which also comes
   with its own set of problems regarding memory
   management)
+
+### Coroutines (promises)
+
+It's another example of M:N threading. Each task is
+represented by a state machine.
+
+There are two kinds of coroutines:
+
+- symmetric - yields a specific destination (like another 
+  coroutine)
+- asymmetric - yields to a scheduler
+
+Whenever we place `async` keyword on a function, the 
+compiler rewrites it as a state machine. This is problematic
+since it will change stack traces, making debugging
+more difficult.
+Whenever we place `await` keyword, we yield control back
+to the runtime scheduler. The task gets suspended
+until the awaited future/promise/task gets resolved.
+
+```cs
+async runAsync()
+{
+    await RunTask1(); // yields control to scheduler
+    await RunTask2(); // yields control to scheduler
+}
+```
+
+Compared to fibers, it's impossible to preempt task
+at any point in time, it will happen only at specific points (awaits).
+The compiler can also "artificially" insert some preemption points.
+
+Characteristics:
+
+- code looks like synchronous
+- no context switching (stackless)
+- memory-efficient
+- tasks cannot be suspended as freely as with fibers
+- difficult debugging
+
+## OS Syscalls
+
+Modern OSs give us 3 kinds of I/O syscalls:
+
+- blocking
+- non-blocking
+- event-queues (Linux `epoll`, macOS `kqueue`, Windows `IOCP`)
+
+Most async runtimes use OS-backed queues
+for high performance I/O. It's an alternative
+to blocking I/O syscalls that put a thread
+on hold until result is ready to consume.
+
+Non-blocking syscall lets us poll
+to check if result is ready via a handle given to us
+by the OS.
+
+Event queue allows us to throw there multiple handles,
+and:
+
+- regularly check if any of the handles is ready
+- ask the OS to wake us up when any handle becomes ready
+
+It is a kind of a hybrid between blocking and non-blocking I/O syscalls.
+
+This is pretty similar to how async/await works in various runtimes.
+Only when we've done all the work and need he results, we `await` and 
+let the runtime preempt the task until the awaited
+thing is ready.
+
+### OS Differences
+
+Linux (`epoll`) and macOS (`kqueue`) have radiness-based event queues.
+Windows (`IOCP` (IO Completion Port)) uses completion-based queue.
+
+**Readiness-based** queue is simpler - it notifies us of
+readiness when the resource is ready to be consumed, but
+it does not do anything with the data for us, we need to
+read it by ourselves.
+**Completon-based** queues notify us when the resoure is ready
+and they also expose the data for us (like file contents) in a
+buffer that we provide to the OS.
+
+Operating Systems expose special calls that allow us
+to create new event queues, add handles there, and calls 
+to await for events to be ready/complete. The last one will
+suspend the thread. When the event is ready, thread
+will be woken up.
