@@ -1,5 +1,5 @@
 ---
-title: Asynchronous Programming
+title: Overview
 description: Concepts of asynchronous programming and basic primitives used by runtimes
 lang: en-US
 tags: ["async", "await", "concurency", "parallel", "syscall", "linux", "multitasking", "programming"]
@@ -111,12 +111,10 @@ Here's another:
 - *stackless* - there's one stack. Tasks cannot be preempted in the middle
   of execution. Examples: Rust `async`/`await`.
 
-### Threads
+## OS Threads
 
 Threads can be understood as OS threads (managed by the kernel),
 or user-level threads, managed by some runtime/framework.
-
-#### OS Threads
 
 Using OS threading is called **`1:1` Threading**, because each task
 is mapped to its own thread.
@@ -140,30 +138,35 @@ An abstraction over OS threads could use a
 managed thread pool to run tasks there.
 :::
 
-#### Green Threads
+## OS Syscalls
 
-Green Threads are also called **`M:N` Threading**, because 
-M tasks will run on N threads.
-Other names: *fibers*, *stackful corountines*.
+Modern OSs give us 3 kinds of I/O syscalls:
 
-:::tip
-We could have just 1 thread, and we'd have `M:1` model.
-:::
+- blocking
+- non-blocking
+- event-queues (Linux `epoll`, macOS `kqueue`, Windows `IOCP`)
 
-Green threads require a scheduler in the runtime.
-Such runtime has a thread pool of N threads where
-tasks are being run. This runtime has almost the
-same capabilities as the OS scheduler. It can preempt
-tasks.
+Most async runtimes use OS-backed queues
+for high performance I/O. It's an alternative
+to blocking I/O syscalls that put a thread
+on hold until result is ready to consume.
 
-Green threads are very similar to OS threads in how
-they work. Characteristics:
+Non-blocking syscall lets us poll
+to check if result is ready via a handle given to us
+by the OS.
 
-- each task has its own stack. The state of 
-  execution is stored on these stacks. However,
-  these stacks may be growable (which also comes
-  with its own set of problems regarding memory
-  management)
+Event queue allows us to throw there multiple handles,
+and:
+
+- regularly check if any of the handles is ready
+- ask the OS to wake us up when any handle becomes ready
+
+It is a kind of a hybrid between blocking and non-blocking I/O syscalls.
+
+This is pretty similar to how async/await works in various runtimes.
+Only when we've done all the work and need he results, we `await` and 
+let the runtime preempt the task until the awaited
+thing is ready.
 
 ### Coroutines (promises)
 
@@ -203,93 +206,3 @@ Characteristics:
 - memory-efficient
 - tasks cannot be suspended as freely as with fibers
 - difficult debugging
-
-## OS Syscalls
-
-Modern OSs give us 3 kinds of I/O syscalls:
-
-- blocking
-- non-blocking
-- event-queues (Linux `epoll`, macOS `kqueue`, Windows `IOCP`)
-
-Most async runtimes use OS-backed queues
-for high performance I/O. It's an alternative
-to blocking I/O syscalls that put a thread
-on hold until result is ready to consume.
-
-Non-blocking syscall lets us poll
-to check if result is ready via a handle given to us
-by the OS.
-
-Event queue allows us to throw there multiple handles,
-and:
-
-- regularly check if any of the handles is ready
-- ask the OS to wake us up when any handle becomes ready
-
-It is a kind of a hybrid between blocking and non-blocking I/O syscalls.
-
-This is pretty similar to how async/await works in various runtimes.
-Only when we've done all the work and need he results, we `await` and 
-let the runtime preempt the task until the awaited
-thing is ready.
-
-## Event Queues
-
-Event Queues are provided natively by most popular OSs, and they
-are also abstracted away by popular low-level libraries such as:
-
-- libuv
-- mio
-
-Focusing on `epoll` on Linux, the API of working with the event queues is as follows:
-
-```rs
-pub const EPOLL_CTL_ADD: i32 = 1;
-pub const EPOLLIN: i32 = 0x1;
-pub const EPOLLET: i32 = 1 << 31;
-
-#[link(name = "c")]
-extern "C" {
-    pub fn epoll_create(size: i32) -> i32;
-    pub fn close(fd: i32) -> i32;
-    pub fn epoll_ctl(epfd: i32, op: i32, fd: i32, event: *mut Event) -> i32;
-    pub fn epoll_wait(epfd: i32, events: *mut Event, maxevents: i32, timeout: i32) -> i32;
-}
-
-#[derive(Debug)]
-#[repr(C, packed)]
-pub struct Event {
-    pub(crate) events: u32,
-    // Token to identify event
-    pub(crate) epoll_data: usize,
-}
-
-impl Event {
-    pub fn token(&self) -> usize {
-        self.epoll_data
-    }
-}
-```
-
-
-
-### OS Differences
-
-Linux (`epoll`) and macOS (`kqueue`) have readiness-based event queues.
-Windows (`IOCP` (IO Completion Port)) uses completion-based queue.
-
-**Readiness-based** queue is simpler - it notifies us of
-readiness when the resource is ready to be consumed, but
-it does not do anything with the data for us, we need to
-read it by ourselves.
-
-**Completon-based** queues notify us when the resoure is ready
-and they also expose the data for us (like file contents) in a
-buffer that we provide to the OS.
-
-Operating Systems expose special calls that allow us
-to create new event queues, add handles there, and calls 
-to await for events to be ready/complete. The last one will
-suspend the thread. When the event is ready, thread
-will be woken up.

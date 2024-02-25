@@ -1,0 +1,82 @@
+---
+title: Event Queues
+description: Understanding Event Queues on the Operating System Level
+lang: en-US
+tags: ["event", "queue", "concurency", "epoll", "mio", "parallel", "syscall", "linux", "multitasking", "programming"]
+---
+
+# Event Queues
+
+Event Queues are provided natively by most popular OSs, and they
+are also abstracted away by popular low-level libraries such as:
+
+- libuv
+- mio
+
+
+## OS Differences
+
+Linux (`epoll`) and macOS (`kqueue`) have readiness-based event queues.
+Windows (`IOCP` (IO Completion Port)) uses completion-based queue.
+
+**Readiness-based** queue is simpler - it notifies us of
+readiness when the resource is ready to be consumed, but
+it does not do anything with the data for us, we need to
+read it by ourselves.
+
+**Completon-based** queues notify us when the resoure is ready
+and they also expose the data for us (like file contents) in a
+buffer that we provide to the OS.
+
+Operating Systems expose special calls that allow us
+to create new event queues, add handles there, and calls 
+to await for events to be ready/complete. The last one will
+suspend the thread. When the event is ready, thread
+will be woken up.
+
+## Linux epoll
+
+Focusing on `epoll` on Linux, the API of working with the event queues is as follows:
+
+```rs
+pub const EPOLL_CTL_ADD: i32 = 1;
+pub const EPOLLIN: i32 = 0x1;
+pub const EPOLLET: i32 = 1 << 31;
+
+#[link(name = "c")]
+extern "C" {
+    pub fn epoll_create(size: i32) -> i32;
+    pub fn close(fd: i32) -> i32;
+    pub fn epoll_ctl(epfd: i32, op: i32, fd: i32, event: *mut Event) -> i32;
+    pub fn epoll_wait(epfd: i32, events: *mut Event, maxevents: i32, timeout: i32) -> i32;
+}
+
+#[derive(Debug)]
+#[repr(C, packed)]
+pub struct Event {
+    pub(crate) events: u32,
+    // Token to identify event
+    pub(crate) epoll_data: usize,
+}
+
+impl Event {
+    pub fn token(&self) -> usize {
+        self.epoll_data
+    }
+}
+```
+
+To work with `epoll`, we'd:
+
+1. Create a new queue via `epoll_create` - it returns a file descriptor representing the queue
+2. Call `epoll_ctl` to configure the queue:
+    - provide file descriptor that we want to be notified about (e.g. a file, or TCP stream)
+    - provide bitmask (`op`) with appropriate settings configured (e.g. we want READ events)
+    - provide `epoll_data` that will help us to identify the event.
+      The value we set here will be provided to us when the notification comes.
+3. Call `epoll_wait` - it will block the thread until some notification comes in.
+
+We could repeat step 2 multiple times for different events/file descriptors, and reuse the same
+event queue instance to notify us about different events.
+When we start all the async operations, and don't have anything more to do, but just waiting
+for the data to come in, blocking the thread is really the only thing we will want to do (step 3).

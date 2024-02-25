@@ -120,6 +120,12 @@ Not only userland programs are preemptive. Also, kernel code is. Without it, a
 long-running driver or syscall could freeze the system. Linux is a *preemptive
 kernel*.
 
+:::tip
+OS scheduler switches threads, not processes. Well, when the next thread
+is from a different process, then process also gets switched, but primarily,
+OS switches between threads.
+:::
+
 There are various strategies for switching. The simplest way is to have a fixed
 time slice per process. For lots of processes running, it might take a long time
 to go back to that process once we switch away from it. 
@@ -268,3 +274,4 @@ isolated. This is called **COW Pages (copy on write)**.
 - [cpu.land](https://cpu.land/)
 - [Understanding system calls on Linux with strace
   (opensource.com)](https://opensource.com/article/19/10/strace#:~:text=A%20system%20call%20is%20a,processes%20and%20the%20Linux%20kernel.)
+- [Linux Kernel Labs](https://linux-kernel-labs.github.io/refs/heads/master/lectures/intro.html)

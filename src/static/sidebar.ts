@@ -16,7 +16,14 @@ const structure: Sidebar = {
             children: [
                 "core/programs-execution",
                 "core/stack-and-heap",
-                "core/async"
+                {
+                    "title": "Asynchronous Programming",
+                    "children": [
+                        "core/async/overview",
+                        "core/async/event-queues",
+                        "core/async/fibers"
+                    ]
+                }
             ]
         },
         {
