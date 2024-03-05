@@ -12,7 +12,7 @@ import stackSwap from '../../../../../assets/stack-swap.png';
 # Fibers
 
 Fibers are also called **`M:N` Threading**, because M tasks will run on N OS
-threads. Other names: *green threads*, *stackful corountines*.
+threads. Other names: *green threads*, *stackful coroutines*.
 
 :::tip
 We could have just 1 thread, and we'd have `M:1` model.
@@ -148,7 +148,7 @@ fn main() {
 We can see that this implementation is cooperative. Threads need to call
 `yield_thread()` for other thread to be scheduled. Normally, the runtime should
 provide libraries that yield whenever some I/O request is made. Then, using
-[event queues](./event-queues), the runtime can be notified when the thread
+[event queues](/programming/core/async/event-queues), the runtime can be notified when the thread
 should be marked as ready to continue to run (because some I/O operation is
 finalized).
 
@@ -176,6 +176,31 @@ pub fn spawn(&mut self, f: fn()) {
     available.state = State::Ready;
 }
 ```
+
+## Summary
+
+We can see that applications making use of green threading require some sorts of
+a runtime. That changes the model of how our code runs (compared to simplest
+compiled environments). Our program becomes kind of hosted within a runtime, which
+switches between threads in the background. For our program, the only thing that
+it "sees" is how it needs to yield control sometimes. Without deeper thought,
+we could even assume that those yields are pretty much the same thing as kernel
+doing preemption.
+
+More genearally, I think we can list the following abstractions:
+
+- embedded programming (think microcontrollers) - our programs truly run on bare metal.
+  Of course, it is still some simplification, but our code has full control of the CPU
+- OS-based systems - our programs are hosted within the OS, and kernel has control over
+  the CPU. Our program cannot run without kernel's "permission". The kernel has to allow
+  our programto run by scheduling its process/threads on some available CPU cores
+- green threads - we're moving even higher up. Not only the kernel controls when
+  our process can execute, but additionally, within that process, there's a thin
+  layer (some runtime), which switches between our green threads.
+
+The list above is not any official or formal categorization of how programs run.
+This is just a summary of how we can look at green threading in terms of
+abstraction and complexity that it introduces.
 
 ## References
 
