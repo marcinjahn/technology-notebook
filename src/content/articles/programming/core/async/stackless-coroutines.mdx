@@ -1,0 +1,271 @@
+---
+title: Stackless Coroutines
+description: Stackless Coroutines as a way to approach asynchronous programming
+lang: en-US
+tags: ["stackless", "coroutines", "async", "await", "concurency", "parallel"]
+---
+
+import { Image } from 'astro:assets';
+import stateMachines from '../../../../../assets/async-state-machines.png';
+
+# Stackless Coroutines
+
+In general, a **coroutine** is a model where some piece of code may be paused
+and resumed later on. There could be some other code running in between as well.
+[Green Threads](/programming/core/async/fibers) were an example of a *stackful
+coroutine*. Every coroutine has its own stack in memory, very similarly to how a
+typical function does. A *stackless coroutine* is a different approach where a
+coroutine cannot make a use of stack in a traditional sense. A typical function
+needs to store variables somewhere to use them later, possibly 5 lines down in
+the code. Normnally, the stack is used for that. The way how stackless
+coroutines are written, it's impossible to rely on stack. The state of the
+coroutine needs to be stored somewhere else, in a sort of closure.
+
+The stackless coroutines are what sits below the `async` and `await` keywords
+used in various programming languages, powering their concurrent promises.
+
+The stackless coroutines' executions are most often represented by words such
+as: `Task` (.NET C#), `Promise` (JavaScript), `Future` (Rust). All these words
+represent some operation that are to be finished sometime in the future. That's
+pretty much all we get, unless we add the `await` to it, which allows us to
+continue execution only when some particular `Future` (I will stick to that name
+from now on), or a group of them, gets finished (not necessarily successfuly).
+
+## Futures
+
+Like I mentioned, **future** is something that wil be finished in the future.
+Futures can be split in two different categories:
+
+- **Leaf Futures** - these are the operations that are the most "inner" in the
+  async chain. They are the actual (often I/O, but not necessarily) operations
+  that represent the async workload. E.g., it could be a TCP stream, or a file
+  read operation, or another thread executing something CPU-heavy. We, as
+  application programmers, do not write these futures. They are provided by
+  frameworks/runtimes/libraries.
+- **Non-leaf Futures** - these are the async functions that we write in our
+  programs. They execute operations on other non-leaf futures, or they execute
+  opeations on leaf futures. Any function with `async` and `await` keyword that
+  you write is a non-leaf future. When we execute a non-leaf future, it will run
+  synchronously until it gets to the point where some leaf future gets executed,
+  and a "real" async operation gets started. At that point (unless the leaf
+  futures gets immnediately completed), our non-leaf future will be paused.
+
+The actual handling of futures, in terms of which threads are used and so on, is
+handled by the runtime (and some *scheduler*) and it's hidden from our program's
+flow on the surface. The usage of futures makes it looks as if our program
+executes synchronously. Usually, the async runtime is provided as part of the
+language itself, with an exception of Rust, where the language provides only the
+core primitives (such as the
+[Future](https://doc.rust-lang.org/std/future/trait.Future.html) trait), and the
+async runtimes are third-party (e.g. [Tokio](https://tokio.rs/) or
+[Embassy](https://embassy.dev/)).
+
+### Common Building Blocks
+
+Every langugage/runtime implements the details of how futures are run a bit
+differently, but there are some general ideas that are shared among all (or
+most) of the implementations. Some of them are:
+
+- a way to drive the future (e.g. `poll` in Rust, or `Start` in C#).
+
+    :::tip[Lazy]
+    Some languages might have "lazy" futures where the actual execution of the future
+    starts after the first `poll` is executed on it. This is the case in Rust. JavaScript
+    starts executing its Promises as soon as they are created.
+    :::
+
+- `async` and `await` keywords
+- a future might be in one of two states: `Pending` or `Completed`
+- `awaits` (on leaf futures) are the yield points, where the control goes back
+  to the scheduler
+- the usage of [event queues](/programming/core/async/event-queues) for async
+  handling of I/O
+- state-machine being generated behind the scenes by the compiler to turn
+  our coroutine into the actual code being executed in the runtime
+
+## State Machines
+
+Our async coroutines are turned in to state machines. The states there will
+represent various stages of our coroutine execution, and they represent they
+yield points where the coroutine may pause and resume (state transitions).
+
+Let's say we wrote some coroutine like this one:
+
+```cs
+async GetData(int limit) 
+{
+    var metadataRequest = new MetadataRequest();
+
+    var metadata = await _http.Get(metadataRequest);
+
+    var dataReqeust = new DataRequest(metadata, limit);
+
+    var data = await _http.Get(request);
+
+    var response = PrepareResponse(data);
+
+    return response;
+}
+```
+
+It contains two `await`s. There are three fragments of code between these awaits:
+
+- up until the first await:
+
+    ```cs
+    var metadataRequest = new MetadataRequest();
+    var metadata = await _http.Get(metadataRequest);
+    ```
+
+- after the first await and up until the second one:
+
+    ```cs
+    var dataReqeust = new DataRequest(metadata, limit);
+    var data = await _http.Get(request);
+    ```
+
+- the rest of the coroutine:
+
+    ```cs
+    var response = PrepareResponse(data);
+    return response;
+    ```
+
+These three parts represent the work that will be done in three different states
+of the state machine. Here's the (pseudo) code that the compiler would generate
+for our coroutine. It doesn't represnt any real implementation, it's a
+simplified representation that is close enough to how real implementation would
+look like.
+
+```cs
+/// Our method's role changes. Instead of executing the actual work, it 
+/// creates a state machine and returns it. The state machine represents the Future
+async GetData(int limit) => new GetData_StateMachine(limit);
+
+/// Three states of the machine with their data
+enum State
+{
+    One,
+    Two,
+    Three
+}
+
+/// The state machine's implementation
+class GetData_StateMachine(int limit): Future
+{
+    private State _state;
+    private Future _metaDataFuture;
+    private Future _dataFuture;
+
+    PollState Poll()
+    {
+        if (_state is State.One)
+        {
+            var metadataRequest = new MetadataRequest();
+            _metaDataFuture = _http.Get(metadataRequest);
+
+            _state = State.Two;
+
+            return PollState.Pending;
+        }
+        else if (_state is State.Two)
+        {
+            if (!_metaDataFuture.IsCompleted) 
+            {
+                return PollState.Pending;
+            }
+
+            var dataReqeust = new DataRequest(_metaDataFuture.Result, _limit);
+            _dataFuture = _http.Get(request);
+
+            _state = State.Three;
+
+            return PollState.Pending;
+        }
+        else if (_state is State.Three)
+        {
+            if (!_dataFuture.IsCompleted) 
+            {
+                return PollState.Pending;
+            }
+
+            var response = PrepareResponse(_dataFuture.Result);
+
+            return PollState.Completed(respons);
+        }
+    }
+}
+```
+
+The implementation I've shown is the closest to how Rust generates state
+machines, even though the syntax I used is C#. You can see the actual example of
+how C# generates the state machine [here](/programming/dotnet/async).
+
+The main difference between Rust and C# is that Rust's coroutine's state machine
+is a `Future`. In C#, the state machine returns `void`. Anytime some async
+operation is executed within the state machine, the continuation is scheduled to
+rerun the state machine (with the new state). So, in C#, the machine not only
+runs states, but also schedules next time when the machine should run. In Rust,
+the machine is simpler, it just runs the state, and leaves the responsibility to
+run the machine again to the caller.
+
+---
+
+The presented flow of turning a function into a state machine is used in the whole
+chain of async functions execution. So, if there will be levels of async calls, each of 
+these calls is a state machine execution. Here's a little diagram:
+
+<Image src={stateMachines} alt="State Machines in async functions"/>
+
+Both `fn_1` and `fn_2` get turned into state machines. However, there is also
+higher-level state machine, generated from `main_async`. This state machine has two states:
+
+- first one where it drives `fn_1` to completion
+- the second one where it drives `fn_2` to completion
+
+## Summary
+
+In our example of the state machine we only focused on some single coroutine.
+This coroutine gets turned into a state machine, and there must be something
+that polls that machine to drive the future to completion. This is the role of a
+runtime.
+
+Runtimes differ greatly between implementations. Looking at the code of our
+state machine, the runtime, to be effective, would need to know when it'd make
+sense to `Poll` again. In Rust, the runtime would contain a *Reactor*, which
+will know about any I/O operation (or, in general, leaf future) being ready, for
+example, via [event queue](/programming/core/async/event-queues). Whenever some
+event gets triggered, the reactor would notify the scheduler. Here's an example
+from [Asynchronous Programming in
+Rust](https://www.packtpub.com/product/asynchronous-programming-in-rust/9781805128137).
+It is an event loop that will wake appropriate `waker` (which is a notificaton
+for scheduler to do something) when the OS event queue reports some completion:
+
+```rs
+fn event_loop(mut poll: Poll, wakers: Wakers) {
+    let mut events = Events::with_capacity(100);
+    loop {
+        poll.poll(&mut events, None).unwrap();
+        for e in events.iter() {
+            let Token(id) = e.token();
+            let wakers = wakers.lock().unwrap();
+
+            if let Some(waker) = wakers.get(&id) {
+                waker.wake();
+            }
+        }
+    }
+}
+```
+
+In turn, the scheduler would have a list of all pending futures, and would be
+able to `Poll` the right ones.
+
+Our scheduler could be single- or multi-threaded, depending on the capabilities
+of the target environment (e.g. a powerful PC with OS-provided threads, or a
+microcontroller without any OS).
+
+- [Stackless Coroutines in
+Rust](https://github.com/PacktPublishing/Asynchronous-Programming-in-Rust/blob/main/ch08/c-reactor-executor/src/main.rs)
+- [Asynchronous Programming in
+  Rust](https://www.packtpub.com/product/asynchronous-programming-in-rust/9781805128137)

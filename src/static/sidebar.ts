@@ -21,7 +21,8 @@ const structure: Sidebar = {
                     "children": [
                         "core/async/overview",
                         "core/async/event-queues",
-                        "core/async/fibers"
+                        "core/async/fibers",
+                        "core/async/stackless-coroutines"
                     ]
                 }
             ]
