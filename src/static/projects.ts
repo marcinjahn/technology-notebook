@@ -125,4 +125,8 @@ export const projectDefinitions: ProjectDefinition[] = [
       'https://extensions.gnome.org/extension/6048/peek-top-bar-on-fullscreen/')
     ]
   },
+  {
+    displayName: '2D Physics Simulator',
+    githubName: 'physics-simulator'
+  }
 ];
