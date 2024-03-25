@@ -66,7 +66,7 @@ Every langugage/runtime implements the details of how futures are run a bit
 differently, but there are some general ideas that are shared among all (or
 most) of the implementations. Some of them are:
 
-- a way to drive the future (e.g. `poll` in Rust, or `Start` in C#).
+- a way to drive the future (e.g. `poll()` in Rust, or `MoveNext()` in C#).
 
     :::tip[Lazy]
     Some languages might have "lazy" futures where the actual execution of the

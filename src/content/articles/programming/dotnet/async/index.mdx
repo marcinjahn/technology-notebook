@@ -21,33 +21,39 @@ is added, the `await` becomes a keyword in a method.
 
 The code that uses async/await is just a syntactic sugar. In reality, that code
 gets turned into a state machine where state transitions happen whenever `await`
-is encountered. The `async` methods get turned into classes representing those
-state machines.
+is encountered. The `async` methods get turned into classes (or structs in
+Release configuration) representing those state machines.
 
-Here's an example stolen from [Microsoft
-DevBlog](https://devblogs.microsoft.com/premier-developer/dissecting-the-async-methods-in-c/):
+Here's an example:
 
 Before:
 
 ```csharp
-class StockPrices
+using System;
+using System.Threading.Tasks;
+
+public class MyClass 
 {
-    private Dictionary<string, decimal> _stockPrices;
-    public async Task<decimal> GetStockPriceForAsync(string companyId)
+    public async Task MyAsyncMethod(int someValue) 
     {
-        await InitializeMapIfNeededAsync();
-        _stockPrices.TryGetValue(companyId, out var result);
-        return result;
+        Console.WriteLine("Starting MyAsyncMethod");
+        
+        await Task.Delay(1000);
+        
+        Console.WriteLine("After 1st await");
+        
+        await Task.Delay(someValue);
+        
+        Console.WriteLine("After 2nd await");
+        
+        await DoSomethingAsync();
+        
+        Console.WriteLine("After 3rd await");
     }
- 
-    private async Task InitializeMapIfNeededAsync()
+    
+    private async Task DoSomethingAsync()
     {
-        if (_stockPrices != null)
-            return;
- 
-        await Task.Delay(42);
-        // Getting the stock prices from the external source and cache in memory.
-        _stockPrices = new Dictionary<string, decimal> { { "MSFT", 42 } };
+        await Task.Delay(1000);
     }
 }
 ```
@@ -55,68 +61,222 @@ class StockPrices
 After:
 
 ```csharp
-class GetStockPriceForAsync_StateMachine
-{
-    enum State { Start, Step1, }
-    private readonly StockPrices @this;
-    private readonly string _companyId;
-    private readonly TaskCompletionSource<decimal> _tcs;
-    private Task _initializeMapIfNeededTask;
-    private State _state = State.Start;
- 
-    public GetStockPriceForAsync_StateMachine(StockPrices @this, string companyId)
-    {
-        this.@this = @this;
-        _companyId = companyId;
-    }
- 
-    public void Start()
-    {
-        try
-        {
-            if (_state == State.Start)
-            {
-                // The code from the start of the method to the first 'await'.
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using System.Threading.Tasks;
 
-                if (string.IsNullOrEmpty(_companyId))
-                    throw new ArgumentNullException();
- 
-                _initializeMapIfNeededTask = @this.InitializeMapIfNeeded();
- 
-                // Update state and schedule continuation
-                _state = State.Step1;
-                _initializeMapIfNeededTask.ContinueWith(_ => Start());
-            }
-            else if (_state == State.Step1)
+[assembly: CompilationRelaxations(8)]
+[assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
+[assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+[assembly: AssemblyVersion("0.0.0.0")]
+[module: UnverifiableCode]
+[module: RefSafetyRules(11)]
+
+[NullableContext(1)]
+[Nullable(0)]
+public class MyClass
+{
+    [StructLayout(LayoutKind.Auto)]
+    [CompilerGenerated]
+    private struct <DoSomethingAsync>d__1 : IAsyncStateMachine
+    {
+        public int <>1__state;
+
+        public AsyncTaskMethodBuilder <>t__builder;
+
+        private TaskAwaiter <>u__1;
+
+        private void MoveNext()
+        {
+            int num = <>1__state;
+            try
             {
-                // Need to check the error and the cancel case first
-                if (_initializeMapIfNeededTask.Status == TaskStatus.Canceled)
-                    _tcs.SetCanceled();
-                else if (_initializeMapIfNeededTask.Status == TaskStatus.Faulted)
-                    _tcs.SetException(_initializeMapIfNeededTask.Exception.InnerException);
+                TaskAwaiter awaiter;
+                if (num != 0)
+                {
+                    awaiter = Task.Delay(1000).GetAwaiter();
+                    if (!awaiter.IsCompleted)
+                    {
+                        num = (<>1__state = 0);
+                        <>u__1 = awaiter;
+                        <>t__builder.AwaitUnsafeOnCompleted(ref awaiter, ref this);
+                        return;
+                    }
+                }
                 else
                 {
-                    // The code between first await and the rest of the method
- 
-                    @this._store.TryGetValue(_companyId, out var result);
-                    _tcs.SetResult(result);
+                    awaiter = <>u__1;
+                    <>u__1 = default(TaskAwaiter);
+                    num = (<>1__state = -1);
                 }
+                awaiter.GetResult();
             }
+            catch (Exception exception)
+            {
+                <>1__state = -2;
+                <>t__builder.SetException(exception);
+                return;
+            }
+            <>1__state = -2;
+            <>t__builder.SetResult();
         }
-        catch (Exception e)
+
+        void IAsyncStateMachine.MoveNext()
         {
-            _tcs.SetException(e);
+            //ILSpy generated this explicit interface implementation from .override directive in MoveNext
+            this.MoveNext();
+        }
+
+        [DebuggerHidden]
+        private void SetStateMachine(IAsyncStateMachine stateMachine)
+        {
+            <>t__builder.SetStateMachine(stateMachine);
+        }
+
+        void IAsyncStateMachine.SetStateMachine(IAsyncStateMachine stateMachine)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in SetStateMachine
+            this.SetStateMachine(stateMachine);
         }
     }
- 
-    public Task<decimal> Task => _tcs.Task;
-}
- 
-public Task<decimal> GetStockPriceForAsync(string companyId)
-{
-    var stateMachine = new GetStockPriceForAsync_StateMachine(this, companyId);
-    stateMachine.Start();
-    return stateMachine.Task;
+
+
+    [StructLayout(LayoutKind.Auto)]
+    [CompilerGenerated]
+    private struct <MyAsyncMethod>d__0 : IAsyncStateMachine
+    {
+        public int <>1__state;
+
+        public AsyncTaskMethodBuilder <>t__builder;
+
+        public int someValue;
+
+        [Nullable(0)]
+        public MyClass <>4__this;
+
+        private TaskAwaiter <>u__1;
+
+        private void MoveNext()
+        {
+            int num = <>1__state;
+            MyClass myClass = <>4__this;
+            try
+            {
+                TaskAwaiter awaiter;
+                switch (num)
+                {
+                    default:
+                        Console.WriteLine("Starting MyAsyncMethod");
+                        awaiter = Task.Delay(1000).GetAwaiter();
+                        if (!awaiter.IsCompleted)
+                        {
+                            num = (<>1__state = 0);
+                            <>u__1 = awaiter;
+                            <>t__builder.AwaitUnsafeOnCompleted(ref awaiter, ref this);
+                            return;
+                        }
+                        goto IL_0082;
+                    case 0:
+                        awaiter = <>u__1;
+                        <>u__1 = default(TaskAwaiter);
+                        num = (<>1__state = -1);
+                        goto IL_0082;
+                    case 1:
+                        awaiter = <>u__1;
+                        <>u__1 = default(TaskAwaiter);
+                        num = (<>1__state = -1);
+                        goto IL_00ec;
+                    case 2:
+                        {
+                            awaiter = <>u__1;
+                            <>u__1 = default(TaskAwaiter);
+                            num = (<>1__state = -1);
+                            break;
+                        }
+                        IL_00ec:
+                        awaiter.GetResult();
+                        Console.WriteLine("After 2nd await");
+                        awaiter = myClass.DoSomethingAsync().GetAwaiter();
+                        if (!awaiter.IsCompleted)
+                        {
+                            num = (<>1__state = 2);
+                            <>u__1 = awaiter;
+                            <>t__builder.AwaitUnsafeOnCompleted(ref awaiter, ref this);
+                            return;
+                        }
+                        break;
+                        IL_0082:
+                        awaiter.GetResult();
+                        Console.WriteLine("After 1st await");
+                        awaiter = Task.Delay(someValue).GetAwaiter();
+                        if (!awaiter.IsCompleted)
+                        {
+                            num = (<>1__state = 1);
+                            <>u__1 = awaiter;
+                            <>t__builder.AwaitUnsafeOnCompleted(ref awaiter, ref this);
+                            return;
+                        }
+                        goto IL_00ec;
+                }
+                awaiter.GetResult();
+                Console.WriteLine("After 3rd await");
+            }
+            catch (Exception exception)
+            {
+                <>1__state = -2;
+                <>t__builder.SetException(exception);
+                return;
+            }
+            <>1__state = -2;
+            <>t__builder.SetResult();
+        }
+
+        void IAsyncStateMachine.MoveNext()
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in MoveNext
+            this.MoveNext();
+        }
+
+        [DebuggerHidden]
+        private void SetStateMachine(IAsyncStateMachine stateMachine)
+        {
+            <>t__builder.SetStateMachine(stateMachine);
+        }
+
+        void IAsyncStateMachine.SetStateMachine(IAsyncStateMachine stateMachine)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in SetStateMachine
+            this.SetStateMachine(stateMachine);
+        }
+    }
+
+    [AsyncStateMachine(typeof(<MyAsyncMethod>d__0))]
+    public Task MyAsyncMethod(int someValue)
+    {
+        <MyAsyncMethod>d__0 stateMachine = default(<MyAsyncMethod>d__0);
+        stateMachine.<>t__builder = AsyncTaskMethodBuilder.Create();
+        stateMachine.<>4__this = this;
+        stateMachine.someValue = someValue;
+        stateMachine.<>1__state = -1;
+        stateMachine.<>t__builder.Start(ref stateMachine);
+        return stateMachine.<>t__builder.Task;
+    }
+
+    [AsyncStateMachine(typeof(<DoSomethingAsync>d__1))]
+    private Task DoSomethingAsync()
+    {
+        <DoSomethingAsync>d__1 stateMachine = default(<DoSomethingAsync>d__1);
+        stateMachine.<>t__builder = AsyncTaskMethodBuilder.Create();
+        stateMachine.<>1__state = -1;
+        stateMachine.<>t__builder.Start(ref stateMachine);
+        return stateMachine.<>t__builder.Task;
+    }
 }
 ```
 
@@ -125,14 +285,31 @@ In the Debug mode, the generated state machine is a class. In the Release mode,
 it's a struct.
 :::
 
-The `TaskCompletionSource` is a crucial player in the Task-ecosystem. This is
-what controls the state of the task in the background.
+There are a few "actors" that work together to make the async/await flow work:
+
+- `Task` - the type that represents something that will complete in the future
+- `TaskCompletionSource` - the type that can create a task, and set its completion
+- `AsyncMethodBuilder` - `Task` is not the only thing that we can await. There
+  are other built-in "awaitables" (like `ValueTask`). We can also create them
+  ourselves. Every awaitable type needs its own AsyncMethodBuilder. It is responsible
+  for the lifecycle of the async method that returns a given awaitable type.
+- `INotifyCompletion` (awaiter) - the type that sets continuations on
+  awaitables. Every awaitable type needs its own implementation of this
+  interface.
+- `IAsyncStateMachine` - the code that gets generated in place of our
+  async/await methods gets put into a class or struct that implements this
+  interface.
+- `ExecutionContext` - this type enables `AsyncLocal` to store ambient data in
+  async workloads.
 
 ## Sources
 
 - [Dissecting the async methods in
   C#](https://devblogs.microsoft.com/premier-developer/dissecting-the-async-methods-in-c/)
-  and
-  [GitHub](https://github.com/kevingosse/MyTask/blob/main/TaskLibrary/Task.cs)
 - [Designing and rewriting asynchronous tasks from scratch - Kevin Gosse - NDC
-  Oslo 2020](https://www.youtube.com/watch?v=glPrWPr-IPc)
+  Oslo 2020](https://www.youtube.com/watch?v=glPrWPr-IPc) and
+  [GitHub](https://github.com/kevingosse/MyTask/blob/main/TaskLibrary/Task.cs)
+- [Simplified Task infra by Stephen
+  Toub](https://gist.github.com/marcinjahn/65266ce4ed005695c67df24ad058dc58)
+- [How Async/Await Really Works in C# (blog post by Stephen
+  Toub)](https://devblogs.microsoft.com/dotnet/how-async-await-really-works/)
