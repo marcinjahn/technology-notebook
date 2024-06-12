@@ -2,27 +2,11 @@
 import GithubExternalLink from './external-links/GithubExternalLink.astro';
 import LinkedInExternalLink from './external-links/LinkedInExternalLink.astro';
 
-const items = [
-    {
-        text: "LinkedIn",
-        icon: "/img/linkedin.webp",
-        link: "https://www.linkedin.com/in/marcin-jahn-63a9b915b/?locale=en_US",
-    },
-    {
-        text: "GitHub",
-        icon: "abc",
-        link: "https://github.com/marcinjahn",
-    },
-    { text: "cirro.services", link: "https://www.cirro.services" },
-];
 ---
 
 <ul>
     <GithubExternalLink />
     <LinkedInExternalLink />
-    <a target="_blank" href="https://www.cirro.services">
-        <span>cirro.services</span>
-    </a>
 </ul>
 
 <style>
