@@ -1,0 +1,85 @@
+---
+title: ACID
+description: ACID in databases (Atomicity, Consistency, Isolation, Durability)
+tags: ["databases", "acid", "sql", "nosql", "transactions"]
+lang: en-US
+---
+
+# ACID
+
+A - Atomicity
+C - Consistency
+I - Isolation
+D - Durability
+
+## Transactions
+
+A transaction is a collection of queries, they are treated as one unit of work.
+You have to beging a transaction and end (**commit**) it. We use transactions when we want
+a set of queries to succeed completely, or not be executed at all. Partial success is
+unacceptable. In case of some failure in the middle, transactions will **rollback**.
+
+Usually, transactions modify data, but there might also be readonly transactions.
+Theses are useful when a sequence of queries should operate on the same snapshot
+of data. Otherwise, queries might operate on different sets of data, rendering the
+result meaningless.
+
+Transactions are always being used. Even when we execute a single query, on the "server" side of
+the DB engine, that query is wrapped into a transaction.
+
+Some database engines are optimized for commits, meaning that the database optimistically assumes that the queries will succeed, and stores them on disk. In case of a failure, the database engine will have to rollback the changes, which will be a relatively costly operation. E.g., Postgres optimizes for commits.
+
+### Atomicity
+
+All queries in a transaction must succeed, which forms **Atomicity**. In case of any error, a rollback
+occurs.
+
+When a failure occurs, e.g. database crashes, it needs to be restarted. Then, on startup, a "cleanup" process needs to be executed, to bring back order into the system. For example, it'd check if there were any transactions being processed during the crash. If they were, it will execute a rollback. Depeneding on the database engine implementation, the whole database (or some parts of it) might be blocked until the rollback is done.
+
+Basically, atomicity is what backs the "unit of work" promise of transactions.
+
+### Isolation
+
+Getting back to the readonly transactions, these are possible due to **Isolation**. One transaction
+should not see the changes of another transaction, until it is committed. Of course, that really depends on what we need for a given case, and database might be configured differently.
+
+A situation where a query can see changes from some other in-flight transaction, is called a _dirty read_. This data is dirty, because the change is not yet commited, so what we're seeing might not necessarily stay in the DB.
+
+Isolation Levels:
+
+- _Read uncommitted_ - can see dirty reads (lowest isolation level), but it's potentially faster
+- _Read commited_ - each query in a transaction sees only commited changes from other transactions. It's default for many DBs.
+- _Repeatable read_ - when a transaction's query reads some row, that row stays unchanged while it's running
+- _Snapshot_ - each query in a transaction sees the same snapshot of data. It's useful when we want to make sure that the data we're working with is consistent.
+- _Serializable_ - there's no concurrency, there's only one transaction at a time.
+
+:::tip[Postgres]
+Postgres implementes "repeatable read" isolation level as snapshot. So, it basically merges these two approaches into one.
+:::
+
+These levels vary between database engines, not all of them might be available in some particular database engine.
+
+Usually, we can set isolation level while we begin the transaction.
+
+### Consistency
+
+(In)Consistency might be in:
+
+- data itself - e.g., in our data model we could have number of likes per some photo, and also individual records for each like. Normally, the sum of likes per photo should be the same as the number written in the other table.
+- reads - this refers to situations where some value gets written into the DB, and some consecutive read doesn't see that value. This is a consistency issue. It occurs when we have horizontal scaling.
+
+Weak consistency could be a known characteristic of a database system with replication. _Eventual Consistency_ in such systems says that system might be inconsistent at some moment, but later on, it will catch up. There could also be levels of eventual consistency (like it is for example in Azure CosmosDB).
+
+:::tip
+Eventual consistency is a characteristic of both SQL and NoSQL databases.
+:::
+
+### Durability
+
+Durability is all about making sure that writes are persistent, i.e. written to the disk. There are systems that do not write to disk at all and store data in memory.
+
+Durability Techniques:
+
+- WAL (Write Ahead Log) - any change goes to the WAL first. It's a journal of all changes being applied to the DB, like deltas. DB could read the log from start to finish to recreate the datbase state.
+
+Databases need much more control over disk than typical user space apps. Therefore, they cannot rely on typical abstractions provided by the OSes, since the OS might cache data instead of writing it to disk (to save on I/O). Databases would typically want to bypass that when some critical write is about to happen.

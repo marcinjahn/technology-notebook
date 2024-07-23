@@ -1,0 +1,78 @@
+---
+title: Glossary
+description: Glossary of database terms
+tags: ["databases", "acid", "sql", "nosql", "transactions"]
+lang: en-US
+---
+
+# Glossary
+
+## Row ID
+
+Row ID is a system-level identifier of individual rows in a table. It might
+be the same as primary key of the table, but it doesn't have to be that (e.g, Postgres has a separate _tuple_id_).
+
+## Page
+
+Page is a fixed number of bytes on the disk. A single page might fit many rows. The amount depends from the size of the rows. When a DB engine reads a row, it really reads the whole page (or multiple pages), so a page is the smallest unit of I/O operations.
+
+When reading a single column from a database, in reality, we have to read entire rows (unless we're talking about column-store databases, such as Cassandra).
+
+## Heap
+
+Heap is a collection of pages. A table of a database is contained in a heap.
+
+## Index
+
+Index is a data structure, which is separate from the heap, and it has pointers to the heap. It contains part of our actual data, allowing us to search for something. A single table might index one or more columns. Thanks to the index, we might avoid the SCAN operation on the heap. So, index is like a list of pointers to pages on the heap. When an [Index Scan](#index-scan) is performed, the DB goes to the index, and then to the heap. The data from the heap (pages) might contain more rows than the ones that satisfy our query. Therefore, the retrieved pages need to be evaluated to discard the wrong rows.
+
+Index is most popularly implemented as a B-Tree, although there are also other data structures possible.
+
+:::tip
+Index itself is also stored in pages.
+:::
+
+Small index is better for performance, because such index might live in memory.
+
+_Primary key_ usually has an index created automatically for it. It also usuablly becomes a clustered index. A clustered index is a special case of indexing where the index is actually stored within the table itself. It's done by making the table ordered with the primary index. So, anytime you want to use the clusted index, you actually go directly into the table, since it's already sorted by that index. Anytime you insert some data into the table, it gets inserted in the right place for the clustered index
+to maintain the order.
+
+:::tip[Postgres]
+In Postgres, all indexes are secondary.
+:::
+
+Having an index does not mean that it will always be used in queries that involve the indexed column. It really depends on the cost analysis that the database planner prepares. Sometimes, it might be cheaper to actually go directly to the table and scan. An example of that would be indexing a "Name" column, and then invoking something like:
+
+```sql
+SELECT * FROM users WHERE Name LIKE '%Something%'
+```
+
+In this case, the index would have to be scanned as a whole, and since we also need other columns, it's probably more efficient to go to the table directly, skipping the index data structure.
+
+Index might be multi-column, and it might help avoid going to the table when all we need in the result are the columns that are part of that index ([Index Only Scan](#index-only-scan)).
+
+## Scans
+
+### Index Scan
+
+When we execute a query that includes some condition on an indexed column, and the DB's analysis engine decides to use an index, there's going to be an Index Scan. The DB will look into the index, and as soon as the value satisfies the condition, it will go to the heap to acquire the appropriate page(s).
+
+### Bitmap Index Scan
+
+When the query may use the index, and we're looking for some condition that wil potentially draw multiple rows (e.g., `SELECT * WHERE age > 30`, assuming that `age` is indexed), a bitmap will be used to store the pages that we'll have to look at. DB will not go into the heap per row. Instead, it will first scan the index, collect the pages (in bitmap), and then collect all the pages it needs.
+
+There could be queries that involve multiple indices. In such case, it'd build two bitmaps. Then, it'd just AND them together, creating a single bitmap.
+
+### Index Only Scan
+
+When the query asks only for the data that is contained within the index, the DB does not have to even go to the heap. It will just scan the index, and build the response based on that. It's the fastest possible query kind.
+
+:::caution
+Index Only Scan does not guarantee that the DB engine will not read any data from the disk. The index itself might be big enough that it'd not fin in the memory.
+In such cases, there will be some disk I/O executed.
+:::
+
+### Sequential Table Scan
+
+When index is not used for the query (e.g., when there's no index, or the query would not benefit from indexing), the DB is going to scan the table for the results. It's going to look at each row one by one.
+It's the worst kind of query.

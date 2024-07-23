@@ -4,8 +4,7 @@ description: Information about various entities that TPM specification defines
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
-
+import { Image } from "astro:assets";
 
 # TPM Entities
 
@@ -94,7 +93,7 @@ denied.
 ## Nonvolatile Indexes
 
 NVRAM Index. There is some nonvolatile storage in TPM. It can be configured by
-the user for storage. They aren't considered *Objects* due to having more
+the user for storage. They aren't considered _Objects_ due to having more
 attributes than standard object. Reading and writing can be individually
 controlled. They can be made into "write once" entities. They have authorization
 value and policy. Authorization value can be changed by the owner of the index,
@@ -109,12 +108,12 @@ private part (asymmetric private key, a symmetric key or encrypted data).
 Like NVRAM indexes all objects belong to one of four hierarchies: platform,
 storage, endorsement or NULL. When a hierarchy is cleared all objects in it are
 cleared. They have authorization data and policy. A policy can't be changed
-after it gets created (like with NV indexes). 
+after it gets created (like with NV indexes).
 
 **Object commands** can be administrative or user commands. At creation the user
 decides which of these commands can be performed with the authorization data and
 which can be exclusively done with a policy. Some commands can only be done with
-a policy no matter how we set the attributes during creation. 
+a policy no matter how we set the attributes during creation.
 
 Most objects are keys. Using keys or other objects requires using a
 non-persistent TPM entity - a session.
@@ -160,7 +159,7 @@ changes during the lifetime of the device. The primary endorsement key is
 certified by the TPM manufacturer, and because its seed never changes, it can be
 used to identify the device. Since there's only one TPM device per machine, the
 primary endorsement key can also be used as the machine's identity. It's
-privacy-sensitive. 
+privacy-sensitive.
 
 ### Platform Hierarchy
 
@@ -186,3 +185,4 @@ It can be turned off.
 
 The null hierarchy is reserved for ephemeral keys. The null seed is re-generated
 each time the host reboots.
+
