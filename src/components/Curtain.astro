@@ -1,0 +1,23 @@
+<div class="curtain" style="display: none;">
+  <slot/>
+</div>
+
+<script>
+  const isVisible = window.localStorage.getItem('see-behind-the-scenes') === "true";
+  console.log(isVisible)
+
+  if (isVisible) {
+    const curtains = document.querySelectorAll('.curtain');
+    console.log(curtains)
+    curtains.forEach(curtain => curtain.style.display = 'block');
+  }
+</script>
+
+<style>
+  .curtain {
+border: 1px solid red;
+    padding: 1rem;
+    background-color: #222;
+    width: 100%;
+  }
+</style>
