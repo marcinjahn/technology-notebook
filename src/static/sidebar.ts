@@ -294,7 +294,7 @@ const structure: Sidebar = {
     },
     {
       title: "Databases",
-      children: ["databases/acid", "databases/glossary"],
+      children: ["databases/acid", "databases/glossary", "databases/db-index"],
     },
     {
       title: "SQL Server",
