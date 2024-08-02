@@ -33,3 +33,31 @@ Heap is a collection of pages. A table of a database is contained in a heap.
 
 Index speeds up our queries, its role is very similar to an index in a book. More on indexes in
 [Index](./db-index).
+
+## Database Engine
+
+Database Engine is a core component of a database system that handles:
+
+- on-disk storage
+- CRUD operations
+
+Database systems use database engines and add additional features on top, like server, APIs,
+replication, partitioning, stored proceduresm and all the other user-facing features.
+
+Some DBMS allow to switch between different database engines, or even use different engine in
+different tables (e.g., MySQL, MariaDB, Mongo). Other systems have one fixed engine (e.g., Postgres).
+
+SQLite can be considered as a database engine.
+
+## Cursors
+
+(Server-side) cursors are like iterators in the database world. Instead of getting all the data at once (which
+might not be even possible if there's huge amount of data), we can go through the rows
+systematically one by one. We can ask for some rows, process them somehow, and then ask for some
+more rows, until we reach some goal. It saves memory, and improves the time of getting the first
+bits of data.
+
+Cursors work in transactions. Otherwise, the table contents would possibly change during our
+retrieval, rendering unpredictable results.
+
+Cursors require some state on the server, so creating lots of them can impact the DB performance.

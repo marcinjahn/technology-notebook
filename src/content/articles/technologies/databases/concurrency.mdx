@@ -1,0 +1,32 @@
+---
+title: Concurrency
+description: Concurrency and locks in databases
+tags: ["databases", "locks", "concurrency", "sql", "nosql"]
+lang: en-US
+---
+
+# Concurrency
+
+When database is used by multiple processes/threads, we might run into some concurrency issues.
+Some of those might be solved by transactions, but that might not be enough (e.g. double booking)
+That's why we use locking.
+
+## Locking
+
+### Exclusive Lock
+
+Exlusive Lock allows to lock a row (or column) so that no other process is allowed to write or even
+read it. The other process would fail with an error if it tried to do that.
+Another name for it could be "write lock", because it locks everyone from accessing the data until
+its written completely.
+
+### Shared Lock
+
+With Shared Lock, only one process can write into something, but many processes can read it.
+Another name for it could be "read lock", because it block any writes until all reads are done.
+
+:::tip
+When acquiring an Exclusive Lock, there must not be any other locks on the object (exlucsive or shared).
+When acquiring a Shared Lock, there must not be any Exclusive Lock, but there might be some other
+Shared Locks.
+:::

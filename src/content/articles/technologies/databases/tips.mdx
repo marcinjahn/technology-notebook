@@ -1,0 +1,32 @@
+---
+title: Database Tips
+description: Various tips for dealing with databases
+tags: ["databases", "tips", "sql", "nosql"]
+lang: en-US
+---
+
+# Database Tips
+
+## Pagingation in SQL
+
+Avoid using `OFFSET` when implementing pagination in SQL databases.
+
+```sql
+SELECT * FROM users
+ORDER BY id
+LIMIT 10 OFFSET 1000
+```
+
+Such a query will make the database retrieve 1010 index entries(assuming there's an index on id)
+and then discard the first 1000. This is not efficient.
+Instead, the request should contain the last seen ID, which then can be utilized in a more efficient
+query:
+
+```sql
+SELECT * FROM users
+WHERE id > 374839
+LIMIT 10
+```
+
+The DB will get just 10 values from the index, since it knows how to find ID 374839 without going
+through all the entries before it.

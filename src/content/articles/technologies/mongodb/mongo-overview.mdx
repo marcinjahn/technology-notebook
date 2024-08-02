@@ -5,14 +5,14 @@ tags: ["mongo", "mongodb", "nosql", "document", "database", "db"]
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 # MongoDB Overview
 
 - Document DB
 - supports ACID
 - uses JSON/BSON
-- districuted scalability (sharding)
+- distributed scalability (sharding)
 - high availability (replica set)
 - free open source Community Edition
 - pluggable storage engine support
@@ -23,19 +23,19 @@ import { Image } from 'astro:assets';
 
 Compared with Relational databases, MongoDB has the following terms:
 
-|SQL|MongoDB|
-|-|-|
-|Database|Database|
-|Table|Collection|
-|Row|Document|
-|Column|Field|
-|Index|Index|
+| SQL      | MongoDB    |
+| -------- | ---------- |
+| Database | Database   |
+| Table    | Collection |
+| Row      | Document   |
+| Column   | Field      |
+| Index    | Index      |
 
 ## BSON
 
 BSON stands for "Binary JSON", it's binary-encoded. It sacrifies
 human-readability for performance. BSON supports more data types than
-traditional JSON (different numeric types, raw binary, dates, ObjectId, etc.). 
+traditional JSON (different numeric types, raw binary, dates, ObjectId, etc.).
 
 Example:
 
@@ -56,6 +56,17 @@ the documents as BSONs.
 
 All the BSON types can be found in the [MongoDB
 Docs](https://www.mongodb.com/docs/manual/reference/bson-types/).
+
+### Connection
+
+When talking with Mongo DB, it uses TCP/IP with TLS, and the Mongo Wire Protocol. It does not use
+HTTP. Therefore, when using some tracing or observability in general, you will not see Mongo traffic
+being recorded by default. You will most likely need some Mongo-specific instrumentation.
+The Mongo Wire Protocol might be sniffed with tools such as WireShark.
+
+When initiating a connection with Mongo, before any user-initiated query gets sent, the client
+negotiates with the server on various parameters, which translates to about 4 request-responses (in
+Mongo Wire Protocol) being sent.
 
 ### Dates
 
@@ -91,6 +102,13 @@ We can get all indexes on a collection with:
 db.{collection}.getIndexes()
 ```
 
+Mongo supports clustered indexes, so that the primary `_id` key in the index is directly associated
+with the BSON. The default `_id` field in a document is an ObjectId, which takes 12 bytes. It's
+quite a lot for a key, but it's large for uniqueness among shards. Secondary indexes will point
+to the primary index, which means that secondary indexes become quite big, since each entry of the
+index needs to contain the 12-byte ObjectId. The situation might be improved (or worsened) with a
+custom choice of `_id`.
+
 ## Tools
 
 ### Shell
@@ -125,7 +143,7 @@ db.{collection}.find() // Gets all documents in a collection
 ```
 
 :::tip[Formatting]
-When using the older CLI - *mongo* - the output is in one line. To format it for
+When using the older CLI - _mongo_ - the output is in one line. To format it for
 readability, we can use the `pretty()` function. E.g.,
 `db.mycollection.find().pretty()`.
 :::

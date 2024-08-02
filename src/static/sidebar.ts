@@ -294,7 +294,16 @@ const structure: Sidebar = {
     },
     {
       title: "Databases",
-      children: ["databases/acid", "databases/glossary", "databases/db-index"],
+      icon: "databases.webp",
+      children: [
+        "databases/acid",
+        "databases/glossary",
+        "databases/db-index",
+        "databases/btree",
+        "databases/partitioning",
+        "databases/concurrency",
+        "databases/tips",
+      ],
     },
     {
       title: "SQL Server",

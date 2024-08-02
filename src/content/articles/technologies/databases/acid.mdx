@@ -7,15 +7,15 @@ lang: en-US
 
 # ACID
 
-A - Atomicity
-C - Consistency
-I - Isolation
-D - Durability
+- A - Atomicity
+- C - Consistency
+- I - Isolation
+- D - Durability
 
 ## Transactions
 
 A transaction is a collection of queries, they are treated as one unit of work.
-You have to beging a transaction and end (**commit**) it. We use transactions when we want
+You have to begin a transaction and end (**commit**) it. We use transactions when we want
 a set of queries to succeed completely, or not be executed at all. Partial success is
 unacceptable. In case of some failure in the middle, transactions will **rollback**.
 

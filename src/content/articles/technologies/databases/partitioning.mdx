@@ -1,0 +1,74 @@
+---
+title: Partitioning and Sharding
+description: Partitioning and sharding of databases to scale the storage size
+tags: ["databases", "scaling", "partition", "shard", "sql", "nosql"]
+lang: en-US
+---
+
+As the amount of data stored in a database grows, various operations become slower and slower.
+We could add more memory, CPU, and install disks with better I/O, but that has its limits.
+At some point, we need some form of splitting the data into multiple chunks.
+Partitioning is one way of doing that. It splits a table withing a DB server.
+Sharing is a more sophisticated way of partitioning. It splits the table across multiple servers.
+
+## Partitioning
+
+Partitioning is about splitting the table in to smaller chunks.
+
+There are two main types of partitioning:
+
+- horizontal (much more popular)
+- vertical
+
+In Vertical partitioning, table is split into multiple tables with different sets of columns. It's
+useful when we have some raraly accessed columns, especially when they're large. Then, they could be
+stored on some slower drive.
+
+In Horizontal partitioning, a table would internally be split into multiple smaller tables
+where each one of theses smaller tables would contain some subset of rows.
+When querying the DB, the DB engine would know which table to query based on some criteria (unless
+it doesn't, then it'd scan all these splits)
+For example, the partitioning could be done based on the ID of rows.
+
+Partitioning can be done by:
+
+- range (e.g. ranges of IDs in different partitions; or ranges of dates)
+- list (e.g. particular contries in on partition, and others in another)
+- hash - similar to hashmap
+
+Partitioning is supported natively ba database engines. When creating a table, we need to "inform"
+the DB that it's going to be partitioned. When reading/inserting rows from the DB, the client does
+not need to know that the partitioning even is there. The DB engine will handle that part.
+
+Cons of partitioning:
+
+- updates might be slower when some rows are moved between partitions
+- schema changes might be challenging. Changes on the main table have to be reflected on all
+partitions. DBMS should handle it though.
+
+## Sharding
+
+Sharding can be seen as a variantion of partitioning where the partitions are hosted on separate
+nodes, making the whole thing a distributed system. It allows us to scale the DB horizontally.
+Each node will have smaller indices to maintain (and they will potentially fit in memory easier)
+
+Since data will be kept on multiple servers, there needs to be some way of figuring out which server
+to hit with a particular query. Depending on the implementation, this distinction might be the
+responsibilit of your app, or client library, or some gateway server that the client connects to.
+
+### Hashing
+
+The decision on where to put particular piece of data is often done by hashing the key of the data.
+The ranges of hash value are then assigned to shards. Based on the hash, the system "knows" which
+server to use to create or read data. 
+
+---
+
+Cons of sharding:
+
+- changing the number of shards will probably require reindexing of all data, since the shard
+assignment algorithm will have to produce different results
+- depending on the DB engine, the sharding might not be supported natively, and the client might
+have to handle the complexity of connecting with the right shard
+- transactions across shards might be challenging
+
