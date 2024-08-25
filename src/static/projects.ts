@@ -18,115 +18,130 @@ export interface ProjectDefinition {
 
 export const projectDefinitions: ProjectDefinition[] = [
   {
-    displayName: 'Quick Settings Audio Devices Hider (Gnome Shell Extension)',
-    githubName: 'gnome-quicksettings-audio-devices-hider-extension',
-    downloadCounters: [() => new GnomeExtensionsDownloadsCounter(
-      'https://extensions.gnome.org/extension/5964/quick-settings-audio-devices-hider/')
-    ]
-  },
-  {
-    displayName: 'Quick Settings Audio Devices Renamer (Gnome Shell Extension)',
-    githubName: 'gnome-quicksettings-audio-devices-renamer-extension',
-    downloadCounters: [() => new GnomeExtensionsDownloadsCounter(
-      'https://extensions.gnome.org/extension/6000/quick-settings-audio-devices-renamer')
-    ]
-  },
-  {
-    displayName: 'Dev Notebook',
-    githubName: 'technology-notebook'
-  },
-  {
-    displayName: 'Dim Completed Calendar Events (Gnome Shell Extension)',
-    githubName: 'gnome-dim-completed-calendar-events-extension',
+    displayName: "Quick Settings Audio Devices Hider (Gnome Shell Extension)",
+    githubName: "gnome-quicksettings-audio-devices-hider-extension",
     downloadCounters: [
-      () => new GnomeExtensionsDownloadsCounter(
-        'https://extensions.gnome.org/extension/5979/dim-completed-calendar-events/')
-    ]
+      () =>
+        new GnomeExtensionsDownloadsCounter(
+          "https://extensions.gnome.org/extension/5964/quick-settings-audio-devices-hider/",
+        ),
+    ],
   },
   {
-    displayName: 'Do Not Disturb While Sreeen Sharing Or Recording (Gnome Shell Extension)',
-    githubName: 'gnome-do-not-disturb-while-screen-sharing-or-recording-extension',
+    displayName: "Quick Settings Audio Devices Renamer (Gnome Shell Extension)",
+    githubName: "gnome-quicksettings-audio-devices-renamer-extension",
     downloadCounters: [
-      () => new GnomeExtensionsDownloadsCounter(
-        'https://extensions.gnome.org/extension/5985/do-not-disturb-while-screen-sharing-or-recording/')
-    ]
+      () =>
+        new GnomeExtensionsDownloadsCounter(
+          "https://extensions.gnome.org/extension/6000/quick-settings-audio-devices-renamer",
+        ),
+    ],
   },
   {
-    displayName: 'VuePress Plugin Feedback Panel',
-    githubName: 'vuepress-plugin-feedback-panel',
+    displayName: "Dev Notebook",
+    githubName: "technology-notebook",
+  },
+  {
+    displayName: "Dim Completed Calendar Events (Gnome Shell Extension)",
+    githubName: "gnome-dim-completed-calendar-events-extension",
     downloadCounters: [
-      () => new NpmDownloadsCounter('vuepress-plugin-feedback-panel')
-    ]
+      () =>
+        new GnomeExtensionsDownloadsCounter(
+          "https://extensions.gnome.org/extension/5979/dim-completed-calendar-events/",
+        ),
+    ],
   },
   {
-    displayName: 'Lodzkie Reservation Checker',
-    githubName: 'LodzkieReservationChecker'
-  },
-  {
-    githubName: 'puff',
+    displayName:
+      "Do Not Disturb While Sreen Sharing Or Recording (Gnome Shell Extension)",
+    githubName:
+      "gnome-do-not-disturb-while-screen-sharing-or-recording-extension",
     downloadCounters: [
-      () => new CratesIoDownloadsCounter('puff')
-    ]
+      () =>
+        new GnomeExtensionsDownloadsCounter(
+          "https://extensions.gnome.org/extension/5985/do-not-disturb-while-screen-sharing-or-recording/",
+        ),
+    ],
   },
   {
-    displayName: 'Azure Web App Locker',
-    githubName: 'azure-webapp-locker'
-  },
-  {
-    displayName: 'MJ IoT',
-    githubName: 'mj-iot'
-  },
-  {
-    displayName: 'Hack Platform Jack Compiler',
-    githubName: 'Hack.JackCompiler'
-  },
-  {
-    displayName: 'Hack Platform Jack Program Samples',
-    githubName: 'Hack.JackPrograms'
-  },
-  {
-    displayName: 'Hack Platform VM Translator',
-    githubName: 'Hack.VMTranslator'
-  },
-  {
-    displayName: 'Hack Platform Assembler',
-    githubName: 'Hack.Assembler'
-  },
-  {
-    displayName: 'Azure Config Converter',
-    githubName: 'azure-config-converter'
-  },
-  {
-    displayName: 'Alpha Img (.NET Web API)',
-    githubName: 'alpha-img.webapi-dotnet'
-  },
-  {
-    displayName: 'Alpha Img (Vue Frontend)',
-    githubName: 'alpha-img.spa-vue'
-  },
-  {
-    displayName: 'Air Quality Sensor (AVR)',
-    githubName: 'air-quality-sensor'
-  },
-  {
-    displayName: 'Open Multiple Links (Browser Extension)',
-    githubName: 'open-multiple-links-browser-extension',
+    displayName: "VuePress Plugin Feedback Panel",
+    githubName: "vuepress-plugin-feedback-panel",
     downloadCounters: [
-      () => new ChromeExtensionsDownloadsCounter(
-        'aihgofmdijjhegajmdomlafeiklofndl'),
-      () => new EdgeExtensionsDownloadsCounter(
-        'edibnioojbnicoocokdokbmgblbnnbpe'),
-    ]
+      () => new NpmDownloadsCounter("vuepress-plugin-feedback-panel"),
+    ],
   },
   {
-    displayName: 'Peek Top Bar on Fullscreen (Gnome Shell Extension)',
-    githubName: 'gnome-peek-top-bar-on-fullscreen-extension',
-    downloadCounters: [() => new GnomeExtensionsDownloadsCounter(
-      'https://extensions.gnome.org/extension/6048/peek-top-bar-on-fullscreen/')
-    ]
+    displayName: "Lodzkie Reservation Checker",
+    githubName: "LodzkieReservationChecker",
   },
   {
-    displayName: '2D Physics Simulator',
-    githubName: 'physics-simulator'
-  }
+    githubName: "puff",
+    downloadCounters: [() => new CratesIoDownloadsCounter("puff")],
+  },
+  {
+    displayName: "Azure Web App Locker",
+    githubName: "azure-webapp-locker",
+  },
+  {
+    displayName: "MJ IoT",
+    githubName: "mj-iot",
+  },
+  {
+    displayName: "Hack Platform Jack Compiler",
+    githubName: "Hack.JackCompiler",
+  },
+  {
+    displayName: "Hack Platform Jack Program Samples",
+    githubName: "Hack.JackPrograms",
+  },
+  {
+    displayName: "Hack Platform VM Translator",
+    githubName: "Hack.VMTranslator",
+  },
+  {
+    displayName: "Hack Platform Assembler",
+    githubName: "Hack.Assembler",
+  },
+  {
+    displayName: "Azure Config Converter",
+    githubName: "azure-config-converter",
+  },
+  {
+    displayName: "Alpha Img (.NET Web API)",
+    githubName: "alpha-img.webapi-dotnet",
+  },
+  {
+    displayName: "Alpha Img (Vue Frontend)",
+    githubName: "alpha-img.spa-vue",
+  },
+  {
+    displayName: "Air Quality Sensor (AVR)",
+    githubName: "air-quality-sensor",
+  },
+  {
+    displayName: "Open Multiple Links (Browser Extension)",
+    githubName: "open-multiple-links-browser-extension",
+    downloadCounters: [
+      () =>
+        new ChromeExtensionsDownloadsCounter(
+          "aihgofmdijjhegajmdomlafeiklofndl",
+        ),
+      () =>
+        new EdgeExtensionsDownloadsCounter("edibnioojbnicoocokdokbmgblbnnbpe"),
+    ],
+  },
+  {
+    displayName: "Peek Top Bar on Fullscreen (Gnome Shell Extension)",
+    githubName: "gnome-peek-top-bar-on-fullscreen-extension",
+    downloadCounters: [
+      () =>
+        new GnomeExtensionsDownloadsCounter(
+          "https://extensions.gnome.org/extension/6048/peek-top-bar-on-fullscreen/",
+        ),
+    ],
+  },
+  {
+    displayName: "2D Physics Simulator",
+    githubName: "physics-simulator",
+  },
 ];
