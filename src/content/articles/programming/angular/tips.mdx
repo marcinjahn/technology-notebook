@@ -1,11 +1,23 @@
 ---
 title: Tips
 description: Some tips that are worth to know about Angular
-tags: ["angular", "spa", "js", "ts", "tips", "global styles", "ViewChild", "Renderer", "encapsulation", "environments"]
+tags:
+  [
+    "angular",
+    "spa",
+    "js",
+    "ts",
+    "tips",
+    "global styles",
+    "ViewChild",
+    "Renderer",
+    "encapsulation",
+    "environments",
+  ]
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 # Angular Tips
 
@@ -105,13 +117,13 @@ We can inject it into our classes and use as follows:
 
 ```ts
 class SomeClass {
-    @ViewChild('el') elRef: ElementRef; // or injected into the constructor in a directive
+  @ViewChild("el") elRef: ElementRef; // or injected into the constructor in a directive
 
-    constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) {}
 
-    someMethod() {
-        this.render.setStyle(elRef.nativeElement, 'color', 'white');
-    }
+  someMethod() {
+    this.render.setStyle(elRef.nativeElement, "color", "white");
+  }
 }
 ```
 
@@ -141,7 +153,7 @@ The consumer(s) can subscribe to it:
 
 ```ts
 const sub = this.someService.someEvent.subscribe((data) => {
-    // do something...
+  // do something...
 });
 
 // Rememember to unsubscribe
@@ -158,15 +170,15 @@ The problem with this approach is that now everyone who has access to
 Here's an easy way to disable a button if a form is not valid:
 
 ```html {8}
-    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-        <input type="text" ngModel name="age">
-        <input type="text">
-        <select ngModel name="options">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-        </select>
-        <button [disabled]="!f.valid" type="submit">Sumbit</button>
-    </form>
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <input type="text" ngModel name="age" />
+  <input type="text" />
+  <select ngModel name="options">
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+  <button [disabled]="!f.valid" type="submit">Sumbit</button>
+</form>
 ```
 
 ## Environments
@@ -176,12 +188,12 @@ environments. Any app initialized by the CLI has the `src/environments`
 directory where two files exist:
 
 - `environment.ts` - for DEV
-- `environemnt.prod.ts` - for PROD
+- `environment.prod.ts` - for PROD
 
 During the build, Angular CLI will attach one of them to the bundle. When we
 build with `ng build`, the PROD one will be used.
 
-Inside of the environemnt files we can put all the config values we need. Then,
+Inside of the environment files we can put all the config values we need. Then,
 we import the `environment` object wherever we need to use these configs.
 
 **What if there should be more envs than two?**
@@ -189,4 +201,4 @@ we import the `environment` object wherever we need to use these configs.
 ## References
 
 [Renderer2 on
-DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-using-renderer2) 
+DigitalOcean](https://www.digitalocean.com/community/tutorials/angular-using-renderer2)
