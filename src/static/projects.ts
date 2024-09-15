@@ -53,7 +53,7 @@ export const projectDefinitions: ProjectDefinition[] = [
   },
   {
     displayName:
-      "Do Not Disturb While Sreen Sharing Or Recording (Gnome Shell Extension)",
+      "Do Not Disturb While Screen Sharing Or Recording (Gnome Shell Extension)",
     githubName:
       "gnome-do-not-disturb-while-screen-sharing-or-recording-extension",
     downloadCounters: [
