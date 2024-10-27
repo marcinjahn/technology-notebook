@@ -4,7 +4,7 @@ description: Collections of values in Rust
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 # Collections
 
@@ -83,7 +83,7 @@ scores.entry(String::from("Yellow")).or_insert(60); // inserts only if Yellow ke
 Iterators give access to consecutive elements in collections. Iterators
 implement the `Iterator` trait, which exposes `next()` method and `Item`.
 It's easy to define our own iterators.
-Iterators provide *zero-cost abstractions*, they are very performant.
+Iterators provide _zero-cost abstractions_, they are very performant.
 
 There are three methods on collections that return iterators:
 
@@ -96,7 +96,7 @@ There are three methods on collections that return iterators:
 Some methods defined on the `Iterator` trait take ownership of the iterator
 and return something useful. An example is the `sum()` method.
 
-#### Collect function
+#### Collect Function
 
 The `collect()` function consumes iterator into an actual collection
 of values.
@@ -104,6 +104,37 @@ of values.
 ```rust
 let args: Vec<String> = env::args().collect();
 ```
+
+It also has a specific implementation that can turn an `Iterator<Result<T>>` into a
+`Result<Vec<T>>` (so it kind of reverses the outer layers).
+
+`collect` is one of cases where we often need to provide the expected output type in cases where
+various outputs are possible.
+
+:::tip
+When using the `?` operator, it is not a part of expected type. E.g.:
+
+```rust
+let table_names = table_cells
+    .iter()
+    .map(|table_cell| table_cell.get_table_name())
+    .collect::<Result<Vec<String>>>()?;
+```
+
+I have to provide type information to collect, `?` alone is not enough to infer the type.
+Also, I cannot just do:
+
+```rust
+let table_names: Vec<String> = table_cells
+    .iter()
+    .map(|table_cell| table_cell.get_table_name())
+    .collect()?;
+```
+
+The compiler only looks at the result of `collect` and not `?`, so the specified type of
+`<Vec<String>>` is wrong, because the compiler knows that `table_cell.get_table_name()` returns a
+`Result<String>`.
+:::
 
 ### Iterator Adaptors
 
