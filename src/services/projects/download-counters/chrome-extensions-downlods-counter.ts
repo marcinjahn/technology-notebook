@@ -28,12 +28,12 @@ export class ChromeExtensionsDownloadsCounter implements DownloadsCounter {
       const $ = cheerio.load(text);
 
       const extractedText = $(
-        `.left-panel a[href="/d/${this.extensionId}/trends"]`,
+        `.d-flex.align-items-center > div > span.light-bold:contains("Users:") + a[href="/d/${this.extensionId}/trends"]`,
       )
         .first()
         .text()
         .trim()
-        .replaceAll(",", "");
+        .replaceAll(/\D/g, "");
 
       if (!extractedText) {
         throw new Error(
