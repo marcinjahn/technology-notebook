@@ -355,6 +355,10 @@ const structure: Sidebar = {
         "blockchain/dapps",
       ],
     },
+    {
+      title: "Home Assistant",
+      children: ["home-assistant/tips"],
+    },
   ],
   "/about/": ["who-am-i", "cv", "this-website"],
 };
