@@ -357,6 +357,7 @@ const structure: Sidebar = {
     },
     {
       title: "Home Assistant",
+      icon: "home-assistant.svg",
       children: ["home-assistant/tips"],
     },
   ],
