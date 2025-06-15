@@ -1,0 +1,77 @@
+---
+title: HTML Foundations
+description: Mindset for HTML authoring, semantic HTML, user agents, and more
+tags: ["html", "user agent", "web", "semantic"]
+lang: en-US
+---
+
+import { Image } from "astro:assets";
+
+# HTML Foundations
+
+When we author HTML documents, the main goal that we should have in mind is not the visual
+representation of the result (that's the role of CSS), but rather the conveying of the meaning
+of the content we are creating. First of all we have to think of the readers of the HTML we are
+writing. And these readers are _User Agents_.
+
+The User Agent acts on behalf of the user, and the HTML we author must be understandable for the
+user agent in order for it to be able to present it to the user in the right way.
+User agent might be for example:
+
+- a web browser
+- a screen reader (that's why accessibility really matters)
+- search engine bot
+- web scrapers
+- LLMs (although these could be seen as web scrapers as well)
+
+We might want to make our documents accessible to some user agents, and
+as inaccessible as possible to others (like LLMs). That's a hard thing to do, because making
+our document semantically reach will most likely improve the experience for all user agents types.
+Therefore, for the aforementioned LLM case, we would probably go with a different approach, like
+[Anubis](https://github.com/TecharoHQ/anubis), which "weights the soul of incoming HTTP requests to
+stop AI crawlers".
+
+:::caution
+I'm not necessarily against the usage of Large Language Models.
+I just know about the impact of LLMs web scraping on some OSS projects
+creating huge costs that free projects cannot withstand by definition.
+:::
+
+Let's look at what **HTML** actually stands for:
+
+- HT - HyperText - on of the features of HTML is cross-referencing between different documents.
+- M - Markup - allows to enrich documents with meaning via various markup elements
+- L - Language - it is a language, that is it has consistent vocabulary for its markup. It has a
+  specification.
+
+HTML is meant to be _semantic_ - which means that it has to do with meaning. Appropriate markup tags
+help to give proper meaning to something. Semantics in HTML make it possible for different kinds of
+user agents to process our documents in different ways. Browesr will make visual distinction between
+different parts of documents, while screen reader will read content properly. LLMs will know what is
+the actual content and what isn't.
+
+## Specific Elements
+
+This is just a few examples of HTML tips.
+
+### Section vs. Article
+
+A section is a generic grouping of some thematic content.
+An article is some fragment that stands on its own.
+
+It is not obvious in some cases if we should user a section or an article.
+Possibly it's good to look at reusability. If the part we want to markup
+is kind of unique on the page and will not repeat anywhere else, it might be a section.
+Otherwise, it's more like an article.
+
+Anyway, whichever one you choose, it's almost always a better choise than a `DIV`.
+`DIV` is a last resort element.
+
+### Forms
+
+Every input in a form has its:
+
+- `id` - for label to target it
+- `name` - for submit to build proper properties list. Each property will take its name form this
+  field. That's why radio buttons use the same name for every option - because the property name
+  should be the same, just values are different.

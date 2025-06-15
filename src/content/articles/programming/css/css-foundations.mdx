@@ -1,0 +1,93 @@
+---
+title: CSS Foundations
+description: Mindset for HTML authoring, semantic HTML, user agents, and more
+tags: ["css", "cascade", "classes", "box model", "formatting context"]
+lang: en-US
+---
+
+# CSS Foundations
+
+This is a kind of vocabulary listing explaining the most fundamental (or a bit more specific) CSS
+concepts
+
+## Cascade
+
+It's the first "C" in the CSS. It's not about inheritance (inheritance is a separate concept of
+CSS). Cascade is about resolving conflicts in our stylesheets (or actually not only ours, because
+User Agent (UA) stylesheets are also considered). Cascade is an ordered list of style sheets. They all
+get combined and conflicts get resolved automatically. Various primitives may influence the ordering
+and conflict resolution:
+
+- `!important` - prioritizes rules. UA rules that are `!important` take precedence over author
+  `!important` declarations. The use of `!important` is really valid only when you do not have
+  control over the entire style sheet. Otherwise, it shows potential issues in your CSS design.
+- specificity - Specificity has 3 values, which get combined into a 3-digit number. The higher the
+  number, the higher the specificity (and priority of the rule). `:where` might be used to avoid
+  specificity.
+- `@layer` - allows to explicity specify the order of various style sheets, including imported ones.
+
+## Imports
+
+Imports work as if you just copied and pasted the contents of imported file in place of the `@import` declaration.
+
+## Inheritance
+
+In CSS, various properties get inherited by children elements. Not all properties work this way.
+You can find out if a given property is inheritable in the CSS specs (e.g.
+[text-indent](https://www.w3.org/TR/CSS2/text.html#propdef-text-indent) is not inheritable) We can make any property inheritable by using `inherit` value for such property (it will inherit
+from direct parent only though).
+
+## Pseudo
+
+**Pseudo-classes** are selectors that use information inferred from the document, and not just the authored markup itself.
+E.g., it could information whether some element is `hovered`.
+
+### :is
+
+`:is()` pseudo-class allows us to group specifiers.
+
+Example:
+
+```css
+:is(ul, ol) li
+```
+
+This is the same as:
+
+```css
+ul li, ol li
+```
+
+This avoids some repetition.
+
+**Pseudo-elements** are elements that are not defined explicitly in the document, but they do exist
+and we might want to select them. Example is `::first-letter`.
+
+## Engines
+
+Web engines look at the selectors from right to left. Each time tehy move to the left they filter.
+So, in general, the right-most part should be the most limiting for efficiency.
+
+`ul *` is worse than `*` in terms of performance for example (these are not equivalent markups, it's
+just an example).
+
+## Box Model
+
+Box Model is the Visual Formatting Model (VFM) of CSS. CSS operates on boxes that it creates layout
+from.
+
+### Intrinsic Size
+
+It's a size of element calculated based on its content, not on explicit size specification.
+
+## Reference Pixel
+
+1 px = 1.96 inch. In CSS, we do not deal with real pixels, but rather with these reference pixels.
+
+`em` is a relative unit. `n em` means: whatever px size we'd normally get for this element, multiply
+it by n. `rem` is simpler - it just scales against the root element of the page.
+
+## Auto
+
+Various CSS properties accept `auto` as a value. It has different meaning for different properties,
+so it's best to check in the specs what it means for a given property.

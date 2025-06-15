@@ -1,0 +1,24 @@
+---
+title: HTML Foundations
+description: Mindset for HTML authoring, semantic HTML, user agents, and more
+tags: ["css", "html", "web", "semantic"]
+lang: en-US
+---
+
+import { Image } from "astro:assets";
+
+# HTML Foundations
+
+When we author HTML documents, the main goal that we should have in mind is not the visual
+representation of the result (that's the role of CSS), but rather the conveying of the meaning
+of the content we are creating. First of all we have to think of the readers of the HTML we are
+writing. And these readers are _User Agents_.
+
+The User Agent acts on behalf of the user, and the HTML we author must be understandable for the
+user agent in order for it to be able to present it to the user in the right way.
+User agent might be for example:
+
+- a web browser
+- a screen reader (that's why accessibility really matters)
+- web scraper, e.g. LLM (and maybe we might want to prevent such tools from having an easy access to
+  our website)

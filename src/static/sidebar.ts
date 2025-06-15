@@ -161,9 +161,15 @@ const structure: Sidebar = {
       children: ["gtk/overview", "gtk/gobject", "gtk/gjs"],
     },
     {
-      title: "CSS",
+      title: "HTML & CSS",
       icon: "css.webp",
-      children: ["css/responsive-design", "css/tips", "css/pixels"],
+      children: [
+        "css/html-foundations",
+        "css/css-foundations",
+        "css/responsive-design",
+        "css/tips",
+        "css/pixels",
+      ],
     },
     {
       title: "Unity",
