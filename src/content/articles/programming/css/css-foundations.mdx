@@ -29,6 +29,7 @@ and conflict resolution:
 ## Imports
 
 Imports work as if you just copied and pasted the contents of imported file in place of the `@import` declaration.
+Frameworks that compile down to CSS, like SCSS have different primitives for importing, like `@use`.
 
 ## Inheritance
 
@@ -65,7 +66,7 @@ and we might want to select them. Example is `::first-letter`.
 
 ## Engines
 
-Web engines look at the selectors from right to left. Each time tehy move to the left they filter.
+Web engines look at the selectors from right to left. Each time they move to the left they filter.
 So, in general, the right-most part should be the most limiting for efficiency.
 
 `ul *` is worse than `*` in terms of performance for example (these are not equivalent markups, it's
@@ -80,14 +81,220 @@ from.
 
 It's a size of element calculated based on its content, not on explicit size specification.
 
-## Reference Pixel
+### Box Sizing
+
+By deafult, `box-sizing` seaprates `width`, `padding` and `border`. Setting `width` sets it only on
+the content alone. `box-sizing: border-box` changes that, and it is a popular setting to
+use.
+
+## Reference Pixel and Relative Units
 
 1 px = 1.96 inch. In CSS, we do not deal with real pixels, but rather with these reference pixels.
 
 `em` is a relative unit. `n em` means: whatever px size we'd normally get for this element, multiply
-it by n. `rem` is simpler - it just scales against the root element of the page.
+it by n. `rem` is simpler - it just scales against the root element font size of the page.
 
 ## Auto
 
 Various CSS properties accept `auto` as a value. It has different meaning for different properties,
 so it's best to check in the specs what it means for a given property.
+
+## Flow
+
+When we talk about flow of elements in CSS, we mostly talk about the `display` proprty. Different
+values of this property decide how elements flow in the box model of CSS. The `display` property
+decides how children of the element are laid out - it's the _inner display type_. At the same time,
+it sets the _outer display type_ as well, that is how this element behaves in relation to the boxes
+around it.
+
+```css
+/* Full format */
+<ELEMENT > {
+  display: <outer> <innter>;
+}
+
+/* Shorthand */
+<ELEMENT > {
+  display: <value>;
+}
+```
+
+The shorthand format is more popular, and it actually sets both outer and inner display type behind
+the scenes. E.g., `display: block;` is the same as `display: block flow;` (`block` is outer, and
+`flow` is inner). `flow` means that the children of this element will behave as defined by their
+`display`.
+
+The outer display type is either `block` or `inline`. Inner has much more options, like `flex`,
+`grid`, `table`, `flow`, `flow-root`, and others.
+
+Example: `display: flex` is really `display: block flex`. Some `<div style="display: flex;">`
+would then be placed on a new line (like a `block`), but its children will follow the flexbox
+principles.
+
+### Block Display
+
+Boxes are laid out one after the other in "vertical" direction (block direction really). The
+"vertical" margins collapse.
+By default, block elements consume all space in the "horizontal" (inline) direction.
+
+:::caution
+When I say "vertical", I really mean block direction. It's just easier to visualize concepts
+with concrete direction. In this text and others on this site, I assume an English writing system
+where text goes from left-to-right, and paragraphs appear from top to bottom.
+:::
+
+### Inline Display
+
+Boxes are laid out "horizontally" (in inline direction really). Elements positioned inline are
+placed within a _Line Box_ (which could be seen as a pseudo-element). Line Box is constrained
+horizontally by container width and by floated elements. `line-height` is a height of a single Line
+Box.
+
+A text in HTML can be seen as a collection of elements (characters) which are inlined.
+
+`text-align` and `vertical-align` behave a bit like flexbox properties.
+
+### flow-root Display and BFC
+
+It establishes a new Block Formatting Context (BFC). It means that its children cannot overflow and
+go outside of it. `<html>` creates a BFC as well. Setting `overflow` (to anything other than
+`visible` and `clip`) also does.
+
+### Vertical and Hotizontal?
+
+Looking at Block and Inline display as vertical and horizontal is an old way of looking at this
+matter. We have to consider other writing systems where characters appear from right to left or even
+vertically. With that in mind, the block and inline directions might vary.
+
+We can set the writing mode with `writing-mode`, e.g. `writing-mode: vertical-lr`. "vertical" is the
+inline direction and "lr" (left to right) is a block direction.
+
+Using words such as "top", "bottom", "left" and "right" is problematic, because it makes our styles
+fixed with some particular writing system (most often left-to-right). If we ever decide to add
+support for another writing system we'll be a bit screwed, and we'll have to adjust a ton of styles.
+
+To avoid such issues, there's alternative namings for varius directional properties:
+
+- `left` - `inline-start`
+- `right` - `inline-end`
+- `top` - `block-start`
+- `bottom` - `block-end`
+- `width` - `inline-size`
+- `height` - `block-size`
+
+Example: `m, but its children will follow the flexbox principles.argin-right` becomes `margin-inline-end`.
+
+### Formatting Context
+
+Everything on a page is part of formatting context. The rooth `<html>` element establishes to
+initial block formatting context.
+
+There are many types of formatting context, like block, inline, flex.
+
+### Block Formatting Context
+
+Elements within a block formatting context are layed out according to Normal Flow.
+Everything that is within the block formatting context needs to fit in that. So, if there is some
+element that is [out of flow](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_display/In_flow_and_out_of_flow)
+(like an absolutely positioned box or some floated box), it will be
+within the closest block formatting context.
+
+Block formatting context might be established in various ways, also "incidentally", like by setting
+any non-default `overflow` property value. An explicit way to create a new block formatting context
+is by setting `display: flow-root`. Its named this way, because creating a new block formatting
+context is kind of like creating a new root (like `<html>` is one).
+
+For example, if we have the following arrangement:
+
+```html
+<div style="background: green; width: 200px;">
+  <div style="float: left; background: blue; width: 50px;">
+    a float that goes below the parent
+  </div>
+  <div>Some loooooooooong text</div>
+</div>
+```
+
+<div style="display: flow-root">
+  <div style="background: green; width: 200px;">
+    <div style="float: left; background: blue; width: 50px;">
+      a float that goes below the parent
+    </div>
+    <div>Some loooooooooong text</div>
+  </div>
+</div>
+
+The floated box goes out of its container. It's still within its closes block formatting context
+(could be `<html>`).
+
+We can fix it by making the container a new block formatting context:
+
+```html
+<div style="display: flow-root;">
+  <div style="background: green; width: 200px; display: flow-root">
+    <div style="float: left; background: blue; width: 50px;">
+      a float that goes below the parent
+    </div>
+    <div>Some loooooooooong text</div>
+  </div>
+</div>
+```
+
+<div style="background: green; width: 200px; display: flow-root; margin-bottom: 100px;">
+  <div style="float: left; background: blue; width: 50px;">
+    a float that goes below the parent
+  </div>
+  <div>Some loooooooooong text</div>
+</div>
+
+Now the floated box is contained completely within its container, because a BFC has to include all
+of its children completely.
+
+### Inline Formatting Context
+
+Inline formatting context exists within other formattig context (opposed to BFC, which exists as
+a root). In this context, horizontal padding, border and margin will be applied, pushing horizontal
+content. However, vertical padding, border and margin will not push other Line Boxes away. So, for
+example, a border would just be drawn on top of other Line Boxes:
+
+```html
+<p>
+  This is placeholder text. It is used to fill a space in a design where the
+  final content is not yet available. Using
+  <span style="padding: 20px; border: 1px solid black;">placeholder</span> text
+  allows designers and developers to see how the layout will look with text,
+  without being distracted by the actual content. This makes it easier to focus
+  on the visual aspects of the design, such as typography, spacing, and color.
+</p>
+```
+
+<div style="background: grey;">
+  <p>
+    This is placeholder text. It is used to fill a space in a design where the
+    final content is not yet available. Using
+    <span style="padding: 20px; border: 1px solid black;">placeholder</span>
+    text allows designers and developers to see how the layout will look with
+    text, without being distracted by the actual content. This makes it easier
+    to focus on the visual aspects of the design, such as typography, spacing,
+    and color.
+  </p>
+</div>
+
+---
+
+Other formatting context (like flex) are not part of normal flow.
+
+## Stacking Context
+
+`z-index` is all about the order of painting of elements on the screen. There can be many _stacking
+contexts_. Each positioned element creates a new stacking context. Different stacking contexts are
+separated from one another and their `z-index` values do not compare. `z-index` values are compared
+only within the same stacking context.
+
+A new stacking context can also be created with the `isolation: isolate` property. It's kind of
+similar to how a new BFC mightr be created "incidentally" by various CSS properties, but there's a
+dedicated `display: flow-root` setting for creating a BFC. `isolation: isolate` has similar story.
+"Incidental" stacking context might be created by setting `opacity`, or by setting `z-index` on
+flex item, and in [many other ways](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context#features_creating_stacking_contexts).
+
+The root `<html>` element creates a first stacking context.

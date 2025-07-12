@@ -12,7 +12,7 @@ import { Image } from "astro:assets";
 When we author HTML documents, the main goal that we should have in mind is not the visual
 representation of the result (that's the role of CSS), but rather the conveying of the meaning
 of the content we are creating. First of all we have to think of the readers of the HTML we are
-writing. And these readers are _User Agents_.
+writing. These readers are called _User Agents_.
 
 The User Agent acts on behalf of the user, and the HTML we author must be understandable for the
 user agent in order for it to be able to present it to the user in the right way.
@@ -26,7 +26,7 @@ User agent might be for example:
 
 We might want to make our documents accessible to some user agents, and
 as inaccessible as possible to others (like LLMs). That's a hard thing to do, because making
-our document semantically reach will most likely improve the experience for all user agents types.
+our document semantically rich will most likely improve the experience for all user agents types.
 Therefore, for the aforementioned LLM case, we would probably go with a different approach, like
 [Anubis](https://github.com/TecharoHQ/anubis), which "weights the soul of incoming HTTP requests to
 stop AI crawlers".
@@ -41,7 +41,7 @@ Let's look at what **HTML** actually stands for:
 
 - HT - HyperText - on of the features of HTML is cross-referencing between different documents.
 - M - Markup - allows to enrich documents with meaning via various markup elements
-- L - Language - it is a language, that is it has consistent vocabulary for its markup. It has a
+- L - Language - it is a language, it has consistent vocabulary for its markup. It has a
   specification.
 
 HTML is meant to be _semantic_ - which means that it has to do with meaning. Appropriate markup tags

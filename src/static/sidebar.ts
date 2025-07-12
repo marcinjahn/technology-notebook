@@ -168,7 +168,6 @@ const structure: Sidebar = {
         "css/css-foundations",
         "css/responsive-design",
         "css/tips",
-        "css/pixels",
       ],
     },
     {
