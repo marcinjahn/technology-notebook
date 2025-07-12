@@ -144,4 +144,8 @@ export const projectDefinitions: ProjectDefinition[] = [
     displayName: "2D Physics Simulator",
     githubName: "physics-simulator",
   },
+  {
+    displayName: "gemini-cli.nvim",
+    githubName: "gemini-cli.nvim",
+  },
 ];
