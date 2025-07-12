@@ -264,7 +264,6 @@ const structure: Sidebar = {
       icon: "linux.webp",
       children: [
         "linux/gist",
-        "linux/programs-execution",
         "linux/selinux",
         "linux/containers",
         "linux/bash-scripting",
