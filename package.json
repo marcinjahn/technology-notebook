@@ -8,7 +8,7 @@
     "email": "jahnmarcin@outlook.com"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "dev:pro": "FETCH_GITHUB_PROJECTS=true astro dev",
     "start": "astro dev",
     "build": "astro build",
