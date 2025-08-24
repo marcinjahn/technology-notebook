@@ -1,0 +1,259 @@
+---
+title: Garbage Collection
+description: An overview of automatic memeory management works with the help of garbage collectors.
+tags: ["memory management", "garbage collector", "linux"]
+lang: en-US
+---
+
+# Garbage Collection
+
+## World Without Automatic Memory Management
+
+Before we go into how garbage collection works, it makes sense to look at why we even need it.
+Without garbage collection, the only automation on memory management we get is thanks to stack
+machines. Frames on the stack get created/destroyed automatically by most runtimes. However, data
+on the heap needs to be managed manually. This requires manual allocation and freeing in various
+places in the code. This gets especially problematic when multithreading gets introduced, or when
+various parts of code want to access the same piece of data and the ownership of said data is not
+clear.
+
+:::caution
+The Garbage Collection route is not the only way. E.g., Rust does not have Garbage Collector.
+Instead, its type system (with ownership and lifetimes) allows the compiler to figure out where
+frees/drops should occur and places drop instructions in the compiled assembly.
+This way is much more performant, but it requires developer to be much more conscious about usage
+of memory in programs.
+:::
+
+## Hardware
+
+A typical computer has the following layers of memory:
+
+1. CPU registers - closest to the ALU, access is within a single CPU cycle
+2. CPU Caches
+   1. L1 - the fastest layer of cache, lowest capacity
+   2. L2 - slower than L1, but with greater capacity
+   3. L3 - slowest, but largest
+3. RAM
+4. Disk
+
+### CPU Caches
+
+CPU caching is a leaky abstraction. Normally, it should work without developer even knowing about
+it. In most cases it does, however without knowing about some details of the cache implementation,
+we might end up with worse performance than we could have. Various ISAs implement special
+instructions that avoid going through the cache.
+
+Data is transferred between RAM and CPU cache in _Cache Lines_. This is the minimal amount of data
+that is read or written from/to RAM. Its size is fixed and nowadays it's usually something around 64
+bytes.
+
+:::caution
+You cannot read/write RAM with data size lower than 64 bytes! Even if you need just one bit of data,
+the whole 64 bytes cache line will be read and placed in CPU cache.
+:::
+
+It's faster to access RAM sequentially, so taking more data than requested shouldn't be that much of
+a cost. Still though, 8 transfers are required (assuming 64-bit wide access per transfer). There are
+ways to speed it up from executing code's perspective. For example, the requested area of memory is
+read fists, and then the rest required to fill the cache line. User code can continue execution as
+soon as the critical part is read, and the rest can be read asynchronously.
+
+The classic example of why Cache Line matters is presented below:
+
+1. Good Loop
+
+```cs
+int n, m = 10_000;
+int[,] array = new int[n, m];
+for (int i = 0; i < n; ++i)
+{
+  for (int j = 0; j < m; ++j)
+  {
+    array[j, i] = 10;
+  }
+}
+```
+
+2. Bad Loop
+
+```cs
+int n, m = 10_000;
+int[,] array = new int[n, m];
+for (int i = 0; i < n; ++i)
+{
+  for (int j = 0; j < m; ++j)
+  {
+    array[i, j] = 10;
+  }
+}
+```
+
+The array is aligned in memory in a way that single row's columns are placed one after another.
+Therefore, the distance between two columns is closer than the distance between two rows. Knowing
+about the cache line, we can understand that multiple columns could be read into the cache line via
+a single memory read access. Therefore, the cache line could be reused by iterating the array in a
+proper way. Switching the row index constantly is bad, we'll get much more cache misses, and the
+cache line needs to be reloaded often
+
+### Prefetching
+
+CPU Cache can be filled with data via prefetching. It can be invoked manually or via some automated
+process that discovers RAM access patterns. Prefetching is about loading some region of memory into
+the cache. It's not that simple though, because multiple processes are fighting for resources, and
+one prefetched data of one process might get overwritten by another process. Therefore, it's crucial
+to not trigger prefetching too early.
+
+## Automatic Memory Management
+
+One of the first implementations of Garbage Collection was the one in LISP, it's a pretty old
+concept.
+
+There are some important terms that Garbage Collection introduces.
+
+### Mutator
+
+This is the part that drives the program. It executes the code, mutates memory (since objects get
+allocated, or destroyed, or references between objects get established). The name was created by
+Edsger Dijkstra. Mutator provides three operations to the application:
+
+- New(amount) - allocates a specified amount of memory
+- Write(address, value) - writes value at specified address
+- Read(address) - reads value at specified address.
+
+Mutator needs to interact with the other two parts of the system:
+
+- Allocator
+- Collector
+
+The interaction happens during the three previously mentioned operations. E.g., during the
+New(amount) operation Mutator would ask Allocator to to the job.
+
+The concreate implementation of the Mutator abstraction is an **OS thread**.
+
+### Allocator
+
+The allocator provides two operations:
+
+- Allocate(amount) - allocates some amount of memory on the heap.
+- Deallocate(address) - frees the specified address making it available for allocation. In automated
+  memory management scenario this operation is not publicly available, it's the role of the
+  Collecotr to invoke it.
+
+### Collector
+
+It runs the actual garbage collection. Collectors are suppose to remove "dead" objects, the ones
+that are not going to be used anymore. Since this task is not really doable (collecotr cannot
+predict the future), collectors rather depend on reachability of objects. Once some object is
+unreachable (code does not have any references to it), collector can mark it for deletion.
+One could imagine a graph of objects, where edges between nodes would represent references from one
+object to another. Nodes that are unreachable are the ones that could get removed.
+
+The graph traversed by the collector needs to have **roots**. These are the starting points, and
+they are represented by:
+
+- stack variables
+- statically allocated objects
+
+## Reference Counting
+
+It's a very popular way to manage memory. Basically, it boils down to keeping track of a count of
+references that every object has. E.g. operation like
+
+```c
+obj2 = obj1
+```
+
+would increase the counter of object that is references by `obj1` and `obj2`.
+When the references count goes down to 0 (e.g. both `obj1` and `obj2` going out of scope),
+it'd be a sign to the runtime that a given object is unreachable and it might be considered dead,
+and ready for removal.
+
+Reference Counting can be implemented on a library level, it does not have to be supplied by the
+runtime. Example of that could be GObject for C.
+Also, some smart pointer implementations use reference counting as its backbone.
+
+Issues with reference counting:
+
+- can be fooled by circular references
+- might introduce significant overhead, especially if the reference counting happens as part of main
+  thread.
+- difficult multithreading handling
+
+On a plus side:
+
+- memory is freed fast as soon as reference count goes to 0 (in typical implementations at least,
+  because there are also deferred reference counters)
+- possiblity to implement without runtime support
+
+## Tracking Collector
+
+Tracking Collectors work kind of separately from the main program thread. They monitor (track) the
+state of memory and act when they see fit. E.g., .NET uses a tracking collector, and in general it's
+the most typical kind of GC.
+
+Tracking Collector traverses the graph of objects from the mutator roots, which allows it to find true reachability. It's not an easy task, since memory could grow rapidly, and also it's being mutated all the time.
+
+Tracking Garbage Collector works in two main phases:
+
+- _mark_ - GC determines which objects are needed and which aren't
+- _collect_- reclamation of memory
+
+### Mark Phase
+
+GC traverses the objet graph and marks all objects that it visits. At the end, it can delete those
+objects that were not marked - they weren't reachable, so they can be removed.
+
+This process is easier to do if the GC process runs alone with user's code awaiting for it to
+finish. This is problematic for user code though, because code will run slower. It's called _Stop
+the World_. More advanced GCs run alongside the user code.
+
+### Collect Phase
+
+This is the reclamation of memory from dead objects.
+There are a few ways to do that.
+
+#### Sweep
+
+In this approach, dead objects are just marked as free space. It's easy and quick, but leads to
+fragmentation. Heap will have lots of small "holes" and eventually we'll run out of big enough gaps
+to store new objects.
+
+#### Compact
+
+After deleting objects, other objecs get moved around to eliminate gaps. Obviously, it's at the
+expense of perfromance.
+
+One way of compacting is to just copy objects one by one into another area of memory, skipping those
+that were not marked as reachable. This requires quite a lot of space, because the old versions of
+objects are removed only after they get copied to new locations. Also, it puts a lot of pressure on
+memory due to lots of copy operations.
+
+Another way is to move objects towards each other "in place", filling the gaps between them.
+.NET uses such approach.
+
+There are also hybrid approaches where these 2 or some different ways are combined. For example,
+some part of memory could be managed in one way, and the rest in another.
+
+---
+
+There are various types of tracking GCs. Some of them have been outlined below.
+
+### Conservative Garbage Collector
+
+This type of GC is useful only when the runtime does not provide enough information for GC to
+implement something like a Tracking GC. It basically scans the memory cells looking for any value
+that looks like a pointer. These values are usually different from "normal" values, because they are
+large numbers. Once GC learns of all such values, it assumes that these are live references to some
+other objects. It can then go ahead and free up those regions of memory that do not seem to be
+referenced by anyone.
+Conservative GC cannot compact objects, because it doesn't actually understand what is a pointer and
+what is not. Compaction would require existing pointers to be updated to new addresses.
+
+This solution is very inefficient and definitely not ideal.
+
+### Precise Garbage Collector
+
+Such GC has full information about objects memory layout. It can efficiently traverse the objects
+graph marking the visited object, as it was described above.
+.NET uses Precise GC.
