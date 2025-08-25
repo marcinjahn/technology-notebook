@@ -31,11 +31,13 @@ A typical computer has the following layers of memory:
 
 1. CPU registers - closest to the ALU, access is within a single CPU cycle
 2. CPU Caches
-   1. L1 - the fastest layer of cache, lowest capacity
-   2. L2 - slower than L1, but with greater capacity
-   3. L3 - slowest, but largest
-3. RAM
-4. Disk
+   1. L1 - the fastest layer of cache (<2ns), lowest capacity
+   2. L2 - slower than L1 (5ns), but with greater capacity
+   3. L3 - slowest (15ns), but largest
+3. RAM (70ns)
+4. Disk (150_000ns)
+
+L1 cache is split in half between instructions space and data.
 
 ### CPU Caches
 
@@ -96,6 +98,28 @@ a single memory read access. Therefore, the cache line could be reused by iterat
 proper way. Switching the row index constantly is bad, we'll get much more cache misses, and the
 cache line needs to be reloaded often
 
+#### Cores and Cache Coherence
+
+L3 cache is shared between cores. Each core executes its own thread (actually 2 of them nowadays, due
+to SMT) concurrently. L1 and L2 levels are separate for each core (but SMT threads share them per
+core).
+The issue that will come up is cache coherence when cache lines share the same memory areas
+between cores. Modifying data on one core requires synchronization with other cores for their cache
+lines to be up to date. A similar kind of problem arises as with cache line access, but kind of
+opposite this time. It's desired to deal with different areas of memory on different cores. If one
+core has some area of memory in its cache line, it'd be best if no other core modifies that same
+area of memory.
+
+:::caution
+When designing data structures for multiple cores, it's important to remember about
+various header data in objects. E.g., an array could be accessed (modified) in separate regions
+by different threads/cores, but all the cores will access the header area (to get values like array
+length in some loop). If any thread modifies array indexes close to the cache line that contains
+array header, all cores will have to invalidate that cache line repeatedly. The access will be the
+fastest when there are sufficinet gaps between modified array regions, but also between first of
+these regions and the array header.
+:::
+
 ### Prefetching
 
 CPU Cache can be filled with data via prefetching. It can be invoked manually or via some automated
@@ -103,6 +127,20 @@ process that discovers RAM access patterns. Prefetching is about loading some re
 the cache. It's not that simple though, because multiple processes are fighting for resources, and
 one prefetched data of one process might get overwritten by another process. Therefore, it's crucial
 to not trigger prefetching too early.
+
+## Operating System
+
+Programs do not have access to the whole memory installed in a computer, or even to the real
+addresses of cells. Instead, OS provides virtual memory. It's transparent for the process, it does
+not need to know about that abstraction. Thanks to that:
+
+- different processes have different pools of memory cells
+- memory can be constrained or extended above the RAM capacity (via swap for example).
+
+Virtual Memory is a feature of CPUs via MMU (Memory Management Unit), provided in cooperation with
+the OS.
+The Virtual Memory is mapped to physical memory in the unit of _pages_ (typically 4kB). Mapping every individual
+address would be bad on performance.
 
 ## Automatic Memory Management
 
