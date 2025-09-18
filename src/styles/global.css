@@ -1,87 +1,98 @@
 :root {
-    --accent-color: rgb(203, 38, 38);
-    --text-color: black;
-    --reversed-text-color: #EDEDED;
-    --dark-text-color: var(--text-color);
-    --page-background-color: #ffffff;
-    --alternative-page-background-color: #e7e7e7;
-    --navbar-background-color: #ffffff;
-    --border-color: rgb(233, 233, 233);
-    --title-color: rgb(55, 55, 55);
-    --subtitle-color: #5c5c5c;
-    --project-tile-background-color: white;
-    --footer-background-color: rgb(118, 146, 219);
-    --inline-code-background-color: rgb(130, 130, 130);
+  --accent-color: rgb(203, 38, 38);
+  --text-color: black;
+  --reversed-text-color: #ededed;
+  --dark-text-color: var(--text-color);
+  --page-background-color: #ffffff;
+  --alternative-page-background-color: #e7e7e7;
+  --navbar-background-color: #ffffff;
+  --border-color: rgb(233, 233, 233);
+  --title-color: rgb(55, 55, 55);
+  --subtitle-color: #5c5c5c;
+  --project-tile-background-color: white;
+  --footer-background-color: rgb(118, 146, 219);
+  --inline-code-background-color: rgb(130, 130, 130);
 }
 
-
-[data-theme='dark'] {
-    --accent-color: #DA0037;
-    --text-color: #EDEDED;
-    --reversed-text-color: black;
-    --dark-text-color: var(--reversed-text-color);
-    --page-background-color: #272727;
-    --alternative-page-background-color: #2f2f2f;
-    --navbar-background-color: #171717;
-    --border-color: rgb(77, 77, 77);
-    --title-color: rgb(215, 215, 215);
-    --subtitle-color: #7e7e7e;
-    --project-tile-background-color: rgb(54, 54, 54);
-    --footer-background-color: var(--navbar-background-color);
-    --inline-code-background-color: rgb(79, 79, 79);
+[data-theme="dark"] {
+  --accent-color: #da0037;
+  --text-color: #ededed;
+  --reversed-text-color: black;
+  --dark-text-color: var(--reversed-text-color);
+  --page-background-color: #272727;
+  --alternative-page-background-color: #2f2f2f;
+  --navbar-background-color: #171717;
+  --border-color: rgb(77, 77, 77);
+  --title-color: rgb(215, 215, 215);
+  --subtitle-color: #7e7e7e;
+  --project-tile-background-color: rgb(54, 54, 54);
+  --footer-background-color: var(--navbar-background-color);
+  --inline-code-background-color: rgb(79, 79, 79);
 }
 
 a {
-text-decoration: none;
-    color: var(--accent-color);
+  text-decoration: none;
+  color: var(--accent-color);
 }
 
 html {
-    color: var(--text-color);
-    font-family: system-ui, sans-serif;
-    background-color: var(--page-background-color);
+  color: var(--text-color);
+  font-family: system-ui, sans-serif;
+  background-color: var(--page-background-color);
 }
 
 code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-        DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family:
+    Menlo,
+    Monaco,
+    Lucida Console,
+    Liberation Mono,
+    DejaVu Sans Mono,
+    Bitstream Vera Sans Mono,
+    Courier New,
+    monospace;
 }
 
 ul {
-    list-style-type: initial;
+  list-style-type: initial;
 }
 
 .article h1 {
-    margin: 0 0 3rem 0;
-    font-size: 2.5rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid var(--border-color);
+  margin: 0 0 3rem 0;
+  font-size: 2.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border-color);
+  line-height: 3rem;
 }
 
 .article h2 {
-    margin: 1.5rem 0 1rem 0;
-    font-size: 2rem;
+  margin: 1.5rem 0 1rem 0;
+  font-size: 2rem;
+  line-height: 2.5rem;
 }
 
 .article h3 {
-    margin: 1.5rem 0 0.8rem 0;
-    font-size: 1.6rem;
+  margin: 1.5rem 0 0.8rem 0;
+  font-size: 1.6rem;
+  line-height: 2rem;
 }
 
 .article h4 {
-    margin: 1.5rem 0 0.7rem 0;
-    font-size: 1.3rem;
+  margin: 1.5rem 0 0.7rem 0;
+  font-size: 1.3rem;
+  line-height: 1.5rem;
 }
 
 .article h5 {
-    margin: 1.5rem 0 0.7rem 0;
-    font-size: 1.1rem;
+  margin: 1.5rem 0 0.7rem 0;
+  font-size: 1.1rem;
+  line-height: 1.3rem;
 }
 
 .article blockquote {
-    color:#7d84b2;
-    margin: 2rem 0 2rem 2rem;
-    font-style: italic;
+  color: #7d84b2;
+  margin: 2rem 0 2rem 2rem;
+  font-style: italic;
 }
 
 /* Code inline in paragraphs */
@@ -94,38 +105,40 @@ ul {
   white-space: nowrap;
 }
 
-.article table, th, td {
-    border: 1px solid;
-    border-collapse: collapse;
-    padding: 0.8rem;
+.article table,
+th,
+td {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 0.8rem;
 }
 
 .article table {
-    margin-bottom: 1rem;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-spacing: 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-spacing: 0;
 }
 
-
 .article table tbody tr:nth-of-type(even) {
-    background-color: var(--alternative-page-background-color);
+  background-color: var(--alternative-page-background-color);
 }
 
 /* Img fix */
 main img {
-    margin: 1rem auto;
-    height: auto;
+  margin: 1rem auto;
+  height: auto;
 }
 
 main hr {
-    margin: 2rem 0;
-    color: var(--border-color);
+  margin: 2rem 0;
+  color: var(--border-color);
 }
 
 .expressive-code {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
-p:not(:first-child)  {
- margin-top: 1rem;
+p:not(:first-child) {
+  margin-top: 1rem;
 }
+
