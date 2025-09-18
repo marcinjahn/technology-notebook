@@ -5,7 +5,7 @@ tags: ["angular", "spa", "js", "ts", "pipes", "custom pipe", "async", "impure"]
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 Pipes in Angular work a bit similarly to UNIX shell pipes. They take some data
 in an transform it into something else on the output.
@@ -60,16 +60,15 @@ Here's an example of a pipe that truncates inputs:
 
 ```ts
 @Pipe({
-    standalone: true,
-    name: 'truncate'
+  name: "truncate",
 })
 export class TruncatePipe implements PipeTransform {
-    transform(input: any, length = 3) {
-        if (input.length <= length) {
-            return input;
-        }
-        return input.substr(0, length) + '...';
+  transform(input: any, length = 3) {
+    if (input.length <= length) {
+      return input;
     }
+    return input.substr(0, length) + "...";
+  }
 }
 ```
 
@@ -122,3 +121,4 @@ added in the decorator of the pipe. With that, our pipe will be rerun whenever a
 
 Note that the default change detection will work if we change the reference of
 the input composite object (e.g., pointing the variable to a different array).
+

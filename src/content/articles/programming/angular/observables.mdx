@@ -1,13 +1,25 @@
 ---
 title: Observables (RxJS)
 description: Directives in Angular SPA framework
-tags: ["angular", "spa", "js", "ts", "observable", "rxjs", "rx", "subject", "exhaustmap", "eventemitter"]
+tags:
+  [
+    "angular",
+    "spa",
+    "js",
+    "ts",
+    "observable",
+    "rxjs",
+    "rx",
+    "subject",
+    "exhaustmap",
+    "eventemitter",
+  ]
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
-import withLatestFrom from '../../../../assets/withlatestfrom-visualization.webp';
-import combineLatestWith from '../../../../assets/combinelatestwith-visualization.webp';
+import { Image } from "astro:assets";
+import withLatestFrom from "../../../../assets/withlatestfrom-visualization.webp";
+import combineLatestWith from "../../../../assets/combinelatestwith-visualization.webp";
 
 # Observables in Angular
 
@@ -36,6 +48,7 @@ observable is stored in a variable called the same as the one holding the
 temperature$: Observable<number>;
 temperature: number; // last value of temperature$
 ```
+
 :::
 
 ## Built-in Observables
@@ -79,8 +92,9 @@ we'd have a memory leak.
 
 ```ts
 // Create a subscrition
-const subscription : Subscription = interval(1000).subscribe(
-    value => console.log(value));
+const subscription: Subscription = interval(1000).subscribe((value) =>
+  console.log(value),
+);
 
 // Remove the subscription
 subscription.unsubscribe();
@@ -111,8 +125,8 @@ We can also handle errors by providing error handler as a second argument to
 
 ```ts
 const sub = someObservable.subsctibe(
-    value => console.log(value),
-    error => console.log(error)
+  (value) => console.log(value),
+  (error) => console.log(error),
 );
 ```
 
@@ -127,20 +141,23 @@ an error from withing that operator with `throwError(...)`. Then, each
 subscriber may handle the rethrown error individually.
 
 ```ts
-const observable = someObservable.catchError(e => {
-    // log the error or whatever..
-    throwError(e);
-})
+const observable = someObservable.catchError((e) => {
+  // log the error or whatever..
+  throwError(e);
+});
 
-const sub1 = observable.subscribe(n => {
+const sub1 = observable.subscribe(
+  (n) => {
     // do somehting...
-}, error =>{
+  },
+  (error) => {
     // handle rethrown error...
-})
+  },
+);
 
-const sub2 = observable.subscribe(n => {
-    // do something, and hope it will not fail...
-})
+const sub2 = observable.subscribe((n) => {
+  // do something, and hope it will not fail...
+});
 ```
 
 Like the example above shows, the individual subscribers can still attach their
@@ -152,16 +169,16 @@ then the error will be propagated to the subscribers.
 Observables can be finite. Here's how we can complete custom observables:
 
 ```ts {7}
-let customInterval = Observable.crete(observer => {
-    let i = 0;
-    setInterval(() => {
-        observer.next(i++);
+let customInterval = Observable.crete((observer) => {
+  let i = 0;
+  setInterval(() => {
+    observer.next(i++);
 
-        if(i >= 5) {
-            observer.complete();
-        }
-    }, 1000);
-})
+    if (i >= 5) {
+      observer.complete();
+    }
+  }, 1000);
+});
 ```
 
 Subscribers can be notified about completion via a third argument to the
@@ -169,9 +186,9 @@ Subscribers can be notified about completion via a third argument to the
 
 ```ts
 const sub = someObservable.subsctibe(
-    value => console.log(value),
-    error => console.log(error),
-    () => console.log('COMPLETE')
+  (value) => console.log(value),
+  (error) => console.log(error),
+  () => console.log("COMPLETE"),
 );
 ```
 
@@ -209,7 +226,7 @@ are lots more in the `rxjs/operators` import. For example:
   `n` items from it. We do not need to `unsubscribe()` from it, it will be
   handled automatically. It is useful when we want to get just one latest value
   of some `Observable` (like the `BehaviorSubject` described down below).
-- `exhaustMap` similar to `map`, but accepts function that crosses boundaries (more on that in the *tip* below)
+- `switchMap` similar to `map`, but accepts function that crosses boundaries (more on that in the _tip_ below)
 
 ### Maps
 
@@ -217,18 +234,18 @@ There's a nice overview of different kids of maps, like `map`, `mergeMap`,
 `switchMap` at
 [Medium](https://luukgruijs.medium.com/understanding-rxjs-map-mergemap-switchmap-and-concatmap-833fc1fb09ff).
 
-:::tip[exhaustMap]
+:::tip[switchMap]
 An `Observable<T>` could be treated as a
-[functor](/programming/dotnet/functional/fundamentals#functors) and a
-[monad](/programming/dotnet/functional/fundamentals#monads).
+[functor](/programming/functional-programming/fundamentals#functors) and a
+[monad](/programming/functional-programming/fundamentals#monads).
 
 The `map` operator is like a `Map` on a functor. It turns `Observable<T>` into
-`Observable<U>` by accepting a function that turns a *regular value* `T` into a
+`Observable<U>` by accepting a function that turns a _regular value_ `T` into a
 regular value `U`.
 
 The `exhaustMap` operator is like a `Bind` on a monad. It turns `Observable<T>`
 into `Observable<U>` by accepting a function that turns a regular value `T`
-into an *elevated value* - `Observable<U>`.
+into an _elevated value_ - `Observable<U>`.
 :::
 
 :::tip[Chaining]
@@ -242,8 +259,8 @@ Rxjs comes with a special type of Observable - **Subject**. It is functionally
 very similar to Angular's `EventEmitter<T>`. Reportedly, it's more performant
 though and it's recommended to always use **Subject**.
 
-:::caution[@Output]
-`EventEmitter<T>` is still needed when we're dealing with `@Outputs`! `Subjects`
+:::caution[outputs]
+`EventEmitter<T>` is still needed when we're dealing with outputs! `Subjects`
 are usable only when we control both the producer and the consumer sides.
 :::
 
@@ -254,9 +271,9 @@ const mySubject = new Subject<number>();
 mySubject.next(5);
 
 // Subscribe
-const sub = mySubject.subscribe(value => {
-    // do something...
-})
+const sub = mySubject.subscribe((value) => {
+  // do something...
+});
 
 //Unsubscribe
 sub.unsubscribe();
@@ -283,18 +300,18 @@ RxJs offers a few ways to combine observables. Some of these are operators, and
 some are functions that allow us to create new Observables, based on the ones we
 provide.
 
-:::caution[ngRx selectors] 
+:::caution[ngRx selectors]
 In [NgRx](/programming/angular/ngrx/), our state often has some initial default values (often `null`
 or `undefined`). These are counted as "emitted values", meaning that the
 operators/function below will ues them to produce the output. It might make
-sense to skip these initial values with some operator like `skipWhile(n => !n)`. 
+sense to skip these initial values with some operator like `skipWhile(n => !n)`.
 :::
 
 ### Operators
 
 #### withLatestFrom
 
-<Image src={withLatestFrom} alt="RxJS withLatestFrom operator visualized"/>
+<Image src={withLatestFrom} alt="RxJS withLatestFrom operator visualized" />
 
 It will publish only at points of time when the first observable emits. The
 first output will come out only after all of the provided observables have
@@ -304,7 +321,10 @@ emitted at least one value.
 
 #### combineLatestWith
 
-<Image src={combineLatestWith} alt="RxJS combineLatestWith operator visualized"/>
+<Image
+  src={combineLatestWith}
+  alt="RxJS combineLatestWith operator visualized"
+/>
 
 It's pretty similar to `withLatestFrom`. The difference is that the output is
 emitted when any of the input observables emits something, the first observable
@@ -328,3 +348,4 @@ will produce values.
 ## References
 
 - [Simple Observable Implementation](https://steveholgado.com/understanding-observables/)
+

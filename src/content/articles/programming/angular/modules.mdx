@@ -1,20 +1,37 @@
 ---
 title: Modules
 description: Organizing code with modules in Angular SPA framework
-tags: ["angular", "spa", "js", "ts", "modules", "organization", "dynamic", "ngmodule", "scope", "routes", "lazy loading", "preload", "dependency injection"]
+tags:
+  [
+    "angular",
+    "spa",
+    "js",
+    "ts",
+    "modules",
+    "organization",
+    "dynamic",
+    "ngmodule",
+    "scope",
+    "routes",
+    "lazy loading",
+    "preload",
+    "dependency injection",
+  ]
 lang: en-US
 ---
 
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
 # Modules in Angular
 
-Modules are a way of bundling various Angular entities together:
+Modules is an old way of bundling various Angular entities together:
 
 - components,
 - directives,
 - services,
 - pipes.
+
+Modules are not recommended anymore, but you will definitely find them in older Angular apps.
 
 A proper organization of code between modules results in:
 
@@ -59,7 +76,7 @@ The `NgModule` decorator has the following options:
   configure their injection via the `Injectable` decorator and its `providedIn`
   property.
 - **bootstrap** - defines the starting component(s) (usually `AppComponent`)
-- **entryComponents** - *deprecated*, it was used for [dynamic
+- **entryComponents** - _deprecated_, it was used for [dynamic
   modules](/programming/angular/components#instantiating-components-from-typescript)
   in the past.
 
@@ -80,7 +97,7 @@ throughout different domains into their own module.
 The entities declared in a module (e.g. components) have access ONLY to entities
 that this module declares or imports (services are an exception, more on that
 [later](#dependency-injection)). For example, if I create a `MyModule` module
-with some declared component, I can use `routerLink` in that component only if I icmport 
+with some declared component, I can use `routerLink` in that component only if I import
 `RouterModule` into `MyModule` first. **I think this rule applies only to
 templates and the components, directives or pipes that we use within them (?)**
 
@@ -114,22 +131,26 @@ Here's an example of such a module:
 ```ts
 const routes: Routes = [
   {
-    path: 'products',
+    path: "products",
     component: ProductsComponent,
-    canActivate: [ AuthorizationGuard ],
+    canActivate: [AuthorizationGuard],
     children: [
-      { path: '', component: ProductsListComponent, pathMatch: 'full' },
-      { path: 'new', component: NewProductComponent},
-      { path: ':id', component: ProductInfoComponent, resolve: [ PoductResolverService ] },
+      { path: "", component: ProductsListComponent, pathMatch: "full" },
+      { path: "new", component: NewProductComponent },
+      {
+        path: ":id",
+        component: ProductInfoComponent,
+        resolve: [PoductResolverService],
+      },
     ],
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ProductsRoutingModule { }
+export class ProductsRoutingModule {}
 ```
 
 :::tip[forChild]
@@ -147,7 +168,7 @@ if we plan to use it in the templates.
 
 Until now, we've been discussing **Eager-loaded Modules**. They are loaded on
 bootstrap together with the `AppModule`. With proper module organization we can
-make use of **lazy loading**. 
+make use of **lazy loading**.
 
 With eager-loaded modules, when the user visits our website, all of our code is
 being downloaded by their browser at once. For smaller applications, it's not a
@@ -185,51 +206,51 @@ Until now, our feature modules had the following setup:
 Here's what we need to change:
 
 1. The main routing module (the one that calls `Router.forRoot(...)`) should now
-include the routes to our feature areas together with a lambda to load these
-modules dynamically, like this:
+    include the routes to our feature areas together with a lambda to load these
+    modules dynamically, like this:
 
-    ```ts
-    const routes: Routes = [
-      { path: '', redirectTo: '/products', pathMatch: 'full' },
-      { 
-        path: 'products', 
-        loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) 
-      }
-    ];
-    ```
+        ```ts
+        const routes: Routes = [
+          { path: '', redirectTo: '/products', pathMatch: 'full' },
+          {
+            path: 'products',
+            loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+          }
+        ];
+        ```
 
 2. Now, in the lazily loaded module's routing setup, we should treat the routing
-path as if that module was at the root. Without lazy loading, we had `path:
+    path as if that module was at the root. Without lazy loading, we had `path:
 'products'`, because feature module's routing would get merged with the "main"
-routing. Now, the products area is treated as a child of the main routing. All
-the child's routes go under the "*/products*" path, and the child module does
-not need to know about it.
+    routing. Now, the products area is treated as a child of the main routing. All
+    the child's routes go under the "_/products_" path, and the child module does
+    not need to know about it.
 
-    ```ts {7}
-    const routes: Routes = [
-      {
-        path: '',
-        component: ProductsComponent,
-        canActivate: [AuthGuard],
-        children: [
-          { path: '', component: ProdctsListComponent, pathMatch: 'full' }, // /products
-          { path: 'new', component: NewProductComponent }, // /products/new
-          { path: ':id', component: ProductComponent, resolve: [ ProductResolverService ] }, // /products/:id
-        ],
-      }
-    ];
+                ```ts {7}
+                const routes: Routes = [
+                  {
+                    path: '',
+                    component: ProductsComponent,
+                    canActivate: [AuthGuard],
+                    children: [
+                      { path: '', component: ProdctsListComponent, pathMatch: 'full' }, // /products
+                      { path: 'new', component: NewProductComponent }, // /products/new
+                      { path: ':id', component: ProductComponent, resolve: [ ProductResolverService ] }, // /products/:id
+                    ],
+                  }
+                ];
 
-    @NgModule({
-      imports: [ RouterModule.forChild(routes) ],
-      exports: [ RouterModule ]
-    })
-    export class ProductsRoutingModule { }
-    ```
+                @NgModule({
+                  imports: [ RouterModule.forChild(routes) ],
+                  exports: [ RouterModule ]
+                })
+                export class ProductsRoutingModule { }
+                ```
 
 3. Lastly, make sure to **not** import (`NgModule`-import) the feature module
-(like `ProductsModule` in this case) into the `AppModule`. The dynamic import in
-the routing setup does that already. Additionally importing it with the `imports`
-array would eagerly load the module.
+    (like `ProductsModule` in this case) into the `AppModule`. The dynamic import in
+    the routing setup does that already. Additionally importing it with the `imports`
+    array would eagerly load the module.
 
 With that, the code is split into bundles, each one fetched as needed.
 
@@ -257,16 +278,14 @@ routing configuration:
 ```ts {6}
 @NgModule({
   declarations: [],
-  imports: [RouterModule.forRoot(
-    routes, 
-    { 
-      preloadingStrategy: PreloadAllModules // NoPreloading is the default
-    }
-  )],
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules, // NoPreloading is the default
+    }),
+  ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
 ```
 
 The initial bundle is still kept small, the other bundles will be downloaded
@@ -279,3 +298,4 @@ why we don't need to put modules that provide services into the `imports` array.
 
 Lazy-loaded modules that proivde services, make them available only in that
 single module.
+

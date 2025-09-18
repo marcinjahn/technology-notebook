@@ -262,13 +262,13 @@ Here's an example:
 })
 class MyDirective implements OnInit {
 
-  @Input() color: string; // it could have some default value if it's not provided
+  color = input<string>(); // it could have some default value if it's not provided
   @HostBinding('style.color') elColor: string;
-  
+
   constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
 
   ngOnInit() {
-    this.elColor = this.color;
+    this.elColor = this.color();
   }
 }
 ```
@@ -301,7 +301,7 @@ We can do it as well in our directives:
 })
 class MyDirective {
 
-  @Input('appMyDirective') color: string;
+  color = input<string>({ alias: 'appMyDirective' });
 
   // ...
 }
@@ -329,8 +329,8 @@ their own individual names.
 
 ---
 
-:::tip[@Output]
-Other than `@Input`s, directives can also have `@Output`s. That makes them even
+:::tip[outputs]
+Other than inputs, directives can also have outputs. That makes them even
 more similar to [Components](/programming/angular/components).
 :::
 
@@ -349,9 +349,9 @@ imlementation of `*ifNot`:
 })
 class IfNotDirective {
 
-  @Input() set ifNot(condition: bool) {
+  @Input() set ifNot(condition: boolean) {
     if (!condition) {
-      this.vsRef.createEmbeddedView(this.templateRef); // display content
+      this.vcRef.createEmbeddedView(this.templateRef); // display content
     } else {
       this.vcRef.clear(); // remove content
     }
