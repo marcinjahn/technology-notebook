@@ -29,6 +29,28 @@ const structure: Sidebar = {
       ],
     },
     {
+      title: "Functional Programming",
+      icon: "lambda.webp",
+      children: [
+        "functional-programming/fundamentals",
+        "functional-programming/dotnet-features",
+        "functional-programming/signatures",
+        "functional-programming/composition",
+        "functional-programming/error-handling",
+        "functional-programming/partial-application",
+        "functional-programming/modularity",
+        {
+          title: "Category Theory",
+          children: [
+            "functional-programming/category-theory/overview",
+            "functional-programming/category-theory/monoids",
+            "functional-programming/category-theory/other-magmas",
+            "functional-programming/category-theory/functors",
+          ],
+        },
+      ],
+    },
+    {
       title: ".NET",
       icon: "dotnet.webp",
       children: [
@@ -175,28 +197,6 @@ const structure: Sidebar = {
       title: "Unity",
       icon: "unity.webp",
       children: ["unity"],
-    },
-    {
-      title: "Functional Programming",
-      icon: "lambda.webp",
-      children: [
-        "functional-programming/fundamentals",
-        "functional-programming/dotnet-features",
-        "functional-programming/signatures",
-        "functional-programming/composition",
-        "functional-programming/error-handling",
-        "functional-programming/partial-application",
-        "functional-programming/modularity",
-        {
-          title: "Category Theory",
-          children: [
-            "functional-programming/category-theory/overview",
-            "functional-programming/category-theory/monoids",
-            "functional-programming/category-theory/other-magmas",
-            "functional-programming/category-theory/functors",
-          ],
-        },
-      ],
     },
     {
       title: "Algorithms",
