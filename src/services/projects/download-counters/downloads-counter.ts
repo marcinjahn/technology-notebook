@@ -5,4 +5,6 @@ export interface DownloadsCounter {
 export interface DownloadsCounterResult {
   downloads: number;
   source: string;
+  hasError?: boolean;
 }
+

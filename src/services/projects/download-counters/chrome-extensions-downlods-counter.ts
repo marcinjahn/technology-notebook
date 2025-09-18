@@ -19,9 +19,15 @@ export class ChromeExtensionsDownloadsCounter implements DownloadsCounter {
     );
 
     if (!response.ok) {
-      throw new Error(
+      console.log(
         `Google Chrome downloads counter failed for ${this.extensionId}. Error code: ${response.status}`,
       );
+
+      return {
+        downloads: 0,
+        source: "Weekly active users on Edge Addons",
+        hasError: true,
+      };
     }
 
     return await response.text().then((text) => {
@@ -36,9 +42,15 @@ export class ChromeExtensionsDownloadsCounter implements DownloadsCounter {
         .replaceAll(/\D/g, "");
 
       if (!extractedText) {
-        throw new Error(
+        console.log(
           "Could not find the HTML node representing active users on Chrome Web Store",
         );
+
+        return {
+          downloads: 0,
+          source: "Weekly active users on Edge Addons",
+          hasError: true,
+        };
       }
 
       const downloadsNumber = parseInt(extractedText);
