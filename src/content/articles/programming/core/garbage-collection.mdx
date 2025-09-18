@@ -7,7 +7,7 @@ lang: en-US
 
 # Garbage Collection
 
-## World Without Automatic Memory Management
+## Manual Memory Management
 
 Before we go into how garbage collection works, it makes sense to look at why we even need it.
 Without garbage collection, the only automation on memory management we get is thanks to stack
@@ -25,13 +25,15 @@ This way is much more performant, but it requires developer to be much more cons
 of memory in programs.
 :::
 
+More details on how manual memory management is done in C/C++ can be found [here](/programming/c/dynamic-memory).
+
 ## Hardware
 
 A typical computer has the following layers of memory:
 
 1. CPU registers - closest to the ALU, access is within a single CPU cycle
 2. CPU Caches
-   1. L1 - the fastest layer of cache (<2ns), lowest capacity
+   1. L1 - the fastest layer of cache (less than 2ns), lowest capacity
    2. L2 - slower than L1 (5ns), but with greater capacity
    3. L3 - slowest (15ns), but largest
 3. RAM (70ns)
@@ -58,7 +60,7 @@ the whole 64 bytes cache line will be read and placed in CPU cache.
 It's faster to access RAM sequentially, so taking more data than requested shouldn't be that much of
 a cost. Still though, 8 transfers are required (assuming 64-bit wide access per transfer). There are
 ways to speed it up from executing code's perspective. For example, the requested area of memory is
-read fists, and then the rest required to fill the cache line. User code can continue execution as
+read first, and then the rest required to fill the cache line. User code can continue execution as
 soon as the critical part is read, and the rest can be read asynchronously.
 
 The classic example of why Cache Line matters is presented below:
@@ -96,7 +98,7 @@ Therefore, the distance between two columns is closer than the distance between 
 about the cache line, we can understand that multiple columns could be read into the cache line via
 a single memory read access. Therefore, the cache line could be reused by iterating the array in a
 proper way. Switching the row index constantly is bad, we'll get much more cache misses, and the
-cache line needs to be reloaded often
+cache line needs to be reloaded often.
 
 #### Cores and Cache Coherence
 
@@ -128,19 +130,96 @@ the cache. It's not that simple though, because multiple processes are fighting 
 one prefetched data of one process might get overwritten by another process. Therefore, it's crucial
 to not trigger prefetching too early.
 
+### NUMA
+
+Until now, we've assumed a simple scenario where access to RAM is uniform across all CPUs (or cores).
+
+In today's world of huge computing clusters, servers typically have multiple CPUs and CPUs have
+multiple cores. In such
+arrangements, it's typical for memory regions to be designated for specific CPUs/cores. It's much faster
+for a CPU to access "its" RAM region than to access a region that was not assigned to it. The CPUs
+are actually grouped so that multiple of them have one "local" RAM area. This
+architecture is called **NUMA** (Non-Uniform Memory Architecture). More and more consumer-grade
+workstations use NUMA as well.
+
+Operating Systems and Runtimes
+(or programs in general) may be NUMA-aware and they will allocate memory "close" to the CPU group
+they're running on.
+
+CPUs may communicate with each other to access distant memory. This is much slower than accessing
+the local region of memory of a given CPU.
+
+[This video](https://www.youtube.com/watch?v=yG1m7oGZC48&t=448s) explains the concept quite well.
+
 ## Operating System
 
+:::caution
+In this article I'm assuming Linux (or macOS to some extent) is the kernel being used.
+:::
+
 Programs do not have access to the whole memory installed in a computer, or even to the real
-addresses of cells. Instead, OS provides virtual memory. It's transparent for the process, it does
+addresses of cells. Instead, OS provides **virtual memory**. It's transparent for the process, it does
 not need to know about that abstraction. Thanks to that:
 
 - different processes have different pools of memory cells
-- memory can be constrained or extended above the RAM capacity (via swap for example).
+- memory can be constrained or extended above the RAM capacity (via swap partition for example (or
+  page file on Windows)).
 
 Virtual Memory is a feature of CPUs via MMU (Memory Management Unit), provided in cooperation with
 the OS.
 The Virtual Memory is mapped to physical memory in the unit of _pages_ (typically 4kB). Mapping every individual
-address would be bad on performance.
+address would be bad on performance. The OS maintains _page directories_ for each process. This
+allows to map virutal addresses to physical ones.
+
+If the pages were bigger, performance could be improved (because less virtual-to-physical address
+translations would have to occur). However, it'd be at the cost of higher memory use.
+
+A page may also be shared between processes, it's useful for statically linked libraries or other
+big blobs of data. Such pages are _Shared Pages_.
+
+When allocating some memory, physical memory is not reserved directly. It happens only during the
+first access to the allocated memory (it's called _lazy allocation_). For performance critical
+scenarios, it might make sense to access allocated memory with "fake" reads, just to make sure
+memory is ready for actual work. Also because of that, on Linux, thread's stack might not be a
+continuous memory region.
+
+The kernel allows to modify memory pages via:
+
+- `mmap` - direct pages manipulation
+- `brk`/`sbrk` - increases the heap size
+
+Runtimes/allocators use those to manage memory.
+
+### Process Memory Categorization
+
+- Virtual Memory - total size of the virtual address space reserved so far (`VIRT` in `top`)
+- Resident Set Size Memory (RSS) - space of pages that currently reside in the physical memory. Some
+  of them might be shared between processes (`RES` in `top`)
+  - Private Resident Pages - all anonymous resident pages reserved for the process
+  - Shared Resident Pages - both file-backed and anonymous resident pages of the process that are
+    shared with other processes (`SHR` in `top`).
+- Private Memory - all private pages of the process. It is the reserved memory, but part of it might
+  not be yet actually allocated (to become resident) due to lazy allocation (`DATA` in `top`).
+- Swapper Memory - stored on the swap partition
+
+When looking for an answer "how much memory does this process consume?", it's best to look at the
+_Private Resident Pages_ since it shows the actual use of RAM by the process.
+
+---
+
+Some different perspective on memory mapping can be found in the [Program Execution article](/programming/core/programs-execution#memory).
+
+Putting it all together, a typical memory read access would look as follows (without going too much into
+low-level details, and assuming CPU cache is not skipped):
+
+1. Process requests a read of a specific address
+2. That address is a virtual address and gets translated to physical one (using page directory, MMU,
+   TLB (a kind of cache for address translations)). It is a part of some page that got reserved for
+   this particular process.
+3. The CPU is instructed to read a given physical address. It checks its cache. If the data is
+   there, it may return it without going into the RAM. Otherwise, point 4.
+4. CPU will read not only the requested address but rather the entire cache line (64 bytes), and
+   store it in memory. The requested bytes get returned to the process.
 
 ## Automatic Memory Management
 
@@ -224,6 +303,10 @@ On a plus side:
   because there are also deferred reference counters)
 - possiblity to implement without runtime support
 
+### References
+
+- [A simple C implementation of reference counting](https://meowingcat.io/blog/posts/reference-counting-in-c-for-your-sanity)
+
 ## Tracking Collector
 
 Tracking Collectors work kind of separately from the main program thread. They monitor (track) the
@@ -295,3 +378,7 @@ This solution is very inefficient and definitely not ideal.
 Such GC has full information about objects memory layout. It can efficiently traverse the objects
 graph marking the visited object, as it was described above.
 .NET uses Precise GC.
+
+## References
+
+- [A simple C implementation of reference counting](https://meowingcat.io/blog/posts/reference-counting-in-c-for-your-sanity)

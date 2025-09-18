@@ -16,6 +16,7 @@ const structure: Sidebar = {
       children: [
         "core/programs-execution",
         "core/stack-and-heap",
+        "core/garbage-collection",
         {
           title: "Asynchronous Programming",
           children: [
