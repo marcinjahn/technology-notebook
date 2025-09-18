@@ -1,46 +1,292 @@
 ---
-title: Garbage Collector
+title: Memory Management
 description: How Garbage Collection works in .NET
-tags: [".net", "dotnet", "C#", "gc", "garbage", "collector", "collection", "memory"]
+tags:
+  [".net", "dotnet", "C#", "gc", "garbage", "collector", "collection", "memory"]
 lang: en-US
 ---
 
-# Garbage Collector
+# Memory Management
 
 .NET uses Garbage Collection to free up memory from unused objects, that is
 objects that are unreachable from the application root.
+
+## Types of Data
+
+### Value Types
 
 :::tip
 Value types are not part of Garbage Collection cleanup process. They live on
 the stack and they're naturally added and removed to/from it.
 :::
 
-There are 4 generations of GC:
+Benefits of value types:
 
-- **Gen 0** - for ephemeral objects, like objects allocated in some method, that
-  are no longer in scope after that method's execution is over. Gen 0
-  deallocation is the cheapest, objects basically land on top of the heap, and
-  are removed from there as soon as the method's execution is over.
-- **Gen 1** - also for ephemeral objects. Objects that go untouched after at
-  least one Gen 0 pass are Gen 1. This could be an object being assigned to some
-  property of a class instance.
-- **Gen 2** - for long-lived objects that have stayed alive after a few Gen 1
-  passes. It could be a property of a static class, or some other objects that
-  live through the whole lifetime of an app.
+- less memory - data is stored directly, without a pointer (or actually without two pointers, because
+  reference types have two pointers)
+- faster access to fields because of direct access
+- avoids allocations (unless boxed)
+- no inheritance, so no overhead of devirtualization
+- stored on the stack or register (or heap if boxed or part of something else on a heap)
+
+#### Boxing
+
+Every value type has a corresponding reference type. E.g., for `int`, it'd be `System.Int32`.
+When boxing, runtime first creates a new instance of reference type (as usual, with header and
+Method Table pointer), and then it copies data from value type.
+
+Unboxing is cheaper, it's just a copy of data from heap to stack.
+
+### Reference Types
+
+They are composed of two parts:
+
+- reference - an adress to _data_. The reference itself is copied by value, just like a value type.
+- data - memory region pointed to by reference.
+
+Reference is like a "classic" pointer, with some runtime safety on top.
+Reference Type is beneficial when a particular data outlives a stack frame. Then heap allocation is
+actually useful.
+
+.NET runtime can infer that a given instance of reference type does not "escape" the stack frame and
+it might place it on stack, like a vlue type instance! However, it will be stored exactly like it
+would be stored on the heap - with Method Table pinter and header.
+
+### Reference Type Structure
+
+Each object on the heap has:
+
+- header - stores any metadata that might be attached to a given object. E.g., lock on an object,
+  cached value of `GetHashCode`, some GC info.
+- Method Table pointer - it's an address to entry in Method Table structure about the type of an
+  object. There are information such as listing of all methods, data for reflection, and others. The
+  reference to any object actually pints at the Method Table pointer!
+
+  ```
+  ┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+  │    Header    │ Method Table │     Data     │     Data     │     Data     │
+  │              │   Pointer    │              │              │              │...
+  └──────────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+  ```
+
+  Therefore, sometimes we say that the Header lays on a negative index, because to get to it, you have
+  to subtract from the reference's pointer.
+
+- Data - the actual values (or references) that are part of the class. Even for empty classes
+  (without fields) there will be one place (8B), because GC expects it.
+
+---
+
+The smallest object will take 24 bytes (on a 64-bit system) or 12 bytes (on a 32-bit system):
+
+- 8 bytes for a _Header_
+- 8 bytes for the Method Table pointer
+- 8 bytes for _Data_
+
+:::caution
+A struct instance with 1 byte field will take 1 byte of space (or a bit more due
+to alignment).
+
+A class with 1 byte field witll take 24 bytes of space!
+:::
+
+### ref
+
+For value types, this keyword allows us to pass value types by reference (so the same way as
+reference types do by default).
+
+For reference types, it acts like a pointer to a pointer. We can chane the object that the passed
+reference variable points to!
+
+### null
+
+It's a reference that points at an address of 0. Wen we try to access that memory, OS raises
+exception (CLR catches that and rethrows). The whole first page of virtual memory is an illegal
+access space.
+
+### Data Locality
+
+Structs are better in data locality. An array of structs has each item one next to the other.
+For classes, only references to items are next to each other, but accessing consecutive items
+requires:
+
+1. Moving to next reference
+2. Following the referenece's pointer to get to actual item
+
+When loading array into cacheline, for structs case we load the actual data. For classes case, we
+load references to items into cacheline. Each item can be in completely different place in memory.
+Program will be slower due to more cacheline loads (+ dereferencing).
+
+## Garbage Collector
+
+### Regions
+
+Memory is not sorted in one huge bag. Instead, GC has a few regions and objects fall into them
+based on:
+
+- their size
+- their lifetime
+
+Various GCs choose different parameters for memory partitioning, like objects mutability, type, and
+others. .NET uses mostly just size and lifetime. Regarding size, GC heap is split into 2 regions:
+
+- **SOH** - Small Objects Heap - objects smaler than 85_000 bytes
+- **LOH** - Large Objects Heap - objects larger or equal 85_000 bytes.
+
+The 85000 bytes threshold can be increased via configuration.
+
+SOH uses compacting, because moving small objects around is not that hard/expensive.
+LOH uses sweep collection by default. Howeverm we can invoke LOH compaction as well.
+The 85000 bytes threshold is computed with shallow object size. Therefore, LOH mostly constains
+large arrays and strings. Object with array field (even huge) stores just a reference to that array,
+so array size is not included in object's size by GC.
+
+Typically, SOH contains much more objects than LOH, because 85000 bytes is a rather big value.
+LOG gets collected only when Gen 2 is collected.
+
+:::caution
+On 32-bit runtime, LOH will alos contains arrays of `doubles` with min 1000 elements (8000 bytes of
+size). It's due to alignment issues. 32-bit has 4 byte alignment and `double` takes 8 bytes.
+LOH has 9 byte alignment on 32-bit runtime.
+:::
+
+#### Generations
+
+SOH has lots of objects normally, os it's split further by lifetime of these objects, into
+generations.
+
+- SOH
+  - **Gen 0** - for ephemeral objects, like objects allocated in some method, that
+    are no longer in scope after that method's execution is over. Gen 0
+    deallocation is the cheapest, objects basically land on top of the heap, and
+    are removed from there as soon as the method's execution is over.
+  - **Gen 1** - also for ephemeral objects. Objects that go untouched after at
+    least one Gen 0 pass are Gen 1. This could be an object being assigned to some
+    property of a class instance.
+  - **Gen 2** - for long-lived objects that have stayed alive after a few Gen 1
+    passes. It could be a property of a static class, or some other objects that
+    live through the whole lifetime of an app.
 - **LOH** (Large Object Heap) - objects bigger than 85 kilobytes.
+- **POH** - Pinned Objects Heap, a place for objects that should not be moved
+  (also compacted), for various reasons, but mostly when these objects are
+  exposed to unmanaged code.
 
 Moving up the generations, the cost of GC becomes higher (Gen 0 is the
 cheapest). Therefore, whenever possible, it's good to keep our objects in the
 Gen0/1 range, or, even better, use value types.
 
+---
+
+In Computer Science, the following observations have been made:
+
+- weak generational hypothesis - most yung objects live short
+- the longer the ojbect lives, the more likely it is to continue living
+
+Therefore, it makes sense to collect young objects more frequently than older objects.
+Objects change generations (up) via _promotion_. Different generation can be handled in various
+ways. For example, there could be separate memory regoin for different generations. Any time a
+promotion occurs, an object would hav eot be copied to a different area of memory. That would be
+quite expensive though.
+Another approach would be to have one memory region, but with dynamic thresholds that separate
+generations. Each time promotion occurs, objects that are close to each other are promoted together
+(because they are placed in memory "chronologically" one next to the other). Threshold is moved "to
+the right" while objects stay in place. This simple description assumes no compaction, just sweep.
+
+.NET uses a kind of the second approach that I described. There are 0, 1, and 2 generations. Each
+collection survival is a promotion. There are exceptions to that, sometimes promotion does not occur
+(it's called a _demotion_ then, although objects stay in the same gneration, they never go to
+younger generation).
+
+:::tip
+Mono uses the first approach, it copies objects to different memory area. Also, it has just 2
+generations.
+:::
+
+:::tip
+`GC.GetGeneration()` allows to get generation of any object. For LOH and POH, it returns `2`.
+We can track generation sizes with dotnet counters. Gen 0 size, for legacy reasons, is not really
+Gen 0 size, but rather an allocation budget for Gen 0.
+:::
+
+To find memory leaks, it's best to look at Gen 2 size. Objects that stay in memory for too long will
+eventually go to Gen 2 and its size will keep on increasing. An ever increasing size of Gen 2 is a
+sign of a potential problem.
+
+## Mark Phase
+
+As described in [Garbage Collection article](/programming/core/garbage-collection#mark-phase), a
+part of GC is Mark Phase. This is when GC looks for objects that are still alive.
+Mark Phase cannot just traverse the whole graph of objects, cause it would invalidate the whole idea
+of generations. Younger generations should be collected more often than older generations, as we
+established before. Traversing the whole graph would take us through a mix of generations. Objects
+from younger generations might point to older generation objects, and vice versa. If we marked only
+objects that are reachable from young generations, we would end up deleting objects that are still
+needed (but are pointed to only from older generatin objects).
+
+So, in addition to traversing from young objects, GC keeps a `RememberedSet`. `RememberedSet`
+contains references from older to younger generations. When collecting younger generation, both
+traversal in young generation and `RememberedSet` are checked.
+
+For young-to-old references, a similar issue woul doccur. Traversing ojbects in gen 1 would not mark
+ojbects that are referenced only from gen 0. Another `RememberedSet` would be needed. It's
+non-trivial to have it, so instead the following assumption has been agreed on:
+
+> Collection in gen N collects also all previous generations! So, for example, a Gen 2 collection
+> would also collect 0 and 1.
+
+The following collections are possible then:
+
+- only 0
+- 0 and 1
+- 0, 1, 2, LOH (full GC)
+
+`RememberedSet` is updated anytine when some older generation object has some reference added to
+young generation object. It'd be a huge overhead to check such condition everytime, so it's heavily
+optimized and done only when needed by JIT compiler. This check is done in the _Write Barrier_ of
+[Mutator](/programming/core/garbage-collection#mutator).
+
+`RememberedSet` is implemented in a bit more convoluted way than just as a collection of data.
+It's implemented with the help of _Card Tables_. That's because managing references
+per every single older generation object would be an overkill in apps with lots of objects.
+Instead, the memory of older generation is divided into 256 byte-wide regions (on 64-bit runtime) and every region might contain some objects (0 or more).
+Anytime a reference is written into some object in older generation, its region (card) is marked
+dirty. When collection of younger generation occurs, both traversals in young gen and dirty cards
+are checked to find all reachable objects. One card is 1 bit (dirty/clean) in memory.
+
+Management of Card Table happens during Write Barrier. There are a few implementations of Write
+Barrier and runtime will use any of them depending on various conditions.
+
+With Card Table technique, GC tracks groups of objects instead of tracking them individually. Still,
+there'll be lots of cards for apps that use lots of memory. Therefore, runtime does not check cards
+individually. Instead, it creates words (and even bundles) of cards. Each bit in a bundle represents
+1024 cards. So, when if a given bundle card is clean, we can skip 1024\*256 bytes of memory from
+reference scanning! It saves a lot of time, which is important, because young generation collections
+must be fast.
+
+:::caution
+Some objects (e.g., arrays) might be bigger than a single card (256 bytes). If such huge object has
+reference to younger gen object, during mark phase only a part of that object will be scanner (the
+one that belongs to a dirty card).
+:::
+
+## Pinning
+
+Pinning Objects means to make their location constant and disallow runtime to move it to some other
+location. Pinned objects fragment the heap, because they cannot be compacted. Pinning is useful
+mostly for P/Invoke scenarios where some unmanaged code operates on pointers.
+
+There is also POH (since .NET 5). We can create arrays (only of structs without any references
+inside to simplify GC by avoiding traversal of POH during the Mark Phase).
+
 ## GC Modes
 
 Garbage Collection may work in different modes:
 
-- Background Mode - enabled by default. Only Gen 2 is collected in the background.
+- Background Mode - enabled by default. Only Gen 2 is collected in the background. There are as many
+  managed heaps as there are logical CPU cores.
 - Workstation Mode - also enabled by default. Gen 0 and Gen 1 are collected in
   the foreground thread, pausing user code. It's blocking, but it's relatively
-  cheap (since it's Gen 0/1)
+  cheap (since it's Gen 0/1). There's just one managed heap.
 - Server Mode - ideal for server-side apps. Each CPU core gets its own heap.
   Also, each core has its own GC thread running in the background. It's
   non-blocking, but uses more memory (30-40% more) and CPU. We can enable that via csproj. It
@@ -89,3 +335,4 @@ A few facts to keep in mind:
 - can't be done in async methods
 - shouldn't be used to allocate too much data, otherwise stack overflow will occur
 - it will always be faster than allocating objects on the heap
+
