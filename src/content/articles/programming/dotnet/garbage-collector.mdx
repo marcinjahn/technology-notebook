@@ -87,7 +87,7 @@ The smallest object will take 24 bytes (on a 64-bit system) or 12 bytes (on a 32
 A struct instance with 1 byte field will take 1 byte of space (or a bit more due
 to alignment).
 
-A class with 1 byte field witll take 24 bytes of space!
+A class with 1 byte field will take 24 bytes of space!
 :::
 
 ### ref
@@ -145,14 +145,14 @@ Typically, SOH contains much more objects than LOH, because 85000 bytes is a rat
 LOG gets collected only when Gen 2 is collected.
 
 :::caution
-On 32-bit runtime, LOH will alos contains arrays of `doubles` with min 1000 elements (8000 bytes of
+On 32-bit runtime, LOH will also contain arrays of `doubles` with min 1000 elements (8000 bytes of
 size). It's due to alignment issues. 32-bit has 4 byte alignment and `double` takes 8 bytes.
 LOH has 9 byte alignment on 32-bit runtime.
 :::
 
 #### Generations
 
-SOH has lots of objects normally, os it's split further by lifetime of these objects, into
+SOH has lots of objects normally, so it's split further by lifetime of these objects, into
 generations.
 
 - SOH
@@ -175,17 +175,29 @@ Moving up the generations, the cost of GC becomes higher (Gen 0 is the
 cheapest). Therefore, whenever possible, it's good to keep our objects in the
 Gen0/1 range, or, even better, use value types.
 
+#### Layout
+
+In .NET 7+, memory is split into _Regions_. In earlier versions, it was split into _Segments_.
+Each SOH generation has its own region. Also LOH, POH and NGCH have their own regions.
+
+During runtime startup the following occurs:
+
+1. Runtime tries to allocate continuous area of memory (if possible).
+2. Runtime creates regions for each part of managed memory. POH and LOH are 8 times larger than SOH
+   generation region size. (NGCH is created later, on demand, in other part of the address space).
+3. One page of each region is committed.
+
 ---
 
 In Computer Science, the following observations have been made:
 
 - weak generational hypothesis - most yung objects live short
-- the longer the ojbect lives, the more likely it is to continue living
+- the longer the object lives, the more likely it is to continue living
 
 Therefore, it makes sense to collect young objects more frequently than older objects.
 Objects change generations (up) via _promotion_. Different generation can be handled in various
-ways. For example, there could be separate memory regoin for different generations. Any time a
-promotion occurs, an object would hav eot be copied to a different area of memory. That would be
+ways. For example, there could be separate memory regions for different generations. Any time a
+promotion occurs, an object would have to be copied to a different area of memory. That would be
 quite expensive though.
 Another approach would be to have one memory region, but with dynamic thresholds that separate
 generations. Each time promotion occurs, objects that are close to each other are promoted together
@@ -248,7 +260,8 @@ optimized and done only when needed by JIT compiler. This check is done in the _
 `RememberedSet` is implemented in a bit more convoluted way than just as a collection of data.
 It's implemented with the help of _Card Tables_. That's because managing references
 per every single older generation object would be an overkill in apps with lots of objects.
-Instead, the memory of older generation is divided into 256 byte-wide regions (on 64-bit runtime) and every region might contain some objects (0 or more).
+Instead, the memory of older generation is divided into 256 byte-wide regions (on 64-bit runtime)
+and every region might contain some objects (0 or more).
 Anytime a reference is written into some object in older generation, its region (card) is marked
 dirty. When collection of younger generation occurs, both traversals in young gen and dirty cards
 are checked to find all reachable objects. One card is 1 bit (dirty/clean) in memory.
@@ -267,6 +280,83 @@ must be fast.
 Some objects (e.g., arrays) might be bigger than a single card (256 bytes). If such huge object has
 reference to younger gen object, during mark phase only a part of that object will be scanner (the
 one that belongs to a dirty card).
+:::
+
+## Allocation
+
+In non-managed environments (like C/C++), an action to create an objet goes directly to the OS to get memory.
+In .NET, there's runtime in between. The runtime will allocate a big chunk of memory from the OS
+before the app even needs it. That speeds up the process when the memory is actually needed.
+This is one of the "tricks" that managed environments use to be faster than non-managed ones.
+
+.NET has two wasy of allocating memory:
+
+- bump pointer allocation (faster)
+- free-list
+
+When allocating new objects, it happens on:
+
+- SOH - only gen 0
+- LOH
+- POH
+
+### Bump Pointer
+
+```
+Objects         Zeroed memory                  Non-reserved
+┌────────────┬────────────────┬─────────────┬────────────────
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+└────────────┴────────────────┴─────────────┴────────────────
+             └───────────Committed──────────┘
+             ↑
+        Allocation
+         pointer
+```
+
+When object needs to be allocated, the allocator pointer gets moved "to the right", and the space on
+the left is the new allocated space. Runtime zeroes memory even before the allocation to speed it up.
+If some memory is not zeroed yet, it will happen ad-hoc. The whole commited space that is ready for
+allocations is called _allocation context_. When we need to grow the alloation context, we grow it
+by _allocation quantum_ (8kB on SOH).
+Each managed thread has its own allocation context. Thanks to it, creating objects does not require
+synchronization (and is faster). These multiple allocation contexts might live in one region.
+When sweepin collection runs, we would end up with lots of holes of free space before allocation
+pointer(s). Compaction would resolve it, but it's expensive. Instead, .NET creates allocation
+contexts in those holes! Compaction still occurs, but less often.
+
+### Free-list
+
+In Free-list, we have to keep note of free spaces in memory. We do that in buckets. Each bucket is a
+threshold "less or equal x bytes". Each "hole" in memory is assigned to some bucket. When allocating
+objects, we find the first bucket that has big enough spaces to fit it.
+
+The free spaces managed in free-list are actually kind of objects themselves. They have a
+MethodTable pointer in their header area that points to entry of "free object".
+
+As mentioned, allocations for new objects happen only on Gen 0, LOH and POH. However, we also need
+to manage promotions between generations. It's very similar to allocation of new objects though, so
+Gen 1 and Gen 2 have their own free-list buckets as well.
+Gen 0 and Gen 1 of SOH have each just one bucket; Gen 2 has 12 of them; LOH has 7;
+POH has 19.
+
+:::tip
+Zeroing of memory is needed only for Gen 0 allocations. Higher generations copy "filled" objects, so
+zeroing them would be redundant.
+:::
+
+---
+
+SOH uses pointer bumper technique first, and fallbacks to free-list if the first method fails. If
+there's not enough memory, GC gets invoked. If still not enough memory, `OutOfMemoryExcetpion` gets
+thrown.
+LOH and POH use only free-list (GC and exception also occur).
+
+:::caution
+When experiencing OOM exception, adding some explicit GC is not a solution. As the paragraph above
+explains, GC will happen anyway (a few times even) before OOM is thrown.
+Explicit GC might help for LOH allocations though.
 :::
 
 ## Pinning
@@ -335,4 +425,3 @@ A few facts to keep in mind:
 - can't be done in async methods
 - shouldn't be used to allocate too much data, otherwise stack overflow will occur
 - it will always be faster than allocating objects on the heap
-
