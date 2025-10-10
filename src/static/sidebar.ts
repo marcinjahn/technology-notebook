@@ -30,7 +30,7 @@ const structure: Sidebar = {
     },
     {
       title: "Functional Programming",
-      icon: "lambda.webp",
+      icon: "functional-programming.svg",
       children: [
         "functional-programming/fundamentals",
         "functional-programming/dotnet-features",
