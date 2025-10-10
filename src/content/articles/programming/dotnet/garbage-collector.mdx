@@ -296,20 +296,20 @@ This is one of the "tricks" that managed environments use to be faster than non-
 
 When allocating new objects, it happens on:
 
-- SOH - only gen 0
+- SOH - only Gen 0
 - LOH
 - POH
 
 ### Bump Pointer
 
 ```
-Objects         Zeroed memory                  Non-reserved
+   Objects      Zeroed memory                  Non-reserved
 ┌────────────┬────────────────┬─────────────┬────────────────
 │████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
 │████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
 │████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
 └────────────┴────────────────┴─────────────┴────────────────
-             └───────────Committed──────────┘
+             └──────────Committed───────────┘
              ↑
         Allocation
          pointer
