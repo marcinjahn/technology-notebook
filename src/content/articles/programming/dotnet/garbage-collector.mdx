@@ -119,9 +119,22 @@ Program will be slower due to more cacheline loads (+ dereferencing).
 
 ## Garbage Collector
 
+### High Level Overview
+
+When garbage collection gets triggered, the following occurs (assumes Workstation, non-concurrent):
+
+1. Suspend all managed threads.
+2. The thread that triggered GC, starts to execute GC code.
+3. GC decides which generation to condemn (condmned generation + all generations below will be
+   collected)
+4. Mark Phase
+5. Plan Phase
+6. Collection (Sweep or Compaction)
+7. Resume managed threads.
+
 ### Regions
 
-Memory is not sorted in one huge bag. Instead, GC has a few regions and objects fall into them
+Memory is not stored in one huge bag. Instead, GC has a few regions and objects fall into them
 based on:
 
 - their size
@@ -224,6 +237,75 @@ To find memory leaks, it's best to look at Gen 2 size. Objects that stay in memo
 eventually go to Gen 2 and its size will keep on increasing. An ever increasing size of Gen 2 is a
 sign of a potential problem.
 
+### Control Values
+
+GC has varous config values that allow it to decide on various options, like whether to use sweep or
+compacting collection, or even how often to trigger collections.
+
+#### Allocation Budget
+
+Allocation Budget is the amount of memory that is allowed until GC of a given generation will occur.
+Each generation has different setting for it. For gen 1 and 2, promotion from lower gens is treated
+the same as allocation (there's no way to allocate directly in gen 1 or 2, so promotion is the only
+way to "allocate" there).
+
+Fragmentation is the total size occupied by "free objects".
+
+Allocation Budget changes between GCs. In general, the more objects survive a collection, the higher
+the new allocation budget. The reasoning is: if in a given generation not much had to be cleaned up,
+then probably we should wait longer until more unreaahble objects accumulate.
+
+:::caution
+Performance Counter for Gen 0 size is actually not the Gen 0 size, but rather it's its allocation budget (for legacy reasons).
+:::
+
+### GC Triggers
+
+Garbage Collection may be triggered in various ways:
+
+- when theree's not enough space in some generation for new alloation. It's related to allocation
+  budget as well.
+- explicit call to [GC.Collect(...)](https://learn.microsoft.com/en-us/dotnet/api/system.gc.collect?view=net-8.0).
+- low memory notification - (only on Windows OS) - OS might inform apps that memory is low. Apps
+  might ignore it or do something about it. .NET triggers collection.
+- various internal events
+- explicit call to [GC.TryStartNoGCRegion](https://learn.microsoft.com/en-us/dotnet/api/system.gc.trystartnogcregion?view=net-9.0) - this method actually allows us to NOT run GCs in a given region of code exectuion. However, by default, when we run it, runtime will trigger GC just before starting to execute the no-GC code region. It can be disabled though.
+
+When GC on a given generation gets triggered in any of the ways above, runtime might decide to also
+collect higer generation. This might occur when:
+
+- some higher gen has exceeded ints allocation budget
+- long time passed since some higher gen got collected last time. For gen1, it's 10 seconds, for gen
+  2 it's 100 seconds. It happens only in Workstation mode.
+- low Card Table efficiency
+- big fragmentation
+- before [OutOfMemoryException](https://learn.microsoft.com/en-us/dotnet/api/system.outofmemoryexception?view=net-9.0)
+
+### Stop the World
+
+When GC pauses all managed threads to do its job, it's called "Stop the World" sometimes.
+It's also called "Execution Engine (EE) Suspension".
+
+Managed threads are stopped, because GC can do its thing only when it's safe to do so. A given
+thread may be in one of two states:
+
+- cooperative - runtile must cooperate with the thread to get it to safe point for it to become
+  preemptive
+- preemptive - the thread is executing code that does not touch any GC-managed references (like
+  non-managed code).
+
+EE Suspension forces all threads to be preemptive. When a thread gets to preepmptive state, its
+state is stored in _GC Info_ structure. Thanks to it, when resume occurs, each thread will continue
+right where it finished.
+
+Safe points are during calls to other methods. There is actually a special GC poll method that
+forces a safe point to occur. The method is empty, and its only function is to trigger method call.
+It's used in various strategic places in runtime code, but it might also get placed in app code by
+JIT, especially in loops of long/undefined iterations count.
+JIT might also emit code that is "fully interruptible" - in such code, not only method calls are
+safe, but every instruction invocation is safe. That's pretty expensive though, because every
+instruction needs to have _GC Info_.
+
 ## Mark Phase
 
 As described in [Garbage Collection article](/programming/core/garbage-collection#mark-phase), a
@@ -239,8 +321,8 @@ So, in addition to traversing from young objects, GC keeps a `RememberedSet`. `R
 contains references from older to younger generations. When collecting younger generation, both
 traversal in young generation and `RememberedSet` are checked.
 
-For young-to-old references, a similar issue woul doccur. Traversing ojbects in gen 1 would not mark
-ojbects that are referenced only from gen 0. Another `RememberedSet` would be needed. It's
+For young-to-old references, a similar issue would occur. Traversing objects in gen 1 would not mark
+objects that are referenced only from gen 0. Another `RememberedSet` would be needed. It's
 non-trivial to have it, so instead the following assumption has been agreed on:
 
 > Collection in gen N collects also all previous generations! So, for example, a Gen 2 collection
@@ -252,8 +334,8 @@ The following collections are possible then:
 - 0 and 1
 - 0, 1, 2, LOH (full GC)
 
-`RememberedSet` is updated anytine when some older generation object has some reference added to
-young generation object. It'd be a huge overhead to check such condition everytime, so it's heavily
+`RememberedSet` is updated anytime some older generation object has some reference added to
+younger generation object. It'd be a huge overhead to check such condition everytime, so it's heavily
 optimized and done only when needed by JIT compiler. This check is done in the _Write Barrier_ of
 [Mutator](/programming/core/garbage-collection#mutator).
 
@@ -278,9 +360,55 @@ must be fast.
 
 :::caution
 Some objects (e.g., arrays) might be bigger than a single card (256 bytes). If such huge object has
-reference to younger gen object, during mark phase only a part of that object will be scanner (the
+reference to younger gen object, during mark phase only a part of that object will be scanned (the
 one that belongs to a dirty card).
 :::
+
+When Mark Phase occurs, GC "knows" which gens will be collected, otherwise it'd have to go back to
+Mark Phase to check some potential higher gen.
+
+### Implementation Details
+
+Objects get marked (as reachable) by modifyng the MethodTable pointer. The space for the pointer is
+actually bigger than necessary and two lowest bits are unused, so it's safe to modify 1 bit of it.
+The modified bit will be reset back during the [Plan Phase](#plan-phase) (to prepare it for
+potential next Mark Phase).
+
+#### Roots
+
+Objects marking starts from roots.
+Local variables are one of the most common roots. Some of them are short-lived (like variables
+within some short method), or long-lived (like variables created in `Main(...)`). Anytime we create
+some object in some method, we create a new Local Variable Root for Mark Phase.
+
+:::tip
+Local Variable Roots may be stored on the stack, or directly in a CPU register (just the referene of
+course, referenced data lives on the heap).
+:::
+
+#### Scope
+
+Intuitively, we might think that a given method is "safe" from its variables being collected while
+it's executing. However, runtime might collect objects pointed to by loal variables as soon as they
+are stop being used.
+
+Example:
+
+```cs
+public MyObject DoSomething()
+{
+  var myObj = new MyObject();
+  myObj.Value = 38;
+
+  DoSomethingElse();
+
+  // myObj is not needed anymore, it might get GC'ed at this point!
+
+  var anotherObj = new MyObject();
+
+  return anotherObj;
+}
+```
 
 ## Allocation
 
@@ -370,18 +498,98 @@ inside to simplify GC by avoiding traversal of POH during the Mark Phase).
 
 ## GC Modes
 
-Garbage Collection may work in different modes:
+.NET garbage collector may operate in one of two modes.
 
-- Background Mode - enabled by default. Only Gen 2 is collected in the background. There are as many
-  managed heaps as there are logical CPU cores.
-- Workstation Mode - also enabled by default. Gen 0 and Gen 1 are collected in
-  the foreground thread, pausing user code. It's blocking, but it's relatively
-  cheap (since it's Gen 0/1). There's just one managed heap.
-- Server Mode - ideal for server-side apps. Each CPU core gets its own heap.
-  Also, each core has its own GC thread running in the background. It's
-  non-blocking, but uses more memory (30-40% more) and CPU. We can enable that via csproj. It
-  can give you a huge boost of performance if utilized in scenarios where
-  throughput is really important.
+### Workstation Mode
+
+Gen 0 and Gen 1 are collected in
+the foreground thread, pausing user code. It's blocking, but it's relatively
+cheap (since it's Gen 0/1). Collections are more often, but shorter (because the more often you GC, the
+less memory there's to collect). There's just one managed heap.
+
+It's good for desktop apps where GCs should be short to avoid blocking the UI.
+
+### Server Mode
+
+It is ideal for server-side apps. Each CPU core gets its own heap.
+Also, each core has its own GC thread running in the background. It's
+non-blocking, but uses more memory (30-40% more) and CPU. It can be enabled via csproj. It
+can give you a huge boost of performance if utilized in scenarios where
+throughput is really important.
+Collections are less often, but take more time, resulting in longer pauses.
+
+---
+
+### Submodes
+
+Each of the two modes above can also be configured to work in one of the two submodes below.
+Therefore, we could say that there are 4 ways of GC operation in .NET.
+
+- Non-concurrent - whole GC operation happens while app threads are paused.
+- Concurrent - part of GC operations happen concurrently with app threads.
+
+---
+
+The simplest GC mode of operation is Non-concurrent Workstation mode.
+
+## Collection
+
+There are two main ways of how memory gets collected:
+
+- Sweep - objects that are considered dead are removed. The "holes" created by that are potential
+  places for now objects to be allocated in the future. However, when lots of small holes stay in
+  memory, it's difficult to allocate anything there. This obviously leads to fragmentation where even
+  though we might have lots of free space, it's impossible to put any objects there. It's fast
+  though.
+- Compacting - live objects are moved together, removing any holes in between them. It's slower,
+  because moving objects requires updating all references to them. However, it leads to better
+  memory usage and less fragmentation.
+
+Decision whether to use one or the other is made during the Plan Phase.
+
+Ideally, Sweep + Compaction would result in best memory utilization.
+
+SOH may ue Sweep or Compacting, GC has various heuristics to decide which one to use in a given
+case. We might also manually force either one of them.
+
+LOH uses Sweep by default, but it will also Compact when memory is low. Manually, both can be
+invoked.
+POH uses only Sweep, since, by design, Compaction would invalidate pointers to POH objects.
+
+### Algorithm
+
+Collection is triggered on a gen generation. When generation _n_ GC is invoked, generation _n_, and
+all generations below will be collected.
+
+GC first marks reachable objects, then it decides wheteher it will use Sweep or Compaction.
+
+After collection of gen 0, it will be empty, since objects will either get removed
+or promoted to higher generation.
+
+:::caution
+There are exceptions from that though, some objects might get "demoted", meaning they will stay in
+the same generation.
+:::
+
+Higher generations get scanned using Card Tables to find references to lower generations.
+
+:::tip
+When collection Gen 1, it might actually grow in size after all. That's due to potential amount of
+objects being promoted from Gen 0 to Gen 1.
+:::
+
+### Regions
+
+With Regions layout, each generation as its own "region" of memory. To promote some generation
+fully, a given region just becomes a higher generation region. A new region then needs to be created
+for the collected generation. That's Sweep though, for Compaction, objects might be moved around,
+and a given region might stay in the same generation.
+
+### Segments
+
+When Segments are used, the simple act of moving the bumper pointer promotes a given set of objects
+to higher gen. Some objects might also be moved to fill holes in higer generation (that would happen
+only during Compaciton though).
 
 ## Tips
 

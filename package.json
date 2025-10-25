@@ -4,8 +4,7 @@
   "type": "module",
   "version": "2.0.0",
   "authors": {
-    "name": "Marcin Jahn",
-    "email": "jahnmarcin@outlook.com"
+    "name": "Marcin Jahn"
   },
   "scripts": {
     "dev": "astro dev --host",
