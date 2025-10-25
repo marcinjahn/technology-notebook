@@ -60,7 +60,7 @@ Each object on the heap has:
   cached value of `GetHashCode`, some GC info.
 - Method Table pointer - it's an address to entry in Method Table structure about the type of an
   object. There are information such as listing of all methods, data for reflection, and others. The
-  reference to any object actually pints at the Method Table pointer!
+  reference to any object actually points at the Method Table pointer!
 
   ```
   ┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
@@ -299,7 +299,7 @@ state is stored in _GC Info_ structure. Thanks to it, when resume occurs, each t
 right where it finished.
 
 Safe points are during calls to other methods. There is actually a special GC poll method that
-forces a safe point to occur. The method is empty, and its only function is to trigger method call.
+forces a safe point to occur.
 It's used in various strategic places in runtime code, but it might also get placed in app code by
 JIT, especially in loops of long/undefined iterations count.
 JIT might also emit code that is "fully interruptible" - in such code, not only method calls are
@@ -377,6 +377,9 @@ potential next Mark Phase).
 #### Roots
 
 Objects marking starts from roots.
+
+##### Local Variables Roots
+
 Local variables are one of the most common roots. Some of them are short-lived (like variables
 within some short method), or long-lived (like variables created in `Main(...)`). Anytime we create
 some object in some method, we create a new Local Variable Root for Mark Phase.
@@ -386,11 +389,14 @@ Local Variable Roots may be stored on the stack, or directly in a CPU register (
 course, referenced data lives on the heap).
 :::
 
-#### Scope
+Lifetime of local variables is controlled by _GC Info_ struct. It contains a listing of all local
+variables that should stay alive at a given instruction.
 
-Intuitively, we might think that a given method is "safe" from its variables being collected while
+###### Scope
+
+Intuitively, we might think that a given method's variables are "safe" from being collected while
 it's executing. However, runtime might collect objects pointed to by loal variables as soon as they
-are stop being used.
+stop being used.
 
 Example:
 
@@ -409,6 +415,173 @@ public MyObject DoSomething()
   return anotherObj;
 }
 ```
+
+`myObj` might be collected at the "safe point" after its last use. That safe point is the call to
+`DoSomethingElse()`. Assuming typical case of method calls being safe points, that's where GC might
+occur.
+Such behavior is called **Eager Root Collection**.
+
+:::caution[Debug Configuration]
+Eager Root Collection will occur only in Release configuration (and only once Tier 1 is reached).
+Debug mode will keep all local variables alive during the whole method execution time,
+for the needs of debugging. It's convenient to be able to see all variables in a given lexical
+scope while in debug session.
+
+This difference between Debug and Release might, in rare cases, result in program executing
+differently on these two configurations! We could imagine a case where some timer could get
+collected before its callback triggers. In well designed API it wouldn't occur, such timer
+would probably implement `IDisposable`, suggesting the use of `Dispose` when timer is no longer
+needed. Such `timer.Dispose()` call, somewhere at the end of the method would "show" to the runtime
+that timer is in use.
+
+There's also a way to keep a given objet alive explicitly, via [GC.KeepAlive(obj)](https://github.com/dotnet/runtime/blob/1d1bf92fcf43aa6981804dc53c5174445069c9e4/src/coreclr/System.Private.CoreLib/src/System/GC.CoreCLR.cs#L283-L287). It's an empty
+method, it's only function is to "pretend" that a given object is being utiliezd somehow at some
+point of code execution, so that object would not get collected prior to that.
+:::
+
+:::tip
+Even `this` might get collected while its method is executing!
+
+As [.NET source](https://github.com/dotnet/runtime/blob/1d1bf92fcf43aa6981804dc53c5174445069c9e4/src/coreclr/System.Private.CoreLib/src/System/GC.CoreCLR.cs#L250-L253) says:
+
+> The JIT is very aggressive about keeping an object's lifetime to as small a window as possible (...)
+
+:::
+
+##### Cross-Generation References Roots
+
+Another kind of root are references from older to younger generation(s). While marking, it goes
+through the previously described RememberedSet and Card Tables.
+
+##### GC Handle Roots
+
+Strong and Pinned handles are another kind of roots. They are called explicitly via `GC.Alloc(...)`.
+
+## Plan Phase
+
+It figures out whether GC should compact or if sweep is good enough. While doing so, it actually
+simulates the compaction scenario to see if it would yield big enough benefits. The results of that
+simulation are not wasted, both compaction and sweep approaches use the results to do their job.
+
+Simplifying a bit, planner looks at managed heap(s) and marks groups of objects as either _plugs_ or
+_gaps_:
+
+- plug - a grouping of neighbouring objects that should be retained after GC
+- gap - a grouping of neigbouring objects that should get collected
+
+Then, it simulates the needed move operations to relocate plugs into free spots left by gaps (or
+other holes that are alrady there). It takes into account pinned objects, which have to stay in
+place.
+
+A final result creates a pattern of PGPGPG...:
+
+```
+┌──────────────┬────────┬──────────────┬──────┬─────────────┬──────────┬───────┐
+│    Gap 1     │ Plug 1 │    Gap 2     │Plug 2│    Gap 3    │  Plug 3  │ Gap 4 │
+└──────────────┴────────┴──────────────┴──────┴─────────────┴──────────┴───────┘
+```
+
+Each plug has its own plan of where it'd be moved. The plans are stored within the gaps that preceed
+a given plug! It's efficient, because no additional memory gets allocated. Additionally, it's
+optimizing CPU cache use since runtime is operating on the same part of memory while working on
+plugs/gaps.
+
+:::tip[First Plug]
+To make sure that every plug has its plan, every [Region](#regions) starts from 24 bytes of empty space, to
+be used as a gap.
+:::
+
+A plan for one plug takes 24 bytes of data. It consists of:
+
+- gap size
+- plug relocation offset
+- left and right child offsets (for Binary Search Tree)
+
+:::tip
+The Plan Phase and its strategy of using gaps to store plans is the exact reason of why reference
+types will always consume some memory (24 bytes), even when they are seemingly empty (have 0 fields). A single
+object might become a Gap after all.
+:::
+
+Plans are organized into Binary Search Tree, that's why each plan contains offsets to get to the
+left and right children of a given "plan node".
+In practice, there are many plug trees. One global tree would be too big for efficient traversal.
+Each such tree covers 4kB of memory. Each such region is called a **Brick**. Bricks are put into
+**Brick Table** with all plug trees (SOH-only).
+
+### Pinned Objects
+
+Pinned Objects introduce complications in the compaction planning. Here are just some of the
+problematic scenarios:
+
+- a pinned plug might come right before some "normal" plug - there's no gap to store the plan! As a
+  compromise, the pinned plug gets extended to also cover the not pinned plug.
+- a pinned plug might come right after some "normal" plug - the plan of the pinned plug is actually
+  stored onto the plug before it, overwriting some (24) bytes there. Overwritten data gets stored in a
+  remote location - a pinned plug queue, to be restored before thread(s) get resumed.
+
+It's worth to mention that pinned plugs' plans contain offset of 0, for obvious
+reasons.
+
+#### Demotion
+
+We could imagine another case with pinner objects. After compaction, we could end up with situation
+like this:
+
+```
+|                 GENERATION 0                     |
+|                                                  |
++---+-------+----+----------------------+----------+
+|###|///////|$$$$|                      |**********|
+|###|///////|$$$$|                      |**********|
++---+-------+----+----------------------+----------+
+|                                                  |
+|  #, /, $ - various compacted objects             |
+|  * - pinned object                               |
+```
+
+The generation 0 got collected, with compaction, now, normally, the objects would all get promoted
+to Generation 1. However, there's a lot of empt space, which would make Generation 1 fragmented.
+
+Therefore, in cases like that, a **Demotion** might occur.
+
+```
+|  GENERATION 1  |          GENERATION 0           |
+|                |                                 |
++---+-------+----+----------------------+----------+
+|###|///////|$$$$|                      |**********|
+|###|///////|$$$$|                      |**********|
++---+-------+----+----------------------+----------+
+```
+
+:::tip
+It is also possible for a given object to be moved to a lower generation!
+:::
+
+### LOH and POH
+
+The described Brick Table approach is applied only to SOH. In LOH it's simplified. First of all, LOH
+is almost never compacted. By design, LOH objects are huge. Moving them around is an expensive
+operation. However, when compaction does occur, the following facts are worth noting:
+
+- each object becomes a separate plug - objects are big enough to be considered individually
+- every object in LOH has 24 bytes of space prior to it - a space for plug plan
+
+LOH compaction will occur when:
+
+- GC is caused by the risk of OOM
+- it's called explicitly by user code
+- not enough memory for allocation is available
+- fragmentation is high
+
+## Sweep and Compact Phase
+
+This phase is the heaviest during GC cycle.
+
+During Sweep, gaps are turned into **Free Objects**. Any regions that become empty, get deleted.
+For POH and LOH, objects are scanned directly, without going through Brick Table.
+
+During Compaction, objects are moved around, nad references to them get updated.
 
 ## Allocation
 
@@ -507,7 +680,8 @@ the foreground thread, pausing user code. It's blocking, but it's relatively
 cheap (since it's Gen 0/1). Collections are more often, but shorter (because the more often you GC, the
 less memory there's to collect). There's just one managed heap.
 
-It's good for desktop apps where GCs should be short to avoid blocking the UI.
+It's good for desktop apps where GCs should be short to avoid blocking the UI. However, in some
+cases where an app relies havily on parallelism, _Server Mode_ might be a better fit.
 
 ### Server Mode
 
@@ -516,7 +690,9 @@ Also, each core has its own GC thread running in the background. It's
 non-blocking, but uses more memory (30-40% more) and CPU. It can be enabled via csproj. It
 can give you a huge boost of performance if utilized in scenarios where
 throughput is really important.
-Collections are less often, but take more time, resulting in longer pauses.
+Collections are less often, so they can take more time, resulting in longer pauses. However,
+considering that GC will run parallelly on a few threads, pause might actually be shorter than in
+the Workstation mode.
 
 ---
 
@@ -526,7 +702,14 @@ Each of the two modes above can also be configured to work in one of the two sub
 Therefore, we could say that there are 4 ways of GC operation in .NET.
 
 - Non-concurrent - whole GC operation happens while app threads are paused.
-- Concurrent - part of GC operations happen concurrently with app threads.
+- Concurrent - part of GC operations happen concurrently with app threads, in dedicated GC thread. Compaction is never
+  concurrent though.
+
+The Non-Concurrent submode is sometimes called _Background Mode_. So, for example, we could be using
+"Background Server Mode".
+
+While Background GC is executing, a Foreground GC might still occur! It takes precedence over
+Background GC, pausing it.
 
 ---
 
