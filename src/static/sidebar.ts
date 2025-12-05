@@ -71,7 +71,6 @@ const structure: Sidebar = {
         {
           title: "Memory Management",
           children: [
-            "dotnet/memory-management/garbage-collector",
             "dotnet/memory-management/memory-management",
             "dotnet/memory-management/gc-internals",
             "dotnet/memory-management/gc-memory",
