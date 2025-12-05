@@ -68,7 +68,16 @@ const structure: Sidebar = {
         "dotnet/configuration",
         "dotnet/records",
         "dotnet/nullability",
-        "dotnet/garbage-collector",
+        {
+          title: "Memory Management",
+          children: [
+            "dotnet/garbage-collector",
+            "dotnet/memory-management",
+            "dotnet/gc-internals",
+            "dotnet/gc-memory",
+            "dotnet/gc-advanced",
+          ],
+        },
         "dotnet/il-and-allocations",
         "dotnet/grpc",
         "dotnet/source-generators",

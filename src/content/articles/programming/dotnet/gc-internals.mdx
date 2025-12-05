@@ -1,0 +1,415 @@
+---
+title: Garbage Collector Internals
+description: How .NET Garbage Collection phases work
+tags:
+  [".net", "dotnet", "C#", "gc", "garbage", "collector", "collection", "mark", "sweep", "compact"]
+lang: en-US
+---
+
+# Garbage Collector Internals
+
+This article covers the internal workings of the .NET Garbage Collector phases. For an overview of memory management concepts, see [Memory Management](/programming/dotnet/memory-management).
+
+## High Level Overview
+
+When garbage collection gets triggered, the following occurs (assumes Workstation, non-concurrent):
+
+1. Suspend all managed threads.
+2. The thread that triggered GC, starts to execute GC code.
+3. GC decides which generation to condemn (condmned generation + all generations below will be
+   collected)
+4. Mark Phase
+5. Plan Phase
+6. Collection (Sweep or Compaction)
+7. Resume managed threads.
+
+## GC Triggers
+
+Garbage Collection may be triggered in various ways:
+
+- when theree's not enough space in some generation for new alloation. It's related to allocation
+  budget as well.
+- explicit call to [GC.Collect(...)](https://learn.microsoft.com/en-us/dotnet/api/system.gc.collect?view=net-8.0).
+- low memory notification - (only on Windows OS) - OS might inform apps that memory is low. Apps
+  might ignore it or do something about it. .NET triggers collection.
+- various internal events
+- explicit call to [GC.TryStartNoGCRegion](https://learn.microsoft.com/en-us/dotnet/api/system.gc.trystartnogcregion?view=net-9.0) - this method actually allows us to NOT run GCs in a given region of code exectuion. However, by default, when we run it, runtime will trigger GC just before starting to execute the no-GC code region. It can be disabled though.
+
+When GC on a given generation gets triggered in any of the ways above, runtime might decide to also
+collect higer generation. This might occur when:
+
+- some higher gen has exceeded ints allocation budget
+- long time passed since some higher gen got collected last time. For gen1, it's 10 seconds, for gen
+  2 it's 100 seconds. It happens only in Workstation mode.
+- low Card Table efficiency
+- big fragmentation
+- before [OutOfMemoryException](https://learn.microsoft.com/en-us/dotnet/api/system.outofmemoryexception?view=net-9.0)
+
+## Stop the World
+
+When GC pauses all managed threads to do its job, it's called "Stop the World" sometimes.
+It's also called "Execution Engine (EE) Suspension". Such pause usually takes tens of milliseconds.
+
+Managed threads are stopped, because GC can do its thing only when it's safe to do so. A given
+thread may be in one of two states:
+
+- cooperative - runtile must cooperate with the thread to get it to safe point for it to become
+  preemptive
+- preemptive - the thread is executing code that does not touch any GC-managed references (like
+  non-managed code).
+
+EE Suspension forces all threads to be preemptive. When a thread gets to preepmptive state, its
+state is stored in _GC Info_ structure. Thanks to it, when resume occurs, each thread will continue
+right where it finished.
+
+Safe points are during calls to other methods. There is actually a special GC poll method that
+forces a safe point to occur.
+It's used in various strategic places in runtime code, but it might also get placed in app code by
+JIT, especially in loops of long/undefined iterations count.
+JIT might also emit code that is "fully interruptible" - in such code, not only method calls are
+safe, but every instruction invocation is safe. That's pretty expensive though, because every
+instruction needs to have _GC Info_.
+
+## Mark Phase
+
+As described in [Garbage Collection article](/programming/core/garbage-collection#mark-phase), a
+part of GC is Mark Phase. This is when GC looks for objects that are still alive.
+Mark Phase cannot just traverse the whole graph of objects, cause it would invalidate the whole idea
+of generations. Younger generations should be collected more often than older generations, as we
+established before. Traversing the whole graph would take us through a mix of generations. Objects
+from younger generations might point to older generation objects, and vice versa. If we marked only
+objects that are reachable from young generations, we would end up deleting objects that are still
+needed (but are pointed to only from older generatin objects).
+
+So, in addition to traversing from young objects, GC keeps a `RememberedSet`. `RememberedSet`
+contains references from older to younger generations. When collecting younger generation, both
+traversal in young generation and `RememberedSet` are checked.
+
+For young-to-old references, a similar issue would occur. Traversing objects in gen 1 would not mark
+objects that are referenced only from gen 0. Another `RememberedSet` would be needed. It's
+non-trivial to have it, so instead the following assumption has been agreed on:
+
+> Collection in gen N collects also all previous generations! So, for example, a Gen 2 collection
+> would also collect 0 and 1.
+
+The following collections are possible then:
+
+- only 0
+- 0 and 1
+- 0, 1, 2, LOH (full GC)
+
+`RememberedSet` is updated anytime some older generation object has some reference added to
+younger generation object. It'd be a huge overhead to check such condition everytime, so it's heavily
+optimized and done only when needed by JIT compiler. This check is done in the _Write Barrier_ of
+[Mutator](/programming/core/garbage-collection#mutator).
+
+`RememberedSet` is implemented in a bit more convoluted way than just as a collection of data.
+It's implemented with the help of _Card Tables_. That's because managing references
+per every single older generation object would be an overkill in apps with lots of objects.
+Instead, the memory of older generation is divided into 256 byte-wide regions (on 64-bit runtime)
+and every region might contain some objects (0 or more).
+Anytime a reference is written into some object in older generation, its region (card) is marked
+dirty. When collection of younger generation occurs, both traversals in young gen and dirty cards
+are checked to find all reachable objects. One card is 1 bit (dirty/clean) in memory.
+
+Management of Card Table happens during Write Barrier. There are a few implementations of Write
+Barrier and runtime will use any of them depending on various conditions.
+
+With Card Table technique, GC tracks groups of objects instead of tracking them individually. Still,
+there'll be lots of cards for apps that use lots of memory. Therefore, runtime does not check cards
+individually. Instead, it creates words (and even bundles) of cards. Each bit in a bundle represents
+1024 cards. So, when if a given bundle card is clean, we can skip 1024\*256 bytes of memory from
+reference scanning! It saves a lot of time, which is important, because young generation collections
+must be fast.
+
+:::caution
+Some objects (e.g., arrays) might be bigger than a single card (256 bytes). If such huge object has
+reference to younger gen object, during mark phase only a part of that object will be scanned (the
+one that belongs to a dirty card).
+:::
+
+When Mark Phase occurs, GC "knows" which gens will be collected, otherwise it'd have to go back to
+Mark Phase to check some potential higher gen.
+
+### Implementation Details
+
+Objects get marked (as reachable) by modifyng the MethodTable pointer. The space for the pointer is
+actually bigger than necessary and two lowest bits are unused, so it's safe to modify 1 bit of it.
+The modified bit will be reset back during the [Plan Phase](#plan-phase) (to prepare it for
+potential next Mark Phase).
+
+This isn't true for Concurrent mode though where app is running concurrently with the mark phase. In
+such case, it'd be bad to modify MethodTable pointer. Marks are then stored separately, kinda
+similar to Cart Tables mentioned before.
+In general, marking objects while the app is running is quite challenging, because references might
+be added/removed while marking is ongoing. Therefore write barrier check is used to discover
+modifications to already visited objects. Still, there might be some "garbage" left after
+collection, but the assumption is that it will get cleaned up during next GC.
+
+### Roots
+
+Objects marking starts from roots.
+
+#### Local Variables Roots
+
+Local variables are one of the most common roots. Some of them are short-lived (like variables
+within some short method), or long-lived (like variables created in `Main(...)`). Anytime we create
+some object in some method, we create a new Local Variable Root for Mark Phase.
+
+:::tip
+Local Variable Roots may be stored on the stack, or directly in a CPU register (just the referene of
+course, referenced data lives on the heap).
+:::
+
+Lifetime of local variables is controlled by _GC Info_ struct. It contains a listing of all local
+variables that should stay alive at a given instruction.
+
+##### Scope
+
+Intuitively, we might think that a given method's variables are "safe" from being collected while
+it's executing. However, runtime might collect objects pointed to by loal variables as soon as they
+stop being used.
+
+Example:
+
+```cs
+public MyObject DoSomething()
+{
+  var myObj = new MyObject();
+  myObj.Value = 38;
+
+  DoSomethingElse();
+
+  // myObj is not needed anymore, it might get GC'ed at this point!
+
+  var anotherObj = new MyObject();
+
+  return anotherObj;
+}
+```
+
+`myObj` might be collected at the "safe point" after its last use. That safe point is the call to
+`DoSomethingElse()`. Assuming typical case of method calls being safe points, that's where GC might
+occur.
+Such behavior is called **Eager Root Collection**.
+
+:::caution[Debug Configuration]
+Eager Root Collection will occur only in Release configuration (and only once Tier 1 is reached).
+Debug mode will keep all local variables alive during the whole method execution time,
+for the needs of debugging. It's convenient to be able to see all variables in a given lexical
+scope while in debug session.
+
+This difference between Debug and Release might, in rare cases, result in program executing
+differently on these two configurations! We could imagine a case where some timer could get
+collected before its callback triggers. In well designed API it wouldn't occur, such timer
+would probably implement `IDisposable`, suggesting the use of `Dispose` when timer is no longer
+needed. Such `timer.Dispose()` call, somewhere at the end of the method would "show" to the runtime
+that timer is in use.
+
+There's also a way to keep a given objet alive explicitly, via [GC.KeepAlive(obj)](https://github.com/dotnet/runtime/blob/1d1bf92fcf43aa6981804dc53c5174445069c9e4/src/coreclr/System.Private.CoreLib/src/System/GC.CoreCLR.cs#L283-L287). It's an empty
+method, it's only function is to "pretend" that a given object is being utiliezd somehow at some
+point of code execution, so that object would not get collected prior to that.
+:::
+
+:::tip
+Even `this` might get collected while its method is executing!
+
+As [.NET source](https://github.com/dotnet/runtime/blob/1d1bf92fcf43aa6981804dc53c5174445069c9e4/src/coreclr/System.Private.CoreLib/src/System/GC.CoreCLR.cs#L250-L253) says:
+
+> The JIT is very aggressive about keeping an object's lifetime to as small a window as possible (...)
+
+:::
+
+#### Cross-Generation References Roots
+
+Another kind of root are references from older to younger generation(s). While marking, it goes
+through the previously described RememberedSet and Card Tables.
+
+#### GC Handle Roots
+
+Strong and Pinned handles are another kind of roots. They are called explicitly via `GC.Alloc(...)`.
+
+## Plan Phase
+
+It figures out whether GC should compact or if sweep is good enough. While doing so, it actually
+simulates the compaction scenario to see if it would yield big enough benefits. The results of that
+simulation are not wasted, both compaction and sweep approaches use the results to do their job.
+
+Simplifying a bit, planner looks at managed heap(s) and marks groups of objects as either _plugs_ or
+_gaps_:
+
+- plug - a grouping of neighbouring objects that should be retained after GC
+- gap - a grouping of neigbouring objects that should get collected
+
+Then, it simulates the needed move operations to relocate plugs into free spots left by gaps (or
+other holes that are alrady there). It takes into account pinned objects, which have to stay in
+place.
+
+A final result creates a pattern of PGPGPG...:
+
+```
+┌──────────────┬────────┬──────────────┬──────┬─────────────┬──────────┬───────┐
+│    Gap 1     │ Plug 1 │    Gap 2     │Plug 2│    Gap 3    │  Plug 3  │ Gap 4 │
+└──────────────┴────────┴──────────────┴──────┴─────────────┴──────────┴───────┘
+```
+
+Each plug has its own plan of where it'd be moved. The plans are stored within the gaps that preceed
+a given plug! It's efficient, because no additional memory gets allocated. Additionally, it's
+optimizing CPU cache use since runtime is operating on the same part of memory while working on
+plugs/gaps.
+
+:::tip[First Plug]
+To make sure that every plug has its plan, every Region starts with 24 bytes of empty space, to
+be used as a gap.
+:::
+
+A plan for one plug takes 24 bytes of data. It consists of:
+
+- gap size
+- plug relocation offset
+- left and right child offsets (for Binary Search Tree)
+
+:::tip
+The Plan Phase and its strategy of using gaps to store plans is the exact reason of why reference
+types will always consume some memory (24 bytes), even when they are seemingly empty (have 0 fields). A single
+object might become a Gap after all.
+:::
+
+Plans are organized into Binary Search Tree, that's why each plan contains offsets to get to the
+left and right children of a given "plan node".
+In practice, there are many plug trees. One global tree would be too big for efficient traversal.
+Each such tree covers 4kB of memory. Each such region is called a **Brick**. Bricks are put into
+**Brick Table** with all plug trees (SOH-only).
+
+### Pinned Objects
+
+Pinned Objects introduce complications in the compaction planning. Here are just some of the
+problematic scenarios:
+
+- a pinned plug might come right before some "normal" plug - there's no gap to store the plan! As a
+  compromise, the pinned plug gets extended to also cover the not pinned plug.
+- a pinned plug might come right after some "normal" plug - the plan of the pinned plug is actually
+  stored onto the plug before it, overwriting some (24) bytes there. Overwritten data gets stored in a
+  remote location - a pinned plug queue, to be restored before thread(s) get resumed.
+
+It's worth to mention that pinned plugs' plans contain offset of 0, for obvious
+reasons.
+
+#### Demotion
+
+We could imagine another case with pinner objects. After compaction, we could end up with situation
+like this:
+
+```
+|                 GENERATION 0                     |
+|                                                  |
++---+-------+----+----------------------+----------+
+|###|///////|$$$$|                      |**********|
+|###|///////|$$$$|                      |**********|
++---+-------+----+----------------------+----------+
+|                                                  |
+|  #, /, $ - various compacted objects             |
+|  * - pinned object                               |
+```
+
+The generation 0 got collected, with compaction, now, normally, the objects would all get promoted
+to Generation 1. However, there's a lot of empt space, which would make Generation 1 fragmented.
+
+Therefore, in cases like that, a **Demotion** might occur.
+
+```
+|  GENERATION 1  |          GENERATION 0           |
+|                |                                 |
++---+-------+----+----------------------+----------+
+|###|///////|$$$$|                      |**********|
+|###|///////|$$$$|                      |**********|
++---+-------+----+----------------------+----------+
+```
+
+:::tip
+It is also possible for a given object to be moved to a lower generation!
+:::
+
+### LOH and POH
+
+The described Brick Table approach is applied only to SOH. In LOH it's simplified. First of all, LOH
+is almost never compacted. By design, LOH objects are huge. Moving them around is an expensive
+operation. However, when compaction does occur, the following facts are worth noting:
+
+- each object becomes a separate plug - objects are big enough to be considered individually
+- every object in LOH has 24 bytes of space prior to it - a space for plug plan
+
+LOH compaction will occur when:
+
+- GC is caused by the risk of OOM
+- it's called explicitly by user code
+- not enough memory for allocation is available
+- fragmentation is high
+
+## Sweep and Compact Phase
+
+This phase is the heaviest during GC cycle.
+
+During Sweep, gaps are turned into **Free Objects**. Any regions that become empty, get deleted.
+For POH and LOH, objects are scanned directly, without going through Brick Table.
+
+During Compaction, objects are moved around, nad references to them get updated.
+
+## Collection
+
+There are two main ways of how memory gets collected:
+
+- Sweep - objects that are considered dead are removed. The "holes" created by that are potential
+  places for now objects to be allocated in the future. However, when lots of small holes stay in
+  memory, it's difficult to allocate anything there. This obviously leads to fragmentation where even
+  though we might have lots of free space, it's impossible to put any objects there. It's fast
+  though.
+- Compacting - live objects are moved together, removing any holes in between them. It's slower,
+  because moving objects requires updating all references to them. However, it leads to better
+  memory usage and less fragmentation.
+
+Decision whether to use one or the other is made during the Plan Phase.
+
+Ideally, Sweep + Compaction would result in best memory utilization.
+
+SOH may ue Sweep or Compacting, GC has various heuristics to decide which one to use in a given
+case. We might also manually force either one of them.
+
+LOH uses Sweep by default, but it will also Compact when memory is low. Manually, both can be
+invoked.
+POH uses only Sweep, since, by design, Compaction would invalidate pointers to POH objects.
+
+### Algorithm
+
+Collection is triggered on a gen generation. When generation _n_ GC is invoked, generation _n_, and
+all generations below will be collected.
+
+GC first marks reachable objects, then it decides wheteher it will use Sweep or Compaction.
+
+After collection of gen 0, it will be empty, since objects will either get removed
+or promoted to higher generation.
+
+:::caution
+There are exceptions from that though, some objects might get "demoted", meaning they will stay in
+the same generation.
+:::
+
+Higher generations get scanned using Card Tables to find references to lower generations.
+
+:::tip
+When collection Gen 1, it might actually grow in size after all. That's due to potential amount of
+objects being promoted from Gen 0 to Gen 1.
+:::
+
+### Regions
+
+With Regions layout, each generation as its own "region" of memory. To promote some generation
+fully, a given region just becomes a higher generation region. A new region then needs to be created
+for the collected generation. That's Sweep though, for Compaction, objects might be moved around,
+and a given region might stay in the same generation.
+
+### Segments
+
+When Segments are used, the simple act of moving the bumper pointer promotes a given set of objects
+to higher gen. Some objects might also be moved to fill holes in higer generation (that would happen
+only during Compaciton though).

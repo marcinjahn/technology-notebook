@@ -1,0 +1,123 @@
+---
+title: Memory Management
+description: How Garbage Collection works in .NET
+tags:
+  [".net", "dotnet", "C#", "gc", "garbage", "collector", "collection", "memory"]
+lang: en-US
+---
+
+# Memory Management
+
+.NET uses Garbage Collection to free up memory from unused objects, that is
+objects that are unreachable from the application root.
+
+For more detailed information, see:
+- [GC Internals](/programming/dotnet/gc-internals) - How garbage collection phases work
+- [GC Memory Layout & Allocation](/programming/dotnet/gc-memory) - Memory organization and allocation strategies
+- [GC Advanced Topics](/programming/dotnet/gc-advanced) - Modes, configuration, and optimization tips
+
+## Types of Data
+
+### Value Types
+
+:::tip
+Value types are not part of Garbage Collection cleanup process. They live on
+the stack and they're naturally added and removed to/from it.
+:::
+
+Benefits of value types:
+
+- less memory - data is stored directly, without a pointer (or actually without two pointers, because
+  reference types have two pointers)
+- faster access to fields because of direct access
+- avoids allocations (unless boxed)
+- no inheritance, so no overhead of devirtualization
+- stored on the stack or register (or heap if boxed or part of something else on a heap)
+
+#### Boxing
+
+Every value type has a corresponding reference type. E.g., for `int`, it'd be `System.Int32`.
+When boxing, runtime first creates a new instance of reference type (as usual, with header and
+Method Table pointer), and then it copies data from value type.
+
+Unboxing is cheaper, it's just a copy of data from heap to stack.
+
+### Reference Types
+
+They are composed of two parts:
+
+- reference - an adress to _data_. The reference itself is copied by value, just like a value type.
+- data - memory region pointed to by reference.
+
+Reference is like a "classic" pointer, with some runtime safety on top.
+Reference Type is beneficial when a particular data outlives a stack frame. Then heap allocation is
+actually useful.
+
+.NET runtime can infer that a given instance of reference type does not "escape" the stack frame and
+it might place it on stack, like a vlue type instance! However, it will be stored exactly like it
+would be stored on the heap - with Method Table pinter and header.
+
+### Reference Type Structure
+
+Each object on the heap has:
+
+- header - stores any metadata that might be attached to a given object. E.g., lock on an object,
+  cached value of `GetHashCode`, some GC info.
+- Method Table pointer - it's an address to entry in Method Table structure about the type of an
+  object. There are information such as listing of all methods, data for reflection, and others. The
+  reference to any object actually points at the Method Table pointer!
+
+  ```
+  ┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+  │    Header    │ Method Table │     Data     │     Data     │     Data     │
+  │              │   Pointer    │              │              │              │...
+  └──────────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+  ```
+
+  Therefore, sometimes we say that the Header lays on a negative index, because to get to it, you have
+  to subtract from the reference's pointer.
+
+- Data - the actual values (or references) that are part of the class. Even for empty classes
+  (without fields) there will be one place (8B), because GC expects it.
+
+---
+
+The smallest object will take 24 bytes (on a 64-bit system) or 12 bytes (on a 32-bit system):
+
+- 8 bytes for a _Header_
+- 8 bytes for the Method Table pointer
+- 8 bytes for _Data_
+
+:::caution
+A struct instance with 1 byte field will take 1 byte of space (or a bit more due
+to alignment).
+
+A class with 1 byte field will take 24 bytes of space!
+:::
+
+### ref
+
+For value types, this keyword allows us to pass value types by reference (so the same way as
+reference types do by default).
+
+For reference types, it acts like a pointer to a pointer. We can chane the object that the passed
+reference variable points to!
+
+### null
+
+It's a reference that points at an address of 0. Wen we try to access that memory, OS raises
+exception (CLR catches that and rethrows). The whole first page of virtual memory is an illegal
+access space.
+
+### Data Locality
+
+Structs are better in data locality. An array of structs has each item one next to the other.
+For classes, only references to items are next to each other, but accessing consecutive items
+requires:
+
+1. Moving to next reference
+2. Following the referenece's pointer to get to actual item
+
+When loading array into cacheline, for structs case we load the actual data. For classes case, we
+load references to items into cacheline. Each item can be in completely different place in memory.
+Program will be slower due to more cacheline loads (+ dereferencing).

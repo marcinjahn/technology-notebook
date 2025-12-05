@@ -1,0 +1,241 @@
+---
+title: GC Advanced Topics
+description: Advanced .NET GC configuration, optimization, and best practices
+tags:
+  [".net", "dotnet", "C#", "gc", "performance", "optimization", "pinning"]
+lang: en-US
+---
+
+# GC Advanced Topics
+
+This article covers advanced topics including GC modes, pinning, alignment, finalizers, and optimization tips. For fundamentals, see [Memory Management](/programming/dotnet/memory-management), [GC Internals](/programming/dotnet/gc-internals), and [GC Memory Layout](/programming/dotnet/gc-memory).
+
+## GC Modes
+
+.NET garbage collector may operate in one of two modes.
+The mode is either selected automatically by the SDK used, or CPU cores count. We can also configure
+it manually via `runtimeconfig.json` or with environment variables.
+
+### Workstation Mode
+
+Gen 0 and Gen 1 are collected in
+the foreground thread, pausing user code. It's blocking, but it's relatively
+cheap (since it's Gen 0/1). Collections are more often, but shorter (because the more often you GC, the
+less memory there's to collect). There's just one managed heap.
+
+It's good for desktop apps where GCs should be short to avoid blocking the UI. However, in some
+cases where an app relies havily on parallelism, _Server Mode_ might be a better fit.
+
+### Server Mode
+
+It is ideal for server-side apps. Each logical CPU core gets its own managed heap (or we can
+configure it differently).
+Also, each core has its own GC thread running in the background. It's
+non-blocking, but uses more memory (30-40% more) (because collections are less frequest)
+and CPU. It can be enabled via csproj. It
+can give you a huge boost of performance if utilized in scenarios where
+throughput is really important.
+Collections are less often, so they can take more time, resulting in longer pauses. However,
+considering that GC will run parallelly on a few threads, pause might actually be shorter than in
+the Workstation mode.
+
+:::tip
+On 1-CPU systems, even when Server Mode is configured explicitly, runtime will use Workstation Mode
+anyway.
+:::
+
+---
+
+### Submodes
+
+Each of the two modes above can also be configured to work in one of the two submodes below.
+Therefore, we could say that there are 4 ways of GC operation in .NET.
+
+- Non-concurrent - whole GC operation happens while app threads are paused.
+- Concurrent - part of GC operations happen concurrently with app threads, in dedicated GC thread.
+  Ephemeral generations are always blocking though (because their collection is
+  relatively quick anyway), and this allows them to compact. Compaction is never
+  concurrent.
+
+The Non-Concurrent submode is sometimes called _Background Mode_. So, for example, we could be using
+"Background Server Mode".
+
+Bacground Server Mode is the default for web apps.
+
+While Background GC is executing, a Foreground GC might still occur! It takes precedence over
+Background GC, pausing it. It might happen when memory goes very low and the runtime has no choice but
+to execute GC.
+
+Background GCs are the default.
+
+---
+
+The simplest GC mode of operation is Non-concurrent Workstation mode.
+
+### Latency Modes
+
+Latency modes allow to control how much GC will "prefer" to stop the world.
+
+- _Block_ - default for non-background GCs - it also disabled Backgfround GC
+- _Interactive_ - minimized pauses, higher memory usage, default for all Bacground GCs (and default
+  in general, because BG GCs are the default).
+- _Low-latency_ - minimizes pauses even further. It should be enabled only for short periods of
+  time. After disabling it, GC will run automatically. It's usefult for moments when app's
+  reactiveness is a top priority.
+- _Sustained Low-latency_ - full non-concurrent GCs get disabled. Allows to stay in low-latency mode
+  for longer, although pauses might not be as short as they'd be in the _Low-latency_ mode.
+- _No GC Region_ - tries to disable GCs completely. Should be used for very short time.
+
+### DATAS
+
+DATAS (default starting with .NET 10) sets [GCConserveMemory](https://learn.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/gcconservememory-element) to `5`. It results in max 50% fragmentation allowed.
+Additionally:
+
+- it adjusts Gen 0 allocation budget depending on other generations' sizes
+- in Server Mode, the number of heaps changes dynamically during runtime, according
+  to various metrics. It's beneficial for cases where app load changes during app lifetime.
+
+---
+
+:::tip
+Current .NET settings may be checked in the ETW/EentPipe events.
+:::
+
+## Pinning
+
+Pinning Objects means to make their location constant and disallow runtime to move it to some other
+location. Pinned objects fragment the heap, because they cannot be compacted. Pinning is useful
+mostly for P/Invoke scenarios where some unmanaged code operates on pointers.
+
+There is also POH (since .NET 5). We can create arrays (only of structs without any references
+inside to simplify GC by avoiding traversal of POH during the Mark Phase).
+
+## Alignment
+
+Fields in structs or classes are stored in aligned way. Each primitive data type has its own
+preferred alignment. Most often, it's equal to the type's size. E.g., `int` has 4 bytes alignment;
+`char` has 1 byte alignment - which is kinda as if `char` did not have alignment at all.
+
+Accessing aligned data is more efficient for the CPU. It is technically possible to access
+non-aligned data, it's just slower (requires more instructions).
+
+Due to alignment, there might be **padding** (empty space) between fields. Padding might also be
+added at the end of a given type to make sure it occupies a multiple of its alignment size.
+
+Alignment of a given type is equal to the size of its longest element (or the specified packing
+size, whatever's lower).
+
+For example, let's consider the following struct:
+
+```cs
+record struct MyStruct(bool BoolValue, double DoubleValue, int IntValue, );
+```
+
+It would occupy:
+
+- 1 byte for `bool`
+- 7 bytes for _padding_
+- 8 bytes for `double`
+- 4 bytes for `int`
+- 4 bytes of _padding_ (to arrive at the nearest multiple of 8 - 24)
+
+```
+[B][* * * * * * *][I I I I][D D D D D D D D][* * * *]
+ 0  1-7            8-11     12-19            20-23
+```
+
+The padding at the end is added to make sure that the case like an array of a given type has proper
+padding for each element of that array.
+
+:::danger
+11 bytes get wasted for padding! Auto-layout (with `LayoutKind.Auto`) would waste "only" 3 bytes.
+The whole struct would fit in 16 bytes.
+
+```
+[D D D D D D D D][I I I I][B][* * *]
+ 0-7              8-11     12 13-15
+```
+
+:::
+
+---
+
+Structs are stored in the same order they are defined by default, unless some field is a reference
+type - then, automatic layout is used. The default is due to assumption that the struct would be
+used for unmanaged interop, where field order matters.
+Classes have automatic layout for efficiency.
+Layout can also be conrolled explicitly.
+
+## Finalizers
+
+Interesting facts about finalizers:
+
+- the time when finalizer runs is non-deterministic
+- objects with finalizers go through slower allocation path
+- due to _Earlt Root_ collections, classes with finalizers are more risky. The unmanaged resource
+  might be deleted in the middle of some method's execution if developer is uncareful.
+- runtime runs a special thread for finalizers
+- during GC, finalizable objects are placed in a special queue. Finalizers are then run after
+  managed thread(s) get resumed. That's because finalizer can contain any code (like `Thread.Sleep`).
+  It'd be not that great to run some long-executing code during GC. Therefore, finalizable objects need to survive longer than other objects, to make sure finalizers run
+  properly.
+- the longer survivability of finalizable objects is the reason for a common pattern:
+
+  ```cs
+  GC.Collect();
+  GC.WaitForPendingFinalizers();
+  GC.Collect();
+  ```
+
+- since finalizable objects survive at least one GC, they are also promoted at least once!
+- exception throws within finalizer kill the whole app
+- if possible, avoid finalizers `IDisposable` is a better way to cleanup objects. Sometimes,
+  `Dispose()` calls `GC.SuppressFinalize()` to avoid double cleanup.
+
+## Weak References
+
+Weak references are useful when we want to get a hold of some object, without blocking it from being
+collected.
+
+## Tips
+
+### Pooling Objects
+
+When dealing with lots of potentially expensive objects creations, it could be a
+better idea to reuse pooled objects instead. That way, GC will have less work to
+do, since there will be less objects to deallocate. Microsoft provides
+[ObjectPool](https://learn.microsoft.com/en-us/aspnet/core/performance/objectpool)
+for this (and
+[ArrayPool](https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1?view=net-7.0)
+specifically for arrays).
+
+Good candidates for pooling are:
+
+- StringBuilder
+- byte array
+
+So, instead of creating an object every time, you crete a pool of them (like
+hundred, or a thousand, depending on your needs), and request/return objects
+from/to the pool during the lifetime of the app.
+
+Object Pool is also useful if object creation is expensive, since you can create
+a pool of reusable objects on startup and just use them afterwards.
+
+### Empty Collections
+
+Whenever an empty collection is needed, do not create a new object, use
+`Array.Empty<T>` instead, which skips unnecessary allocation.
+
+### Stackallock
+
+We are able to allocate objects on the stack instead of the heap.
+
+```csharp
+var array = stackallow new byte[500]();
+```
+
+A few facts to keep in mind:
+
+- can't be done in async methods
+- shouldn't be used to allocate too much data, otherwise stack overflow will occur
+- it will always be faster than allocating objects on the heap

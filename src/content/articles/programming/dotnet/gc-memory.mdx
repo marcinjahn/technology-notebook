@@ -1,0 +1,223 @@
+---
+title: GC Memory Layout & Allocation
+description: How .NET organizes memory and allocates objects
+tags:
+  [".net", "dotnet", "C#", "gc", "memory", "allocation", "heap", "generations"]
+lang: en-US
+---
+
+# GC Memory Layout & Allocation
+
+This article covers how .NET organizes memory into regions and generations, and how object allocation works. For memory management basics, see [Memory Management](/programming/dotnet/memory-management). For GC mechanics, see [GC Internals](/programming/dotnet/gc-internals).
+
+## Regions
+
+Memory is not stored in one huge bag. Instead, GC has a few regions and objects fall into them
+based on:
+
+- their size
+- their lifetime
+
+Various GCs choose different parameters for memory partitioning, like objects mutability, type, and
+others. .NET uses mostly just size and lifetime. Regarding size, GC heap is split into 2 regions:
+
+- **SOH** - Small Objects Heap - objects smaler than 85_000 bytes
+- **LOH** - Large Objects Heap - objects larger or equal 85_000 bytes.
+
+The 85000 bytes threshold can be increased via configuration.
+
+SOH uses compacting, because moving small objects around is not that hard/expensive.
+LOH uses sweep collection by default. Howeverm we can invoke LOH compaction as well.
+The 85000 bytes threshold is computed with shallow object size. Therefore, LOH mostly constains
+large arrays and strings. Object with array field (even huge) stores just a reference to that array,
+so array size is not included in object's size by GC.
+
+Typically, SOH contains much more objects than LOH, because 85000 bytes is a rather big value.
+LOG gets collected only when Gen 2 is collected.
+
+:::caution
+On 32-bit runtime, LOH will also contain arrays of `doubles` with min 1000 elements (8000 bytes of
+size). It's due to alignment issues. 32-bit has 4 byte alignment and `double` takes 8 bytes.
+LOH has 9 byte alignment on 32-bit runtime.
+:::
+
+### Generations
+
+SOH has lots of objects normally, so it's split further by lifetime of these objects, into
+generations.
+
+- SOH
+  - **Gen 0** - for ephemeral objects, like objects allocated in some method, that
+    are no longer in scope after that method's execution is over. Gen 0
+    deallocation is the cheapest, objects basically land on top of the heap, and
+    are removed from there as soon as the method's execution is over.
+  - **Gen 1** - also for ephemeral objects. Objects that go untouched after at
+    least one Gen 0 pass are Gen 1. This could be an object being assigned to some
+    property of a class instance.
+  - **Gen 2** - for long-lived objects that have stayed alive after a few Gen 1
+    passes. It could be a property of a static class, or some other objects that
+    live through the whole lifetime of an app.
+- **LOH** (Large Object Heap) - objects bigger than 85 kilobytes.
+- **POH** - Pinned Objects Heap, a place for objects that should not be moved
+  (also compacted), for various reasons, but mostly when these objects are
+  exposed to unmanaged code.
+
+Moving up the generations, the cost of GC becomes higher (Gen 0 is the
+cheapest). Therefore, whenever possible, it's good to keep our objects in the
+Gen0/1 range, or, even better, use value types.
+
+### Layout
+
+In .NET 7+, memory is split into _Regions_. In earlier versions, it was split into _Segments_.
+Each SOH generation has its own region. Also LOH, POH and NGCH have their own regions.
+
+During runtime startup the following occurs:
+
+1. Runtime tries to allocate continuous area of memory (if possible).
+2. Runtime creates regions for each part of managed memory. POH and LOH are 8 times larger than SOH
+   generation region size. (NGCH is created later, on demand, in other part of the address space).
+3. One page of each region is committed.
+
+---
+
+In Computer Science, the following observations have been made:
+
+- weak generational hypothesis - most yung objects live short
+- the longer the object lives, the more likely it is to continue living
+
+Therefore, it makes sense to collect young objects more frequently than older objects.
+Objects change generations (up) via _promotion_. Different generation can be handled in various
+ways. For example, there could be separate memory regions for different generations. Any time a
+promotion occurs, an object would have to be copied to a different area of memory. That would be
+quite expensive though.
+Another approach would be to have one memory region, but with dynamic thresholds that separate
+generations. Each time promotion occurs, objects that are close to each other are promoted together
+(because they are placed in memory "chronologically" one next to the other). Threshold is moved "to
+the right" while objects stay in place. This simple description assumes no compaction, just sweep.
+
+.NET uses a kind of the second approach that I described. There are 0, 1, and 2 generations. Each
+collection survival is a promotion. There are exceptions to that, sometimes promotion does not occur
+(it's called a _demotion_ then, although objects stay in the same gneration, they never go to
+younger generation).
+
+:::tip
+Mono uses the first approach, it copies objects to different memory area. Also, it has just 2
+generations.
+:::
+
+:::tip
+`GC.GetGeneration()` allows to get generation of any object. For LOH and POH, it returns `2`.
+We can track generation sizes with dotnet counters. Gen 0 size, for legacy reasons, is not really
+Gen 0 size, but rather an allocation budget for Gen 0.
+:::
+
+To find memory leaks, it's best to look at Gen 2 size. Objects that stay in memory for too long will
+eventually go to Gen 2 and its size will keep on increasing. An ever increasing size of Gen 2 is a
+sign of a potential problem.
+
+:::caution[Containers]
+In environments with memory limits (like containers most often), .NET runtime will actually limit
+available memory to 75% of container limit. This is to make sure JIT, or other processes within the
+container get enough memory.
+
+This setting can be modified, even during runtime.
+:::
+
+## Control Values
+
+GC has varous config values that allow it to decide on various options, like whether to use sweep or
+compacting collection, or even how often to trigger collections.
+
+### Allocation Budget
+
+Allocation Budget is the amount of memory that is allowed until GC of a given generation will occur.
+Each generation has different setting for it. For gen 1 and 2, promotion from lower gens is treated
+the same as allocation (there's no way to allocate directly in gen 1 or 2, so promotion is the only
+way to "allocate" there).
+
+Fragmentation is the total size occupied by "free objects".
+
+Allocation Budget changes between GCs. In general, the more objects survive a collection, the higher
+the new allocation budget. The reasoning is: if in a given generation not much had to be cleaned up,
+then probably we should wait longer until more unreaahble objects accumulate.
+
+:::caution
+Performance Counter for Gen 0 size is actually not the Gen 0 size, but rather it's its allocation budget (for legacy reasons).
+:::
+
+## Allocation
+
+In non-managed environments (like C/C++), an action to create an objet goes directly to the OS to get memory.
+In .NET, there's runtime in between. The runtime will allocate a big chunk of memory from the OS
+before the app even needs it. That speeds up the process when the memory is actually needed.
+This is one of the "tricks" that managed environments use to be faster than non-managed ones.
+
+.NET has two wasy of allocating memory:
+
+- bump pointer allocation (faster)
+- free-list
+
+When allocating new objects, it happens on:
+
+- SOH - only Gen 0
+- LOH
+- POH
+
+### Bump Pointer
+
+```
+   Objects      Zeroed memory                  Non-reserved
+┌────────────┬────────────────┬─────────────┬────────────────
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+│████████████│                │░░░░░░░░░░░░░│▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓.
+└────────────┴────────────────┴─────────────┴────────────────
+             └──────────Committed───────────┘
+             ↑
+        Allocation
+         pointer
+```
+
+When object needs to be allocated, the allocator pointer gets moved "to the right", and the space on
+the left is the new allocated space. Runtime zeroes memory even before the allocation to speed it up.
+If some memory is not zeroed yet, it will happen ad-hoc. The whole commited space that is ready for
+allocations is called _allocation context_. When we need to grow the alloation context, we grow it
+by _allocation quantum_ (8kB on SOH).
+Each managed thread has its own allocation context. Thanks to it, creating objects does not require
+synchronization (and is faster). These multiple allocation contexts might live in one region.
+When sweepin collection runs, we would end up with lots of holes of free space before allocation
+pointer(s). Compaction would resolve it, but it's expensive. Instead, .NET creates allocation
+contexts in those holes! Compaction still occurs, but less often.
+
+### Free-list
+
+In Free-list, we have to keep note of free spaces in memory. We do that in buckets. Each bucket is a
+threshold "less or equal x bytes". Each "hole" in memory is assigned to some bucket. When allocating
+objects, we find the first bucket that has big enough spaces to fit it.
+
+The free spaces managed in free-list are actually kind of objects themselves. They have a
+MethodTable pointer in their header area that points to entry of "free object".
+
+As mentioned, allocations for new objects happen only on Gen 0, LOH and POH. However, we also need
+to manage promotions between generations. It's very similar to allocation of new objects though, so
+Gen 1 and Gen 2 have their own free-list buckets as well.
+Gen 0 and Gen 1 of SOH have each just one bucket; Gen 2 has 12 of them; LOH has 7;
+POH has 19.
+
+:::tip
+Zeroing of memory is needed only for Gen 0 allocations. Higher generations copy "filled" objects, so
+zeroing them would be redundant.
+:::
+
+---
+
+SOH uses pointer bumper technique first, and fallbacks to free-list if the first method fails. If
+there's not enough memory, GC gets invoked. If still not enough memory, `OutOfMemoryExcetpion` gets
+thrown.
+LOH and POH use only free-list (GC and exception also occur).
+
+:::caution
+When experiencing OOM exception, adding some explicit GC is not a solution. As the paragraph above
+explains, GC will happen anyway (a few times even) before OOM is thrown.
+Explicit GC might help for LOH allocations though.
+:::
