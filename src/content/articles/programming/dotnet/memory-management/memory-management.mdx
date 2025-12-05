@@ -12,6 +12,7 @@ lang: en-US
 objects that are unreachable from the application root.
 
 For more detailed information, see:
+
 - [GC Internals](/programming/dotnet/gc-internals) - How garbage collection phases work
 - [GC Memory Layout & Allocation](/programming/dotnet/gc-memory) - Memory organization and allocation strategies
 - [GC Advanced Topics](/programming/dotnet/gc-advanced) - Modes, configuration, and optimization tips
@@ -121,3 +122,10 @@ requires:
 When loading array into cacheline, for structs case we load the actual data. For classes case, we
 load references to items into cacheline. Each item can be in completely different place in memory.
 Program will be slower due to more cacheline loads (+ dereferencing).
+
+Data Locality, taken to some extreme results in **Data Oriented Design**. It focuses pretty much
+solely on shaping structures in a way that maximizes fast access to data. One example of that is
+moving from "Array of Structs" approach to "Struct of Arrays" one. It is kinda similar to
+column-based databases where data of one column is kept together for faster aggregations.
+Another known example of data oriented design is **ECS** (Entity Component System), often used in
+game development.

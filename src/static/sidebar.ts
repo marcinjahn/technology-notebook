@@ -71,11 +71,11 @@ const structure: Sidebar = {
         {
           title: "Memory Management",
           children: [
-            "dotnet/garbage-collector",
-            "dotnet/memory-management",
-            "dotnet/gc-internals",
-            "dotnet/gc-memory",
-            "dotnet/gc-advanced",
+            "dotnet/memory-management/garbage-collector",
+            "dotnet/memory-management/memory-management",
+            "dotnet/memory-management/gc-internals",
+            "dotnet/memory-management/gc-memory",
+            "dotnet/memory-management/gc-advanced",
           ],
         },
         "dotnet/il-and-allocations",
