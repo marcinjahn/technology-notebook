@@ -1,0 +1,37 @@
+---
+title: .NET Garbage Collection
+publishDate: 2025-12-05
+---
+
+import { Image } from "astro:assets";
+
+In typical web development scenarios, developers do not have to take any special care about memory management.
+It definitely makes it easier to program the process you're working on, but it might bite you in the back
+when your application turns out to be popular. Increased load or growing amount of data being
+processed will result in higher and higher memory usage, which translates directly to higher costs.
+In today's environments with dynamic scaling it is definitely less of a problem than it used to be
+in the past, but it does not nullify the issue. The additional resources still need to be paid for,
+and problems will accumulate.
+
+Therefore, I think it makese sense to have at least basic knowledge on what's going on behind the
+scenes when you create that new object. It's worth to stop for a second and make sure that the way
+you coded that new feature is actually optimal in terms of memory usage (just to be clear, sometimes
+it doesn't matter at all, but often it actually does). Should you use a class or a struct? Does this
+new field in you class have a big impact on overall memory usage or not really? Does that
+odd pause in your API's processing that shows up in metrics from time to time is a sign of something
+bad going on? I was wondering about these (and other) topics myself, and after a bit of research I
+wrote the following:
+
+- [Garbage Collection in general](/programming/core/garbage-collection)
+- .NET:
+  - [Overview of .NET Memory Management](/programming/dotnet/memory-management/memory-management)
+  - [Garbage Collector Internals](/programming/dotnet/memory-management/gc-internals)
+  - [GC Memory Layout & Allocation](/programming/dotnet/memory-management/gc-memory)
+  - [GC Advanced Topics](/programming/dotnet/memory-management/gc-advanced)
+
+Most of the information in the articles are based on the excellent [Pro .NET Memory Management](https://prodotnetmemory.com/) book. I highly recommend it if you find yourself interested in the topic.
+My articles contain the bits that I found the most important for myself, with additions based on my
+own experimentation and other sources.
+
+Hope you find it useful!
+
