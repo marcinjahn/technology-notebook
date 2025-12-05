@@ -237,7 +237,7 @@ To find memory leaks, it's best to look at Gen 2 size. Objects that stay in memo
 eventually go to Gen 2 and its size will keep on increasing. An ever increasing size of Gen 2 is a
 sign of a potential problem.
 
-:::caution Containers
+:::caution[Containers]
 In environments with memory limits (like containers most often), .NET runtime will actually limit
 available memory to 75% of container limit. This is to make sure JIT, or other processes within the
 container get enough memory.
