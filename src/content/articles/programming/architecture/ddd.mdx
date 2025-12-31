@@ -2,22 +2,52 @@
 title: Domain-Driven Design
 description: Architecture for building applications - Domain-Driven Design (DDD)
 lang: en-US
-tags: ["architecture", "ddd", "domain driven design", "bounded context", "microservices", "ubiquitous language", "context map", "domain model", "entities", "aggregation", "aggregation root", "integtation event", "eric evans", "repository", "domain event", ".net", "dotnet", "asp.net", "asp", "core"]
+tags:
+  [
+    "architecture",
+    "ddd",
+    "domain driven design",
+    "bounded context",
+    "microservices",
+    "ubiquitous language",
+    "context map",
+    "domain model",
+    "entities",
+    "aggregation",
+    "aggregate root",
+    "integtation event",
+    "eric evans",
+    "repository",
+    "domain event",
+    ".net",
+    "dotnet",
+    "asp.net",
+    "asp",
+    "core",
+  ]
 ---
 
-import { Image } from 'astro:assets';
-import aclLegacyToDdd from '../../../../assets/acl-legacy-to-ddd.png';
+import { Image } from "astro:assets";
+import aclLegacyToDdd from "../../../../assets/acl-legacy-to-ddd.png";
 
 # Domain-Driven Design
 
 The Domain-Driven Design (DDD) is an architecture style for building
-microservices-based software systems. Some argue that microservices architecture
-is true only with DDD.
+software systems where business requirements are clearly stated and separated from the surrounding
+application or infrastructure concerns. Some argue that microservice architecture
+is true only with DDD, although that might be a bit of an overstatement in my opinion.
 
 The main goal of DDD is to make software more maintainable, to make it less
-complex to deal with.
+complex to deal with. Its focus on the Domain requires a bit of a shift in how we think of software
+development. Using DDD might actually help to "discover" the domain properly, highlighting key
+entities (aggregate roots) and their invariants, together with bounds of these entities.
 
-## Bounded Context
+:::tip
+In this article, I will assume the use of Clean Architecture (or Hexagonal), because I believe it
+composes perfectly with DDD.
+:::
+
+## Bounded Context and Sub-Domains
 
 As part of DDD, we identify **Subdomains** that take part in our system.
 Subdomain is a subset of some larger **Domain**. The terms are rather fuzzy.
@@ -37,15 +67,22 @@ A **Bounded Context** represents a linguistic boundary within or across
 subdomains. Often, a Bounded Context is aligned with a Subdomain. The difference
 between these two concepts is as follows:
 
-- a **Subdomain** is in the *Problem Space*.
-- a **Bounded Context** is in the *Solution Space*.
+- a **Subdomain** is in the _Problem Space_.
+- a **Bounded Context** is in the _Solution Space_.
 
 So, a given bounded context is a proposed solution to a problem within some
-subdomain.
+subdomain(s). Ideally, one bounded context should cover one sub-domain. For larger sub-domain we
+could have many bounded contexts covering it. The relation between Sub-domain and Bounded Context is a bit fuzzy then.
 
 In a typical project, there will be many bounded contexts. Ideally, each of them
-should be developed by a different team. Each would also use a separate data
+should be developed by a different team. Each would also use a separate persistence data
 store.
+
+Bounded Context is made up of all the aspects that are drived by its model:
+
+- the domain model itself
+- the application that uses the model
+- database schema that persists the model objects
 
 ### Bounded Context vs Microservice
 
@@ -54,18 +91,18 @@ single bounded context could be served by multiple microservices. For example,
 one microservice could be in a form of an HTTP API, serving requests. Another
 microservice could be a listener on some bus. Both could work on the same
 database, but they'd work on a different parts of the overall responsibility of
-the bounded context.
+the bounded context. However, they'd both use on Ubiquitous Language set, and a single Domain layer.
 
-### Ubiquitous Language
+## Ubiquitous Language
 
-One of the pillars of DDD is the establishment of the **Ubiquitous Language** -
-an agreed vocabulary that will be used to describe various entities in the
+The most important part of DDD is the establishment of the **Ubiquitous Language** -
+an agreed vocabulary (between developers and domain experts) that will be used to describe various entities in the
 Bounded Contexts. It should be used everywhere in the project: code, diagrams,
 discussions, etc.
 
-Every context will have its own ubiquitous language.
+Every bounded context will have its own ubiquitous language.
 
-#### Context Maps
+### Context Maps
 
 The namings in different Bounded Contexts and their relations is what defines
 **Context Maps**. It could be that different Bounded Contexts use the same name
@@ -76,7 +113,7 @@ Scheduler context and Customer in the Billing context).
 A Context Map clearly shows what a given entity is represented by in another
 context.
 
-### Synchronization
+## Synchronization
 
 Different bounded context may model data for the same physical entity. For
 example, Patient Management context and scheduling context may contain the
@@ -86,6 +123,16 @@ could change the patient's name. The other contexts that model the Patient
 should be notified about this change. E.g., it could be done via some message
 bus. The Patient Management service would publish a message about the change,
 and all other interested services would be listeners.
+
+This approach obviously complicates the overall system. It also introduces Eventual Consistency
+(which really is unavoidable in distributed systems). Therefore, it's important to consider what
+data is truly needed in a given bounded context. When referencing entities from different bounded
+context, the best case scenario is to reference it just by its ID. IDs are immutable and they will
+not change. Any additional data (that can
+change in time) will probably require us to setup the synchronization mechanism (via _Domain Events_).
+Note that referencing just the ID might also not solve the problem entirely. We might have a case
+where a given entity gets removed from the other Bounded Context. Its removal might need to be
+propagated to other bounded contexts as well.
 
 ## Domain Model
 
@@ -119,28 +166,41 @@ since OOP is supposed to merge data and behaviour together.
 ### Entities
 
 These are objects defined by their identity. That means that every instance of
-an Entity is unique, it has its own key. identifier. Examples of entities:
+an Entity is unique, it has its own key identifier. That ID should be unique. When a given Entity is
+contained within some Aggregate Root, its ID must be unique only within its Aggregate Root instance.
+
+Sometimes it might not be that easy to understand whether a givne thing is an Entity or just a Value
+Object. A good way to figure that out is to consider whether that "thing" has some lifecycle. If
+there are business cases where the thing gets modified (while upholding its identity), it most
+likely is an Entity.
+
+Potential candidates for entities in Medical
+Clinic Management system would be:
 
 - Patient
 - Doctor
 - Room
 - Appointment
 
-An entity should always be in the valid state. Hence any modification of an
+:::tip
+Some of those might even be _Aggregate Roots_.
+:::
+
+An entity should always be in the valid state (to uphold its invariants). Hence any modification of an
 entity (or its creation) should contain various guard clauses that make sure the
 operation can be done. For example, before I rename a Patient, I should make
 sure that the new name is not empty.
 
-Entities also contain *Events*. These may be used to inform other parts of the
+Entities also contain _Domain Events_. These may be used to inform other parts of the
 system of changes.
 
 ### Value Objects
 
 Identity of **Value Objects** is based on composition of its values. They're
-immutable. Value objects may contain methods (without side-effects).
-
-Value Objects are basically non-identified types that are specific to our
-sub-domain. They group together some related data. Examples include:
+immutable. Whenever some part of value object chages, a new object should get created, while the old
+one gets disposed. Value objects may contain methods (without side-effects).
+Value Objects represent things that are not defined in the domain. They rather
+describe/measure/quantify something in the domain somehow. Examples include:
 
 - money
 - date range
@@ -154,14 +214,9 @@ It's recommended to first consider Value Object when deciding whether to use
 :::tip[Identifiers]
 In some projects identifiers of Entities are value objects. These are custom
 types that contain just an identifier (for example as a `Guid`). So, we could
-have a type called `CustomerIdValueObject`. Some argue that it makes the
-solution more explicit, but I don't really agree with that. I think it
-complicates things more than necessary.
-
-```csharp
-// Supposedly, these types help to not pass arguments in the wrong order
-public void CreateAppointment(ClientId clientId, DoctorId doctorId);
-```
+have a type called `CustomerIdValueObject`. Creating such types (vs using a plain String)
+helps to uphold invariants about our Ids. Potentially they also help to avoid misassignments of
+wrong IDs when a given method requires a few of them.
 :::
 
 Date types are a great example of value objects.
@@ -176,6 +231,10 @@ A quote from Eric Evans:
 > derive a Route object linking L.A. and San Francisco via the Pacific Coast
 > Highway. That Route object would be a VALUE, even though the three objects it
 > references (two cities and a highway) are all ENTITIES.
+
+Entities might change state, while Value Objects shouldn't, therefore keeping entity (aggreagate
+root!) within a Value Object is a bit "controversial". It's important to treat the contained entity
+as a reference only, and not a core part of the Value Object itself.
 :::
 
 ### Domain Services
@@ -185,9 +244,6 @@ separate classes called **Domain Services**. Such services often deal with
 different kinds of entities/value objects. For example, they could orchestrate
 some workflow.
 
-Also infrastructure-level logic, like logging, sending notifications, etc. is
-considered to be in the Doman Services area.
-
 Before creating a service, we should make sure that the logic we're adding
 doesn't fit into any of the existing domain elements (entities/value objects).
 
@@ -195,10 +251,13 @@ doesn't fit into any of the existing domain elements (entities/value objects).
 Overuse of domain services might lead to anemic models.
 :::
 
+Domain Services are often a good artifact to use to avoid placing domain login in the Application
+layer.
+
 ### Aggregates
 
 When building our Entities we will often end up with **Aggregate** entities,
-that is, entities that are linked with other entities or value objects. 
+that is, entities that are linked with other entities or value objects.
 
 Citing [Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html):
 
@@ -221,31 +280,101 @@ of another Aggregate.
 An example of that could be the Snack Machine scenario from [Domain-Driven
 Design in Practice
 (Pluralsight)](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice).
-We had there: *Snack Machine* -> *Slots* -> *Snacks*.
+We had there: _Snack Machine_ -> _Slots_ -> _Snacks_.
 
-*Snack Machine* and *Slot* belonged to one Aggregate (since a *Slot* cannot exist
-without a *Snack Machine*). A *Snack* was a separate Aggregate.
+_Snack Machine_ and _Slot_ belonged to one Aggregate (since a _Slot_ cannot exist
+without a _Snack Machine_). A _Snack_ was a separate Aggregate.
 :::
 
 #### Aggregate Root
 
-There will also be an **Aggreagate Root** - an entry point of an aggregate that
-"defines" the aggregate as a whole. To find out what is an aggregate root, we
+**Aggreagate Root** is an entry point of an aggregate that
+"defines" the aggregate as a whole.
+
+It's easy to design Aggreagate Root improperly or not optimally. Often we arrive at the valid design
+iteratively, starting from some initial assumptions. As we learn more about the domain (which
+evolves!), our model will evolve as well.
+One way to find out what is an aggregate root, we
 need to look at individual components and think if the removal of a given
 component would result in removal of its contained components (cascading
 delete). If it would, that's probably an Aggregate Root.
 
 Aggregate Root is like a central entity that defines it completely. It should
-allow us to keep the whole object in a valid state (enforcing invariants). We
-should access/modify the aggregate only throught the Aggregate Root. The root
-will make sure that the invariants are satisfied.
+allow us to keep the whole object in a valid state (enforcing invariants).
+It creates a **consistency boundary**, within which those invariants are enforced. Aggregate Root
+should also have _transactional consistency_. Consistency of things outside of the aggregate is
+irrelevant.
+
+:::tip
+Consistency Boundary is the reason for Aggregate Roots to exist in the first place!
+:::
+
+Aggregater Root shouldn't be too large (to stay performant, since loading lots of internal entities
+might be heavy), and should not be too small (to avoid
+anemic model and failing to protect invariants). We shold prefer smaller aggregates though (as big
+as they need to be and not bigger). Larger
+aggregates make consistency boundary and transaction scope large as well.
+
+A simple example of keeping invariants is an `Order` aggregate root that should make sure the number of `Items` within it does not cross some
+business-defined limit.
+
+We should access/modify the aggregate only throught the Aggregate Root. Internal entities (non-agregate roots) should stay
+private in the Aggregate Root, and they should not be referenced outside of the Aggregate Root
+(unless it's temporary within some process execution). Accessing those internal entites should be
+only via the Aggregate Root instance.
+Aggreagate Root may also hold reference to some other Aggregate Root (either as a reference to
+object or just by the ID).
+
+:::tip
+Add more entites to the aggreagate root only when that's necessary to uphold invariants.
+:::
 
 :::tip
 There will also be entities that do not include other entities or value objects.
-The convention is to call these Aggregates as well.
+The convention is to call these Aggregate Roots as well.
 :::
 
 A single bounded context or domain may contain a few Aggregate Roots.
+
+##### Transactions
+
+:::danger
+Bounded Context should modify just 1 aggregate root instance per transaction scope!
+Otherwise, we can easily end up with situations where the system is a single-user system due to lots
+of concurrency errors.
+
+Note that in some specific cases, upholding that rule might not be possible.
+In general, it's important to keep the "best practices" in mind, but also to be able to break them
+when they just don't apply to our case.
+:::
+
+When a new business requirement comes in that requires you to update a few aggregate roots instances
+in a single transaction, it is worth to make sure that the model itself is still valid. It might be,
+that the new business requirement is actually an update to the Ubiquitous Language, and a new
+Aggregate Root should get introduced.
+
+For example, if we have some `Item` entity (aggregate root), and we get a requirement to make sure
+that when updating one Item, we also need to update some other Item, try to discuss with the Domain
+Expert what this pair of items actually represents. Maybe there should be a new Aggregate Root
+(like `ItemsPair`) introduced in the system and `Item` itself should not be Aggregate Root anymore? With such new Aggregate Root in place, we will manage
+Items from a different level (new repository), and we can keep the "one aggregate root per
+transaction" rule alive.
+
+It might also be that the new requirement introduces more issues than it gives benefit. Maybe the
+requirement should be changed to keep the system maintainable.
+
+There will be cases where one Aggregate Root istance has references to other Aggregate Roots. Even
+then, we shold try to upkeep the "one transaction per aggregate" rule. Either update the referred aggregate or
+the reference holder in a transaction, but not both. Use domain events to propagate changes, making
+sure the whole thing is eventually consistent.
+
+:::tip
+It's often the case that a requirement of
+transactional consistency across multiple aggregates may be actually relaxed to eventual
+consistency.
+:::
+
+Transactions should be managed in the Application Layer.
 
 ### Associations
 
@@ -260,28 +389,28 @@ the "child" entity.
 
 :::caution
 One aggregate should only reference external entities that are aggregate roots.
-For example, if a *Customer* has some *Address*, other aggregates (e.g.,
-*Order*) should not reference the *Address* directly. Instead, they should get
-that address through a *Customer*.
+For example, if a _Customer_ has some _Address_, other aggregates (e.g.,
+_Order_) should not reference the _Address_ directly. Instead, they should get
+that address through a _Customer_.
 
 Aggregate Roots define the complete entity. We should not link some other
 aggregate to a part of an aggregate.
 
-However, it's OK to link to some other non-root entity by the FK.
+However, it's OK to link to some other non-root entity by the identifier.
 :::
 
 When thinking to associate two aggregates, it's worth to remember what defines
 an Aggregate Root:
 
 > We need to look at individual components and think if the removal of a given
-component would result in removal of its contained components. If it would,
-that's probably an Aggregate Root.
+> component would result in removal of its contained components. If it would,
+> that's probably an Aggregate Root.
 
 If removal of our root should not result in the removal of linked aggregates,
 possibly we don't need to include these children as "Navigation Properties".
 Instead, maybe just an ID of that other entitiy is enough.
 
-An example is an aggregate called *Appointment*. It would contain references to:
+An example is an aggregate called _Appointment_. It would contain references to:
 
 - Patient
 - Doctor
@@ -293,49 +422,39 @@ makes sense to reference these just by ID, not by Navigation Properites.
 
 In DDD, a **Shared Kernel** is code that is used between different bounded
 context. It's basically a kind of project that .NET developers often call
-*Common*. The shared part should be as stable as possible. Changes in that code
+_Common_. The shared part should be as stable as possible. Changes in that code
 will affect a lot of places.
 
 ## Repositories
 
 Repository pattern is a well-known approach and it is also used outside of DDD.
 DDD-specific fact is that only the Aggregate Roots should have their
-repositories. Other aggregates should be accessed via their aggregate roots.
+repositories. Other entities should be accessed via their aggregate roots.
 
-A few tips:
+There are two ways to create an Aggregate instance:
 
-- there should be some common `IRepository<T>` interface implementated by all
-  the repositories
-- if some kind of repository (like `PatientsRepository`) has special needs, it's
-  OK to add some special methods to just that repository (or rather its
-  interface `IPatientsRepository`). An example of such a method could be
-  `GetPatientsOfDoctorWithId(Guid doctorId)`.
-- we could have separate repositories for querying and commanding, following CQRS.
+- via its constructor/factory method - when instantiating a new instance with a brand new ID
+- via repository - when reconstituing an existing instance that was previously created. It also
+  happens via cosntructor/factory, but from the Application Layer perspective, the repository is the
+  source of the object.
 
-### Specifications
+Repository might have methods to return other things than just Aggreagate Root instances. Depending
+on the businesss cases, we might need things such as:
 
-The second point from the list above might turn some repositories into huge
-classes. The solution for that is to turn these specific use-cases into
-so-called **Specifications**. These are classes that provide predicates for
-different use-cases. Then, our repositories would have a way to provide a
-specification to it.
+- counts of objects
+- some composition of parts of different aggregate root(s) - these compositions would be Value
+  Objects
 
-```csharp
-public interface IRepository<T>
-{
-  public T GetBySpec(Specification spec);
-}
-```
+The second case from the list above is a bit of a code smell though. When we employ such tactics, it
+might point at some issue with our Domain modeling. It could be that our aggregates are not defined
+properly. Such approaches are most often used for performance reasons.
+Even when you decide to add such repository method, make sure that the data that gets exposed is a
+data that you'd be able to navigate to if you had a reference to the Aggregate Root itself.
+Otherwise, you might break the consistency boundary.
 
-It is similar to the Strategy pattern. It also provides separation of concerns
-since the repository code can stay relatively clean and simple, while specific
-use-cases will be handled by their own classes.
+A repository could use another sub-repository to fetch some additional data.
 
-It will work well with Entity Framework or ORMs in general. Other data access
-methods would requie Specifications that are aware of the persistance layer
-query language, I believe.
-
-## Events
+## Domain Events
 
 There are two kinds of events:
 
@@ -359,29 +478,13 @@ in case".
 :::
 
 In code, each event is a separate class. It should iunclude the set of
-information that might be interesting for a given event. The information should
-be initailized via constructor and be immutable.
-
-#### Creting Events
-
-Each entity that is capable of emitting events would have `Events` property.
-
-```csharp
-public class Appointment : Entity
-{
-  public IList<IDomainEvent> Events { get; set; } = new List<INotification>();
-}
-```
+information that might be interesting for a given event.
 
 #### Dispatching Events
 
-The events could be dispatched in the **Repository**, right after the entities
-emitting the events are saved. The generic repository base class is a good place
-to handle that.
+Events should be dispatched from the Domain layer. Entities or Domain Serves could emit them.
 
-:::tip[MediatR]
-MediatR could be used to dispatch and handle events.
-:::
+---
 
 Events may have multiple handlers. Normally, the order of their execution should
 not matter.
@@ -389,12 +492,12 @@ not matter.
 ### Integration Events
 
 These events are the way to share information that something happens across
-domains or applications. They often include more information than the Domain
+domains or applications. They could include more information than the Domain
 Events since the receiver of the event might not be able to get these
 information on its own. For example, instead of just sharing the ID of some
 changed entity, we would also share some more defining properties, like a Name.
 It could also happen that the event handler would have to get back to the source
-service to ask for more details. We don't really want that, especially if
+service to ask for more details. We might not want that, especially if
 there'll be a lot of events, or a lot of handlers.
 
 :::tip[Domain and Integration Events]
@@ -420,10 +523,16 @@ introduce the new concepts into legacy codebase, we could create an ACL layer
 (like some set of services) that will communicate with our DDD system properly
 and return the data as the legacy system expects.
 
-<Image src={aclLegacyToDdd} alt=""/>
+<Image src={aclLegacyToDdd} alt="" />
 
-## Sources
+In practice, ACL is often just a mapper/translator kind of class. In more complex scenarios, it
+could be a separate process with endpoints that reach out to the legacy system and translate the
+responses to our Ubiquitous Language.
 
+## References
+
+- [Domain-Driven Design: Tackling Complexity in the Heart of Software (by Eric Evans)](https://www.oreilly.com/library/view/domain-driven-design-tackling/0321125215/)
+- [Implementing Domain-Driven Design (by Vaughn Vernon)](https://www.oreilly.com/library/view/implementing-domain-driven-design/9780133039900/)
 - [DDD on Pluralsight](https://app.pluralsight.com/paths/skill/domain-driven-design)
   - [Domain-Driven Design Fundamentals](https://app.pluralsight.com/library/courses/fundamentals-domain-driven-design)
   - [Domain-Driven Design in
@@ -432,5 +541,3 @@ and return the data as the legacy system expects.
     One](https://app.pluralsight.com/library/courses/refactoring-anemic-domain-model)
   - [Domain-Driven Design: Working with Legacy
     Projects](https://app.pluralsight.com/library/courses/domain-driven-design-legacy-projects/table-of-contents)
-- [Code
-  Project](https://www.codeproject.com/Articles/1020932/Domain-Driven-Design-Reflecting-Business-in-the-Do)
