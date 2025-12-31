@@ -47,6 +47,19 @@ In this article, I will assume the use of Clean Architecture (or Hexagonal), bec
 composes perfectly with DDD.
 :::
 
+:::caution[AI]
+You might question the value of learning these concepts in the age of so-called "AI".
+I'd argue that the Domain part of your systems (especially Aggregates and Entities) should not be
+written by LLMs. It's the most crucial part of the bounded context you're working on, and its proper
+design not only increases the chances of your solution to do its job as it's supposed to, but the
+process of creating the Domain layer enhances your understanding of the process as well. Often, when
+we're tasked with creating a solution, the domain is not fully defined, or understood. Leaving the
+decisions to LLMs will result in random invariants.
+
+Having said that, LLMs are much better suited to work on Infrastructure, Application or Presentation layers. There
+will be much more boilerplate that is not that pleasant to work on.
+:::
+
 ## Bounded Context and Sub-Domains
 
 As part of DDD, we identify **Subdomains** that take part in our system.
