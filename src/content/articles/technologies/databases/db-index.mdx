@@ -27,6 +27,10 @@ Index itself is also stored in pages.
 
 Small index is better for performance, because such index might live in memory.
 
+:::danger
+Index speeds up reads, but slows down writes.
+:::
+
 _Primary key_ usually has an index created automatically for it. It also
 usuablly becomes a clustered index. A clustered index is a special case of
 indexing where the index is actually stored within the table itself. It's done

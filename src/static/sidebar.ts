@@ -226,6 +226,7 @@ const structure: Sidebar = {
       children: [
         "architecture/basics",
         "architecture/ddd",
+        "architecture/microservices",
       ],
     },
   ],
