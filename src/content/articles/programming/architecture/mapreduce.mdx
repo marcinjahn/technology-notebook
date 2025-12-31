@@ -1,0 +1,96 @@
+---
+title: MapReduce
+description: What is MapReduce and what kind of problems does it solve
+lang: en-US
+tags: ["mapreduce", "pipeline", "processing", "architecture"]
+---
+
+# MapReduce
+
+Before Google introduced MapReduce in 2004, processing massive datasets was a nightmare. Imagine you have a colossal amount of data - terabytes or even petabytes - that you need to analyze. Storing it on
+a single super-powerful computer was often not feasible or
+cost-effective. The solution was to distribute the data and the
+processing across a cluster of many commodity computers.
+
+However, this approach came with a mountain of challenges that engineers had to solve from scratch for every new problem:
+
+- Manual Parallelization: Developers had to manually write complex
+  code to break down a large task into smaller pieces that could run in parallel on different machines.
+
+- Data Distribution: They needed to figure out how to move the right
+  data to the right machine for processing.
+
+- Fault Tolerance: If one of the hundreds or thousands of computers in the cluster failed during a long-running job (and they frequently did),
+  the entire job would often have to restart. Writing code to handle these failures gracefully was incredibly difficult.
+
+- Load Balancing: Ensuring that all the computers in the cluster were being used efficiently, without some being overloaded while others sat idle, was a constant struggle.
+
+- Communication Overhead: The code to manage communication and data transfer between machines was complex and error-prone.
+
+In essence, developers spent more time building and managing the infrastructure for distributed processing than they did on the actual
+data analysis task.
+
+MapReduce came along and offered a simple, yet brilliant, abstraction
+that hid all of this complexity from the developer. It was inspired by the map and reduce functions found in functional programming languages
+like LISP.
+
+Here’s why this two-step model is so effective:
+
+## The Power of "Map"
+
+The map function's job is to take a set of data and transform it into another set of data, where individual elements are broken down into key-value pairs.
+
+- Why it's important: The "map" phase is inherently parallelizable. Because the mapping operation on one piece of data is independent of the others, you can run thousands of map tasks simultaneously across
+  the entire cluster. Each map task works on its own subset of the data, without needing to communicate with other map tasks. This addresses the challenge of manual parallelization head-on.
+
+Analogy: Imagine you have a massive pile of different colored Lego
+bricks and you want to count how many of each color you have.
+The "map" phase is like giving a small bucket of these Legos to a group
+of friends. Each friend's job is to go through their bucket and for each Lego, write down its color and the number "1" on a sticky note
+(e.g., "red, 1", "blue, 1"). They don't need to talk to each other; they just process their own bucket.
+
+## The Power of "Reduce"
+
+The reduce function's job is to take the output from the map phase (a
+set of key-value pairs) and aggregate the values for each key.
+
+- Why it's important: The "reduce" phase is where the results of the parallel processing are brought together to produce the final answer.
+  The framework automatically handles the shuffling and sorting of the intermediate key-value pairs, so that all values for the same key are
+  sent to the same reducer task. This allows for the aggregation to
+  happen in parallel as well, with each reducer working on a different set
+  of keys.
+
+Analogy: Continuing with our Lego example, the "reduce" phase is like having a set of bins, one for each color. You and your friends take all the sticky notes you created and put them into the corresponding bins (all
+the "red, 1" notes go in the red bin, all the "blue, 1" notes go in the blue
+bin, etc.). Then, a different group of friends (the "reducers") each takes
+a bin and sums up the "1"s to get the final count for that color.
+
+## Why "Map" then "Reduce"?
+
+The order is crucial:
+
+- Map first: You need to process and transform the raw input data into
+  a standardized format (key-value pairs) before you can start
+  aggregating it. The map phase prepares the data for the reduce phase.
+
+- Reduce second: The reduce phase is dependent on the output of the map phase. You can't aggregate the values until they've been
+  associated with their respective keys.
+
+## Why Not "ReduceMap" or "MapReduceMap"?
+
+- ReduceMap: This doesn't make logical sense in most data processing scenarios. "Reduce" implies you're aggregating data that is already grouped by a key. You can't do this with the raw, unstructured input.
+  You need the "map" step first to create those key-value pairs.
+
+- MapReduceMap: While you can chain multiple MapReduce jobs
+  together (the output of one job becomes the input for the next), a
+  single "MapReduceMap" function within a single job would be
+  redundant. The initial "Map" and "Reduce" are designed to be general-purpose building blocks. If you need further transformation
+  after a reduce step, you simply start a new MapReduce job. This keeps the model simple and scalable.
+
+MapReduce's genius lies in its simplicity. By providing a constrained, two-step programming model, it abstracts away the immense complexities of distributed computing, allowing developers to focus on their specific data analysis logic while the framework handles the heavy lifting of parallelization, fault tolerance, and data distribution.
+
+---
+
+Not all problems may be solved with MapReduce. The key is to recognize problems that can be broken
+down into independent parallelizable computations (map) followed by and aggregation step (reduce).
+The "divide and conquer" kind of problems are a good fit.

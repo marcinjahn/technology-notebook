@@ -227,6 +227,7 @@ const structure: Sidebar = {
         "architecture/basics",
         "architecture/ddd",
         "architecture/microservices",
+        "architecture/mapreduce",
       ],
     },
   ],
