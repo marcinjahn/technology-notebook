@@ -226,7 +226,6 @@ const structure: Sidebar = {
       children: [
         "architecture/basics",
         "architecture/ddd",
-        "architecture/asp-net-core",
       ],
     },
   ],
