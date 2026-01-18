@@ -13,6 +13,11 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
   site: 'https://marcinjahn.com',
   trailingSlash: 'never',
+  vite: {
+    ssr: {
+      external: ['octokit'],
+    },
+  },
   integrations: [AutoImport({
     imports: [asideAutoImport]
   }), 

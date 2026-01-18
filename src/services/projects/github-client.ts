@@ -1,5 +1,4 @@
 import type { Endpoints } from "@octokit/types";
-import { Octokit } from "octokit";
 
 export interface GithubResponse {
   name: string;
@@ -15,6 +14,8 @@ export interface GithubResponse {
 type ListReposResponse = Endpoints["GET /users/{username}/repos"]["response"];
 
 export async function getGithubProjects(owner: string): Promise<GithubResponse[]> {
+  // Dynamically import to avoid Node.js globals issues during build
+  const { Octokit } = await import("octokit");
   const octokit = new Octokit();
 
   let result: GithubResponse[] = [];
