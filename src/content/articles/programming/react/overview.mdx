@@ -1,0 +1,46 @@
+---
+title: Overview
+description: Overview of React frontend framework
+tags: ["react", "spa", "js", "ts", "components", "single page application"]
+lang: en-US
+---
+
+# React
+
+React is a library for declarative building of UI interfaces.
+
+## Trees
+
+React deals with two trees:
+
+- DOM Tree - normal browser DOM
+- React Element Tree - a React's internal structure of the elements, represents the DOM. It's kinda
+  a fake/virtual DOM tree. React turns this into a real DOM tree.
+
+An act of _rendering_ is a process of turning React Element Tree into DOM tree.
+
+## Simplest React App
+
+```jsx
+const rootNode = document.getElementById("app");
+
+const root = ReactDOM.createRoot(rootNode); // sets the root of the React Element Tree
+root.render(React.createElement(App)); // updates DOM
+
+// custom component
+function App() {
+  return React.createElement(
+    "article",
+    null,
+    React.createElement("h2", null, "Hello world!"),
+  );
+}
+```
+
+Alright, maybe it's not "the simplest", but it's simple enough. `createElement` calls create React Elements,
+and a `render` call turns them int DOM nodes. React renders asynchronously, only after the JS engine is idle. This is to avoid blocking the
+thread.
+
+## Components
+
+A component is a functoin that returns a React element.
