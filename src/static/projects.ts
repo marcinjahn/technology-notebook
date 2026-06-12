@@ -148,4 +148,12 @@ export const projectDefinitions: ProjectDefinition[] = [
     displayName: "gemini-cli.nvim",
     githubName: "gemini-cli.nvim",
   },
+  {
+    displayName: "agent-cage",
+    githubName: "agent-cage",
+  },
+  {
+    displayName: "Aquilo Offline Server",
+    githubName: "aquilo-offline",
+  },
 ];
