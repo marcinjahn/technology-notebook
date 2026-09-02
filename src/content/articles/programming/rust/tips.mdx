@@ -13,8 +13,7 @@ import { Image } from 'astro:assets';
 - `std::env::args()` returns an iterator to command line arguments.
 - `std::process::exit(1)` terminates the program with some exit code.
 - keeping `src/main.rs` short is a good practice. The logic should be moved to
-  separate files like `src/lib.rs`. That also makes the logic testable (binary
-  crates are not testable).
+  separate files like `src/lib.rs`. That also makes the logic more testable.
 - `eprintln!` macro prints to stderr.
 - a **clap** cargo is useful for defining CLI arguments
 
@@ -72,3 +71,21 @@ Running `cargo doc --open` generates and opens the docs automatically.
 Documentation might also contain example code. That code is run automatically
 with `cargo test`. In the example code shown previousy, the example code would
 be run.
+
+#### Test binary
+
+You can test the binary using `assert_cmd` and `predicates` and `cargo_bin`.
+
+```rs
+#[test]
+fn test_main() {
+    use assert_cmd::prelude::*; // Add methods on commands
+    use predicates::prelude::*; // Used for writing assertions
+    use std::process::Command; 
+    let mut cmd = Command::cargo_bin("my_crate").unwrap();
+
+    cmd.arg("--my-arg");
+    cmd.assert()
+        .stdout(predicate::str::contains("error"));
+}
+```
